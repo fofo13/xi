@@ -1,9 +1,8 @@
-ArcLang 
+Xi (ξ)
 =======
-a simple scripting language written in Java
--------------------------------------------
+**a simple scripting language written in Java**
 
-The goal of ArcLang is to allow users to write concise code that can carry out complicated tasks.
+The goal of Xi is to allow users to write concise code that can carry out complicated tasks.
 
 ---
 
@@ -56,4 +55,4 @@ So far, the following operations are supported:
 To Do
 -----
 
-Lists / Sets! The classes that will be used to implement these data types have been created but are not yet finished.
+Lists / Sets - The classes that will be used to implement these data types have been created but are not yet finished.
