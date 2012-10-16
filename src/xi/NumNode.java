@@ -1,10 +1,10 @@
 package xi;
 
 public class NumNode extends Node {
-	private Xi n;
+	private XiNum n;
 
 	public NumNode(int n) {
-		this.n = new Xi(n);
+		this.n = new XiNum(n);
 	}
 
 	public NumNode(String n) {

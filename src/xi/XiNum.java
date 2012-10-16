@@ -1,10 +1,10 @@
 package xi;
 
-public class Xi extends DataType {
+public class XiNum extends DataType {
 	
 	private int val;
 	
-	public Xi(int val) {
+	public XiNum(int val) {
 		this.val = val;
 	}
 	
@@ -12,8 +12,8 @@ public class Xi extends DataType {
 		return val;
 	}
 	
-	public Xi parse(String exp) {
-		return new Xi(Integer.parseInt(exp));
+	public XiNum parse(String exp) {
+		return new XiNum(Integer.parseInt(exp));
 	}
 	
 	@Override
