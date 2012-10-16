@@ -3,7 +3,7 @@ package xi;
 public class TernOpNode extends Node {
 	
 	private TernaryOperation op;
-	private Node center;
+	private Node center;  // 3 total children nodes
 	
 	public TernOpNode(TernaryOperation op) {
 		this.op = op;

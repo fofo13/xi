@@ -1,6 +1,7 @@
 package xi;
 
 public abstract class Node {
+	
 	protected Node left;
 	protected Node right;
 
@@ -13,4 +14,5 @@ public abstract class Node {
 	public void setRight(Node node) {
 		right = node;
 	}
+	
 }

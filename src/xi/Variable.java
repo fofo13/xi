@@ -1,12 +1,13 @@
 package xi;
+
 public class Variable {
 	
 	private String id;
-	private DataType val;
+	private DataType data;
 	
 	public Variable(String id, DataType val) {
 		this.id = id;
-		this.val = val;
+		this.data = val;
 	}
 	
 	public String id() {
@@ -14,7 +15,7 @@ public class Variable {
 	}
 	
 	public DataType val() {
-		return val;
+		return data;
 	}
 	
 	@Override

@@ -12,7 +12,7 @@ public class XiNum extends DataType {
 		return val;
 	}
 	
-	public XiNum parse(String exp) {
+	public static XiNum parse(String exp) {
 		return new XiNum(Integer.parseInt(exp));
 	}
 	
