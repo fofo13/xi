@@ -10,8 +10,8 @@ public class NumNode extends DataNode {
 		this(Integer.parseInt(n));
 	}
 
-	public int evaluate() {
-		return ((XiNum)data).val();
+	public DataType evaluate() {
+		return (XiNum)data;
 	}
 	
 }

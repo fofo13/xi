@@ -1,4 +1,6 @@
-package xi;
+package tmp;
+
+import xi.Node;
 
 public class UnOpNode extends Node {
 	private UnaryOperation op;

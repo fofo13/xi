@@ -1,6 +1,6 @@
 package xi;
 
-public class ListNode /* extends Node */ {
+public class ListNode extends Node {
 	
 	private XiList val;
 	
@@ -9,6 +9,11 @@ public class ListNode /* extends Node */ {
 	}
 	
 	public XiList val() {
+		return val;
+	}
+	
+	@Override
+	public DataType evaluate() {
 		return val;
 	}
 	

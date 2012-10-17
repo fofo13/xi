@@ -1,4 +1,6 @@
-package xi;
+package tmp;
+
+import xi.Node;
 
 public class BinOpNode extends Node {
 	private BinaryOperation op;
