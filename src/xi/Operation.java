@@ -6,9 +6,9 @@ public enum Operation {
 			"*", 2), DIVIDE("/", 2), MODULUS("%", 2), EQ("=", 2), NEQ("!=", 2), GREATER(
 			">", 2), LESS("<", 2), GREATER_EQ(">=", 2), LESS_EQ("<=", 2), AND(
 			"&", 2), OR("|", 2), XOR("^", 2), RSHIFT(">>", 2), LSHIFT("<<", 2), POW(
-			"**", 2), TERN("?", 3);
+			"**", 2), TERN("?", 3),
 
-	// MAP("@", 2);
+	MAP("@", 2), RANGE(",", 1);
 
 	private String id;
 	private int numArgs;
@@ -74,6 +74,10 @@ public enum Operation {
 			return ((XiNum) args[0]).pow((XiNum) args[1]);
 		case TERN:
 			return new XiNum(args[0].isEmpty() ? 0 : 1);
+		case MAP:
+			return ((XiList)args[0]).map((Block)args[1]);
+		case RANGE:
+			return new XiList(((XiNum)args[0]).val());
 		default:
 			throw new RuntimeException();
 		}

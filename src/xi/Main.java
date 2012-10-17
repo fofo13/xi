@@ -5,8 +5,7 @@ package xi;
 // test stuff
 public class Main {
 	public static void main(String[] args) {
-		String exp = "= * 2 2 + 2 3";
-		System.out.println((new ExpressionTree(exp)).evaluate());
-		
+		String exp = "@ , 10 {** . 2}";
+		System.out.println((new SyntaxTree(exp)).evaluate());
 	}
 }

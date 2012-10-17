@@ -18,6 +18,10 @@ public abstract class Node {
 	public static Node create(String exp) {
 		if (exp.matches("-?\\d+"))
 			return new NumNode(Integer.parseInt(exp));
+		if (exp.startsWith("["))
+			return new ListNode(XiList.parse(exp));
+		if (exp.startsWith("{"))
+			return new BlockNode(exp);
 		if (Operation.idExists(exp))
 			return new OperationNode(Operation.parse(exp));
 		throw new RuntimeException();
