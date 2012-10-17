@@ -50,12 +50,12 @@ So far, the following operations are supported:
 `<<`  	Bitwise left shift  
 `**`	Power  
 
-*Ternary Operations*
-`?`		If its first argument is non-zero, returns its second argument. Otherwise, returns its third argument.
+*Ternary Operations*  
+`?`		If its first argument is non-zero, returns its second argument. Otherwise, returns its third argument.  
 
-*List Operations*
-`@`		"Map" a function onto a list. For example, `@ [1 2 3 4] {** . 2}` would return `[1 4 9 16]`.
-`,`		Returns a list containing numbers from 0 up to but not including its first argument. For example, `, 3` would return `[0 1 2]`.
+*List Operations*  
+`@`		"Map" a function onto a list. For example, `@ [1 2 3 4] {** . 2}` would return `[1 4 9 16]`.  
+`,`		Returns a list containing numbers from 0 up to but not including its first argument. For example, `, 3` would return `[0 1 2]`.  
 
 ---
 
