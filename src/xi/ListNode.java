@@ -1,20 +1,18 @@
 package xi;
 
-public class ListNode extends Node {
+public class ListNode extends DataNode {
 	
-	private XiList val;
-	
-	public ListNode(XiList val) {
-		this.val = val;
+	public ListNode(XiList list) {
+		data = list;
 	}
 	
 	public XiList val() {
-		return val;
+		return (XiList)data;
 	}
 	
 	@Override
 	public DataType evaluate() {
-		return val;
+		return data;
 	}
 	
 }

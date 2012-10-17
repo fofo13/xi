@@ -11,11 +11,11 @@ public class VariableCache {
 		cache = new HashSet<Variable>();
 	}
 	
-	public void insert(Variable v) {
+	public void put(Variable v) {
 		cache.add(v);
 	}
 	
-	public DataType lookup(String id) {
+	public DataType get(String id) {
 		for (Variable v : cache)
 			if (v.id().equals(id))
 				return v.val();

@@ -9,7 +9,8 @@ class SyntaxTree {
 	private String[] tokens;
 	
 	public SyntaxTree(String exp) {
-		tokens = exp.replaceAll("[\\(\\)]", "").split("\\s+(?![^\\[]*\\])(?![^\\{]*\\})");
+		// tokens = exp.replaceAll("[\\(\\)]", "").split("\\s+(?![^\\[]*\\])(?![^\\{]*\\})");
+		tokens = (new Parser(exp)).tokens();
 		head = parse();
 	}
 	

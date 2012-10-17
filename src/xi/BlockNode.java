@@ -1,16 +1,14 @@
 package xi;
 
-public class BlockNode extends Node {
-	
-	private XiBlock block;
+public class BlockNode extends DataNode {
 	
 	public BlockNode(String exp) {
-		block = new XiBlock(exp);
+		data = new XiBlock(exp);
 	}
 	
 	@Override
 	public DataType evaluate() {
-		return block;
+		return data;
 	}
 	
 }
