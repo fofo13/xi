@@ -5,7 +5,7 @@ package xi;
 // test stuff
 public class Main {
 	public static void main(String[] args) {
-		String exp = "@ , 10 {** . 2}";
-		System.out.println((new SyntaxTree(exp)).evaluate());
+		String exp = "println $ @ , 13 {= % 13 + . 1 0}";
+		(new SyntaxTree(exp)).evaluate();
 	}
 }

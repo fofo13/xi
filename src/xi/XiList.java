@@ -51,13 +51,20 @@ public class XiList extends DataType {
 	 * e.g.
 	 * @ [1 2 3 4] {** . 2}  -->  [1 4 9 16]
 	 */
-	public XiList map(Block block) {
+	public XiList map(XiBlock block) {
 		List<Integer> newList = new ArrayList<Integer>(list.size());
 		for (int a : list)
 			newList.add(((XiNum)block.evaluate(a)).val());
 		return new XiList(newList);
 	}
 
+	public XiNum sum() {
+		int n = 0;
+		for (int i : list)
+			n += i;
+		return new XiNum(n);
+	}
+	
 	@Override
 	public boolean isEmpty() {
 		return list.isEmpty();

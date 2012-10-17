@@ -2,10 +2,10 @@ package xi;
 
 public class BlockNode extends Node {
 	
-	private Block block;
+	private XiBlock block;
 	
 	public BlockNode(String exp) {
-		block = new Block(exp);
+		block = new XiBlock(exp);
 	}
 	
 	@Override
