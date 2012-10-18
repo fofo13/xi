@@ -9,7 +9,7 @@ public enum Operation {
 			"**", 2), TERN("?", 3),
 
 	MAP("@", 2), RANGE(",", 1), SUM("$", 1),
-
+	
 	PRINT("print", 1), PRINTLN("println", 1);
 	
 	private String id;

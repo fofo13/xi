@@ -1,12 +1,10 @@
 package xi;
 
 public class Main {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		
-		XiEnvironment env = new XiEnvironment();
-		env.put("a := + 3 2");
-		env.put("a := , a");
-		env.put("println a");
+		XiEnvironment env = new XiEnvironment("tests/Test.xi");
+		env.close();
 		
 	}
 }

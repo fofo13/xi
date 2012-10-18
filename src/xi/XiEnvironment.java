@@ -1,13 +1,32 @@
 package xi;
 
-public class XiEnvironment {
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class XiEnvironment implements Closeable {
 
 	private VariableCache globals;
-
-	private DataType last;
+	private boolean closed;
 	
 	public XiEnvironment() {
 		globals = new VariableCache();
+	}
+	
+	public XiEnvironment(File file) throws FileNotFoundException {
+		this();
+		Scanner scan = new Scanner(file);
+		while (scan.hasNext()) {
+			String[] statements = scan.nextLine().split(";");
+			for (String statement : statements)
+				put(statement);
+		}
+		scan.close();
+	}
+	
+	public XiEnvironment(String file) throws FileNotFoundException {
+		this(new File(file));
 	}
 
 	public VariableCache globals() {
@@ -15,6 +34,9 @@ public class XiEnvironment {
 	}
 	
 	public void put(String statement) {
+		if (closed)
+			throw new RuntimeException("XiEnvironment is closed.");
+		
 		if (statement.contains(";"))
 			throw new IllegalArgumentException("Argument is not a single statement.");
 		
@@ -24,9 +46,12 @@ public class XiEnvironment {
 		}
 		
 		else
-			last = (new SyntaxTree(statement, globals)).evaluate();
+			(new SyntaxTree(statement, globals)).evaluate();
 	}
 	
-	public DataType last() { return last; }
+	@Override
+	public void close() {
+		closed = true;
+	}
 	
 }
