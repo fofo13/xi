@@ -37,6 +37,8 @@ public enum Operation {
 		case ABS:
 			return new XiNum(Math.abs(((XiNum) args[0]).val()));
 		case ADD:
+			if (args[0] instanceof XiString)
+				return ((XiString)args[0]).append(new XiString(args[1].toString()));
 			return ((XiNum) args[0]).add((XiNum) args[1]);
 		case SUBTRACT:
 			return ((XiNum) args[0]).sub((XiNum) args[1]);

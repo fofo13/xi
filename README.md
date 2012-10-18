@@ -64,5 +64,6 @@ To Do
 
 <ul>
 	<li>Implement sets</li>
-	<li>Implement strings</li>
+	<li>Overload various operations for various other data types (e.g. `+` for lists)</li>
+	<li>Variables</li>
 </ul>

@@ -1,0 +1,33 @@
+package xi;
+
+public class XiString extends DataType {
+	
+	private String val;
+	
+	public XiString(String exp) {
+		val = exp.replaceAll("\"", "");
+	}
+	
+	public String val() {
+		return val;
+	}
+	
+	@Override
+	public boolean isEmpty() {
+		return val.isEmpty();
+	}
+	
+	@Override
+	public String toString() {
+		return val;
+	}
+	
+	public XiString append(XiString other) {
+		return new XiString(val + other.val());
+	}
+	
+	public XiNum indexOf(XiString other) {
+		return new XiNum(val.indexOf(other.val()));
+	}
+	
+}
