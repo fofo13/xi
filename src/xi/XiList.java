@@ -31,6 +31,7 @@ public class XiList extends DataType {
 	}
 	
 	public int get(int index) {
+		index %= list.size();
 		return list.get(index < 0 ? list.size() + index : index);
 	}
 	

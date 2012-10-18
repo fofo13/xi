@@ -3,15 +3,21 @@ package xi;
 import java.util.ArrayList;
 import java.util.List;
 
-class SyntaxTree {
+public class SyntaxTree {
 	
 	private Node head;
 	private String[] tokens;
 	
-	public SyntaxTree(String exp) {
-		// tokens = exp.replaceAll("[\\(\\)]", "").split("\\s+(?![^\\[]*\\])(?![^\\{]*\\})");
+	private VariableCache cache;
+	
+	public SyntaxTree(String exp, VariableCache cache) {
 		tokens = (new Parser(exp)).tokens();
+		this.cache = cache;
 		head = parse();
+	}
+	
+	public SyntaxTree(String exp) {
+		this(exp, new VariableCache());
 	}
 	
 	public DataType evaluate() {
@@ -25,8 +31,7 @@ class SyntaxTree {
 		return create(nodes);
 	}
 	
-	private static Node create(List<Node> nodes) {
-		
+	private Node create(List<Node> nodes) {	
 		if (nodes.get(0) instanceof OperationNode) {
 			OperationNode node = (OperationNode)nodes.remove(0);
 			Operation op = node.op();
@@ -35,6 +40,11 @@ class SyntaxTree {
 				node.addChild(create(nodes));
 			
 			return node;
+		}
+		
+		if (nodes.get(0) instanceof VarNode) {
+			VarNode node = (VarNode)nodes.get(0);
+			nodes.set(0, new VarNode(node.id(), cache));
 		}
 		
 		return nodes.remove(0);
