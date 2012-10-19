@@ -9,9 +9,9 @@ public enum Operation {
 			"**", 2), TERN("?", 3),
 
 	MAP("@", 2), RANGE(",", 1), SUM("$", 1),
-	
+
 	PRINT("print", 1), PRINTLN("println", 1);
-	
+
 	private String id;
 	private int numArgs;
 
@@ -79,11 +79,11 @@ public enum Operation {
 		case TERN:
 			return new XiNum(args[0].isEmpty() ? 0 : 1);
 		case MAP:
-			return ((XiList)args[0]).map((XiBlock)args[1]);
+			return ((XiList) args[0]).map((XiBlock) args[1]);
 		case RANGE:
-			return new XiList(((XiNum)args[0]).val());
+			return new XiList(((XiNum) args[0]).val());
 		case SUM:
-			return ((XiList)args[0]).sum();
+			return ((XiList) args[0]).sum();
 		case PRINT:
 			System.out.print(args[0]);
 			return args[0];
@@ -94,14 +94,14 @@ public enum Operation {
 			throw new RuntimeException();
 		}
 	}
-	
+
 	public static boolean idExists(String id) {
 		for (Operation op : values())
 			if (id.equals(op.id()))
 				return true;
 		return false;
 	}
-	
+
 	public static Operation parse(String id) {
 		for (Operation op : values())
 			if (id.equals(op.id()))

@@ -19,10 +19,10 @@ public class XiList extends DataType {
 	}
 	
 	public static XiList parse(String exp) {
-		String[] split = exp.replaceAll("[\\[\\]]", "").split(" ");
+		String[] split = (new Parser(exp.substring(1, exp.length() - 1))).tokens();
 		List<DataType> list = new ArrayList<DataType>(split.length);
 		for (String s : split)
-			list.add(new XiNum(Integer.parseInt(s)));
+			list.add(DataType.create(s));
 		return new XiList(list);
 	}
 	
@@ -57,7 +57,7 @@ public class XiList extends DataType {
 	public XiList map(XiBlock block) {
 		List<DataType> newList = new ArrayList<DataType>(list.size());
 		for (DataType a : list)
-			newList.add(block.evaluate(((XiNum)a).val()));
+			newList.add(block.evaluate(a));
 		return new XiList(newList);
 	}
 

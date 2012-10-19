@@ -10,8 +10,12 @@ public class XiEnvironment implements Closeable {
 	private VariableCache globals;
 	private boolean closed;
 	
+	public XiEnvironment(VariableCache cache) {
+		globals = cache;
+	}
+	
 	public XiEnvironment() {
-		globals = new VariableCache();
+		this(new VariableCache());
 	}
 	
 	public XiEnvironment(File file) throws FileNotFoundException {
@@ -42,7 +46,7 @@ public class XiEnvironment implements Closeable {
 		
 		if (statement.contains(":=")) { 
 			String[] split = statement.split(":=");
-			globals.put(new XiVar(split[0].trim(), new SyntaxTree(split[1].trim(), globals).evaluate()));
+			globals.add(new XiVar(split[0].trim(), new SyntaxTree(split[1].trim(), globals).evaluate()));
 		}
 		
 		else
