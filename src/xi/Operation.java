@@ -10,6 +10,8 @@ public enum Operation {
 
 	MAP("@", 2), RANGE(",", 1), SUM("$", 1),
 
+	FOR("for", 3),
+	
 	PRINT("print", 1), PRINTLN("println", 1);
 
 	private String id;
@@ -84,6 +86,16 @@ public enum Operation {
 			return new XiList(((XiNum) args[0]).val());
 		case SUM:
 			return ((XiList) args[0]).sum();
+		case FOR:
+			String id = ((XiString)args[0]).val();
+			XiList list = (XiList)args[1];
+			XiBlock body = (XiBlock)args[2];
+			DataType last = null;
+			for (int i = 0 ; i < list.size() ; i++) {
+				body.updateLocal(new XiVar(id, list.get(i)));
+				last = body.evaluate();
+			}
+			return last;
 		case PRINT:
 			System.out.print(args[0]);
 			return args[0];

@@ -26,9 +26,8 @@ public abstract class Node {
 			return new StringNode(exp);
 		if (Operation.idExists(exp))
 			return new OperationNode(Operation.parse(exp));
-		if (exp.matches("[a-zA-Z]\\w+"))
-			return new VarNode(exp);
-		throw new RuntimeException();
+		return new VarNode(exp);
+		//throw new RuntimeException();
 	}
 	
 }

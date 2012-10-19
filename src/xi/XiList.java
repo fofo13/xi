@@ -19,7 +19,7 @@ public class XiList extends DataType {
 	}
 	
 	public static XiList parse(String exp) {
-		String[] split = (new Parser(exp.substring(1, exp.length() - 1))).tokens();
+		String[] split = Parser.tokenize(exp.substring(1, exp.length() - 1));
 		List<DataType> list = new ArrayList<DataType>(split.length);
 		for (String s : split)
 			list.add(DataType.create(s));
@@ -66,6 +66,10 @@ public class XiList extends DataType {
 		for (DataType data : list)
 			n += ((XiNum)data).val();
 		return new XiNum(n);
+	}
+	
+	public int size() {
+		return list.size();
 	}
 	
 	@Override

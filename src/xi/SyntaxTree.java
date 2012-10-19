@@ -11,7 +11,7 @@ public class SyntaxTree {
 	private VariableCache cache;
 	
 	public SyntaxTree(String exp, VariableCache cache) {
-		tokens = (new Parser(exp)).tokens();
+		tokens = Parser.tokenize(exp);
 		this.cache = cache;
 		head = parse();
 	}

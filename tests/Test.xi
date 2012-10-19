@@ -1,1 +1,1 @@
-@ , 100 {println + . 2}
+for "i" , 10 {for "j" , + i 1 {print j} ; println ""}

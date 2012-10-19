@@ -8,27 +8,26 @@ import java.util.Scanner;
 public class XiEnvironment implements Closeable {
 
 	private VariableCache globals;
+	private DataType last;
 	private boolean closed;
-	
+
 	public XiEnvironment(VariableCache cache) {
 		globals = cache;
 	}
-	
+
 	public XiEnvironment() {
 		this(new VariableCache());
 	}
-	
+
 	public XiEnvironment(File file) throws FileNotFoundException {
 		this();
 		Scanner scan = new Scanner(file);
 		while (scan.hasNext()) {
-			String[] statements = scan.nextLine().split(";");
-			for (String statement : statements)
-				put(statement);
+			put(scan.nextLine());
 		}
 		scan.close();
 	}
-	
+
 	public XiEnvironment(String file) throws FileNotFoundException {
 		this(new File(file));
 	}
@@ -36,26 +35,31 @@ public class XiEnvironment implements Closeable {
 	public VariableCache globals() {
 		return globals;
 	}
-	
+
 	public void put(String statement) {
+
 		if (closed)
 			throw new RuntimeException("XiEnvironment is closed.");
-		
-		if (statement.contains(";"))
-			throw new IllegalArgumentException("Argument is not a single statement.");
-		
-		if (statement.contains(":=")) { 
-			String[] split = statement.split(":=");
-			globals.add(new XiVar(split[0].trim(), new SyntaxTree(split[1].trim(), globals).evaluate()));
+
+		for (String exp : Parser.splitOnSemiColons(statement)) {
+			if (exp.contains(":=")) {
+				String[] split = exp.split(":=");
+				globals.add(new XiVar(split[0].trim(), new SyntaxTree(split[1]
+						.trim(), globals).evaluate()));
+			}
+
+			else
+				last = (new SyntaxTree(exp, globals)).evaluate();
 		}
-		
-		else
-			(new SyntaxTree(statement, globals)).evaluate();
 	}
-	
+
+	public DataType last() {
+		return last;
+	}
+
 	@Override
 	public void close() {
 		closed = true;
 	}
-	
+
 }
