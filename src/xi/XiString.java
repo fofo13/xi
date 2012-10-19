@@ -1,6 +1,6 @@
 package xi;
 
-public class XiString extends DataType {
+public class XiString extends DataType implements Comparable<XiString> {
 	
 	private String val;
 	
@@ -15,6 +15,11 @@ public class XiString extends DataType {
 	@Override
 	public boolean isEmpty() {
 		return val.isEmpty();
+	}
+	
+	@Override
+	public int compareTo(XiString other) {
+		return val.compareTo(other.val());
 	}
 	
 	@Override

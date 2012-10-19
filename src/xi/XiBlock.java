@@ -3,9 +3,11 @@ package xi;
 public class XiBlock extends DataType {
 	
 	private String exp;
+	private VariableCache locals;
 	
 	public XiBlock(String exp) {
-		this.exp = exp.replaceAll("[\\{\\}]", "");
+		this.exp = exp.substring(1, exp.length() - 1);
+		locals = new VariableCache();
 	}
 	
 	@Override
@@ -14,7 +16,7 @@ public class XiBlock extends DataType {
 	}
 	
 	public DataType evaluate(int a) {
-		return (new SyntaxTree(exp.replaceAll("\\.", "" + a))).evaluate();
+		return (new SyntaxTree(exp.replaceAll("\\.", "" + a), locals)).evaluate();
 	}
 	
 }

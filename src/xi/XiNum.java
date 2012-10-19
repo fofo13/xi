@@ -1,6 +1,6 @@
 package xi;
 
-public class XiNum extends DataType {
+public class XiNum extends DataType implements Comparable<XiNum> {
 
 	private int val;
 
@@ -19,6 +19,11 @@ public class XiNum extends DataType {
 	@Override
 	public boolean isEmpty() {
 		return val != 0;
+	}
+	
+	@Override
+	public int compareTo(XiNum other) {
+		return (new Integer(val)).compareTo(other.val());
 	}
 	
 	@Override

@@ -1,41 +1,42 @@
 package xi;
 
 import java.util.ArrayList;
-import java.util.Collections;
+//import java.util.Collections;
 import java.util.List;
 
 public class XiList extends DataType {
 	
-	private List<Integer> list;
+	private List<DataType> list;
 	
-	public XiList(List<Integer> list) {
+	public XiList(List<DataType> list) {
 		this.list = list;
 	}
 	
 	public XiList(int n) {
-		this(new ArrayList<Integer>(n));
+		this(new ArrayList<DataType>(n));
 		for (int i = 0 ; i < n ; i++)
-			list.add(i);
+			list.add(new XiNum(i));
 	}
 	
 	public static XiList parse(String exp) {
 		String[] split = exp.replaceAll("[\\[\\]]", "").split(" ");
-		List<Integer> list = new ArrayList<Integer>(split.length);
+		List<DataType> list = new ArrayList<DataType>(split.length);
 		for (String s : split)
-			list.add(Integer.parseInt(s));
+			list.add(new XiNum(Integer.parseInt(s)));
 		return new XiList(list);
 	}
 	
-	public List<Integer> list() {
+	public List<DataType> list() {
 		return list;
 	}
 	
-	public int get(int index) {
+	public DataType get(int index) {
 		index %= list.size();
 		return list.get(index < 0 ? list.size() + index : index);
 	}
 	
-	public int max() {
+	/*
+	public DataType max() {
 		return Collections.max(list);
 	}
 	
@@ -46,6 +47,7 @@ public class XiList extends DataType {
 	public void shuffle() {
 		Collections.shuffle(list);
 	}
+	*/
 	
 	/*
 	 * Map Syntax:
@@ -53,16 +55,16 @@ public class XiList extends DataType {
 	 * @ [1 2 3 4] {** . 2}  -->  [1 4 9 16]
 	 */
 	public XiList map(XiBlock block) {
-		List<Integer> newList = new ArrayList<Integer>(list.size());
-		for (int a : list)
-			newList.add(((XiNum)block.evaluate(a)).val());
+		List<DataType> newList = new ArrayList<DataType>(list.size());
+		for (DataType a : list)
+			newList.add(block.evaluate(((XiNum)a).val()));
 		return new XiList(newList);
 	}
 
 	public XiNum sum() {
 		int n = 0;
-		for (int i : list)
-			n += i;
+		for (DataType data : list)
+			n += ((XiNum)data).val();
 		return new XiNum(n);
 	}
 	
