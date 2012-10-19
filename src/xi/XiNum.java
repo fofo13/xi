@@ -18,7 +18,7 @@ public class XiNum extends DataType implements Comparable<XiNum> {
 	
 	@Override
 	public boolean isEmpty() {
-		return val != 0;
+		return val == 0;
 	}
 	
 	@Override

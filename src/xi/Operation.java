@@ -10,7 +10,7 @@ public enum Operation {
 
 	MAP("@", 2), RANGE(",", 1), SUM("$", 1),
 
-	FOR("for", 3),
+	FOR("for", 3), IF("if", 3),
 	
 	PRINT("print", 1), PRINTLN("println", 1);
 
@@ -96,6 +96,8 @@ public enum Operation {
 				last = body.evaluate();
 			}
 			return last;
+		case IF:
+			return ((XiBlock)(args[0].isEmpty() ? args[2] : args[1])).evaluate();
 		case PRINT:
 			System.out.print(args[0]);
 			return args[0];
