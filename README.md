@@ -6,32 +6,30 @@ The goal of Xi is to allow users to write concise code that can carry out compli
 
 ---
 
-So far...
----------
-The project is very young at the moment, so not a lot has been implemented.
+Syntax
+---
 
-Currently, prefix notation is used so as to eliminate the need for parenthesis. For example, to evaluate
+Prefix notation is used in Xi. For example,
 
-    (3 * (4 + 5)) / 9
-
-we would have
-
-    / * + 4 5 3 9
+    println + 2 2
     
-Notice that parenthesis are not needed. Such expressions can be evaluated with the `SyntaxTree` class. For example,
+would print `4`. This way, parenthesis are not required. To illustrate this, consider the infix expression `(3 + 2) * 2`. Converting this to prefix notation, we have
 
-    (new SyntaxTree("/ * + 4 5 3 9")).evaluate()
+    * + 3 2 2
     
-would result in `5`.
+Now, if we moved the parenthesis without changing anything else: `3 + (2 * 2)`, we would obtain a *different* prefix expression:
 
-So far, the following operations are supported:
+    + 3 * 2 2
 
-*Unary Operations*  
+The following operations are currently supported:
+
+**Unary Operations**    
 `!`		Not  
 `~`		Bitwise NOT  
 `\`		Absolute value 
+`rnd`	Random number from 0 to argument
 
-*Binary Operations*   
+**Binary Operations**  
 `+`		Addition   
 `-`  	Subtraction   
 `*`  	Multiplication  
@@ -50,20 +48,30 @@ So far, the following operations are supported:
 `<<`  	Bitwise left shift  
 `**`	Power  
 
-*Ternary Operations*  
+**Ternary Operations**  
 `?`		If its first argument is non-zero, returns its second argument. Otherwise, returns its third argument.  
 
-*List Operations*  
+**List Operations**  
 `@`		"Map" a function onto a list. For example, `@ [1 2 3 4] {** . 2}` would return `[1 4 9 16]`.  
 `,`		Returns a list containing numbers from 0 up to but not including its first argument. For example, `, 3` would return `[0 1 2]`.  
+`$`		Returns the sum of the elements of in a list.
 
 ---
 
+**Control Flow Statements**
+
+`if`  	
+Example of usage:  
+    if = + 2 2 4 {println "yes!"} {println "no :("}
+    
+`for`  
+Technically implemented as a for-each loop. Example:  
+    for "i" [1 2 3 4 5] {println ** i 2}
+
+
 To Do
 -----
-
 <ul>
-	<li>Implement sets</li>
+	<li>Implement sets and set operations</li>
 	<li>Overload various operations for various other data types (e.g. `+` for lists)</li>
-	<li>Variables</li>
 </ul>

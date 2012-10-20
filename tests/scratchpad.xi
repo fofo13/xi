@@ -1,1 +1,1 @@
-for "i" , 10 {for "j" , + i 1 {print "*"} ; println ""}
+if = + 2 2 4 {println "yes!"} {println "no :("}
