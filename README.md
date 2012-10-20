@@ -26,7 +26,7 @@ The following operations are currently supported:
 **Unary Operations**    
 `!`		Not  
 `~`		Bitwise NOT  
-`\`		Absolute value 
+`\`		Absolute value  
 `rnd`	Random number from 0 to argument
 
 **Binary Operations**  
@@ -62,11 +62,11 @@ The following operations are currently supported:
 
 `if`  	
 Example of usage:  
-    if = + 2 2 4 {println "yes!"} {println "no :("}
+	if = + 2 2 4 {println "yes!"} {println "no :("}
     
 `for`  
 Technically implemented as a for-each loop. Example:  
-    for "i" [1 2 3 4 5] {println ** i 2}
+	for "i" [1 2 3 4 5] {println ** i 2}
 
 
 To Do
