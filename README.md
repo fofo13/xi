@@ -65,7 +65,10 @@ The following operations are currently supported:
 
 To Do
 -----
-- Implement lists <FONT COLOR="#008000">√</FONT>
-- Variables <FONT COLOR="#008000">√</FONT>
-- Implement sets and set operations
-- Overload various operations for various other data types (e.g. `+` for lists)
+<ul>
+	<li>Implement lists <FONT COLOR="#008000">√</FONT></li>
+	<li>Variables <FONT COLOR="#008000">√</FONT></li>
+	<li>Implement sets and set operations</li>
+	<li>Overload various operations for various other data types (e.g. `+` for lists)</li>
+</ul>
+
