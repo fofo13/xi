@@ -75,7 +75,7 @@ There is an outer for-loop with a loop control variable named `n`, which will ra
 
     for "n" , 100 {...}
     
-Within the body of this loop, we first define a variable `a` to be 0. Next, we have a second second loop with a loop control variable named `i` that 
+Within the body of this loop, we first define a variable `a` to be 0. Next, we have a second loop with a loop control variable named `i` that 
 ranges from 0 to `n - 1`. The body of this loop is
 
     a := + a = % n + i 1 0
@@ -84,7 +84,7 @@ Translating this into pseudo-code infix notation:
 
 	a := a + (n % (i + 1) = 0)
 	
-i.e. Define `a` to be the old value of `a` plus 1 if `i + 1` divides `n` and 0 otherwise. So at the end of the inner for-loop, `a` will hold the number 
+i.e. Define `a` to be the old value of `a` plus 1 if `i + 1` divides `n` or 0 otherwise. So at the end of the inner for-loop, `a` will hold the number 
 of factors of `n`. Evidently,
 
     if = a 2 {println n} {}
