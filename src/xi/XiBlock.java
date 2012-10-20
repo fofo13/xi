@@ -18,6 +18,14 @@ public class XiBlock extends DataType {
 		locals.add(v);
 	}
 	
+	public void addVars(VariableCache cache) {
+		locals.addAll(cache);
+	}
+	
+	public VariableCache locals() {
+		return locals;
+	}
+	
 	@Override
 	public boolean isEmpty() {
 		return exp.isEmpty();

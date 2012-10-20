@@ -1,5 +1,7 @@
 package xi;
 
+import java.util.Random;
+
 public enum Operation {
 
 	NOT("!", 1), BITNOT("~", 1), ABS("\\", 1), ADD("+", 2), SUBTRACT("-", 2), MULTIPLY(
@@ -8,10 +10,10 @@ public enum Operation {
 			"&", 2), OR("|", 2), XOR("^", 2), RSHIFT(">>", 2), LSHIFT("<<", 2), POW(
 			"**", 2), TERN("?", 3),
 
-	MAP("@", 2), RANGE(",", 1), SUM("$", 1),
+	MAP("@", 2), RANGE(",", 1), SUM("$", 1), RAND("rnd", 1),
 
 	FOR("for", 3), IF("if", 3),
-	
+
 	PRINT("print", 1), PRINTLN("println", 1);
 
 	private String id;
@@ -30,7 +32,7 @@ public enum Operation {
 		return numArgs;
 	}
 
-	public DataType evaluate(DataType[] args) {
+	public DataType evaluate(DataType[] args, VariableCache globals) {
 		switch (this) {
 		case NOT:
 			return new XiNum(args[0].isEmpty() ? 0 : 1);
@@ -79,25 +81,35 @@ public enum Operation {
 		case POW:
 			return ((XiNum) args[0]).pow((XiNum) args[1]);
 		case TERN:
-			return new XiNum(args[0].isEmpty() ? 0 : 1);
+			return args[0].isEmpty() ? args[2] : args[1];
 		case MAP:
 			return ((XiList) args[0]).map((XiBlock) args[1]);
 		case RANGE:
 			return new XiList(((XiNum) args[0]).val());
 		case SUM:
 			return ((XiList) args[0]).sum();
+		case RAND:
+			if (args[0] instanceof XiList)
+				return ((XiList) args[0]).shuffle();
+			return new XiNum((new Random()).nextInt(((XiNum) args[0]).val()));
 		case FOR:
-			String id = ((XiString)args[0]).val();
-			XiList list = (XiList)args[1];
-			XiBlock body = (XiBlock)args[2];
+			String id = ((XiString) args[0]).val();
+			XiList list = (XiList) args[1];
+			XiBlock body = (XiBlock) args[2];
+			body.addVars(globals);
 			DataType last = null;
-			for (int i = 0 ; i < list.size() ; i++) {
+			for (int i = 0; i < list.size(); i++) {
 				body.updateLocal(new XiVar(id, list.get(i)));
 				last = body.evaluate();
 			}
+			globals.addAll(body.locals());
 			return last;
 		case IF:
-			return ((XiBlock)(args[0].isEmpty() ? args[2] : args[1])).evaluate();
+			XiBlock block = (XiBlock) (args[0].isEmpty() ? args[2] : args[1]);
+			block.addVars(globals);
+			block.evaluate();
+			globals.addAll(block.locals());
+			return null;
 		case PRINT:
 			System.out.print(args[0]);
 			return args[0];
@@ -120,7 +132,7 @@ public enum Operation {
 		for (Operation op : values())
 			if (id.equals(op.id()))
 				return op;
-		throw new IllegalArgumentException("Invalid identifier");
+		throw new IllegalArgumentException("Invalid identifier: " + id);
 	}
 
 }

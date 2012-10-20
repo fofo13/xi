@@ -37,17 +37,17 @@ public class XiEnvironment implements Closeable {
 	}
 
 	public void put(String statement) {
-
 		if (closed)
 			throw new RuntimeException("XiEnvironment is closed.");
 
 		for (String exp : Parser.splitOnSemiColons(statement)) {
-			if (exp.contains(":=")) {
+			if (exp.isEmpty())
+				continue;
+			if (Parser.containsAssignment(exp)) {
 				String[] split = exp.split(":=");
 				globals.add(new XiVar(split[0].trim(), new SyntaxTree(split[1]
 						.trim(), globals).evaluate()));
 			}
-
 			else
 				last = (new SyntaxTree(exp, globals)).evaluate();
 		}

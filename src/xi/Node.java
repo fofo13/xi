@@ -15,7 +15,7 @@ public abstract class Node {
 		right = node;
 	}
 	
-	public static Node create(String exp) {
+	public static Node create(String exp, VariableCache cache) {
 		if (exp.matches("-?\\d+"))
 			return new NumNode(Integer.parseInt(exp));
 		if (exp.startsWith("["))
@@ -25,8 +25,9 @@ public abstract class Node {
 		if (exp.startsWith("\""))
 			return new StringNode(exp);
 		if (Operation.idExists(exp))
-			return new OperationNode(Operation.parse(exp));
-		return new VarNode(exp);
+			return new OperationNode(Operation.parse(exp), cache);
+		//if (exp.matches("[A-Za-z]\\w*+"))
+			return new VarNode(exp);
 		//throw new RuntimeException();
 	}
 	

@@ -62,8 +62,28 @@ public class Parser {
 
 	}
 
+	public static boolean containsAssignment(String exp) {	
+		String[] split = exp.split(":=(?![^\\{]*\\})");
+
+		if (split.length == 1)
+			return false;
+		
+		int a = 0, b = 0;
+		for (int i = 0; i < split.length; i++) {
+			String line = split[i];
+			a += line.replaceAll("\\}", "").length()
+					- line.replaceAll("\\{", "").length();
+			b += line.length() - line.replaceAll("\"", "").length();
+			if (a == 0 && b % 2 == 0) {
+				return true;
+			}
+			a = b = 0;
+		}
+
+		return false;
+	}
+	
 	public static void main(String[] args) {
-		for (String s : splitOnSemiColons("hello{wor;ld}there;hi\";\""))
-				System.out.println(s);
+		System.out.println(containsAssignment("a {:=} {if 1 {a := b} {if 1 {a := b} {a := b}}}"));
 	}
 }

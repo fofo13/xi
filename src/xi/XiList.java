@@ -1,10 +1,10 @@
 package xi;
 
 import java.util.ArrayList;
-//import java.util.Collections;
+import java.util.Collections;
 import java.util.List;
 
-public class XiList extends DataType {
+public class XiList extends DataType{
 	
 	private List<DataType> list;
 	
@@ -43,11 +43,15 @@ public class XiList extends DataType {
 	public int min() {
 		return Collections.min(list);
 	}
-	
-	public void shuffle() {
-		Collections.shuffle(list);
-	}
 	*/
+	
+	public XiList shuffle() {
+		List<DataType> newList = new ArrayList<DataType>(list.size());
+		for (DataType data : list)
+			newList.add(data);
+		Collections.shuffle(newList);
+		return new XiList(newList);
+	}
 	
 	/*
 	 * Map Syntax:
@@ -56,8 +60,10 @@ public class XiList extends DataType {
 	 */
 	public XiList map(XiBlock block) {
 		List<DataType> newList = new ArrayList<DataType>(list.size());
-		for (DataType a : list)
-			newList.add(block.evaluate(a));
+		for (DataType a : list) {
+			block.updateLocal(new XiVar(".", a));
+			newList.add(block.evaluate());
+		}
 		return new XiList(newList);
 	}
 

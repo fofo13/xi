@@ -21,16 +21,7 @@ public class VariableCache implements Set<XiVar> {
 		for (XiVar v : cache)
 			if (v.id().equals(id))
 				return v.val();
-		throw new IllegalArgumentException("Variable identifier not found in cache.");
-	}
-	
-	public VariableCache merge(VariableCache other) {
-		Set<XiVar> merged = new HashSet<XiVar>(size() + other.size());
-		for (XiVar var : other)
-			merged.add(var);
-		for (XiVar var : this)
-			merged.add(var);
-		return new VariableCache(merged);
+		throw new IllegalArgumentException("Variable identifier not found in cache: " + id);
 	}
 	
 	@Override
@@ -40,7 +31,9 @@ public class VariableCache implements Set<XiVar> {
 	
 	@Override
 	public boolean addAll(Collection<? extends XiVar> c) {
-		return cache.addAll(c);
+		for (XiVar v : c)
+			add(v);
+		return true;
 	}
 	
 	@Override
@@ -104,7 +97,10 @@ public class VariableCache implements Set<XiVar> {
 	
 	@Override
 	public String toString() {
-		return cache.toString();
+		String s = "";
+		for (XiVar var : cache)
+			s += ", " + var.id() + " := " + var.val().toString();
+		return "[" + s.substring(2) + "]";
 	}
 	
 }
