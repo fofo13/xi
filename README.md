@@ -21,11 +21,13 @@ Now, if we moved the parenthesis without changing anything else: `3 + (2 * 2)`, 
 
 The following operations are currently supported:
 
-**Unary Operations**    
-- `!`		Not  
-- `~`		Bitwise NOT  
-- `\`		Absolute value  
-- `rnd`		Random number from 0 to argument
+**Unary Operations**  
+Symbol	| 	Meaning  
+------	   	-------  
+- `!`	|	Not  
+- `~`	|	Bitwise NOT  
+- `\`	|	Absolute value  
+- `rnd`	|	Random number from 0 to argument
 
 **Binary Operations**  
 - `+`		Addition   
