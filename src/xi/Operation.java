@@ -19,6 +19,8 @@ public enum Operation {
 	private String id;
 	private int numArgs;
 
+	private static final XiNull xinull = new XiNull();
+	
 	private Operation(String id, int numArgs) {
 		this.id = id;
 		this.numArgs = numArgs;
@@ -97,25 +99,24 @@ public enum Operation {
 			XiList list = (XiList) args[1];
 			XiBlock body = (XiBlock) args[2];
 			body.addVars(globals);
-			DataType last = null;
 			for (int i = 0; i < list.size(); i++) {
 				body.updateLocal(new XiVar(id, list.get(i)));
-				last = body.evaluate();
+				body.evaluate();
 			}
 			globals.addAll(body.locals());
-			return last;
+			return xinull;
 		case IF:
 			XiBlock block = (XiBlock) (args[0].isEmpty() ? args[2] : args[1]);
 			block.addVars(globals);
 			block.evaluate();
 			globals.addAll(block.locals());
-			return null;
+			return xinull;
 		case PRINT:
 			System.out.print(args[0]);
-			return args[0];
+			return xinull;
 		case PRINTLN:
 			System.out.println(args[0]);
-			return args[0];
+			return xinull;
 		default:
 			throw new RuntimeException();
 		}
