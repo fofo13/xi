@@ -54,12 +54,12 @@ The following operations are currently supported:
 - `,`		Returns a list containing numbers from 0 up to but not including its first argument. For example, `, 3` would return `[0 1 2]`.  
 - `$`		Returns the sum of the elements of in a list.
 
-**Control Flow Statements**
-`if`  	Example of usage:
+**Control Flow Statements**  
+- `if`  	Example of usage:
 
     if = + 2 2 4 {println "yes!"} {println "no :("}
     
-`for`  Technically implemented as a for-each loop. Example:
+- `for`  	Technically implemented as a for-each loop. Example:
 
     for "i" [1 2 3 4 5] {println ** i 2}
 
