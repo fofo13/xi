@@ -1,6 +1,5 @@
 package xi.datatypes;
 
-import xi.SyntaxTree;
 import xi.VariableCache;
 import xi.XiEnvironment;
 
@@ -33,10 +32,6 @@ public class XiBlock extends DataType {
 	@Override
 	public boolean isEmpty() {
 		return exp.isEmpty();
-	}
-	
-	public DataType evaluate(DataType data) {
-		return (new SyntaxTree(exp.replaceAll("\\.", data.toString()), locals)).evaluate();
 	}
 	
 	public DataType evaluate() {
