@@ -22,7 +22,9 @@ public enum Operation {
 
 	FOR("for", 3), IF("if", 3),
 
-	PRINT("print", 1), PRINTLN("println", 1);
+	PRINT("print", 1), PRINTLN("println", 1),
+	
+	SLEEP("slp", 1);
 
 	private String id;
 	private int numArgs;
@@ -102,7 +104,7 @@ public enum Operation {
 			if (args[0] instanceof XiList)
 				return ((XiList) args[0]).shuffle();
 			return new XiNum((new Random()).nextInt(((XiNum) args[0]).val()));
-		case FOR:
+		case FOR: {
 			String id = ((XiString) args[0]).val();
 			XiList list = (XiList) args[1];
 			XiBlock body = (XiBlock) args[2];
@@ -113,17 +115,26 @@ public enum Operation {
 			}
 			globals.addAll(body.locals());
 			return xinull;
-		case IF:
-			XiBlock block = (XiBlock) (args[0].isEmpty() ? args[2] : args[1]);
-			block.addVars(globals);
-			block.evaluate();
-			globals.addAll(block.locals());
+		}
+		case IF: {
+			XiBlock body = (XiBlock) (args[0].isEmpty() ? args[2] : args[1]);
+			body.addVars(globals);
+			body.evaluate();
+			globals.addAll(body.locals());
 			return xinull;
+		}
 		case PRINT:
 			System.out.print(args[0]);
 			return xinull;
 		case PRINTLN:
 			System.out.println(args[0]);
+			return xinull;
+		case SLEEP:
+			try {
+				Thread.sleep(((XiNum)args[0]).val());
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			return xinull;
 		default:
 			throw new RuntimeException();

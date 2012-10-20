@@ -7,6 +7,6 @@ public class Main {
 		
 		XiEnvironment env = new XiEnvironment(new File("tests/Test.xi"));
 		env.close();
-		
+
 	}
 }
