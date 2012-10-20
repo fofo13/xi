@@ -60,13 +60,11 @@ The following operations are currently supported:
 
 **Control Flow Statements**
 
-`if`  	
-Example of usage:
+`if`  	Example of usage:
 
     if = + 2 2 4 {println "yes!"} {println "no :("}
     
-`for`  
-Technically implemented as a for-each loop. Example:
+`for`  Technically implemented as a for-each loop. Example:
 
     for "i" [1 2 3 4 5] {println ** i 2}
 
