@@ -3,6 +3,11 @@ package xi;
 import java.util.ArrayList;
 import java.util.List;
 
+import xi.datatypes.DataType;
+import xi.nodes.Node;
+import xi.nodes.OperationNode;
+import xi.nodes.VarNode;
+
 public class SyntaxTree {
 	
 	private Node head;

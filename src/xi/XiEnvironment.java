@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+import xi.datatypes.DataType;
+import xi.datatypes.XiVar;
+
 public class XiEnvironment implements Closeable {
 
 	private VariableCache globals;

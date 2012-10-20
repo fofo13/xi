@@ -17,9 +17,9 @@ public class Parser {
 		int a = 0, b = 0;
 		for (int i = 0; i < split.size(); i++) {
 			String line = split.get(i);
-			a += line.replaceAll("\\}", "").length()
-					- line.replaceAll("\\{", "").length();
-			b += line.length() - line.replaceAll("\"", "").length();
+			a += line.replace("}", "").length()
+					- line.replace("{", "").length();
+			b += line.length() - line.replace("\"", "").length();
 			if (a == 0 && b % 2 == 0) {
 				String newLine = "";
 				for (int j = 0; j < i + 1; j++)
@@ -44,10 +44,10 @@ public class Parser {
 		int a = 0, b = 0, c = 0;
 		for (int i = 0; i < split.size(); i++) {
 			String line = split.get(i);
-			a += line.replaceAll("\\]", "").length()
-					- line.replaceAll("\\]", "").length();
-			a += line.replaceAll("\\}", "").length()
-					- line.replaceAll("\\{", "").length();
+			a += line.replace("]", "").length()
+					- line.replace("]", "").length();
+			a += line.replace("}", "").length()
+					- line.replace("{", "").length();
 			c += line.length() - line.replaceAll("\"", "").length();
 			if (a == 0 && b == 0 && c % 2 == 0) {
 				String newLine = "";
@@ -59,21 +59,20 @@ public class Parser {
 		}
 
 		return tokens.toArray(new String[tokens.size()]);
-
 	}
 
-	public static boolean containsAssignment(String exp) {	
+	public static boolean containsAssignment(String exp) {
 		String[] split = exp.split(":=(?![^\\{]*\\})");
 
 		if (split.length == 1)
 			return false;
-		
+
 		int a = 0, b = 0;
 		for (int i = 0; i < split.length; i++) {
 			String line = split[i];
-			a += line.replaceAll("\\}", "").length()
-					- line.replaceAll("\\{", "").length();
-			b += line.length() - line.replaceAll("\"", "").length();
+			a += line.replace("}", "").length()
+					- line.replace("{", "").length();
+			b += line.length() - line.replace("\"", "").length();
 			if (a == 0 && b % 2 == 0) {
 				return true;
 			}
@@ -82,8 +81,5 @@ public class Parser {
 
 		return false;
 	}
-	
-	public static void main(String[] args) {
-		System.out.println(containsAssignment("a {:=} {if 1 {a := b} {if 1 {a := b} {a := b}}}"));
-	}
+
 }

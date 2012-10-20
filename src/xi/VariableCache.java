@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import xi.datatypes.DataType;
+import xi.datatypes.XiVar;
+
 public class VariableCache implements Set<XiVar> {
 	
 	private Set<XiVar> cache;

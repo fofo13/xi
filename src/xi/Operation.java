@@ -2,6 +2,14 @@ package xi;
 
 import java.util.Random;
 
+import xi.datatypes.DataType;
+import xi.datatypes.XiBlock;
+import xi.datatypes.XiList;
+import xi.datatypes.XiNull;
+import xi.datatypes.XiNum;
+import xi.datatypes.XiString;
+import xi.datatypes.XiVar;
+
 public enum Operation {
 
 	NOT("!", 1), BITNOT("~", 1), ABS("\\", 1), ADD("+", 2), SUBTRACT("-", 2), MULTIPLY(

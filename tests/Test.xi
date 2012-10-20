@@ -1,1 +1,1 @@
-println rnd , 5
+println if 1 {} {}
