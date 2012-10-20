@@ -11,7 +11,8 @@ Prefix notation is used in Xi. For example,
 
     println + 2 2
     
-would print `4`. This way, parenthesis are not required. To illustrate this, consider the infix expression `(3 + 2) * 2`. Converting this to prefix notation, we have
+would print `4`. This way, parenthesis are not required. To illustrate this, consider the infix expression `(3 + 2) * 2`. Converting this to prefix 
+notation, we have
 
     * + 3 2 2
     
@@ -63,6 +64,33 @@ The following operations are currently supported:
 
     for "i" [1 2 3 4 5] {println ** i 2}
 
+Examples
+--------
+
+The best way to understand the syntax is through examples. The following line of code, for instance, prints the prime numbers up to 100:
+
+    for "n" , 100 {a := 0 ; for "i" , n {a := + a = % n + i 1 0} ; if = a 2 {println n} {}}
+
+There is an outer for-loop with a loop control variable named `n`, which will range from 0 to 99 (recall that `, 100` translates to `[0 1 ... 98 99]`):
+
+    for "n" , 100 {...}
+    
+Within the body of this loop, we first define a variable `a` to be 0. Next, we have a second second loop with a loop control variable named `i` that 
+ranges from 0 to `n - 1`. The body of this loop is
+
+    a := + a = % n + i 1 0
+    
+Translating this into pseudo-code infix notation:
+
+	a := a + (n % (i + 1) = 0)
+	
+i.e. Define `a` to be the old value of `a` plus 1 if `i + 1` divides `n` and 0 otherwise. So at the end of the inner for-loop, `a` will hold the number 
+of factors of `n`. Evidently,
+
+    if = a 2 {println n} {}
+    
+prints `n` if the value of `a` is 2 (i.e. `n` is prime).
+
 To Do
 -----
 
@@ -72,4 +100,3 @@ To Do
 	<li>Implement sets and set operations</li>
 	<li>Overload various operations for various other data types, e.g. `+` for lists</li>
 </ul>
-
