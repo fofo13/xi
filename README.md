@@ -72,8 +72,3 @@ To Do
 	<li>Implement sets and set operations</li>
 	<li>Overload various operations for various other data types, e.g. `+` for lists</li>
 </ul>
-
-  First Header  | Second Header
-  ------------- | -------------
-  Content Cell  | Content Cell
-  Content Cell  | Content Cell
