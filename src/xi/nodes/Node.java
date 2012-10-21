@@ -24,7 +24,7 @@ public abstract class Node {
 		if (exp.matches("-?\\d+"))
 			return new NumNode(Integer.parseInt(exp));
 		if (exp.startsWith("["))
-			return new ListNode(XiList.parse(exp));
+			return new ListNode(XiList.parse(exp, cache));
 		if (exp.startsWith("{"))
 			return new BlockNode(exp);
 		if (exp.startsWith("\""))
@@ -33,7 +33,7 @@ public abstract class Node {
 			return new OperationNode(Operation.parse(exp), cache);
 		if (exp.matches("\\D.*+"))
 			return new VarNode(exp);
-		throw new RuntimeException();
+		throw new RuntimeException("Cannot parse expression: " + exp);
 	}
 	
 }

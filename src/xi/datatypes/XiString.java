@@ -1,6 +1,5 @@
 package xi.datatypes;
 
-
 public class XiString extends DataType implements Comparable<XiString> {
 	
 	private String val;
@@ -13,8 +12,15 @@ public class XiString extends DataType implements Comparable<XiString> {
 		return val;
 	}
 	
-	public XiString append(XiString other) {
+	public XiString add(XiString other) {
 		return new XiString(val + other.val());
+	}
+	
+	public XiString mul(XiNum n) {
+		String s = "";
+		for (int i = 0 ; i < n.val() ; i++)
+			s += val;
+		return new XiString(s);
 	}
 	
 	public XiNum indexOf(XiString other) {

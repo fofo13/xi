@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import xi.Parser;
+import xi.VariableCache;
 
 public class XiList extends DataType {
 
@@ -24,14 +25,14 @@ public class XiList extends DataType {
 			list.add(new XiNum(i));
 	}
 
-	public static XiList parse(String exp) {
+	public static XiList parse(String exp, VariableCache cache) {
 		if (exp.equals("[]"))
 			return new XiList();
-
+		
 		String[] split = Parser.tokenize(exp.substring(1, exp.length() - 1));
 		List<DataType> list = new ArrayList<DataType>(split.length);
 		for (String s : split)
-			list.add(DataType.create(s));
+			list.add(DataType.create(s, cache));
 		return new XiList(list);
 	}
 

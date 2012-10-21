@@ -33,29 +33,26 @@ public class Parser {
 	}
 
 	public static String[] tokenize(String exp) {
-		String[] arr = exp.split("\\s+(?![^\\[]*\\])(?![^\\{]*\\})");
+		String[] arr = exp.split("\\s+");
 		List<String> split = new ArrayList<String>(arr.length);
 
-		for (String s : arr)
+		for (String s : exp.split("\\s+"))
 			split.add(s);
 
 		List<String> tokens = new ArrayList<String>();
 
-		int a = 0, b = 0, c = 0;
-		for (int i = 0; i < split.size(); i++) {
-			String line = split.get(i);
-			a += line.replace("]", "").length()
-					- line.replace("]", "").length();
-			a += line.replace("}", "").length()
-					- line.replace("{", "").length();
-			c += line.length() - line.replaceAll("\"", "").length();
-			if (a == 0 && b == 0 && c % 2 == 0) {
-				String newLine = "";
-				for (int j = 0; j < i + 1; j++)
-					newLine += split.remove(0) + " ";
-				tokens.add(newLine.trim());
-				i = -1;
+		while (!split.isEmpty()) {
+			String token = split.remove(0), mod = token.replaceAll(
+					"\"[^\"]+\"", "");
+			while ((token.length() - token.replace("\"", "").length()) % 2 == 1
+					|| mod.replace("]", "").length()
+							- mod.replace("[", "").length() != 0
+					|| mod.replace("}", "").length()
+							- mod.replace("{", "").length() != 0) {
+				token += " " + split.remove(0);
+				mod = token.replaceAll("\"[^\"]+\"", "");
 			}
+			tokens.add(token.trim());
 		}
 
 		return tokens.toArray(new String[tokens.size()]);
@@ -80,6 +77,10 @@ public class Parser {
 		}
 
 		return false;
+	}
+
+	public static void main(String[] args) {
+
 	}
 
 }

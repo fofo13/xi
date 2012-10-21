@@ -27,6 +27,13 @@ public class VariableCache implements Set<XiVar> {
 		throw new IllegalArgumentException("Variable identifier not found in cache: " + id);
 	}
 	
+	public boolean containsId(String id) {
+		for (XiVar v : cache)
+			if (v.id().equals(id))
+				return true;
+		return false;
+	}
+	
 	@Override
 	public int size() {
 		return cache.size();

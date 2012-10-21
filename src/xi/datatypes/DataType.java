@@ -1,24 +1,28 @@
 package xi.datatypes;
 
+import xi.VariableCache;
 
 public abstract class DataType {
 	
 	public abstract boolean isEmpty();
 	
-	public static DataType create(String exp) {
+	public static DataType create(String exp, VariableCache cache) {
 		if (exp.equals("null"))
 			return new XiNull();
 		if (exp.matches("-?\\d+"))
 			return new XiNum(Integer.parseInt(exp));
 		if (exp.startsWith("["))
-			return XiList.parse(exp);
-		if (exp.startsWith("{"))
-			return new XiBlock(exp);
+			return XiList.parse(exp, cache);
+		if (exp.startsWith("{")) {
+			XiBlock block = new XiBlock(exp);  // return new XiBlock(exp)
+			block.addVars(cache);
+			return block.evaluate();
+		}
 		if (exp.startsWith("\""))
 			return new XiString(exp);
-		if (exp.matches("[a-zA-Z]\\w+"))
-			return new XiVar(exp, null);
-		throw new RuntimeException();
+		if (exp.matches("\\D.*+"))
+			return cache.containsId(exp) ? cache.get(exp) : new XiVar(exp, null);
+		throw new RuntimeException("Could not parse: " + exp);
 	}
 	
 }
