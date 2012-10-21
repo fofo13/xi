@@ -104,7 +104,7 @@ To Do
 License
 -------
 
-> Xi - a simple scripting language written in Java
+> Xi - a simple scripting language written in Java  
 Copyright (C) 2012  A. R. Shajii
 
 >This program is free software: you can redistribute it and/or modify
