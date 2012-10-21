@@ -13,6 +13,14 @@ public class XiString extends DataType implements Comparable<XiString> {
 		return val;
 	}
 	
+	public XiString append(XiString other) {
+		return new XiString(val + other.val());
+	}
+	
+	public XiNum indexOf(XiString other) {
+		return new XiNum(val.indexOf(other.val()));
+	}
+	
 	@Override
 	public boolean isEmpty() {
 		return val.isEmpty();
@@ -28,12 +36,16 @@ public class XiString extends DataType implements Comparable<XiString> {
 		return val;
 	}
 	
-	public XiString append(XiString other) {
-		return new XiString(val + other.val());
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof XiString)
+			return val.equals(((XiString)o).val());
+		return false;
 	}
 	
-	public XiNum indexOf(XiString other) {
-		return new XiNum(val.indexOf(other.val()));
+	@Override
+	public int hashCode() {
+		return val.hashCode();
 	}
 	
 }

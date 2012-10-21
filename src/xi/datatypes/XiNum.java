@@ -9,6 +9,10 @@ public class XiNum extends DataType implements Comparable<XiNum> {
 		this.val = val;
 	}
 
+	public XiNum(boolean val) {
+		this.val = val ? 1 : 0;
+	}
+	
 	public int val() {
 		return val;
 	}
@@ -29,9 +33,16 @@ public class XiNum extends DataType implements Comparable<XiNum> {
 	
 	@Override
 	public boolean equals(Object o) {
-		return val == ((XiNum)o).val();
+		if (o instanceof XiNum)
+			return val == ((XiNum)o).val();
+		return false;
 	}
 
+	@Override
+	public int hashCode() {
+		return val;
+	}
+	
 	@Override
 	public String toString() {
 		return "" + val;

@@ -6,6 +6,8 @@ public abstract class DataType {
 	public abstract boolean isEmpty();
 	
 	public static DataType create(String exp) {
+		if (exp.equals("null"))
+			return new XiNull();
 		if (exp.matches("-?\\d+"))
 			return new XiNum(Integer.parseInt(exp));
 		if (exp.startsWith("["))

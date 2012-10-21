@@ -24,7 +24,9 @@ public enum Operation {
 
 	PRINT("print", 1), PRINTLN("println", 1),
 	
-	SLEEP("slp", 1);
+	SLEEP("slp", 1),
+	
+	HASH("hash", 1);
 
 	private String id;
 	private int numArgs;
@@ -69,21 +71,21 @@ public enum Operation {
 		case MODULUS:
 			return ((XiNum) args[0]).mod((XiNum) args[1]);
 		case EQ:
-			return new XiNum(args[0].equals(args[1]) ? 1 : 0);
+			return new XiNum(args[0].equals(args[1]));
 		case NEQ:
-			return new XiNum(args[0].equals(args[1]) ? 0 : 1);
+			return new XiNum(! args[0].equals(args[1]));
 		case GREATER:
 			return new XiNum(
-					((XiNum) args[0]).val() > ((XiNum) args[1]).val() ? 1 : 0);
+					((XiNum) args[0]).val() > ((XiNum) args[1]).val());
 		case LESS:
 			return new XiNum(
-					((XiNum) args[0]).val() < ((XiNum) args[1]).val() ? 1 : 0);
+					((XiNum) args[0]).val() < ((XiNum) args[1]).val());
 		case GREATER_EQ:
 			return new XiNum(
-					((XiNum) args[0]).val() >= ((XiNum) args[1]).val() ? 1 : 0);
+					((XiNum) args[0]).val() >= ((XiNum) args[1]).val());
 		case LESS_EQ:
 			return new XiNum(
-					((XiNum) args[0]).val() <= ((XiNum) args[1]).val() ? 1 : 0);
+					((XiNum) args[0]).val() <= ((XiNum) args[1]).val());
 		case AND:
 			return new XiNum(((XiNum) args[0]).val() & ((XiNum) args[1]).val());
 		case OR:
@@ -149,6 +151,8 @@ public enum Operation {
 				e.printStackTrace();
 			}
 			return xinull;
+		case HASH:
+			return new XiNum(args[0].hashCode());
 		default:
 			throw new RuntimeException();
 		}
