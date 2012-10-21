@@ -18,7 +18,7 @@ public enum Operation {
 			"&", 2), OR("|", 2), XOR("^", 2), RSHIFT(">>", 2), LSHIFT("<<", 2), POW(
 			"**", 2), TERN("?", 3),
 
-	MAP("@", 2), RANGE(",", 1), SUM("$", 1), RAND("rnd", 1),
+	AT("at", 2), MAP("@", 2), RANGE(",", 1), SUM("$", 1), RAND("rnd", 1),
 
 	FOR("for", 3), IF("if", 3), DO("do", 2),
 
@@ -100,6 +100,8 @@ public enum Operation {
 			return ((XiNum) args[0]).pow((XiNum) args[1]);
 		case TERN:
 			return args[0].isEmpty() ? args[2] : args[1];
+		case AT:
+			return ((XiList)args[0]).get((XiNum)args[1]);
 		case MAP:
 			return ((XiList) args[0]).map((XiBlock) args[1]);
 		case RANGE:

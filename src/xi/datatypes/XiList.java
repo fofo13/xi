@@ -43,6 +43,10 @@ public class XiList extends DataType {
 		index %= list.size();
 		return list.get(index < 0 ? list.size() + index : index);
 	}
+	
+	public DataType get(XiNum index) {
+		return get(index.val());
+	}
 
 	/*
 	 * public DataType max() { return Collections.max(list); }
