@@ -95,8 +95,8 @@ To Do
 -----
 
 
-- Implement lists **√**
-- Variables **√**
+- Implement lists **(√)**
+- Variables **(√)**
 - Make a smarter parser
 - Implement sets and set operations
 - Overload various operations for various other data types, e.g. `+` for lists

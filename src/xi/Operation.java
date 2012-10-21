@@ -20,7 +20,7 @@ public enum Operation {
 
 	MAP("@", 2), RANGE(",", 1), SUM("$", 1), RAND("rnd", 1),
 
-	FOR("for", 3), IF("if", 3),
+	FOR("for", 3), IF("if", 3), DO("do", 2),
 
 	PRINT("print", 1), PRINTLN("println", 1),
 	
@@ -124,6 +124,15 @@ public enum Operation {
 			XiBlock body = (XiBlock) (args[0].isEmpty() ? args[2] : args[1]);
 			body.addVars(globals);
 			body.evaluate();
+			globals.addAll(body.locals());
+			return xinull;
+		}
+		case DO: {
+			int n = ((XiNum)args[0]).val();
+			XiBlock body = (XiBlock) args[1];
+			body.addVars(globals);
+			for (int i = 0 ; i < n ; i++)
+				body.evaluate();
 			globals.addAll(body.locals());
 			return xinull;
 		}

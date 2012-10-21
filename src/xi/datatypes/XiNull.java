@@ -1,11 +1,16 @@
 package xi.datatypes;
 
 
-public class XiNull extends DataType {
+public class XiNull extends DataType implements Comparable<XiNull> {
 	
 	@Override
 	public boolean isEmpty() {
 		return true;
+	}
+	
+	@Override
+	public int compareTo(XiNull other) {
+		return 0;
 	}
 	
 	@Override
