@@ -59,6 +59,8 @@ public enum Operation {
 				return ((XiList)args[0]).append(args[1]);
 			return ((XiNum) args[0]).add((XiNum) args[1]);
 		case SUBTRACT:
+			if (args[0] instanceof XiList) 
+				return ((XiList)args[0]).filter((XiBlock)args[1]);
 			return ((XiNum) args[0]).sub((XiNum) args[1]);
 		case MULTIPLY:
 			return ((XiNum) args[0]).mul((XiNum) args[1]);

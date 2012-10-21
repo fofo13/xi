@@ -75,6 +75,16 @@ public class XiList extends DataType{
 		}
 		return new XiList(newList);
 	}
+	
+	public XiList filter(XiBlock block) {
+		List<DataType> newList = new ArrayList<DataType>(list.size());
+		for (DataType a : list) {
+			block.updateLocal(new XiVar(".", a));
+			if (! block.evaluate().isEmpty())
+				newList.add(a);
+		}
+		return new XiList(newList);
+	}
 
 	public XiNum sum() {
 		int n = 0;
