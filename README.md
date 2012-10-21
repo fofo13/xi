@@ -94,9 +94,10 @@ prints `n` if the value of `a` is 2 (i.e. `n` is prime).
 To Do
 -----
 
-<ul>
-	<li>Implement lists <FONT COLOR="#008000">√</FONT></li>
-	<li>Variables <FONT COLOR="#008000">√</FONT></li>
-	<li>Implement sets and set operations</li>
-	<li>Overload various operations for various other data types, e.g. `+` for lists</li>
-</ul>
+
+- Implement lists **√**
+- Variables **√**
+- Make a smarter parser
+- Implement sets and set operations
+- Overload various operations for various other data types, e.g. `+` for lists
+
