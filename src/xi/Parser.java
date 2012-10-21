@@ -36,7 +36,7 @@ public class Parser {
 		String[] arr = exp.split("\\s+");
 		List<String> split = new ArrayList<String>(arr.length);
 
-		for (String s : exp.split("\\s+"))
+		for (String s : arr)
 			split.add(s);
 
 		List<String> tokens = new ArrayList<String>();
