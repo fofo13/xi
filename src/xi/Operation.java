@@ -55,6 +55,8 @@ public enum Operation {
 		case ADD:
 			if (args[0] instanceof XiString || args[1] instanceof XiString)
 				return new XiString(args[0].toString() + args[1].toString());
+			if (args[0] instanceof XiList)
+				return ((XiList)args[0]).append(args[1]);
 			return ((XiNum) args[0]).add((XiNum) args[1]);
 		case SUBTRACT:
 			return ((XiNum) args[0]).sub((XiNum) args[1]);

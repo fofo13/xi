@@ -14,6 +14,10 @@ public class XiList extends DataType{
 		this.list = list;
 	}
 	
+	public XiList() {
+		this(new ArrayList<DataType>());
+	}
+	
 	public XiList(int n) {
 		this(new ArrayList<DataType>(n));
 		for (int i = 0 ; i < n ; i++)
@@ -21,6 +25,9 @@ public class XiList extends DataType{
 	}
 	
 	public static XiList parse(String exp) {
+		if (exp.equals("[]"))
+			return new XiList();
+		
 		String[] split = Parser.tokenize(exp.substring(1, exp.length() - 1));
 		List<DataType> list = new ArrayList<DataType>(split.length);
 		for (String s : split)
@@ -74,6 +81,14 @@ public class XiList extends DataType{
 		for (DataType data : list)
 			n += ((XiNum)data).val();
 		return new XiNum(n);
+	}
+	
+	public XiList append(DataType data) {
+		List<DataType> newList = new ArrayList<DataType>(list.size());
+		for (DataType d : list)
+			newList.add(d);
+		newList.add(data);
+		return new XiList(newList);
 	}
 	
 	public int size() {

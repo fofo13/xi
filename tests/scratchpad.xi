@@ -1,1 +1,3 @@
-if = + 2 2 4 {println "yes!"} {println "no :("}
+a := []
+for "i" , 5 {a := + a i}
+println a
