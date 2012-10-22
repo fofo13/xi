@@ -102,8 +102,11 @@ public enum Operation {
 			return args[0].isEmpty() ? args[2] : args[1];
 		case AT:
 			return ((XiList)args[0]).get((XiNum)args[1]);
-		case MAP:
-			return ((XiList) args[0]).map((XiBlock) args[1]);
+		case MAP: {
+			XiBlock body = (XiBlock) args[1];
+			body.addVars(globals);
+			return ((XiList) args[0]).map(body);
+		}
 		case RANGE:
 			return new XiList(((XiNum) args[0]).val());
 		case SUM:
