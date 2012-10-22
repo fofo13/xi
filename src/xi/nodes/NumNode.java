@@ -14,7 +14,7 @@ public class NumNode extends DataNode {
 	}
 
 	public DataType evaluate() {
-		return (XiNum)data;
+		return data;
 	}
 	
 }

@@ -21,6 +21,8 @@ public abstract class Node {
 	}
 	
 	public static Node create(String exp, VariableCache cache) {
+		if (exp.equals("null"))
+			return new NullNode();
 		if (exp.matches("-?\\d+"))
 			return new NumNode(Integer.parseInt(exp));
 		if (exp.startsWith("["))

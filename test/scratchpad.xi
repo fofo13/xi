@@ -1,4 +1,4 @@
-i := 0
-a := 0
-while {!= i 5} {a := 1 ; i := + i 1}
-println a
+a := 1
+b := 2
+println eval {c := 2 ; + a b}
+println c

@@ -22,6 +22,8 @@ public enum Operation {
 
 	FOR("for", 3), IF("if", 3), DO("do", 2), WHILE("while", 2),
 
+	EVAL("eval", 1),
+	
 	PRINT("print", 1), PRINTLN("println", 1),
 	
 	SLEEP("slp", 1),
@@ -154,6 +156,15 @@ public enum Operation {
 			}
 			globals.addAll(body.locals());
 			return xinull;
+		}
+		case EVAL: {
+			XiBlock block = (XiBlock) args[0];
+			block.addVars(globals);
+			try {
+				return block.evaluate();
+			} finally {
+				globals.addAll(block.locals());
+			}
 		}
 		case PRINT:
 			System.out.print(args[0]);
