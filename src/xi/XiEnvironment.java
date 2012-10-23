@@ -47,11 +47,12 @@ public class XiEnvironment implements Closeable {
 			if (exp.isEmpty())
 				continue;
 			if (Parser.containsAssignment(exp)) {
-				String[] split = exp.split(":=");
+				int n = exp.indexOf(":=");
+				String[] split = new String[] { exp.substring(0, n),
+						exp.substring(n + 2) };
 				globals.add(new XiVar(split[0].trim(), new SyntaxTree(split[1]
 						.trim(), globals).evaluate()));
-			}
-			else
+			} else
 				last = (new SyntaxTree(exp, globals)).evaluate();
 		}
 	}
