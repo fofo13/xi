@@ -89,14 +89,20 @@ public class XiList extends DataType {
 		return new XiNum(n);
 	}
 
-	public XiList append(DataType data) {
-		List<DataType> newList = new ArrayList<DataType>(list.size());
-		for (DataType d : list)
-			newList.add(d);
+	public XiList add(DataType data) {
+		List<DataType> newList = new ArrayList<DataType>(list.size() + 1);
+		newList.addAll(list);
 		newList.add(data);
 		return new XiList(newList);
 	}
 
+	public XiList mul(XiNum n) {
+		List<DataType> newList = new ArrayList<DataType>(list.size() * n.val());
+		for (int i = 0 ; i < n.val() ; i++)
+			newList.addAll(list);
+		return new XiList(newList);
+	}
+	
 	public int size() {
 		return list.size();
 	}

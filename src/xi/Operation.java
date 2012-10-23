@@ -23,18 +23,18 @@ public enum Operation {
 	FOR("for", 3), IF("if", 3), DO("do", 2), WHILE("while", 2),
 
 	EVAL("eval", 1),
-	
+
 	PRINT("print", 1), PRINTLN("println", 1),
-	
+
 	SLEEP("slp", 1),
-	
+
 	HASH("hash", 1);
 
 	private String id;
 	private int numArgs;
 
 	private static final XiNull xinull = new XiNull();
-	
+
 	private Operation(String id, int numArgs) {
 		this.id = id;
 		this.numArgs = numArgs;
@@ -60,13 +60,17 @@ public enum Operation {
 			if (args[0] instanceof XiString || args[1] instanceof XiString)
 				return new XiString(args[0].toString() + args[1].toString());
 			if (args[0] instanceof XiList)
-				return ((XiList)args[0]).append(args[1]);
+				return ((XiList) args[0]).add(args[1]);
 			return ((XiNum) args[0]).add((XiNum) args[1]);
 		case SUBTRACT:
-			if (args[0] instanceof XiList) 
-				return ((XiList)args[0]).filter((XiBlock)args[1]);
+			if (args[0] instanceof XiList)
+				return ((XiList) args[0]).filter((XiBlock) args[1]);
 			return ((XiNum) args[0]).sub((XiNum) args[1]);
 		case MULTIPLY:
+			if (args[0] instanceof XiList)
+				return ((XiList) args[0]).mul((XiNum) args[1]);
+			if (args[0] instanceof XiString)
+				return ((XiString) args[0]).mul((XiNum) args[1]);
 			return ((XiNum) args[0]).mul((XiNum) args[1]);
 		case DIVIDE:
 			return ((XiNum) args[0]).div((XiNum) args[1]);
@@ -75,19 +79,15 @@ public enum Operation {
 		case EQ:
 			return new XiNum(args[0].equals(args[1]));
 		case NEQ:
-			return new XiNum(! args[0].equals(args[1]));
+			return new XiNum(!args[0].equals(args[1]));
 		case GREATER:
-			return new XiNum(
-					((XiNum) args[0]).val() > ((XiNum) args[1]).val());
+			return new XiNum(((XiNum) args[0]).val() > ((XiNum) args[1]).val());
 		case LESS:
-			return new XiNum(
-					((XiNum) args[0]).val() < ((XiNum) args[1]).val());
+			return new XiNum(((XiNum) args[0]).val() < ((XiNum) args[1]).val());
 		case GREATER_EQ:
-			return new XiNum(
-					((XiNum) args[0]).val() >= ((XiNum) args[1]).val());
+			return new XiNum(((XiNum) args[0]).val() >= ((XiNum) args[1]).val());
 		case LESS_EQ:
-			return new XiNum(
-					((XiNum) args[0]).val() <= ((XiNum) args[1]).val());
+			return new XiNum(((XiNum) args[0]).val() <= ((XiNum) args[1]).val());
 		case AND:
 			return new XiNum(((XiNum) args[0]).val() & ((XiNum) args[1]).val());
 		case OR:
@@ -103,7 +103,7 @@ public enum Operation {
 		case TERN:
 			return args[0].isEmpty() ? args[2] : args[1];
 		case AT:
-			return ((XiList)args[0]).get((XiNum)args[1]);
+			return ((XiList) args[0]).get((XiNum) args[1]);
 		case MAP: {
 			XiBlock body = (XiBlock) args[1];
 			body.addVars(globals);
@@ -137,10 +137,10 @@ public enum Operation {
 			return xinull;
 		}
 		case DO: {
-			int n = ((XiNum)args[0]).val();
+			int n = ((XiNum) args[0]).val();
 			XiBlock body = (XiBlock) args[1];
 			body.addVars(globals);
-			for (int i = 0 ; i < n ; i++)
+			for (int i = 0; i < n; i++)
 				body.evaluate();
 			globals.addAll(body.locals());
 			return xinull;
@@ -150,7 +150,7 @@ public enum Operation {
 			XiBlock body = (XiBlock) args[1];
 			cond.addVars(globals);
 			body.addVars(globals);
-			while (! cond.evaluate().isEmpty()) {
+			while (!cond.evaluate().isEmpty()) {
 				body.evaluate();
 				cond.addVars(body.locals());
 			}
@@ -174,7 +174,7 @@ public enum Operation {
 			return xinull;
 		case SLEEP:
 			try {
-				Thread.sleep(((XiNum)args[0]).val());
+				Thread.sleep(((XiNum) args[0]).val());
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

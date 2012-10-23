@@ -1,1 +1,1 @@
-while {1} {println 1}
+println * "hey there " 3
