@@ -26,7 +26,10 @@ public class XiEnvironment implements Closeable {
 		this();
 		Scanner scan = new Scanner(file);
 		while (scan.hasNext()) {
-			put(scan.nextLine());
+			String exp = scan.nextLine();
+			while (Parser.isIncomplete(exp))
+				exp += scan.nextLine();
+			put(exp);
 		}
 		scan.close();
 	}

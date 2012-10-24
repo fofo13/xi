@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Parser {
 
+	// TODO - this can be made better
 	public static String[] splitOnSemiColons(String exp) {
 		String[] arr = exp.split(";");
 		List<String> split = new ArrayList<String>(arr.length);
@@ -42,15 +43,9 @@ public class Parser {
 		List<String> tokens = new ArrayList<String>();
 
 		while (!split.isEmpty()) {
-			String token = split.remove(0), mod = token.replaceAll(
-					"\"[^\"]+\"", "");
-			while ((token.length() - token.replace("\"", "").length()) % 2 == 1
-					|| mod.replace("]", "").length()
-							- mod.replace("[", "").length() != 0
-					|| mod.replace("}", "").length()
-							- mod.replace("{", "").length() != 0) {
+			String token = split.remove(0);
+			while (isIncomplete(token)) {
 				token += " " + split.remove(0);
-				mod = token.replaceAll("\"[^\"]+\"", "");
 			}
 			tokens.add(token.trim());
 		}
@@ -58,6 +53,7 @@ public class Parser {
 		return tokens.toArray(new String[tokens.size()]);
 	}
 
+	// TODO - this is in bad shape now, will fix it later
 	public static boolean containsAssignment(String exp) {
 		String[] split = exp.split(":=(?![^\\{]*\\})");
 
@@ -77,6 +73,15 @@ public class Parser {
 		}
 
 		return false;
+	}
+
+	public static boolean isIncomplete(String exp) {
+		String mod = exp.replaceAll("\"[^\"]+\"", "");
+		return (exp.length() - exp.replace("\"", "").length()) % 2 == 1
+				|| mod.replace("]", "").length()
+						- mod.replace("[", "").length() != 0
+				|| mod.replace("}", "").length()
+						- mod.replace("{", "").length() != 0;
 	}
 
 }
