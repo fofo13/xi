@@ -94,12 +94,11 @@ prints `n` if the value of `a` is 2 (i.e. `n` is prime).
 To Do
 -----
 
-
 - Implement lists **(√)**
 - Variables **(√)**
-- Make a smarter parser
+- Overload various operations for various other data types, e.g. `+` for lists **(√)**
+- Make a smarter parser so as to give the user more flexibility
 - Implement sets and set operations
-- Overload various operations for various other data types, e.g. `+` for lists
 
 License
 -------

@@ -103,6 +103,16 @@ public class XiList extends DataType {
 		return new XiList(newList);
 	}
 	
+	public XiList abs() {
+		List<DataType> newList = new ArrayList<DataType>();
+		for (DataType data : list)
+			if (data instanceof XiList)
+				newList.addAll(((XiList)data).abs().list());
+			else
+				newList.add(data);
+		return new XiList(newList);
+	}
+	
 	public int size() {
 		return list.size();
 	}
@@ -114,7 +124,7 @@ public class XiList extends DataType {
 
 	@Override
 	public String toString() {
-		return list.toString().replaceAll(",", "");
+		return list.toString();
 	}
 
 	@Override

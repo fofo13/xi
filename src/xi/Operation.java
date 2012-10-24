@@ -55,6 +55,8 @@ public enum Operation {
 		case BITNOT:
 			return new XiNum(~((XiNum) args[0]).val());
 		case ABS:
+			if (args[0] instanceof XiList)
+				return ((XiList)args[0]).abs();
 			return new XiNum(Math.abs(((XiNum) args[0]).val()));
 		case ADD:
 			if (args[0] instanceof XiString || args[1] instanceof XiString)
@@ -182,7 +184,7 @@ public enum Operation {
 		case HASH:
 			return new XiNum(args[0].hashCode());
 		default:
-			throw new RuntimeException();
+			throw new RuntimeException("Internal error");
 		}
 	}
 
