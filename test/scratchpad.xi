@@ -1,7 +1,2 @@
-s := "hello
-		world
-			my
-				name
-					is
-						bob"
-println s
+a := {println 1 ; eval a}
+eval a
