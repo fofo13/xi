@@ -17,6 +17,10 @@ public class XiBlock extends DataType {
 		this(exp, new VariableCache());
 	}
 	
+	public String exp() {
+		return exp;
+	}
+	
 	public void updateLocal(XiVar v) {
 		locals.add(v);
 	}

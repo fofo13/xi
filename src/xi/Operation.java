@@ -20,7 +20,7 @@ public enum Operation {
 
 	AT("at", 2), MAP("@", 2), RANGE(",", 1), SUM("$", 1), RAND("rnd", 1),
 
-	FOR("for", 3), IF("if", 3), DO("do", 2), WHILE("while", 2),
+	FOR("for", 3), IF("if", 3), DO("do", 2), WHILE("while", 2), DOWHILE("dowhile", 2),
 
 	EVAL("eval", 1),
 
@@ -51,7 +51,7 @@ public enum Operation {
 	public DataType evaluate(DataType[] args, VariableCache globals) {
 		switch (this) {
 		case NOT:
-			return new XiNum(args[0].isEmpty() ? 0 : 1);
+			return new XiNum(args[0].isEmpty());
 		case BITNOT:
 			return new XiNum(~((XiNum) args[0]).val());
 		case ABS:
@@ -156,6 +156,18 @@ public enum Operation {
 				body.evaluate();
 				cond.addVars(body.locals());
 			}
+			globals.addAll(body.locals());
+			return xinull;
+		}
+		case DOWHILE: {
+			XiBlock cond = (XiBlock) args[1];
+			XiBlock body = (XiBlock) args[0];
+			cond.addVars(globals);
+			body.addVars(globals);
+			do {
+				body.evaluate();
+				cond.addVars(body.locals());
+			} while (!cond.evaluate().isEmpty());
 			globals.addAll(body.locals());
 			return xinull;
 		}

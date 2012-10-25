@@ -14,7 +14,7 @@ public abstract class DataType {
 		if (exp.startsWith("["))
 			return XiList.parse(exp, cache);
 		if (exp.startsWith("{")) {
-			XiBlock block = new XiBlock(exp);  // return new XiBlock(exp)
+			XiBlock block = new XiBlock(exp);
 			block.addVars(cache);
 			return block.evaluate();
 		}
