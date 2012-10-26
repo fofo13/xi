@@ -5,8 +5,8 @@ import xi.datatypes.XiList;
 
 public class ListNode extends DataNode {
 	
-	public ListNode(XiList list) {
-		data = list;
+	public ListNode(XiList data) {
+		this.data = data;
 	}
 	
 	public XiList val() {

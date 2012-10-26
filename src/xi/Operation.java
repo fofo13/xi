@@ -91,11 +91,17 @@ public enum Operation {
 		case LESS_EQ:
 			return new XiNum(((XiNum) args[0]).val() <= ((XiNum) args[1]).val());
 		case AND:
-			return new XiNum(((XiNum) args[0]).val() & ((XiNum) args[1]).val());
+			if (args[0] instanceof XiNum && args[1] instanceof XiNum)
+				return new XiNum(((XiNum) args[0]).val() & ((XiNum) args[1]).val());
+			return new XiNum((! args[0].isEmpty()) && (! args[1].isEmpty()));
 		case OR:
-			return new XiNum(((XiNum) args[0]).val() | ((XiNum) args[1]).val());
+			if (args[0] instanceof XiNum && args[1] instanceof XiNum)
+				return new XiNum(((XiNum) args[0]).val() | ((XiNum) args[1]).val());
+			return new XiNum((! args[0].isEmpty()) || (! args[1].isEmpty()));
 		case XOR:
-			return new XiNum(((XiNum) args[0]).val() ^ ((XiNum) args[1]).val());
+			if (args[0] instanceof XiNum && args[1] instanceof XiNum)
+				return new XiNum(((XiNum) args[0]).val() ^ ((XiNum) args[1]).val());
+			return new XiNum((! args[0].isEmpty()) ^ (! args[1].isEmpty()));
 		case RSHIFT:
 			return new XiNum(((XiNum) args[0]).val() >> ((XiNum) args[1]).val());
 		case LSHIFT:

@@ -1,6 +1,3 @@
-n := 5
-for "i" @ , n {+ . 1} {
-	print * " " - n i
-	print * "*" - * i 2 1
-	println ""
-}
+n := 10
+println @ @ , n {, + . 1} {$ .}
+println \ [[[[1] 2] 3] 4 ["hello" "there" 77]]

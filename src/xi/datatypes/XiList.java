@@ -32,7 +32,7 @@ public class XiList extends DataType {
 		String[] split = Parser.tokenize(exp.substring(1, exp.length() - 1));
 		List<DataType> list = new ArrayList<DataType>(split.length);
 		for (String s : split)
-			list.add(DataType.create(s, cache));
+			list.add(Parser.parseDataType(s, cache));
 		return new XiList(list);
 	}
 

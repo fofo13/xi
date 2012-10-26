@@ -5,14 +5,15 @@ import xi.datatypes.XiNum;
 
 public class NumNode extends DataNode {
 
+	public NumNode(XiNum data) {
+		this.data = data;
+	}
+	
 	public NumNode(int n) {
-		data = new XiNum(n);
+		this(new XiNum(n));
 	}
 
-	public NumNode(String n) {
-		this(Integer.parseInt(n));
-	}
-
+	@Override
 	public DataType evaluate() {
 		return data;
 	}

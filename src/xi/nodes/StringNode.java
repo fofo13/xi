@@ -1,16 +1,21 @@
 package xi.nodes;
 
+import xi.datatypes.DataType;
 import xi.datatypes.XiString;
 
 public class StringNode extends DataNode {
 	
+	public StringNode(XiString data) {
+		this.data = data;
+	}
+	
 	public StringNode(String str) {
-		data = new XiString(str);
+		this(new XiString(str));
 	}
 	
 	@Override
-	public XiString evaluate() {
-		return (XiString)data;
+	public DataType evaluate() {
+		return data;
 	}
 	
 }

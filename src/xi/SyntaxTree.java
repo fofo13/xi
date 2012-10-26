@@ -32,7 +32,7 @@ public class SyntaxTree {
 	private Node parse() {
 		ArrayList<Node> nodes = new ArrayList<Node>(tokens.length);
 		for (String tok : tokens)
-			nodes.add(Node.create(tok, cache));
+			nodes.add(Parser.parseNode(tok, cache));
 		return create(nodes);
 	}
 
