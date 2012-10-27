@@ -6,7 +6,6 @@ import java.util.List;
 import xi.datatypes.DataType;
 import xi.nodes.Node;
 import xi.nodes.OperationNode;
-import xi.nodes.VarNode;
 
 public class SyntaxTree {
 
@@ -45,11 +44,6 @@ public class SyntaxTree {
 				node.addChild(create(nodes));
 
 			return node;
-		}
-
-		if (nodes.get(0) instanceof VarNode) {
-			VarNode node = (VarNode) nodes.get(0);
-			nodes.set(0, new VarNode(node.id(), cache));
 		}
 
 		return nodes.remove(0);

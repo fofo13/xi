@@ -1,6 +1,8 @@
 package xi;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+// import java.util.Collections;
 import java.util.List;
 
 import xi.datatypes.DataType;
@@ -21,40 +23,24 @@ import xi.nodes.VarNode;
 
 public class Parser {
 
-	// TODO - this can be made better
 	public static String[] splitOnSemiColons(String exp) {
-		String[] arr = exp.split(";");
-		List<String> split = new ArrayList<String>(arr.length);
-
-		for (String s : arr)
-			split.add(s);
+		List<String> split = new ArrayList<String>(Arrays.asList(exp.split(";")));
 
 		List<String> tokens = new ArrayList<String>();
 
-		int a = 0, b = 0;
-		for (int i = 0; i < split.size(); i++) {
-			String line = split.get(i);
-			a += line.replace("}", "").length()
-					- line.replace("{", "").length();
-			b += line.length() - line.replace("\"", "").length();
-			if (a == 0 && b % 2 == 0) {
-				String newLine = "";
-				for (int j = 0; j < i + 1; j++)
-					newLine += split.remove(0) + (i == j ? "" : ";");
-				tokens.add(newLine.trim());
-				i = -1;
+		while (!split.isEmpty()) {
+			String token = split.remove(0);
+			while (isIncomplete(token)) {
+				token += ";" + split.remove(0);
 			}
+			tokens.add(token.trim());
 		}
 
 		return tokens.toArray(new String[tokens.size()]);
 	}
 
 	public static String[] tokenize(String exp) {
-		String[] arr = exp.split("\\s+");
-		List<String> split = new ArrayList<String>(arr.length);
-
-		for (String s : arr)
-			split.add(s);
+		List<String> split = new ArrayList<String>(Arrays.asList(exp.split("\\s+")));
 
 		List<String> tokens = new ArrayList<String>();
 
@@ -99,7 +85,7 @@ public class Parser {
 				|| mod.replace("}", "").length()
 						- mod.replace("{", "").length() != 0;
 	}
-	
+
 	public static DataType parseDataType(String exp, VariableCache cache) {
 		if (exp.equals("null"))
 			return new XiNull();
@@ -115,10 +101,11 @@ public class Parser {
 		if (exp.startsWith("\""))
 			return new XiString(exp);
 		if (exp.matches("\\D.*+"))
-			return cache.containsId(exp) ? cache.get(exp) : new XiVar(exp, null);
+			return cache.containsId(exp) ? cache.get(exp)
+					: new XiVar(exp, null);
 		throw new RuntimeException("Could not parse: " + exp);
 	}
-	
+
 	public static Node parseNode(String exp, VariableCache cache) {
 		if (exp.equals("null"))
 			return new NullNode();
@@ -133,7 +120,7 @@ public class Parser {
 		if (Operation.idExists(exp))
 			return new OperationNode(Operation.parse(exp), cache);
 		if (exp.matches("\\D.*+"))
-			return new VarNode(exp);
+			return new VarNode(exp, cache);
 		throw new RuntimeException("Cannot parse expression: " + exp);
 	}
 

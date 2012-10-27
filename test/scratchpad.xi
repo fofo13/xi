@@ -1,3 +1,3 @@
-n := 10
-println @ @ , n {, + . 1} {$ .}
-println \ [[[[1] 2] 3] 4 ["hello" "there" 77]]
+for "n" , 100 {
+a := 0
+for "i" , n {a := + a = % n + i 1 0} ; if = a 2 {println n} {}}
