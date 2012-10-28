@@ -117,11 +117,28 @@ public class XiList extends DataType {
 		return list.size();
 	}
 
+	public XiList lshift(XiNum n) {
+		List<DataType> newList = new ArrayList<DataType>(list);
+		Collections.rotate(newList, -n.val());
+		return new XiList(newList);
+	}
+	
+	public XiList rshift(XiNum n) {
+		List<DataType> newList = new ArrayList<DataType>(list);
+		Collections.rotate(newList, n.val());
+		return new XiList(newList);
+	}
+	
 	@Override
 	public boolean isEmpty() {
 		return list.isEmpty();
 	}
 
+	@Override
+	public int length() {
+		return list.size();
+	}
+	
 	@Override
 	public String toString() {
 		return list.toString();

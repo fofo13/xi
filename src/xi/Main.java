@@ -7,7 +7,7 @@ public class Main {
 
 		XiEnvironment env = new XiEnvironment(new File("test/scratchpad.xi"));
 		env.close();
-		
+
 	}
 
 }

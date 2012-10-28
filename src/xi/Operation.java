@@ -28,7 +28,7 @@ public enum Operation {
 
 	SLEEP("slp", 1),
 
-	HASH("hash", 1);
+	HASH("hash", 1), LEN("len", 1);
 
 	private String id;
 	private int numArgs;
@@ -103,8 +103,12 @@ public enum Operation {
 				return new XiNum(((XiNum) args[0]).val() ^ ((XiNum) args[1]).val());
 			return new XiNum((! args[0].isEmpty()) ^ (! args[1].isEmpty()));
 		case RSHIFT:
+			if (args[0] instanceof XiList)
+				return ((XiList)args[0]).rshift((XiNum)args[1]);
 			return new XiNum(((XiNum) args[0]).val() >> ((XiNum) args[1]).val());
 		case LSHIFT:
+			if (args[0] instanceof XiList)
+				return ((XiList)args[0]).lshift((XiNum)args[1]);
 			return new XiNum(((XiNum) args[0]).val() << ((XiNum) args[1]).val());
 		case POW:
 			return ((XiNum) args[0]).pow((XiNum) args[1]);
@@ -201,6 +205,8 @@ public enum Operation {
 			return xinull;
 		case HASH:
 			return new XiNum(args[0].hashCode());
+		case LEN:
+			return new XiNum(args[0].length());
 		default:
 			throw new RuntimeException("Internal error");
 		}

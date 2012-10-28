@@ -19,6 +19,11 @@ public class XiNull extends DataType implements Comparable<XiNull> {
 	}
 	
 	@Override
+	public int length() {
+		return 0;
+	}
+	
+	@Override
 	public boolean equals(Object o) {
 		return o instanceof XiNull;
 	}
