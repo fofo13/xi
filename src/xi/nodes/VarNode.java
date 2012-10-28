@@ -3,7 +3,7 @@ package xi.nodes;
 import xi.VariableCache;
 import xi.datatypes.DataType;
 
-public class VarNode extends Node {
+public class VarNode implements Node {
 	
 	private VariableCache cache;
 	private String id; 
@@ -23,7 +23,7 @@ public class VarNode extends Node {
 	
 	@Override
 	public void addChild(Node node) {
-		
+		throw new UnsupportedOperationException();
 	}
 	
 	@Override

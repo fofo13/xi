@@ -8,7 +8,7 @@ import xi.Operation;
 import xi.VariableCache;
 import xi.datatypes.DataType;
 
-public class OperationNode extends Node {
+public class OperationNode implements Node {
 	
 	private Operation op;
 	private List<Node> children;

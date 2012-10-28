@@ -2,7 +2,7 @@ package xi.nodes;
 
 import xi.datatypes.DataType;
 
-public class DataNode<T extends DataType> extends Node {
+public class DataNode<T extends DataType> implements Node {
 	
 	private T data;
 	
@@ -12,7 +12,7 @@ public class DataNode<T extends DataType> extends Node {
 	
 	@Override
 	public void addChild(Node node) {
-		
+		throw new UnsupportedOperationException();
 	}
 	
 	@Override

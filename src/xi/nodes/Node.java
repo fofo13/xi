@@ -2,10 +2,10 @@ package xi.nodes;
 
 import xi.datatypes.DataType;
 
-public abstract class Node {
+public interface Node {
 
-	public abstract DataType evaluate();
-	public abstract int numChildren();
-	public abstract void addChild(Node node);
+	public DataType evaluate();
+	public int numChildren();
+	public void addChild(Node node);
 	
 }
