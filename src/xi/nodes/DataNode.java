@@ -4,7 +4,7 @@ import xi.datatypes.DataType;
 
 public class DataNode<T extends DataType> extends Node {
 	
-	protected T data;
+	private T data;
 	
 	public DataNode(T data) {
 		this.data = data;

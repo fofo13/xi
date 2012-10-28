@@ -36,6 +36,7 @@ public class OperationNode extends Node {
 		children.add(node);
 	}
 	
+	@Override
 	public DataType evaluate() {
 		DataType[] arr = new DataType[children.size()];
 		for (int i = 0 ; i < arr.length ; i++)
