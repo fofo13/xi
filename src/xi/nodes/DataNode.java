@@ -11,6 +11,16 @@ public class DataNode<T extends DataType> extends Node {
 	}
 	
 	@Override
+	public void addChild(Node node) {
+		
+	}
+	
+	@Override
+	public int numChildren() {
+		return 0;
+	}
+	
+	@Override
 	public DataType evaluate() {
 		return data;
 	}

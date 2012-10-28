@@ -5,7 +5,7 @@ import java.util.List;
 
 import xi.datatypes.DataType;
 import xi.nodes.Node;
-import xi.nodes.OperationNode;
+//import xi.nodes.OperationNode;
 
 public class SyntaxTree {
 
@@ -36,17 +36,12 @@ public class SyntaxTree {
 	}
 
 	private Node create(List<Node> nodes) {
-		if (nodes.get(0) instanceof OperationNode) {
-			OperationNode node = (OperationNode) nodes.remove(0);
-			Operation op = node.op();
+		Node node = nodes.remove(0);
+		
+		for (int i = 0; i < node.numChildren(); i++)
+			node.addChild(create(nodes));
 
-			for (int i = 0; i < op.numArgs(); i++)
-				node.addChild(create(nodes));
-
-			return node;
-		}
-
-		return nodes.remove(0);
+		return node;
 	}
 
 }

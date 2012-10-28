@@ -28,12 +28,16 @@ public class OperationNode extends Node {
 		this(new ArrayList<Node>(), op, cache);
 	}
 	
-	public Operation op() { return op; }
-	
 	public List<Node> children() { return children; }
 	
+	@Override
 	public void addChild(Node node) {
 		children.add(node);
+	}
+	
+	@Override
+	public int numChildren() {
+		return op.numArgs();
 	}
 	
 	@Override
