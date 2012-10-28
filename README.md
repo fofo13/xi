@@ -13,7 +13,7 @@ To Do
 - Overload various operations for various other data types, e.g. `+` for lists **(√)**
 - Make a smarter parser so as to give the user more flexibility
 - Implement sets and set operations
-- Implement functions
+- Allow for the easy creation of custom functions
 
 License
 -------
