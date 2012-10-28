@@ -105,10 +105,14 @@ public enum Operation {
 		case RSHIFT:
 			if (args[0] instanceof XiList)
 				return ((XiList)args[0]).rshift((XiNum)args[1]);
+			if (args[0] instanceof XiString)
+				return ((XiString)args[0]).rshift((XiNum)args[1]);
 			return new XiNum(((XiNum) args[0]).val() >> ((XiNum) args[1]).val());
 		case LSHIFT:
 			if (args[0] instanceof XiList)
 				return ((XiList)args[0]).lshift((XiNum)args[1]);
+			if (args[0] instanceof XiString)
+				return ((XiString)args[0]).lshift((XiNum)args[1]);
 			return new XiNum(((XiNum) args[0]).val() << ((XiNum) args[1]).val());
 		case POW:
 			return ((XiNum) args[0]).pow((XiNum) args[1]);

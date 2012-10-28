@@ -1,2 +1,2 @@
-println , 4
-println << , 4 5
+println "abcdefg"
+println << "abcdefg" 1
