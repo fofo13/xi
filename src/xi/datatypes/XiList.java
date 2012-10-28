@@ -129,6 +129,18 @@ public class XiList extends DataType {
 		return new XiList(newList);
 	}
 	
+	public XiList zip() {
+		int n = ((XiList)list.get(0)).length();
+		List<DataType> newList = new ArrayList<DataType>(n);
+		for (int i = 0 ; i < n ; i++) {
+			List<DataType> sub = new ArrayList<DataType>(length());
+			for (int j = 0 ; j < length() ; j++)
+				sub.add(((XiList)list.get(j)).get(i));
+			newList.add(new XiList(sub));
+		}
+		return new XiList(newList);
+	}
+	
 	@Override
 	public boolean isEmpty() {
 		return list.isEmpty();
