@@ -38,6 +38,11 @@ public class XiBlock extends DataType {
 		return exp.isEmpty();
 	}
 	
+	@Override
+	public String toString() {
+		return "{" + exp + "}";
+	}
+	
 	public DataType evaluate() {
 		XiEnvironment env = null;
 		try {

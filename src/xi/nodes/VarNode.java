@@ -3,7 +3,7 @@ package xi.nodes;
 import xi.VariableCache;
 import xi.datatypes.DataType;
 
-public class VarNode extends DataNode {
+public class VarNode extends Node {
 	
 	private VariableCache cache;
 	private String id; 

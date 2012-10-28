@@ -2,23 +2,16 @@ package xi;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-// import java.util.Collections;
 import java.util.List;
 
-import xi.datatypes.DataType;
 import xi.datatypes.XiBlock;
 import xi.datatypes.XiList;
 import xi.datatypes.XiNull;
 import xi.datatypes.XiNum;
 import xi.datatypes.XiString;
-import xi.datatypes.XiVar;
-import xi.nodes.BlockNode;
-import xi.nodes.ListNode;
+import xi.nodes.DataNode;
 import xi.nodes.Node;
-import xi.nodes.NullNode;
-import xi.nodes.NumNode;
 import xi.nodes.OperationNode;
-import xi.nodes.StringNode;
 import xi.nodes.VarNode;
 
 public class Parser {
@@ -86,37 +79,20 @@ public class Parser {
 						- mod.replace("{", "").length() != 0;
 	}
 
-	public static DataType parseDataType(String exp, VariableCache cache) {
+	public static Node parseNode(String exp, VariableCache cache) {
 		if (exp.equals("null"))
-			return new XiNull();
+			return new DataNode<XiNull>(new XiNull());
 		if (exp.matches("-?\\d+"))
-			return new XiNum(Integer.parseInt(exp));
+			return new DataNode<XiNum>(new XiNum(Integer.parseInt(exp)));
 		if (exp.startsWith("["))
-			return XiList.parse(exp, cache);
+			return new DataNode<XiList>(XiList.parse(exp, cache));
 		if (exp.startsWith("{")) {
 			XiBlock block = new XiBlock(exp);
 			block.addVars(cache);
-			return block.evaluate();
+			return new DataNode<XiBlock>(block);
 		}
 		if (exp.startsWith("\""))
-			return new XiString(exp);
-		if (exp.matches("\\D.*+"))
-			return cache.containsId(exp) ? cache.get(exp)
-					: new XiVar(exp, null);
-		throw new RuntimeException("Could not parse: " + exp);
-	}
-
-	public static Node parseNode(String exp, VariableCache cache) {
-		if (exp.equals("null"))
-			return new NullNode();
-		if (exp.matches("-?\\d+"))
-			return new NumNode(Integer.parseInt(exp));
-		if (exp.startsWith("["))
-			return new ListNode(XiList.parse(exp, cache));
-		if (exp.startsWith("{"))
-			return new BlockNode(exp);
-		if (exp.startsWith("\""))
-			return new StringNode(exp);
+			return new DataNode<XiString>(new XiString(exp));
 		if (Operation.idExists(exp))
 			return new OperationNode(Operation.parse(exp), cache);
 		if (exp.matches("\\D.*+"))
