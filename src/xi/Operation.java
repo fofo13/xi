@@ -66,7 +66,7 @@ public enum Operation {
 			return ((XiNum) args[0]).add((XiNum) args[1]);
 		case SUBTRACT:
 			if (args[0] instanceof XiList)
-				return ((XiList) args[0]).filter((XiBlock) args[1]);
+				return ((XiList) args[0]).remove((XiNum)args[1]);
 			return ((XiNum) args[0]).sub((XiNum) args[1]);
 		case MULTIPLY:
 			if (args[0] instanceof XiList)
@@ -75,6 +75,8 @@ public enum Operation {
 				return ((XiString) args[0]).mul((XiNum) args[1]);
 			return ((XiNum) args[0]).mul((XiNum) args[1]);
 		case DIVIDE:
+			if (args[0] instanceof XiList)
+				return ((XiList) args[0]).filter((XiBlock) args[1]);
 			return ((XiNum) args[0]).div((XiNum) args[1]);
 		case MODULUS:
 			return ((XiNum) args[0]).mod((XiNum) args[1]);

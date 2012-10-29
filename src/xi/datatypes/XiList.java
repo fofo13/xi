@@ -96,6 +96,13 @@ public class XiList extends DataType {
 		return new XiList(newList);
 	}
 
+	public XiList remove(XiNum n) {
+		int index = n.val();
+		List<DataType> newList = new ArrayList<DataType>(list);
+		newList.remove(index < 0 ? size() + index : index);
+		return new XiList(newList);
+	}
+	
 	public XiList mul(XiNum n) {
 		List<DataType> newList = new ArrayList<DataType>(list.size() * n.val());
 		for (int i = 0 ; i < n.val() ; i++)
