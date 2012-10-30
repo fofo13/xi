@@ -29,7 +29,7 @@ public class XiList extends DataType {
 		if (exp.equals("[]"))
 			return new XiList();
 		
-		String[] split = Parser.tokenize(exp.substring(1, exp.length() - 1));
+		String[] split = Parser.tokenize(exp.substring(1, exp.length() - 1).trim());
 		List<DataType> list = new ArrayList<DataType>(split.length);
 		for (String s : split)
 			list.add(Parser.parseNode(s, cache).evaluate());
