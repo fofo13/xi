@@ -18,9 +18,11 @@ public enum Operation {
 			"&", 2), OR("|", 2), XOR("^", 2), RSHIFT(">>", 2), LSHIFT("<<", 2), POW(
 			"**", 2), TERN("?", 3),
 
-	AT("at", 2), MAP("@", 2), RANGE(",", 1), SUM("$", 1), RAND("rnd", 1), ZIP("zip", 1),
+	AT("at", 2), MAP("@", 2), RANGE(",", 1), SUM("$", 1), RAND("rnd", 1), ZIP(
+			"zip", 1),
 
-	FOR("for", 3), IF("if", 3), DO("do", 2), WHILE("while", 2), DOWHILE("dowhile", 2),
+	FOR("for", 3), IF("if", 3), DO("do", 2), WHILE("while", 2), DOWHILE(
+			"dowhile", 2),
 
 	EVAL("eval", 1),
 
@@ -56,7 +58,7 @@ public enum Operation {
 			return new XiNum(~((XiNum) args[0]).val());
 		case ABS:
 			if (args[0] instanceof XiList)
-				return ((XiList)args[0]).abs();
+				return ((XiList) args[0]).abs();
 			return new XiNum(Math.abs(((XiNum) args[0]).val()));
 		case ADD:
 			if (args[0] instanceof XiString || args[1] instanceof XiString)
@@ -66,7 +68,7 @@ public enum Operation {
 			return ((XiNum) args[0]).add((XiNum) args[1]);
 		case SUBTRACT:
 			if (args[0] instanceof XiList)
-				return ((XiList) args[0]).remove((XiNum)args[1]);
+				return ((XiList) args[0]).remove((XiNum) args[1]);
 			return ((XiNum) args[0]).sub((XiNum) args[1]);
 		case MULTIPLY:
 			if (args[0] instanceof XiList)
@@ -94,27 +96,30 @@ public enum Operation {
 			return new XiNum(((XiNum) args[0]).val() <= ((XiNum) args[1]).val());
 		case AND:
 			if (args[0] instanceof XiNum && args[1] instanceof XiNum)
-				return new XiNum(((XiNum) args[0]).val() & ((XiNum) args[1]).val());
-			return new XiNum((! args[0].isEmpty()) && (! args[1].isEmpty()));
+				return new XiNum(((XiNum) args[0]).val()
+						& ((XiNum) args[1]).val());
+			return new XiNum((!args[0].isEmpty()) && (!args[1].isEmpty()));
 		case OR:
 			if (args[0] instanceof XiNum && args[1] instanceof XiNum)
-				return new XiNum(((XiNum) args[0]).val() | ((XiNum) args[1]).val());
-			return new XiNum((! args[0].isEmpty()) || (! args[1].isEmpty()));
+				return new XiNum(((XiNum) args[0]).val()
+						| ((XiNum) args[1]).val());
+			return new XiNum((!args[0].isEmpty()) || (!args[1].isEmpty()));
 		case XOR:
 			if (args[0] instanceof XiNum && args[1] instanceof XiNum)
-				return new XiNum(((XiNum) args[0]).val() ^ ((XiNum) args[1]).val());
-			return new XiNum((! args[0].isEmpty()) ^ (! args[1].isEmpty()));
+				return new XiNum(((XiNum) args[0]).val()
+						^ ((XiNum) args[1]).val());
+			return new XiNum((!args[0].isEmpty()) ^ (!args[1].isEmpty()));
 		case RSHIFT:
 			if (args[0] instanceof XiList)
-				return ((XiList)args[0]).rshift((XiNum)args[1]);
+				return ((XiList) args[0]).rshift((XiNum) args[1]);
 			if (args[0] instanceof XiString)
-				return ((XiString)args[0]).rshift((XiNum)args[1]);
+				return ((XiString) args[0]).rshift((XiNum) args[1]);
 			return new XiNum(((XiNum) args[0]).val() >> ((XiNum) args[1]).val());
 		case LSHIFT:
 			if (args[0] instanceof XiList)
-				return ((XiList)args[0]).lshift((XiNum)args[1]);
+				return ((XiList) args[0]).lshift((XiNum) args[1]);
 			if (args[0] instanceof XiString)
-				return ((XiString)args[0]).lshift((XiNum)args[1]);
+				return ((XiString) args[0]).lshift((XiNum) args[1]);
 			return new XiNum(((XiNum) args[0]).val() << ((XiNum) args[1]).val());
 		case POW:
 			return ((XiNum) args[0]).pow((XiNum) args[1]);
@@ -136,7 +141,7 @@ public enum Operation {
 				return ((XiList) args[0]).shuffle();
 			return new XiNum((new Random()).nextInt(((XiNum) args[0]).val()));
 		case ZIP:
-			return ((XiList)args[0]).zip();
+			return ((XiList) args[0]).zip();
 		case FOR: {
 			String id = ((XiString) args[0]).val();
 			XiList list = (XiList) args[1];

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import xi.Operation;
 import xi.Parser;
 import xi.VariableCache;
 
@@ -82,11 +83,13 @@ public class XiList extends DataType {
 		return new XiList(newList);
 	}
 
-	public XiNum sum() {
-		int n = 0;
-		for (DataType data : list)
-			n += ((XiNum) data).val();
-		return new XiNum(n);
+	public DataType sum() {
+		if (isEmpty())
+			return new XiNum(0);
+		DataType d = list.get(0);
+		for (int i = 1 ; i < list.size() ; i++)
+			d = Operation.ADD.evaluate(new DataType[]{d, list.get(i)}, null);
+		return d;
 	}
 
 	public XiList add(DataType data) {
