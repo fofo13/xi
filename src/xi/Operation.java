@@ -55,6 +55,17 @@ public enum Operation {
 		case NOT:
 			return new XiNum(args[0].isEmpty());
 		case BITNOT:
+			if (args[0] instanceof XiList)
+				return ((XiList) args[0]).zip();
+			if (args[0] instanceof XiBlock) {
+				XiBlock block = (XiBlock) args[0];
+				block.addVars(globals);
+				try {
+					return block.evaluate();
+				} finally {
+					globals.addAll(block.locals());
+				}
+			}
 			return new XiNum(~((XiNum) args[0]).val());
 		case ABS:
 			if (args[0] instanceof XiList)
