@@ -1,6 +1,6 @@
 package xi.datatypes;
 
-public class XiNum extends DataType implements Comparable<XiNum> {
+public class XiNum extends DataType {
 
 	private int val;
 
@@ -26,8 +26,10 @@ public class XiNum extends DataType implements Comparable<XiNum> {
 	}
 
 	@Override
-	public int compareTo(XiNum other) {
-		return (new Integer(val)).compareTo(other.val());
+	public int compareTo(DataType other) {
+		if (other instanceof XiNum)
+			return (new Integer(val)).compareTo(((XiNum)other).val());
+		return 0;
 	}
 
 	@Override

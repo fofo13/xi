@@ -18,8 +18,8 @@ public enum Operation {
 			"&", 2), OR("|", 2), XOR("^", 2), RSHIFT(">>", 2), LSHIFT("<<", 2), POW(
 			"**", 2), TERN("?", 3),
 
-	AT("at", 2), MAP("@", 2), RANGE(",", 1), SUM("$", 1), RAND("rnd", 1), ZIP(
-			"zip", 1),
+	AT("at", 2), MAP("@", 2), RANGE(",", 1), SUM("$", 1), RAND("rnd", 1), SORT(
+			"sort", 1), ZIP("zip", 1),
 
 	FOR("for", 3), IF("if", 3), DO("do", 2), WHILE("while", 2), DOWHILE(
 			"dowhile", 2),
@@ -151,6 +151,8 @@ public enum Operation {
 			if (args[0] instanceof XiList)
 				return ((XiList) args[0]).shuffle();
 			return new XiNum((new Random()).nextInt(((XiNum) args[0]).val()));
+		case SORT:
+			return ((XiList)args[0]).sort();
 		case ZIP:
 			return ((XiList) args[0]).zip();
 		case FOR: {

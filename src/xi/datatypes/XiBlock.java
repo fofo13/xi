@@ -34,6 +34,15 @@ public class XiBlock extends DataType {
 	}
 	
 	@Override
+	public int compareTo(DataType other) {
+		if (other instanceof XiBlock)
+			return 0;
+		if (other instanceof XiNull)
+			return 1;
+		return -1;
+	}
+	
+	@Override
 	public boolean isEmpty() {
 		return exp.isEmpty();
 	}

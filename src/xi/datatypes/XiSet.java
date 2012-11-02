@@ -26,4 +26,9 @@ public class XiSet extends DataType {
 	
 	// TODO
 	
+	@Override
+	public int compareTo(DataType other) {
+		return 0;
+	}
+	
 }

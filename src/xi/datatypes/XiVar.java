@@ -29,6 +29,11 @@ public class XiVar extends DataType {
 	}
 	
 	@Override
+	public int compareTo(DataType other) {
+		return 0;
+	}
+	
+	@Override
 	public String toString() {
 		return id;
 	}

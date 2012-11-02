@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class XiString extends DataType implements Comparable<XiString> {
+public class XiString extends DataType {
 
 	private String val;
 
@@ -59,8 +59,10 @@ public class XiString extends DataType implements Comparable<XiString> {
 	}
 
 	@Override
-	public int compareTo(XiString other) {
-		return val.compareTo(other.val());
+	public int compareTo(DataType other) {
+		if (other instanceof XiString)
+			return val.compareTo(((XiString)other).val());
+		return 0;
 	}
 
 	@Override

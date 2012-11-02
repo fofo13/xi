@@ -50,12 +50,6 @@ public class XiList extends DataType {
 		return get(index.val());
 	}
 
-	/*
-	 * public DataType max() { return Collections.max(list); }
-	 * 
-	 * public int min() { return Collections.min(list); }
-	 */
-
 	public XiList shuffle() {
 		List<DataType> newList = new ArrayList<DataType>(list.size());
 		for (DataType data : list)
@@ -123,6 +117,12 @@ public class XiList extends DataType {
 		return new XiList(newList);
 	}
 	
+	public XiList sort() {
+		List<DataType> newList = new ArrayList<DataType>(list);
+		Collections.sort(newList);
+		return new XiList(newList);
+	}
+	
 	public int size() {
 		return list.size();
 	}
@@ -149,6 +149,12 @@ public class XiList extends DataType {
 			newList.add(new XiList(sub));
 		}
 		return new XiList(newList);
+	}
+	
+	@Override
+	public int compareTo(DataType other) {
+		// TODO
+		return 0;
 	}
 	
 	@Override
