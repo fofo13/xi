@@ -1,7 +1,7 @@
 package xi.datatypes;
 
-import xi.VariableCache;
-import xi.XiEnvironment;
+import xi.core.VariableCache;
+import xi.core.XiEnvironment;
 
 public class XiBlock extends DataType {
 	

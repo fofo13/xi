@@ -1,4 +1,4 @@
-package xi;
+package xi.core;
 
 import java.io.Closeable;
 import java.io.File;

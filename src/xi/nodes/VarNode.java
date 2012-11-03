@@ -1,6 +1,6 @@
 package xi.nodes;
 
-import xi.VariableCache;
+import xi.core.VariableCache;
 import xi.datatypes.DataType;
 
 public class VarNode implements Node {

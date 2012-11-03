@@ -1,4 +1,4 @@
-package xi;
+package xi.core;
 
 import java.util.Random;
 

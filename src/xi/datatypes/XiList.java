@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import xi.Operation;
-import xi.Parser;
-import xi.VariableCache;
+import xi.core.Operation;
+import xi.core.Parser;
+import xi.core.VariableCache;
 
 public class XiList extends DataType {
 
