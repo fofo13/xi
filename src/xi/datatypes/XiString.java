@@ -53,6 +53,13 @@ public class XiString extends DataType {
 		return new XiString(new String(chars));
 	}
 
+	public XiList toList() {
+		List<DataType> list = new ArrayList<DataType>(val.length());
+		for (char c : val.toCharArray())
+			list.add(new XiString("" + c));
+		return new XiList(list);
+	}
+	
 	@Override
 	public boolean isEmpty() {
 		return val.isEmpty();

@@ -157,7 +157,8 @@ public enum Operation {
 			return ((XiList) args[0]).zip();
 		case FOR: {
 			String id = ((XiString) args[0]).val();
-			XiList list = (XiList) args[1];
+			XiList list = args[1] instanceof XiString ? ((XiString) args[1])
+					.toList() : (XiList) args[1];
 			XiBlock body = (XiBlock) args[2];
 			body.addVars(globals);
 			for (int i = 0; i < list.size(); i++) {
