@@ -152,7 +152,7 @@ public enum Operation {
 				return ((XiList) args[0]).shuffle();
 			return new XiNum((new Random()).nextInt(((XiNum) args[0]).val()));
 		case SORT:
-			return ((XiList)args[0]).sort();
+			return ((XiList) args[0]).sort();
 		case ZIP:
 			return ((XiList) args[0]).zip();
 		case FOR: {

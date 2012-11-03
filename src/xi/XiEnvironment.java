@@ -16,6 +16,8 @@ public class XiEnvironment implements Closeable {
 
 	public XiEnvironment(VariableCache cache) {
 		globals = cache;
+		put("false := 0");
+		put("true := 1");
 	}
 
 	public XiEnvironment() {
@@ -35,10 +37,6 @@ public class XiEnvironment implements Closeable {
 			put(exp);
 		}
 		scan.close();
-	}
-
-	public XiEnvironment(String file) throws FileNotFoundException {
-		this(new File(file));
 	}
 
 	public VariableCache globals() {
