@@ -153,7 +153,8 @@ public class XiList extends DataType {
 	
 	@Override
 	public int compareTo(DataType other) {
-		// TODO
+		if (other instanceof XiList)
+			return (new Integer(list.size())).compareTo(((XiList)other).size());
 		return 0;
 	}
 	
