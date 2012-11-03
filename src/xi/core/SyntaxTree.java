@@ -5,7 +5,6 @@ import java.util.List;
 
 import xi.datatypes.DataType;
 import xi.nodes.Node;
-//import xi.nodes.OperationNode;
 
 public class SyntaxTree {
 
