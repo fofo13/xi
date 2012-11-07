@@ -81,7 +81,7 @@ public class Parser {
 
 	public static Node parseNode(String exp, VariableCache cache) {
 		if (exp.equals("null"))
-			return new DataNode<XiNull>(new XiNull());
+			return new DataNode<XiNull>(XiNull.instance());
 		if (exp.matches("-?\\d+"))
 			return new DataNode<XiNum>(new XiNum(Integer.parseInt(exp)));
 		if (exp.startsWith("["))

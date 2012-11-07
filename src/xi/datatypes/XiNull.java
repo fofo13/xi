@@ -3,6 +3,14 @@ package xi.datatypes;
 
 public class XiNull extends DataType {
 	
+	private static final XiNull instance = new XiNull();
+	
+	private XiNull() {}
+	
+	public static XiNull instance() {
+		return instance;
+	}
+	
 	@Override
 	public boolean isEmpty() {
 		return true;

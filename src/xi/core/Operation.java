@@ -35,8 +35,6 @@ public enum Operation {
 	private String id;
 	private int numArgs;
 
-	private static final XiNull xinull = new XiNull();
-
 	private Operation(String id, int numArgs) {
 		this.id = id;
 		this.numArgs = numArgs;
@@ -166,14 +164,14 @@ public enum Operation {
 				body.evaluate();
 			}
 			globals.addAll(body.locals());
-			return xinull;
+			return XiNull.instance();
 		}
 		case IF: {
 			XiBlock body = (XiBlock) (args[0].isEmpty() ? args[2] : args[1]);
 			body.addVars(globals);
 			body.evaluate();
 			globals.addAll(body.locals());
-			return xinull;
+			return XiNull.instance();
 		}
 		case DO: {
 			int n = ((XiNum) args[0]).val();
@@ -182,7 +180,7 @@ public enum Operation {
 			for (int i = 0; i < n; i++)
 				body.evaluate();
 			globals.addAll(body.locals());
-			return xinull;
+			return XiNull.instance();
 		}
 		case WHILE: {
 			XiBlock cond = (XiBlock) args[0];
@@ -194,7 +192,7 @@ public enum Operation {
 				cond.addVars(body.locals());
 			}
 			globals.addAll(body.locals());
-			return xinull;
+			return XiNull.instance();
 		}
 		case DOWHILE: {
 			XiBlock cond = (XiBlock) args[1];
@@ -206,7 +204,7 @@ public enum Operation {
 				cond.addVars(body.locals());
 			} while (!cond.evaluate().isEmpty());
 			globals.addAll(body.locals());
-			return xinull;
+			return XiNull.instance();
 		}
 		case EVAL: {
 			XiBlock block = (XiBlock) args[0];
@@ -219,17 +217,17 @@ public enum Operation {
 		}
 		case PRINT:
 			System.out.print(args[0]);
-			return xinull;
+			return XiNull.instance();
 		case PRINTLN:
 			System.out.println(args[0]);
-			return xinull;
+			return XiNull.instance();
 		case SLEEP:
 			try {
 				Thread.sleep(((XiNum) args[0]).val());
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			return xinull;
+			return XiNull.instance();
 		case HASH:
 			return new XiNum(args[0].hashCode());
 		case LEN:
