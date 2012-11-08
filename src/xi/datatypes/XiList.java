@@ -151,6 +151,15 @@ public class XiList extends DataType {
 		return new XiList(newList);
 	}
 	
+	public XiList cut(XiList params) {
+		int m = ((XiNum)params.get(0)).val();
+		int n = ((XiNum)params.get(1)).val();
+		List<DataType> newList = new ArrayList<DataType>(n);
+		for (int i = m ; i < n ; i++)
+			newList.add(get(i));
+		return new XiList(newList);
+	}
+	
 	@Override
 	public int compareTo(DataType other) {
 		if (other instanceof XiList)

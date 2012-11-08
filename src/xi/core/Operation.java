@@ -19,7 +19,7 @@ public enum Operation {
 			"**", 2), TERN("?", 3),
 
 	AT("at", 2), MAP("@", 2), RANGE(",", 1), SUM("$", 1), RAND("rnd", 1), SORT(
-			"sort", 1), ZIP("zip", 1),
+			"sort", 1), ZIP("zip", 1), CUT("cut", 2),
 
 	FOR("for", 3), IF("if", 3), DO("do", 2), WHILE("while", 2), DOWHILE(
 			"dowhile", 2),
@@ -153,6 +153,8 @@ public enum Operation {
 			return ((XiList) args[0]).sort();
 		case ZIP:
 			return ((XiList) args[0]).zip();
+		case CUT:
+			return ((XiList) args[0]).cut((XiList) args[1]);
 		case FOR: {
 			String id = ((XiString) args[0]).val();
 			XiList list = args[1] instanceof XiString ? ((XiString) args[1])
