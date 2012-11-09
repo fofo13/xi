@@ -1,19 +1,16 @@
 package xi.datatypes;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import xi.core.Operation;
 import xi.core.Parser;
 import xi.core.VariableCache;
 
-public class XiList extends DataType {
-
-	private List<DataType> list;
+public class XiList extends ListWrapper {
 
 	public XiList(List<DataType> list) {
-		this.list = list;
+		super(list);
 	}
 
 	public XiList() {
@@ -37,46 +34,6 @@ public class XiList extends DataType {
 		return new XiList(list);
 	}
 
-	public List<DataType> list() {
-		return list;
-	}
-
-	public DataType get(int index) {
-		index %= list.size();
-		return list.get(index < 0 ? list.size() + index : index);
-	}
-	
-	public DataType get(XiNum index) {
-		return get(index.val());
-	}
-
-	public XiList shuffle() {
-		List<DataType> newList = new ArrayList<DataType>(list.size());
-		for (DataType data : list)
-			newList.add(data);
-		Collections.shuffle(newList);
-		return new XiList(newList);
-	}
-
-	public XiList map(XiBlock block) {
-		List<DataType> newList = new ArrayList<DataType>(list.size());
-		for (DataType a : list) {
-			block.updateLocal(new XiVar(".", a));
-			newList.add(block.evaluate());
-		}
-		return new XiList(newList);
-	}
-
-	public XiList filter(XiBlock block) {
-		List<DataType> newList = new ArrayList<DataType>(list.size());
-		for (DataType a : list) {
-			block.updateLocal(new XiVar(".", a));
-			if (!block.evaluate().isEmpty())
-				newList.add(a);
-		}
-		return new XiList(newList);
-	}
-
 	public DataType sum() {
 		if (isEmpty())
 			return new XiNum(0);
@@ -84,27 +41,6 @@ public class XiList extends DataType {
 		for (int i = 1 ; i < list.size() ; i++)
 			d = Operation.ADD.evaluate(new DataType[]{d, list.get(i)}, null);
 		return d;
-	}
-
-	public XiList add(DataType data) {
-		List<DataType> newList = new ArrayList<DataType>(list.size() + 1);
-		newList.addAll(list);
-		newList.add(data);
-		return new XiList(newList);
-	}
-
-	public XiList remove(XiNum n) {
-		int index = n.val();
-		List<DataType> newList = new ArrayList<DataType>(list);
-		newList.remove(index < 0 ? size() + index : index);
-		return new XiList(newList);
-	}
-	
-	public XiList mul(XiNum n) {
-		List<DataType> newList = new ArrayList<DataType>(list.size() * n.val());
-		for (int i = 0 ; i < n.val() ; i++)
-			newList.addAll(list);
-		return new XiList(newList);
 	}
 	
 	public XiList abs() {
@@ -114,28 +50,6 @@ public class XiList extends DataType {
 				newList.addAll(((XiList)data).abs().list());
 			else
 				newList.add(data);
-		return new XiList(newList);
-	}
-	
-	public XiList sort() {
-		List<DataType> newList = new ArrayList<DataType>(list);
-		Collections.sort(newList);
-		return new XiList(newList);
-	}
-	
-	public int size() {
-		return list.size();
-	}
-
-	public XiList lshift(XiNum n) {
-		List<DataType> newList = new ArrayList<DataType>(list);
-		Collections.rotate(newList, -n.val());
-		return new XiList(newList);
-	}
-	
-	public XiList rshift(XiNum n) {
-		List<DataType> newList = new ArrayList<DataType>(list);
-		Collections.rotate(newList, n.val());
 		return new XiList(newList);
 	}
 	
@@ -151,47 +65,14 @@ public class XiList extends DataType {
 		return new XiList(newList);
 	}
 	
-	public XiList cut(XiList params) {
-		int m = ((XiNum)params.get(0)).val();
-		int n = ((XiNum)params.get(1)).val();
-		List<DataType> newList = new ArrayList<DataType>(n);
-		for (int i = m ; i < n ; i++)
-			newList.add(get(i));
-		return new XiList(newList);
-	}
-	
-	@Override
-	public int compareTo(DataType other) {
-		if (other instanceof XiList)
-			return (new Integer(list.size())).compareTo(((XiList)other).size());
-		return 0;
-	}
-	
-	@Override
-	public boolean isEmpty() {
-		return list.isEmpty();
-	}
-
-	@Override
-	public int length() {
-		return list.size();
-	}
-	
 	@Override
 	public String toString() {
 		return list.toString();
 	}
-
+	
 	@Override
-	public boolean equals(Object o) {
-		if (o instanceof XiList)
-			return list.equals(((XiList) o).list());
-		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		return list.hashCode();
+	public ListWrapper instantiate(List<DataType> list) {
+		return new XiList(list);
 	}
 
 }

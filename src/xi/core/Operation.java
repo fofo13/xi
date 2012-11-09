@@ -3,6 +3,7 @@ package xi.core;
 import java.util.Random;
 
 import xi.datatypes.DataType;
+import xi.datatypes.ListWrapper;
 import xi.datatypes.XiBlock;
 import xi.datatypes.XiList;
 import xi.datatypes.XiNull;
@@ -119,16 +120,12 @@ public enum Operation {
 						^ ((XiNum) args[1]).val());
 			return new XiNum((!args[0].isEmpty()) ^ (!args[1].isEmpty()));
 		case RSHIFT:
-			if (args[0] instanceof XiList)
-				return ((XiList) args[0]).rshift((XiNum) args[1]);
-			if (args[0] instanceof XiString)
-				return ((XiString) args[0]).rshift((XiNum) args[1]);
+			if (args[0] instanceof ListWrapper)
+				return ((ListWrapper) args[0]).rshift((XiNum) args[1]);
 			return new XiNum(((XiNum) args[0]).val() >> ((XiNum) args[1]).val());
 		case LSHIFT:
-			if (args[0] instanceof XiList)
-				return ((XiList) args[0]).lshift((XiNum) args[1]);
-			if (args[0] instanceof XiString)
-				return ((XiString) args[0]).lshift((XiNum) args[1]);
+			if (args[0] instanceof ListWrapper)
+				return ((ListWrapper) args[0]).lshift((XiNum) args[1]);
 			return new XiNum(((XiNum) args[0]).val() << ((XiNum) args[1]).val());
 		case POW:
 			return ((XiNum) args[0]).pow((XiNum) args[1]);
@@ -139,26 +136,25 @@ public enum Operation {
 		case MAP: {
 			XiBlock body = (XiBlock) args[1];
 			body.addVars(globals);
-			return ((XiList) args[0]).map(body);
+			return ((ListWrapper) args[0]).map(body);
 		}
 		case RANGE:
 			return new XiList(((XiNum) args[0]).val());
 		case SUM:
 			return ((XiList) args[0]).sum();
 		case RAND:
-			if (args[0] instanceof XiList)
-				return ((XiList) args[0]).shuffle();
+			if (args[0] instanceof ListWrapper)
+				return ((ListWrapper) args[0]).shuffle();
 			return new XiNum((new Random()).nextInt(((XiNum) args[0]).val()));
 		case SORT:
-			return ((XiList) args[0]).sort();
+			return ((ListWrapper) args[0]).sort();
 		case ZIP:
 			return ((XiList) args[0]).zip();
 		case CUT:
-			return ((XiList) args[0]).cut((XiList) args[1]);
+			return ((ListWrapper) args[0]).cut((XiList) args[1]);
 		case FOR: {
-			String id = ((XiString) args[0]).val();
-			XiList list = args[1] instanceof XiString ? ((XiString) args[1])
-					.toList() : (XiList) args[1];
+			String id = ((XiString) args[0]).toString();
+			ListWrapper list = (ListWrapper)args[1];
 			XiBlock body = (XiBlock) args[2];
 			body.addVars(globals);
 			for (int i = 0; i < list.size(); i++) {
