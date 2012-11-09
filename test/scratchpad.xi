@@ -1,1 +1,1 @@
-println @ "abcd" {} 
+println @ "abc" {* . 3}

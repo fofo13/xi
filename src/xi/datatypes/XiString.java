@@ -17,6 +17,12 @@ public class XiString extends ListWrapper {
 			return val;
 		}
 		
+		public XiString toXiString() {
+			List<DataType> l = new ArrayList<DataType>();
+			l.add(new XiChar(val));
+			return new XiString(l);
+		}
+		
 		@Override
 		public boolean isEmpty() {
 			return val == 0;
@@ -44,7 +50,7 @@ public class XiString extends ListWrapper {
 		this(new ArrayList<DataType>());
 		exp = exp.replace("\"", "");
 		for (char c : exp.toCharArray())
-			list.add(new XiChar(c));
+			list.add((new XiChar(c)).toXiString());
 	}
 
 	@Override
