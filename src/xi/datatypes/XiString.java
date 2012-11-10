@@ -1,6 +1,7 @@
 package xi.datatypes;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class XiString extends ListWrapper {
@@ -51,32 +52,26 @@ public class XiString extends ListWrapper {
 		this(new ArrayList<DataType>());
 		exp = exp.replace("\"", "");
 		for (char c : exp.toCharArray())
-			list.add((new XiChar(c)).toXiString());
+			collection.add((new XiChar(c)).toXiString());
 	}
 
 	public XiList toList() {
-		return new XiList(list);
+		return new XiList(collection);
 	}
-	
+
 	@Override
 	public String toString() {
 		String val = "";
-		for (DataType c : list)
+		for (DataType c : collection)
 			val += c.toString();
 		return val;
 	}
 
 	@Override
-	public ListWrapper instantiate(List<DataType> list) {
-		return new XiString(list);
+	public ListWrapper instantiate(Collection<DataType> col) {
+		return new XiString(new ArrayList<DataType>(col));
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		return o instanceof XiString
-				&& ((XiString) o).toString().equals(toString());
-	}
-	
 	@Override
 	public int hashCode() {
 		return toString().hashCode();

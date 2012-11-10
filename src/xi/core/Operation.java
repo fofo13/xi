@@ -2,6 +2,7 @@ package xi.core;
 
 import java.util.Random;
 
+import xi.datatypes.CollectionWrapper;
 import xi.datatypes.DataType;
 import xi.datatypes.ListWrapper;
 import xi.datatypes.XiBlock;
@@ -76,8 +77,8 @@ public enum Operation {
 		case ADD:
 			if (args[0] instanceof XiString || args[1] instanceof XiString)
 				return new XiString(args[0].toString() + args[1].toString());
-			if (args[0] instanceof XiList)
-				return ((XiList) args[0]).add(args[1]);
+			if (args[0] instanceof CollectionWrapper)
+				return ((CollectionWrapper<?>) args[0]).add(args[1]);
 			return ((XiNum) args[0]).add((XiNum) args[1]);
 		case SUBTRACT:
 			if (args[0] instanceof ListWrapper)
@@ -88,8 +89,8 @@ public enum Operation {
 				return ((ListWrapper) args[0]).mul((XiNum) args[1]);
 			return ((XiNum) args[0]).mul((XiNum) args[1]);
 		case DIVIDE:
-			if (args[0] instanceof ListWrapper)
-				return ((ListWrapper) args[0]).filter((XiBlock) args[1]);
+			if (args[0] instanceof CollectionWrapper)
+				return ((CollectionWrapper<?>) args[0]).filter((XiBlock) args[1]);
 			return ((XiNum) args[0]).div((XiNum) args[1]);
 		case MODULUS:
 			return ((XiNum) args[0]).mod((XiNum) args[1]);
@@ -137,7 +138,7 @@ public enum Operation {
 		case MAP: {
 			XiBlock body = (XiBlock) args[1];
 			body.addVars(globals);
-			return ((ListWrapper) args[0]).map(body);
+			return ((CollectionWrapper<?>) args[0]).map(body);
 		}
 		case RANGE:
 			return new XiList(((XiNum) args[0]).val());
