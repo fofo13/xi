@@ -28,3 +28,15 @@ First, we create a list of integers from `0` to `999`. Next, we filter this list
 we remove any element `.` for which `{| ! % . 3 ! % . 5}` is *not* true. Further, this block only returns true if `.` is either divisible by `3` (i.e.
 `! % . 3`) or if it is divisible by `5` (i.e. `! % . 5`). This results in a list of all multiples of either `3` or `5` less than `1000`. Lastly, we
 find the sum of this list using `$`, resulting in the desired answer.
+
+Equivalent code in Java would be:
+
+    public class Euler1 {
+	    public static void main(String[] args) {
+		    int sum = 0;
+		    for (int i = 1 ; i < 1000 ; i++)
+			    if (i % 3 == 0 || i % 5 == 0)
+				    sum += i;
+		    System.out.println(sum);
+	    }
+    }
