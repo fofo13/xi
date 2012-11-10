@@ -40,3 +40,23 @@ Equivalent code in Java would be:
 		    System.out.println(sum);
 	    }
     }
+
+---
+
+**fibonacci.xi**  
+
+    n := 5
+    println + "First " + n " Fibonacci numbers:"
+
+    a := 0
+    b := 1
+    do n {
+	    c := a
+	    a := + a b
+	    b := c
+	    println b
+    }
+    
+This code prints the first `n` terms of the Fibonacci sequence. We first define `a` and `b` to be the first and second terms of the sequence, respectively.
+Then we have a `do`-loop which performs `n` iterations, shifting `a` and `b` one step up the sequence and printing the appropriate term. To "shift" up the
+sequence we simply assign the old value of `a` to `b` and assign the `a + b` to `a`.
