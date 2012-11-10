@@ -7,6 +7,14 @@ the most effective ways of doing what they do.
 Descriptions of Certain Examples
 --------------------------------
 
+**hello.xi**  
+
+    println "hello world"
+    
+Not much to say here - just a simple "hello world" program.
+
+---
+
 **euler1.xi**
 
     println $ / , 1000 {| ! % . 3 ! % . 5}
