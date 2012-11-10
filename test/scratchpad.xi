@@ -1,1 +1,1 @@
-println @ "abc" {* . 3}
+println / "hello there ladies and gentlemen" {!= . "e"}

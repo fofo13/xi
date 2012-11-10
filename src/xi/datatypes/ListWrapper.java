@@ -17,7 +17,7 @@ public abstract class ListWrapper extends DataType {
 	public List<DataType> list() {
 		return list;
 	}
-
+	
 	public DataType get(int index) {
 		index %= list.size();
 		return list.get(index < 0 ? list.size() + index : index);

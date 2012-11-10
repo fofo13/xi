@@ -27,6 +27,8 @@ public enum Operation {
 
 	EVAL("eval", 1),
 
+	STR("str", 1), INT("int", 1),
+	
 	PRINT("print", 1), PRINTLN("println", 1),
 
 	SLEEP("slp", 1),
@@ -77,18 +79,16 @@ public enum Operation {
 				return ((XiList) args[0]).add(args[1]);
 			return ((XiNum) args[0]).add((XiNum) args[1]);
 		case SUBTRACT:
-			if (args[0] instanceof XiList)
-				return ((XiList) args[0]).remove((XiNum) args[1]);
+			if (args[0] instanceof ListWrapper)
+				return ((ListWrapper) args[0]).remove((XiNum) args[1]);
 			return ((XiNum) args[0]).sub((XiNum) args[1]);
 		case MULTIPLY:
-			if (args[0] instanceof XiList)
-				return ((XiList) args[0]).mul((XiNum) args[1]);
-			if (args[0] instanceof XiString)
-				return ((XiString) args[0]).mul((XiNum) args[1]);
+			if (args[0] instanceof ListWrapper)
+				return ((ListWrapper) args[0]).mul((XiNum) args[1]);
 			return ((XiNum) args[0]).mul((XiNum) args[1]);
 		case DIVIDE:
-			if (args[0] instanceof XiList)
-				return ((XiList) args[0]).filter((XiBlock) args[1]);
+			if (args[0] instanceof ListWrapper)
+				return ((ListWrapper) args[0]).filter((XiBlock) args[1]);
 			return ((XiNum) args[0]).div((XiNum) args[1]);
 		case MODULUS:
 			return ((XiNum) args[0]).mod((XiNum) args[1]);
@@ -213,6 +213,10 @@ public enum Operation {
 				globals.addAll(block.locals());
 			}
 		}
+		case STR:
+			return new XiString(args[0].toString());
+		case INT:
+			return XiNum.parse(args[0].toString());
 		case PRINT:
 			System.out.print(args[0]);
 			return XiNull.instance();
