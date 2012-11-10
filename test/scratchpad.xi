@@ -1,1 +1,1 @@
-println / "hello there ladies and gentlemen" {!= . "e"}
+println set "hello world"

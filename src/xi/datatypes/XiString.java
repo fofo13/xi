@@ -54,6 +54,10 @@ public class XiString extends ListWrapper {
 			list.add((new XiChar(c)).toXiString());
 	}
 
+	public XiList toList() {
+		return new XiList(list);
+	}
+	
 	@Override
 	public String toString() {
 		String val = "";

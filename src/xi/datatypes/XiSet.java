@@ -11,6 +11,10 @@ public class XiSet extends DataType {
 		this.set = set;
 	}
 	
+	public XiSet(ListWrapper list) {
+		this(new HashSet<DataType>(list.list()));
+	}
+	
 	public XiSet() {
 		this(new HashSet<DataType>());
 	}
@@ -24,11 +28,24 @@ public class XiSet extends DataType {
 		return set.isEmpty();
 	}
 	
-	// TODO
-	
 	@Override
 	public int compareTo(DataType other) {
 		return 0;
+	}
+	
+	@Override
+	public String toString() {
+		return set.toString();
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		return o instanceof XiSet && ((XiSet)o).set().equals(set);
+	}
+	
+	@Override
+	public int hashCode() {
+		return set.hashCode();
 	}
 	
 }

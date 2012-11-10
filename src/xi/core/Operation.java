@@ -8,6 +8,7 @@ import xi.datatypes.XiBlock;
 import xi.datatypes.XiList;
 import xi.datatypes.XiNull;
 import xi.datatypes.XiNum;
+import xi.datatypes.XiSet;
 import xi.datatypes.XiString;
 import xi.datatypes.XiVar;
 
@@ -27,8 +28,8 @@ public enum Operation {
 
 	EVAL("eval", 1),
 
-	STR("str", 1), INT("int", 1),
-	
+	STR("str", 1), INT("int", 1), LIST("list", 1), SET("set", 1),
+
 	PRINT("print", 1), PRINTLN("println", 1),
 
 	SLEEP("slp", 1),
@@ -154,7 +155,7 @@ public enum Operation {
 			return ((ListWrapper) args[0]).cut((XiList) args[1]);
 		case FOR: {
 			String id = ((XiString) args[0]).toString();
-			ListWrapper list = (ListWrapper)args[1];
+			ListWrapper list = (ListWrapper) args[1];
 			XiBlock body = (XiBlock) args[2];
 			body.addVars(globals);
 			for (int i = 0; i < list.size(); i++) {
@@ -217,6 +218,10 @@ public enum Operation {
 			return new XiString(args[0].toString());
 		case INT:
 			return XiNum.parse(args[0].toString());
+		case LIST:
+			return ((XiString) args[0]).toList();
+		case SET:
+			return new XiSet((ListWrapper) args[0]);
 		case PRINT:
 			System.out.print(args[0]);
 			return XiNull.instance();
