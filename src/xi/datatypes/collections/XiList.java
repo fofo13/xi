@@ -1,4 +1,4 @@
-package xi.datatypes;
+package xi.datatypes.collections;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,6 +7,8 @@ import java.util.List;
 import xi.core.Operation;
 import xi.core.Parser;
 import xi.core.VariableCache;
+import xi.datatypes.DataType;
+import xi.datatypes.numeric.XiInt;
 
 public class XiList extends ListWrapper {
 

@@ -1,8 +1,11 @@
-package xi.datatypes;
+package xi.datatypes.collections;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import xi.datatypes.DataType;
+import xi.datatypes.numeric.XiInt;
 
 public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 	

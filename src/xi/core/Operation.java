@@ -2,16 +2,19 @@ package xi.core;
 
 import java.util.Random;
 
-import xi.datatypes.CollectionWrapper;
 import xi.datatypes.DataType;
-import xi.datatypes.ListWrapper;
 import xi.datatypes.XiBlock;
-import xi.datatypes.XiList;
 import xi.datatypes.XiNull;
-import xi.datatypes.XiInt;
-import xi.datatypes.XiSet;
-import xi.datatypes.XiString;
 import xi.datatypes.XiVar;
+import xi.datatypes.collections.CollectionWrapper;
+import xi.datatypes.collections.ListWrapper;
+import xi.datatypes.collections.XiList;
+import xi.datatypes.collections.XiSet;
+import xi.datatypes.collections.XiString;
+import xi.datatypes.numeric.XiComplex;
+import xi.datatypes.numeric.XiInt;
+import xi.datatypes.numeric.XiNum;
+import xi.datatypes.numeric.XiReal;
 
 public enum Operation {
 
@@ -29,7 +32,8 @@ public enum Operation {
 
 	EVAL("eval", 1),
 
-	STR("str", 1), INT("int", 1), LIST("list", 1), SET("set", 1),
+	STR("str", 1), INT("int", 1), LIST("list", 1), SET("set", 1), CMPLX(
+			"cmplx", 2),
 
 	PRINT("print", 1), PRINTLN("println", 1),
 
@@ -73,25 +77,26 @@ public enum Operation {
 		case ABS:
 			if (args[0] instanceof XiList)
 				return ((XiList) args[0]).abs();
-			return new XiInt(Math.abs(((XiInt) args[0]).val()));
+			return ((XiNum) args[0]).abs();
 		case ADD:
 			if (args[0] instanceof XiString || args[1] instanceof XiString)
 				return new XiString(args[0].toString() + args[1].toString());
 			if (args[0] instanceof CollectionWrapper)
 				return ((CollectionWrapper<?>) args[0]).add(args[1]);
-			return ((XiInt) args[0]).add((XiInt) args[1]);
+			return ((XiNum) args[0]).add((XiNum) args[1]);
 		case SUBTRACT:
 			if (args[0] instanceof ListWrapper)
 				return ((ListWrapper) args[0]).remove((XiInt) args[1]);
-			return ((XiInt) args[0]).sub((XiInt) args[1]);
+			return ((XiNum) args[0]).sub((XiNum) args[1]);
 		case MULTIPLY:
 			if (args[0] instanceof ListWrapper)
 				return ((ListWrapper) args[0]).mul((XiInt) args[1]);
-			return ((XiInt) args[0]).mul((XiInt) args[1]);
+			return ((XiNum) args[0]).mul((XiNum) args[1]);
 		case DIVIDE:
 			if (args[0] instanceof CollectionWrapper)
-				return ((CollectionWrapper<?>) args[0]).filter((XiBlock) args[1]);
-			return ((XiInt) args[0]).div((XiInt) args[1]);
+				return ((CollectionWrapper<?>) args[0])
+						.filter((XiBlock) args[1]);
+			return ((XiNum) args[0]).div((XiNum) args[1]);
 		case MODULUS:
 			return ((XiInt) args[0]).mod((XiInt) args[1]);
 		case EQ:
@@ -223,6 +228,10 @@ public enum Operation {
 			return ((XiString) args[0]).toList();
 		case SET:
 			return new XiSet((ListWrapper) args[0]);
+		case CMPLX:
+			double re = ((XiReal) args[0]).num().doubleValue();
+			double im = ((XiReal) args[1]).num().doubleValue();
+			return new XiComplex(re, im);
 		case PRINT:
 			System.out.print(args[0]);
 			return XiNull.instance();

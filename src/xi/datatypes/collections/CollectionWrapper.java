@@ -1,7 +1,11 @@
-package xi.datatypes;
+package xi.datatypes.collections;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import xi.datatypes.DataType;
+import xi.datatypes.XiBlock;
+import xi.datatypes.XiVar;
 
 public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 		DataType {

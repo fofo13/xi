@@ -5,10 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import xi.datatypes.XiBlock;
-import xi.datatypes.XiList;
 import xi.datatypes.XiNull;
-import xi.datatypes.XiInt;
-import xi.datatypes.XiString;
+import xi.datatypes.collections.XiList;
+import xi.datatypes.collections.XiString;
+import xi.datatypes.numeric.XiInt;
 import xi.nodes.DataNode;
 import xi.nodes.Node;
 import xi.nodes.OperationNode;
