@@ -60,6 +60,10 @@ public class XiComplex extends XiNum {
 	
 	@Override
 	public XiNum div(XiNum other) {
+		if (other instanceof XiReal) {
+			double r = ((XiReal)other).num().doubleValue();
+			return new XiComplex(re / r, im / r);
+		}
 		XiComplex c = (XiComplex) other;
 		return mul(c.conj()).div(c.abs());
 	}
