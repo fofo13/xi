@@ -8,6 +8,10 @@ public class XiFloat extends XiReal {
 		super(val);
 	}
 
+	public static XiFloat parse(String exp) {
+		return new XiFloat(Double.parseDouble(exp));
+	}
+	
 	@Override
 	public XiNum abs() {
 		return new XiFloat(Math.abs(val.doubleValue()));
@@ -66,6 +70,21 @@ public class XiFloat extends XiReal {
 	@Override
 	public boolean isEmpty() {
 		return val.doubleValue() == 0;
+	}
+	
+	@Override
+	public int hashCode() {
+		return val.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		return o instanceof XiFloat && val.equals(((XiFloat)o).num());
+	}
+	
+	@Override
+	public String toString() {
+		return "" + val.doubleValue();
 	}
 
 }
