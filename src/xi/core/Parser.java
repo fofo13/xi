@@ -7,7 +7,7 @@ import java.util.List;
 import xi.datatypes.XiBlock;
 import xi.datatypes.XiList;
 import xi.datatypes.XiNull;
-import xi.datatypes.XiNum;
+import xi.datatypes.XiInt;
 import xi.datatypes.XiString;
 import xi.nodes.DataNode;
 import xi.nodes.Node;
@@ -83,7 +83,7 @@ public class Parser {
 		if (exp.equals("null"))
 			return new DataNode<XiNull>(XiNull.instance());
 		if (exp.matches("-?\\d+"))
-			return new DataNode<XiNum>(new XiNum(Integer.parseInt(exp)));
+			return new DataNode<XiInt>(new XiInt(Integer.parseInt(exp)));
 		if (exp.startsWith("["))
 			return new DataNode<XiList>(XiList.parse(exp, cache));
 		if (exp.startsWith("{")) {

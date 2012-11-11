@@ -19,7 +19,7 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 		return collection.get(index < 0 ? collection.size() + index : index);
 	}
 	
-	public DataType get(XiNum index) {
+	public DataType get(XiInt index) {
 		return get(index.val());
 	}
 
@@ -31,14 +31,14 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 		return instantiate(newList);
 	}
 
-	public CollectionWrapper<List<DataType>> remove(XiNum n) {
+	public CollectionWrapper<List<DataType>> remove(XiInt n) {
 		int index = n.val();
 		List<DataType> newList = new ArrayList<DataType>(collection);
 		newList.remove(index < 0 ? size() + index : index);
 		return instantiate(newList);
 	}
 	
-	public CollectionWrapper<List<DataType>> mul(XiNum n) {
+	public CollectionWrapper<List<DataType>> mul(XiInt n) {
 		List<DataType> newList = new ArrayList<DataType>(collection.size() * n.val());
 		for (int i = 0 ; i < n.val() ; i++)
 			newList.addAll(collection);
@@ -51,21 +51,21 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 		return instantiate(newList);
 	}
 
-	public CollectionWrapper<List<DataType>> lshift(XiNum n) {
+	public CollectionWrapper<List<DataType>> lshift(XiInt n) {
 		List<DataType> newList = new ArrayList<DataType>(collection);
 		Collections.rotate(newList, -n.val());
 		return instantiate(newList);
 	}
 	
-	public CollectionWrapper<List<DataType>> rshift(XiNum n) {
+	public CollectionWrapper<List<DataType>> rshift(XiInt n) {
 		List<DataType> newList = new ArrayList<DataType>(collection);
 		Collections.rotate(newList, n.val());
 		return instantiate(newList);
 	}
 	
 	public CollectionWrapper<List<DataType>> cut(XiList params) {
-		int m = ((XiNum)params.get(0)).val();
-		int n = ((XiNum)params.get(1)).val();
+		int m = ((XiInt)params.get(0)).val();
+		int n = ((XiInt)params.get(1)).val();
 		n = n < 0 ? collection.size() + n : n;
 		m = m < 0 ? collection.size() + m : m;
 		List<DataType> newList = new ArrayList<DataType>(n);

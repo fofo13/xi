@@ -21,7 +21,7 @@ public class XiList extends ListWrapper {
 	public XiList(int n) {
 		this(new ArrayList<DataType>(n));
 		for (int i = 0; i < n; i++)
-			collection.add(new XiNum(i));
+			collection.add(new XiInt(i));
 	}
 
 	public static XiList parse(String exp, VariableCache cache) {
@@ -38,7 +38,7 @@ public class XiList extends ListWrapper {
 
 	public DataType sum() {
 		if (isEmpty())
-			return new XiNum(0);
+			return new XiInt(0);
 		DataType d = collection.get(0);
 		for (int i = 1; i < collection.size(); i++)
 			d = Operation.ADD.evaluate(new DataType[] { d, collection.get(i) },

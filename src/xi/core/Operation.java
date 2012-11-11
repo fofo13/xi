@@ -8,7 +8,7 @@ import xi.datatypes.ListWrapper;
 import xi.datatypes.XiBlock;
 import xi.datatypes.XiList;
 import xi.datatypes.XiNull;
-import xi.datatypes.XiNum;
+import xi.datatypes.XiInt;
 import xi.datatypes.XiSet;
 import xi.datatypes.XiString;
 import xi.datatypes.XiVar;
@@ -56,7 +56,7 @@ public enum Operation {
 	public DataType evaluate(DataType[] args, VariableCache globals) {
 		switch (this) {
 		case NOT:
-			return new XiNum(args[0].isEmpty());
+			return new XiInt(args[0].isEmpty());
 		case BITNOT:
 			if (args[0] instanceof XiList)
 				return ((XiList) args[0]).zip();
@@ -69,85 +69,85 @@ public enum Operation {
 					globals.addAll(block.locals());
 				}
 			}
-			return new XiNum(~((XiNum) args[0]).val());
+			return new XiInt(~((XiInt) args[0]).val());
 		case ABS:
 			if (args[0] instanceof XiList)
 				return ((XiList) args[0]).abs();
-			return new XiNum(Math.abs(((XiNum) args[0]).val()));
+			return new XiInt(Math.abs(((XiInt) args[0]).val()));
 		case ADD:
 			if (args[0] instanceof XiString || args[1] instanceof XiString)
 				return new XiString(args[0].toString() + args[1].toString());
 			if (args[0] instanceof CollectionWrapper)
 				return ((CollectionWrapper<?>) args[0]).add(args[1]);
-			return ((XiNum) args[0]).add((XiNum) args[1]);
+			return ((XiInt) args[0]).add((XiInt) args[1]);
 		case SUBTRACT:
 			if (args[0] instanceof ListWrapper)
-				return ((ListWrapper) args[0]).remove((XiNum) args[1]);
-			return ((XiNum) args[0]).sub((XiNum) args[1]);
+				return ((ListWrapper) args[0]).remove((XiInt) args[1]);
+			return ((XiInt) args[0]).sub((XiInt) args[1]);
 		case MULTIPLY:
 			if (args[0] instanceof ListWrapper)
-				return ((ListWrapper) args[0]).mul((XiNum) args[1]);
-			return ((XiNum) args[0]).mul((XiNum) args[1]);
+				return ((ListWrapper) args[0]).mul((XiInt) args[1]);
+			return ((XiInt) args[0]).mul((XiInt) args[1]);
 		case DIVIDE:
 			if (args[0] instanceof CollectionWrapper)
 				return ((CollectionWrapper<?>) args[0]).filter((XiBlock) args[1]);
-			return ((XiNum) args[0]).div((XiNum) args[1]);
+			return ((XiInt) args[0]).div((XiInt) args[1]);
 		case MODULUS:
-			return ((XiNum) args[0]).mod((XiNum) args[1]);
+			return ((XiInt) args[0]).mod((XiInt) args[1]);
 		case EQ:
-			return new XiNum(args[0].equals(args[1]));
+			return new XiInt(args[0].equals(args[1]));
 		case NEQ:
-			return new XiNum(!args[0].equals(args[1]));
+			return new XiInt(!args[0].equals(args[1]));
 		case GREATER:
-			return new XiNum(((XiNum) args[0]).val() > ((XiNum) args[1]).val());
+			return new XiInt(((XiInt) args[0]).val() > ((XiInt) args[1]).val());
 		case LESS:
-			return new XiNum(((XiNum) args[0]).val() < ((XiNum) args[1]).val());
+			return new XiInt(((XiInt) args[0]).val() < ((XiInt) args[1]).val());
 		case GREATER_EQ:
-			return new XiNum(((XiNum) args[0]).val() >= ((XiNum) args[1]).val());
+			return new XiInt(((XiInt) args[0]).val() >= ((XiInt) args[1]).val());
 		case LESS_EQ:
-			return new XiNum(((XiNum) args[0]).val() <= ((XiNum) args[1]).val());
+			return new XiInt(((XiInt) args[0]).val() <= ((XiInt) args[1]).val());
 		case AND:
-			if (args[0] instanceof XiNum && args[1] instanceof XiNum)
-				return new XiNum(((XiNum) args[0]).val()
-						& ((XiNum) args[1]).val());
-			return new XiNum((!args[0].isEmpty()) && (!args[1].isEmpty()));
+			if (args[0] instanceof XiInt && args[1] instanceof XiInt)
+				return new XiInt(((XiInt) args[0]).val()
+						& ((XiInt) args[1]).val());
+			return new XiInt((!args[0].isEmpty()) && (!args[1].isEmpty()));
 		case OR:
-			if (args[0] instanceof XiNum && args[1] instanceof XiNum)
-				return new XiNum(((XiNum) args[0]).val()
-						| ((XiNum) args[1]).val());
-			return new XiNum((!args[0].isEmpty()) || (!args[1].isEmpty()));
+			if (args[0] instanceof XiInt && args[1] instanceof XiInt)
+				return new XiInt(((XiInt) args[0]).val()
+						| ((XiInt) args[1]).val());
+			return new XiInt((!args[0].isEmpty()) || (!args[1].isEmpty()));
 		case XOR:
-			if (args[0] instanceof XiNum && args[1] instanceof XiNum)
-				return new XiNum(((XiNum) args[0]).val()
-						^ ((XiNum) args[1]).val());
-			return new XiNum((!args[0].isEmpty()) ^ (!args[1].isEmpty()));
+			if (args[0] instanceof XiInt && args[1] instanceof XiInt)
+				return new XiInt(((XiInt) args[0]).val()
+						^ ((XiInt) args[1]).val());
+			return new XiInt((!args[0].isEmpty()) ^ (!args[1].isEmpty()));
 		case RSHIFT:
 			if (args[0] instanceof ListWrapper)
-				return ((ListWrapper) args[0]).rshift((XiNum) args[1]);
-			return new XiNum(((XiNum) args[0]).val() >> ((XiNum) args[1]).val());
+				return ((ListWrapper) args[0]).rshift((XiInt) args[1]);
+			return new XiInt(((XiInt) args[0]).val() >> ((XiInt) args[1]).val());
 		case LSHIFT:
 			if (args[0] instanceof ListWrapper)
-				return ((ListWrapper) args[0]).lshift((XiNum) args[1]);
-			return new XiNum(((XiNum) args[0]).val() << ((XiNum) args[1]).val());
+				return ((ListWrapper) args[0]).lshift((XiInt) args[1]);
+			return new XiInt(((XiInt) args[0]).val() << ((XiInt) args[1]).val());
 		case POW:
-			return ((XiNum) args[0]).pow((XiNum) args[1]);
+			return ((XiInt) args[0]).pow((XiInt) args[1]);
 		case TERN:
 			return args[0].isEmpty() ? args[2] : args[1];
 		case AT:
-			return ((XiList) args[0]).get((XiNum) args[1]);
+			return ((XiList) args[0]).get((XiInt) args[1]);
 		case MAP: {
 			XiBlock body = (XiBlock) args[1];
 			body.addVars(globals);
 			return ((CollectionWrapper<?>) args[0]).map(body);
 		}
 		case RANGE:
-			return new XiList(((XiNum) args[0]).val());
+			return new XiList(((XiInt) args[0]).val());
 		case SUM:
 			return ((XiList) args[0]).sum();
 		case RAND:
 			if (args[0] instanceof ListWrapper)
 				return ((ListWrapper) args[0]).shuffle();
-			return new XiNum((new Random()).nextInt(((XiNum) args[0]).val()));
+			return new XiInt((new Random()).nextInt(((XiInt) args[0]).val()));
 		case SORT:
 			return ((ListWrapper) args[0]).sort();
 		case ZIP:
@@ -174,7 +174,7 @@ public enum Operation {
 			return XiNull.instance();
 		}
 		case DO: {
-			int n = ((XiNum) args[0]).val();
+			int n = ((XiInt) args[0]).val();
 			XiBlock body = (XiBlock) args[1];
 			body.addVars(globals);
 			for (int i = 0; i < n; i++)
@@ -218,7 +218,7 @@ public enum Operation {
 		case STR:
 			return new XiString(args[0].toString());
 		case INT:
-			return XiNum.parse(args[0].toString());
+			return XiInt.parse(args[0].toString());
 		case LIST:
 			return ((XiString) args[0]).toList();
 		case SET:
@@ -231,15 +231,15 @@ public enum Operation {
 			return XiNull.instance();
 		case SLEEP:
 			try {
-				Thread.sleep(((XiNum) args[0]).val());
+				Thread.sleep(((XiInt) args[0]).val());
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			return XiNull.instance();
 		case HASH:
-			return new XiNum(args[0].hashCode());
+			return new XiInt(args[0].hashCode());
 		case LEN:
-			return new XiNum(args[0].length());
+			return new XiInt(args[0].length());
 		default:
 			throw new RuntimeException("Internal error");
 		}
