@@ -70,14 +70,14 @@ public class XiInt extends XiReal {
 	@Override
 	public XiNum div(XiNum other) {
 		if (other instanceof XiComplex || other instanceof XiFloat)
-			return other.mul(this);
+			return other.div(this);
 		return new XiInt(val.intValue() / ((XiReal) other).num().intValue());
 	}
 
 	@Override
 	public XiNum pow(XiNum other) {
 		if (other instanceof XiComplex || other instanceof XiFloat)
-			return other.mul(this);
+			return other.pow(this);
 		return new XiInt((int) Math.pow(val.intValue(), ((XiReal) other).num()
 				.intValue()));
 	}
