@@ -14,7 +14,7 @@ public abstract class XiReal extends XiNum {
 	
 	@Override
 	public int hashCode() {
-		return val.intValue();
+		return val.hashCode();
 	}
 	
 	@Override

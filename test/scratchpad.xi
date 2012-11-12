@@ -1,1 +1,3 @@
-println + 1.2 3.4
+a := cmplx 3 2
+b := cmplx -2 1
+println / a b
