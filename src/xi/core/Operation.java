@@ -135,7 +135,7 @@ public enum Operation {
 				return ((ListWrapper) args[0]).lshift((XiInt) args[1]);
 			return new XiInt(((XiInt) args[0]).val() << ((XiInt) args[1]).val());
 		case POW:
-			return ((XiNum) args[0]).pow((XiInt) args[1]);
+			return ((XiNum) args[0]).pow((XiNum) args[1]);
 		case TERN:
 			return args[0].isEmpty() ? args[2] : args[1];
 		case AT:

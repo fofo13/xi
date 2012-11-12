@@ -25,6 +25,17 @@ public class XiComplex extends XiNum {
 	}
 
 	@Override
+	public XiNum neg() {
+		return new XiComplex(-re, -im);
+	}
+
+	@Override
+	public XiNum inv() {
+		double r = re * re + im * im;
+		return new XiComplex(re / r, -im / r);
+	}
+
+	@Override
 	public XiNum abs() {
 		return new XiFloat(Math.sqrt(re * re + im * im));
 	}
@@ -72,8 +83,10 @@ public class XiComplex extends XiNum {
 	public XiNum pow(XiNum other) {
 		XiComplex c = new XiComplex(re, im);
 		int n = ((XiReal) other).num().intValue();
-		for (int i = 0; i < n; i++)
-			c = (XiComplex) c.mul(c);
+		for (int i = 0; i < Math.abs(n) - 1; i++)
+			c = (XiComplex) c.mul(this);
+		if (n < 0)
+			c = (XiComplex) c.inv();
 		return c;
 	}
 
@@ -104,12 +117,12 @@ public class XiComplex extends XiNum {
 
 	@Override
 	public int hashCode() {
-		return (new double[]{re, im}).hashCode();
+		return (new double[] { re, im }).hashCode();
 	}
-	
+
 	@Override
 	public String toString() {
-		return (float)re + " + " + (float)im + "i";
+		return (float) re + " + " + (float) im + "i";
 	}
 
 }

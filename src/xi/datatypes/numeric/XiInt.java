@@ -29,7 +29,7 @@ public class XiInt extends XiReal {
 	public int compareTo(DataType other) {
 		if (other instanceof XiFloat) {
 			Integer a = val.intValue();
-			Integer b = ((XiInt)other).num().intValue();
+			Integer b = ((XiInt) other).num().intValue();
 			return a.compareTo(b);
 		}
 		return 0;
@@ -41,6 +41,16 @@ public class XiInt extends XiReal {
 	}
 
 	@Override
+	public XiNum neg() {
+		return new XiInt(-val.intValue());
+	}
+
+	@Override
+	public XiNum inv() {
+		return new XiInt(1 / val.intValue());
+	}
+
+	@Override
 	public XiNum abs() {
 		return new XiFloat(Math.abs(val.intValue()));
 	}
@@ -49,14 +59,13 @@ public class XiInt extends XiReal {
 	public XiNum add(XiNum other) {
 		if (other instanceof XiComplex || other instanceof XiFloat)
 			return other.add(this);
-		return new XiInt(val.intValue()
-				+ ((XiReal) other).num().intValue());
+		return new XiInt(val.intValue() + ((XiReal) other).num().intValue());
 	}
 
 	@Override
 	public XiNum sub(XiNum other) {
 		if (other instanceof XiComplex || other instanceof XiFloat)
-			return other.sub(this);
+			return other.sub(this).neg();
 		return new XiInt(val.intValue() - ((XiReal) other).num().intValue());
 	}
 
@@ -70,14 +79,15 @@ public class XiInt extends XiReal {
 	@Override
 	public XiNum div(XiNum other) {
 		if (other instanceof XiComplex || other instanceof XiFloat)
-			return other.div(this);
+			return other.div(this).inv();
 		return new XiInt(val.intValue() / ((XiReal) other).num().intValue());
 	}
 
 	@Override
 	public XiNum pow(XiNum other) {
-		if (other instanceof XiComplex || other instanceof XiFloat)
-			return other.pow(this);
+		if (other instanceof XiFloat)
+			return new XiFloat(Math.pow(val.doubleValue(), ((XiFloat) other)
+					.num().doubleValue()));
 		return new XiInt((int) Math.pow(val.intValue(), ((XiReal) other).num()
 				.intValue()));
 	}
