@@ -77,4 +77,12 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 		return instantiate(newList);
 	}
 	
+	public CollectionWrapper<List<DataType>> cut(XiInt params) {
+		int n = params.val();
+		List<DataType> newList = new ArrayList<DataType>(size() - n);
+		for (int i = n ; i < size() ; i++)
+			newList.add(get(i));
+		return instantiate(newList);
+	}
+	
 }

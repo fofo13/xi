@@ -158,6 +158,8 @@ public enum Operation {
 		case ZIP:
 			return ((XiList) args[0]).zip();
 		case CUT:
+			if (args[1] instanceof XiInt)
+				return ((ListWrapper) args[0]).cut((XiInt) args[1]);
 			return ((ListWrapper) args[0]).cut((XiList) args[1]);
 		case FOR: {
 			String id = ((XiString) args[0]).toString();

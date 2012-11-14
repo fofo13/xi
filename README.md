@@ -14,6 +14,7 @@ To Do
 - Implement sets and set operations. **(√)**
 - Make a smarter parser so as to give the user more flexibility.
 - Allow for the easy creation of custom functions from within Xi.
+- More accurate error messages.
 
 License
 -------

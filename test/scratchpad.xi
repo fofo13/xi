@@ -1,2 +1,1 @@
-a := cmplx 1 1
-println + a cmplx -1 1
+println cut "abcdefgh" 3
