@@ -107,6 +107,8 @@ public class VariableCache implements Set<XiVar> {
 	
 	@Override
 	public String toString() {
+		if (isEmpty())
+			return "[]";
 		String s = "";
 		for (XiVar var : cache)
 			s += ", " + var.id() + " := " + var.val().toString();

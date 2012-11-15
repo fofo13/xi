@@ -6,6 +6,7 @@ import java.util.List;
 
 import xi.datatypes.XiBlock;
 import xi.datatypes.XiNull;
+import xi.datatypes.XiFunc;
 import xi.datatypes.collections.XiList;
 import xi.datatypes.collections.XiString;
 import xi.datatypes.numeric.XiFloat;
@@ -96,10 +97,13 @@ public class Parser {
 		}
 		if (exp.startsWith("\""))
 			return new DataNode<XiString>(new XiString(exp));
-		if (Operation.idExists(exp))
-			return new OperationNode(Operation.parse(exp), cache);
-		if (exp.matches("\\D.*+"))
+		if (IntrinsicOperation.idExists(exp))
+			return new OperationNode(IntrinsicOperation.parse(exp), cache);
+		if (exp.matches("\\D.*+")) {
+			if (cache.get(exp) instanceof XiFunc)
+				return new OperationNode((XiFunc)cache.get(exp), cache);
 			return new VarNode(exp, cache);
+		}
 		throw new RuntimeException("Cannot parse expression: " + exp);
 	}
 

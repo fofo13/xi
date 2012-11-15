@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import xi.core.Operation;
+import xi.core.IntrinsicOperation;
 import xi.core.Parser;
 import xi.core.VariableCache;
 import xi.datatypes.DataType;
@@ -43,7 +43,7 @@ public class XiList extends ListWrapper {
 			return new XiInt(0);
 		DataType d = collection.get(0);
 		for (int i = 1; i < collection.size(); i++)
-			d = Operation.ADD.evaluate(new DataType[] { d, collection.get(i) },
+			d = IntrinsicOperation.ADD.evaluate(new DataType[] { d, collection.get(i) },
 					null);
 		return d;
 	}
