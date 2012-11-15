@@ -78,5 +78,10 @@ public class XiString extends ListWrapper {
 	public int hashCode() {
 		return toString().hashCode();
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		return o instanceof XiString && toString().equals(o.toString());
+	}
 
 }

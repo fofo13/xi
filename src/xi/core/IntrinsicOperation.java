@@ -82,10 +82,10 @@ public enum IntrinsicOperation implements Operation {
 				return ((XiList) args[0]).abs();
 			return ((XiNum) args[0]).abs();
 		case ADD:
-			if (args[0] instanceof XiString || args[1] instanceof XiString)
-				return new XiString(args[0].toString() + args[1].toString());
 			if (args[0] instanceof CollectionWrapper)
 				return ((CollectionWrapper<?>) args[0]).add(args[1]);
+			if (args[0] instanceof XiString || args[1] instanceof XiString)
+				return new XiString(args[0].toString() + args[1].toString());
 			return ((XiNum) args[0]).add((XiNum) args[1]);
 		case SUBTRACT:
 			if (args[0] instanceof ListWrapper)
