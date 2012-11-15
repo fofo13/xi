@@ -1,5 +1,3 @@
-package xi;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 
