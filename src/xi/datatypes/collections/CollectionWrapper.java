@@ -18,6 +18,10 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 		this.collection = collection;
 	}
 
+	public T collection() {
+		return collection;
+	}
+	
 	public CollectionWrapper<T> map(XiBlock block) {
 		Collection<DataType> col = new ArrayList<DataType>(collection.size());
 		for (DataType a : collection) {
@@ -73,8 +77,8 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof XiList)
-			return collection.equals(((XiList) o).list());
+		if (o instanceof CollectionWrapper)
+			return collection.equals(((CollectionWrapper<?>) o).collection());
 		return false;
 	}
 
