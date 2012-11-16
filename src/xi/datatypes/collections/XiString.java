@@ -63,10 +63,10 @@ public class XiString extends ListWrapper {
 
 	@Override
 	public String toString() {
-		String val = "";
+		StringBuilder sb = new StringBuilder();
 		for (DataType c : collection)
-			val += c.toString();
-		return val;
+			sb.append(c.toString());
+		return sb.toString();
 	}
 
 	@Override
