@@ -18,12 +18,42 @@ public class XiSet extends CollectionWrapper<Set<DataType>> {
 
 	public XiSet() {
 		this(new HashSet<DataType>());
+	} 
+	
+	public XiSet union(XiSet other) {
+		Set<DataType> newSet = new HashSet<DataType>(collection);
+		newSet.addAll(other.collection());
+		return new XiSet(newSet);
 	}
-
-	public Set<DataType> set() {
-		return collection;
+	
+	public XiSet intersection(XiSet other) {
+		Set<DataType> newSet = new HashSet<DataType>(collection);
+		newSet.retainAll(other.collection());
+		return new XiSet(newSet);
 	}
-
+	
+	public XiSet difference(XiSet other, boolean symmetric) {
+		Set<DataType> newSet = new HashSet<DataType>(collection);
+		if (symmetric) {
+			newSet.addAll(other.collection());
+			Set<DataType> tmp = new HashSet<DataType>(collection);
+			tmp.retainAll(other.collection());
+			newSet.removeAll(tmp);
+		}
+		else {
+			newSet.removeAll(other.collection());
+		}
+		return new XiSet(newSet);
+	}
+	
+	public boolean superset(XiSet other) {
+		return collection.containsAll(other.collection());
+	}
+	
+	public boolean subset(XiSet other) {
+		return other.collection().containsAll(collection);
+	}
+	
 	@Override
 	public String toString() {
 		String s = collection.toString();

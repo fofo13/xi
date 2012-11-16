@@ -90,6 +90,8 @@ public enum IntrinsicOperation implements Operation {
 		case SUBTRACT:
 			if (args[0] instanceof ListWrapper)
 				return ((ListWrapper) args[0]).remove((XiInt) args[1]);
+			if (args[0] instanceof XiSet && args[1] instanceof XiSet)
+				return ((XiSet) args[0]).difference((XiSet) args[1], false);
 			return ((XiNum) args[0]).sub((XiNum) args[1]);
 		case MULTIPLY:
 			if (args[0] instanceof ListWrapper)
@@ -107,27 +109,43 @@ public enum IntrinsicOperation implements Operation {
 		case NEQ:
 			return new XiInt(!args[0].equals(args[1]));
 		case GREATER:
+			if (args[0] instanceof XiSet && args[1] instanceof XiSet)
+				return new XiInt((!args[0].equals(args[1]))
+						&& ((XiSet) args[0]).superset((XiSet) args[1]));
 			return new XiInt(((XiInt) args[0]).val() > ((XiInt) args[1]).val());
 		case LESS:
+			if (args[0] instanceof XiSet && args[1] instanceof XiSet)
+				return new XiInt((!args[0].equals(args[1]))
+						&& ((XiSet) args[0]).subset((XiSet) args[1]));
 			return new XiInt(((XiInt) args[0]).val() < ((XiInt) args[1]).val());
 		case GREATER_EQ:
+			if (args[0] instanceof XiSet && args[1] instanceof XiSet)
+				return new XiInt(((XiSet) args[0]).superset((XiSet) args[1]));
 			return new XiInt(((XiInt) args[0]).val() >= ((XiInt) args[1]).val());
 		case LESS_EQ:
+			if (args[0] instanceof XiSet && args[1] instanceof XiSet)
+				return new XiInt(((XiSet) args[0]).subset((XiSet) args[1]));
 			return new XiInt(((XiInt) args[0]).val() <= ((XiInt) args[1]).val());
 		case AND:
 			if (args[0] instanceof XiInt && args[1] instanceof XiInt)
 				return new XiInt(((XiInt) args[0]).val()
 						& ((XiInt) args[1]).val());
+			if (args[0] instanceof XiSet && args[1] instanceof XiSet)
+				return ((XiSet) args[0]).intersection((XiSet) args[1]);
 			return new XiInt((!args[0].isEmpty()) && (!args[1].isEmpty()));
 		case OR:
 			if (args[0] instanceof XiInt && args[1] instanceof XiInt)
 				return new XiInt(((XiInt) args[0]).val()
 						| ((XiInt) args[1]).val());
+			if (args[0] instanceof XiSet && args[1] instanceof XiSet)
+				return ((XiSet) args[0]).union((XiSet) args[1]);
 			return new XiInt((!args[0].isEmpty()) || (!args[1].isEmpty()));
 		case XOR:
 			if (args[0] instanceof XiInt && args[1] instanceof XiInt)
 				return new XiInt(((XiInt) args[0]).val()
 						^ ((XiInt) args[1]).val());
+			if (args[0] instanceof XiSet && args[1] instanceof XiSet)
+				return ((XiSet) args[0]).difference((XiSet) args[1], true);
 			return new XiInt((!args[0].isEmpty()) ^ (!args[1].isEmpty()));
 		case RSHIFT:
 			if (args[0] instanceof ListWrapper)
