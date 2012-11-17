@@ -2,6 +2,7 @@ package xi.datatypes.collections;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import xi.datatypes.DataType;
@@ -58,6 +59,14 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 		return length();
 	}
 
+	public XiList asList() {
+		return new XiList(new ArrayList<DataType>(collection));
+	}
+	
+	public XiSet asSet() {
+		return new XiSet(new HashSet<DataType>(collection));
+	}
+	
 	@Override
 	public boolean isEmpty() {
 		return collection.isEmpty();

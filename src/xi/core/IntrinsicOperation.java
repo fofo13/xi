@@ -261,11 +261,11 @@ public enum IntrinsicOperation implements Operation {
 		case FLOAT:
 			return XiFloat.parse(args[0].toString());
 		case LIST:
-			return ((XiString) args[0]).toList();
+			return ((CollectionWrapper<?>) args[0]).asList();
 		case SET:
 			if (args[0] instanceof XiDictionary)
 				return ((XiDictionary) args[0]).keySet();
-			return new XiSet((ListWrapper) args[0]);
+			return ((CollectionWrapper<?>) args[0]).asSet();
 		case DICT:
 			return new XiDictionary();
 		case CMPLX:
