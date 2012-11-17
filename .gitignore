@@ -7,6 +7,8 @@ Icon?
 ehthumbs.db
 Thumbs.db
 
-test/
-.classpath
 .settings/
+.project
+.classpath
+bin/
+test/
