@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 
+import xi.core.IntrinsicOperation;
 import xi.datatypes.DataType;
 import xi.datatypes.XiBlock;
 import xi.datatypes.XiVar;
+import xi.datatypes.numeric.XiInt;
 
 public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 		DataType implements Iterable<DataType> {
@@ -51,6 +54,17 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 		return instantiate(col);
 	}
 
+	public DataType sum() {
+		if (isEmpty())
+			return new XiInt(0);
+		List<DataType> list = new ArrayList<DataType>(collection);
+		DataType d = list.get(0);
+		for (int i = 1; i < collection.size(); i++)
+			d = IntrinsicOperation.ADD.evaluate(new DataType[] { d, list.get(i) },
+					null);
+		return d;
+	}
+	
 	public boolean contains(DataType data) {
 		return collection.contains(data);
 	}

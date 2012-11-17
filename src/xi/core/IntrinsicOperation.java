@@ -177,7 +177,7 @@ public enum IntrinsicOperation implements Operation {
 		case RANGE:
 			return new XiList(((XiInt) args[0]).val());
 		case SUM:
-			return ((XiList) args[0]).sum();
+			return ((CollectionWrapper<?>) args[0]).sum();
 		case RAND:
 			if (args[0] instanceof ListWrapper)
 				return ((ListWrapper) args[0]).shuffle();
