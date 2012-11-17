@@ -49,6 +49,10 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 		return instantiate(col);
 	}
 
+	public boolean contains(DataType data) {
+		return collection.contains(data);
+	}
+	
 	public int size() {
 		return length();
 	}
