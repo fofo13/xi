@@ -186,11 +186,11 @@ public enum IntrinsicOperation implements Operation {
 			return ((ListWrapper) args[0]).cut((XiList) args[1]);
 		case FOR: {
 			String id = ((XiString) args[0]).toString();
-			ListWrapper list = (ListWrapper) args[1];
+			CollectionWrapper<?> col = (CollectionWrapper<?>) args[1];
 			XiBlock body = (XiBlock) args[2];
 			body.addVars(globals);
-			for (int i = 0; i < list.size(); i++) {
-				body.updateLocal(new XiVar(id, list.get(i)));
+			for (DataType data : col) {
+				body.updateLocal(new XiVar(id, data));
 				body.evaluate();
 			}
 			globals.addAll(body.locals());

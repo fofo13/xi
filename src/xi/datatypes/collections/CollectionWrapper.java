@@ -2,13 +2,14 @@ package xi.datatypes.collections;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import xi.datatypes.DataType;
 import xi.datatypes.XiBlock;
 import xi.datatypes.XiVar;
 
 public abstract class CollectionWrapper<T extends Collection<DataType>> extends
-		DataType {
+		DataType implements Iterable<DataType> {
 
 	protected T collection;
 
@@ -74,6 +75,11 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 		return 0;
 	}
 
+	@Override
+	public Iterator<DataType> iterator() {
+		return collection.iterator();
+	}
+	
 	@Override
 	public int hashCode() {
 		return collection.hashCode();
