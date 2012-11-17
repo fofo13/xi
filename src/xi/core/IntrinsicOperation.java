@@ -267,7 +267,7 @@ public enum IntrinsicOperation implements Operation {
 				return ((XiDictionary) args[0]).keySet();
 			return ((CollectionWrapper<?>) args[0]).asSet();
 		case DICT:
-			return new XiDictionary();
+			return new XiDictionary((CollectionWrapper<?>) args[0]);
 		case CMPLX:
 			double re = ((XiReal) args[0]).num().doubleValue();
 			double im = ((XiReal) args[1]).num().doubleValue();
