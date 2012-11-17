@@ -4,6 +4,7 @@ import java.util.Random;
 
 import xi.datatypes.DataType;
 import xi.datatypes.XiBlock;
+import xi.datatypes.XiDictionary;
 import xi.datatypes.XiFunc;
 import xi.datatypes.XiNull;
 import xi.datatypes.XiVar;
@@ -29,13 +30,15 @@ public enum IntrinsicOperation implements Operation {
 	IN("in", 2), AT("at", 2), MAP("@", 2), RANGE(",", 1), SUM("$", 1), RAND(
 			"rnd", 1), SORT("sort", 1), ZIP("zip", 1), CUT("cut", 2),
 
+	PUT("put", 3),
+
 	FOR("for", 3), IF("if", 3), DO("do", 2), WHILE("while", 2), DOWHILE(
 			"dowhile", 2),
 
 	EVAL("eval", 1),
 
 	STR("str", 1), INT("int", 1), FLOAT("float", 1), LIST("list", 1), SET(
-			"set", 1), CMPLX("cmplx", 2), FUNC("func", 2),
+			"set", 1), DICT("dict", 1), CMPLX("cmplx", 2), FUNC("func", 2),
 
 	PRINT("print", 1), PRINTLN("println", 1),
 
@@ -163,7 +166,9 @@ public enum IntrinsicOperation implements Operation {
 		case IN:
 			return new XiInt(((CollectionWrapper<?>) args[0]).contains(args[1]));
 		case AT:
-			return ((XiList) args[0]).get((XiInt) args[1]);
+			if (args[0] instanceof XiDictionary)
+				return ((XiDictionary) args[0]).get(args[1]);
+			return ((ListWrapper) args[0]).get((XiInt) args[1]);
 		case MAP: {
 			XiBlock body = (XiBlock) args[1];
 			body.addVars(globals);
@@ -185,6 +190,9 @@ public enum IntrinsicOperation implements Operation {
 			if (args[1] instanceof XiInt)
 				return ((ListWrapper) args[0]).cut((XiInt) args[1]);
 			return ((ListWrapper) args[0]).cut((XiList) args[1]);
+		case PUT:
+			((XiDictionary) args[0]).put(args[1], args[2]);
+			return XiNull.instance();
 		case FOR: {
 			String id = ((XiString) args[0]).toString();
 			CollectionWrapper<?> col = (CollectionWrapper<?>) args[1];
@@ -255,7 +263,11 @@ public enum IntrinsicOperation implements Operation {
 		case LIST:
 			return ((XiString) args[0]).toList();
 		case SET:
+			if (args[0] instanceof XiDictionary)
+				return ((XiDictionary) args[0]).keySet();
 			return new XiSet((ListWrapper) args[0]);
+		case DICT:
+			return new XiDictionary();
 		case CMPLX:
 			double re = ((XiReal) args[0]).num().doubleValue();
 			double im = ((XiReal) args[1]).num().doubleValue();
