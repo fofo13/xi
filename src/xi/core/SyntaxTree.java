@@ -35,6 +35,9 @@ public class SyntaxTree {
 	}
 
 	private static Node create(List<Node> nodes) {
+		if (nodes.isEmpty())
+			throw new RuntimeException("Invalid number of arguments specified.");
+		
 		Node node = nodes.remove(0);
 		
 		for (int i = 0; i < node.numChildren(); i++)

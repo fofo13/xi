@@ -13,6 +13,7 @@ import xi.datatypes.collections.XiList;
 import xi.datatypes.collections.XiSet;
 import xi.datatypes.collections.XiString;
 import xi.datatypes.numeric.XiComplex;
+import xi.datatypes.numeric.XiFloat;
 import xi.datatypes.numeric.XiInt;
 import xi.datatypes.numeric.XiNum;
 import xi.datatypes.numeric.XiReal;
@@ -33,8 +34,8 @@ public enum IntrinsicOperation implements Operation {
 
 	EVAL("eval", 1),
 
-	STR("str", 1), INT("int", 1), LIST("list", 1), SET("set", 1), CMPLX(
-			"cmplx", 2), FUNC("func", 2),
+	STR("str", 1), INT("int", 1), FLOAT("float", 1), LIST("list", 1), SET(
+			"set", 1), CMPLX("cmplx", 2), FUNC("func", 2),
 
 	PRINT("print", 1), PRINTLN("println", 1),
 
@@ -249,6 +250,8 @@ public enum IntrinsicOperation implements Operation {
 			return new XiString(args[0].toString());
 		case INT:
 			return XiInt.parse(args[0].toString());
+		case FLOAT:
+			return XiFloat.parse(args[0].toString());
 		case LIST:
 			return ((XiString) args[0]).toList();
 		case SET:
