@@ -19,30 +19,22 @@ import xi.nodes.VarNode;
 public class Parser {
 
 	public static String[] splitOnSemiColons(String exp) {
-		List<String> split = new ArrayList<String>(Arrays.asList(exp.split(";")));
-
-		List<String> tokens = new ArrayList<String>();
-
-		while (!split.isEmpty()) {
-			String token = split.remove(0);
-			while (isIncomplete(token)) {
-				token += ";" + split.remove(0);
-			}
-			tokens.add(token.trim());
-		}
-
-		return tokens.toArray(new String[tokens.size()]);
+		return generateTokenArray(
+				new ArrayList<String>(Arrays.asList(exp.split(";"))), ";");
 	}
 
 	public static String[] tokenize(String exp) {
-		List<String> split = new ArrayList<String>(Arrays.asList(exp.split("\\s+")));
+		return generateTokenArray(
+				new ArrayList<String>(Arrays.asList(exp.split("\\s+"))), " ");
+	}
 
+	private static String[] generateTokenArray(List<String> split, String delim) {
 		List<String> tokens = new ArrayList<String>();
 
 		while (!split.isEmpty()) {
 			String token = split.remove(0);
 			while (isIncomplete(token)) {
-				token += " " + split.remove(0);
+				token += delim + split.remove(0);
 			}
 			tokens.add(token.trim());
 		}
@@ -50,24 +42,17 @@ public class Parser {
 		return tokens.toArray(new String[tokens.size()]);
 	}
 
-	// TODO - this is in bad shape now, will fix it later
 	public static boolean containsAssignment(String exp) {
 		String[] split = exp.split(":=(?![^\\{]*\\})");
 
 		if (split.length == 1)
 			return false;
 
-		int a = 0, b = 0;
-		for (int i = 0; i < split.length; i++) {
-			String line = split[i];
-			a += line.replace("}", "").length()
-					- line.replace("{", "").length();
-			b += line.length() - line.replace("\"", "").length();
-			if (a == 0 && b % 2 == 0) {
+		for (String line : split)
+			if ((line.replace("}", "").length()
+					- line.replace("{", "").length() == 0)
+					&& ((line.length() - line.replace("\"", "").length()) % 2 == 0))
 				return true;
-			}
-			a = b = 0;
-		}
 
 		return false;
 	}
@@ -101,7 +86,7 @@ public class Parser {
 			return new OperationNode(IntrinsicOperation.parse(exp), cache);
 		if (exp.matches("\\D.*+")) {
 			if (cache.get(exp) instanceof XiFunc)
-				return new OperationNode((XiFunc)cache.get(exp), cache);
+				return new OperationNode((XiFunc) cache.get(exp), cache);
 			return new VarNode(exp, cache);
 		}
 		throw new RuntimeException("Cannot parse expression: " + exp);
