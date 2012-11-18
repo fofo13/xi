@@ -3,7 +3,6 @@ package xi.datatypes;
 import java.util.HashMap;
 import java.util.Map;
 
-import xi.datatypes.XiNull;
 import xi.datatypes.collections.CollectionWrapper;
 import xi.datatypes.collections.XiList;
 import xi.datatypes.collections.XiSet;
