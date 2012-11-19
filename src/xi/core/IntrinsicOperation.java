@@ -273,7 +273,7 @@ public enum IntrinsicOperation implements Operation {
 			double im = ((XiReal) args[1]).num().doubleValue();
 			return new XiComplex(re, im);
 		case FUNC:
-			return new XiFunc((XiBlock) args[0], ((XiInt) args[1]).val());
+			return new XiFunc((XiList) args[0], (XiBlock) args[1]);
 		case PRINT:
 			System.out.print(args[0]);
 			return XiNull.instance();

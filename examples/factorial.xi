@@ -1,9 +1,9 @@
-factorial := func {
-	n := 1
-	for "i" , $1 {
-		n := * n + i 1
+factorial := func ["n"] {
+	k := 1
+	for "i" , n {
+		k := * k + i 1
 	}
-	n
-} 1
+	k
+}
 
-for "i" , 5 {println factorial i}
+for "i" , 10 {println factorial i}
