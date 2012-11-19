@@ -68,7 +68,7 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 	}
 
 	public CollectionWrapper<List<DataType>> cut(XiList params) {
-		if (params.length() > 3)
+		if (params.length() != 2 && params.length() != 3)
 			throw new RuntimeException(
 					"Argument of cut function must be of length 2 or 3.");
 
@@ -105,7 +105,7 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 	}
 
 	public void del(XiList params) {
-		if (params.length() > 3)
+		if (params.length() != 2 && params.length() != 3)
 			throw new RuntimeException(
 					"Argument of cut function must be of length 2 or 3.");
 
@@ -125,7 +125,6 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 		for (int i = m; i < n; i += step)
 			indexes.add(i);
 		Collections.reverse(indexes);
-		//System.out.println(indexes);
 		
 		for (int i : indexes)
 			collection.remove(i);
@@ -133,6 +132,28 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 
 	public void del(XiInt params) {
 		collection.remove(params.val());
+	}
+	
+	public static XiList range(XiList params) {
+		if (params.length() != 2 && params.length() != 3)
+			throw new RuntimeException(
+					"Argument of cut function must be of length 2 or 3.");
+
+		int m = ((XiInt) params.get(0)).val();
+		int n = ((XiInt) params.get(1)).val();
+		int step = 1;
+
+		if (params.length() == 3)
+			step = ((XiInt) params.get(2)).val();
+
+		if (step == 0)
+			throw new RuntimeException("Cannot have step length of 0.");
+		
+		List<DataType> list = new ArrayList<DataType>();
+		for (int i = m; i < n; i += step)
+			list.add(new XiInt(i));
+		
+		return new XiList(list);
 	}
 
 }

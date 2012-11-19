@@ -176,6 +176,8 @@ public enum IntrinsicOperation implements Operation {
 			return ((CollectionWrapper<?>) args[0]).map(body);
 		}
 		case RANGE:
+			if (args[0] instanceof XiList)
+				return XiList.range((XiList) args[0]);
 			return new XiList(((XiInt) args[0]).val());
 		case SUM:
 			return ((CollectionWrapper<?>) args[0]).sum();
