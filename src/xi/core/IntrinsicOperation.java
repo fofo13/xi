@@ -28,7 +28,8 @@ public enum IntrinsicOperation implements Operation {
 			"**", 2), TERN("?", 3),
 
 	IN("in", 2), AT("at", 2), MAP("@", 2), RANGE(",", 1), SUM("$", 1), RAND(
-			"rnd", 1), SORT("sort", 1), ZIP("zip", 1), CUT("cut", 2), DEL("del", 2),
+			"rnd", 1), SORT("sort", 1), ZIP("zip", 1), CUT("cut", 2), DEL(
+			"del", 2),
 
 	PUT("put", 3),
 
@@ -252,6 +253,10 @@ public enum IntrinsicOperation implements Operation {
 			return XiNull.instance();
 		}
 		case EVAL: {
+			if (args[0] instanceof XiString)
+				return evaluate(new DataType[] { new XiBlock(
+						"{" + ((XiString) args[0]).toString() + "}") }, globals);
+
 			XiBlock block = (XiBlock) args[0];
 			block.addVars(globals);
 			try {
