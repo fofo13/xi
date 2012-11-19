@@ -28,7 +28,7 @@ public enum IntrinsicOperation implements Operation {
 			"**", 2), TERN("?", 3),
 
 	IN("in", 2), AT("at", 2), MAP("@", 2), RANGE(",", 1), SUM("$", 1), RAND(
-			"rnd", 1), SORT("sort", 1), ZIP("zip", 1), CUT("cut", 2),
+			"rnd", 1), SORT("sort", 1), ZIP("zip", 1), CUT("cut", 2), DEL("del", 2),
 
 	PUT("put", 3),
 
@@ -190,6 +190,12 @@ public enum IntrinsicOperation implements Operation {
 			if (args[1] instanceof XiInt)
 				return ((ListWrapper) args[0]).cut((XiInt) args[1]);
 			return ((ListWrapper) args[0]).cut((XiList) args[1]);
+		case DEL:
+			if (args[1] instanceof XiInt)
+				((ListWrapper) args[0]).del((XiInt) args[1]);
+			else
+				((ListWrapper) args[0]).del((XiList) args[1]);
+			return XiNull.instance();
 		case PUT:
 			((XiDictionary) args[0]).put(args[1], args[2]);
 			return XiNull.instance();

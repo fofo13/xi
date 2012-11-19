@@ -76,8 +76,8 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 		int n = ((XiInt) params.get(1)).val();
 		int step = 1;
 
-		n = n < 0 ? collection.size() + n : n;
 		m = m < 0 ? collection.size() + m : m;
+		n = n < 0 ? collection.size() + n : n;
 		if (params.length() == 3)
 			step = ((XiInt) params.get(2)).val();
 
@@ -102,6 +102,37 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 		for (int i = n; i < size(); i++)
 			newList.add(get(i));
 		return instantiate(newList);
+	}
+
+	public void del(XiList params) {
+		if (params.length() > 3)
+			throw new RuntimeException(
+					"Argument of cut function must be of length 2 or 3.");
+
+		int m = ((XiInt) params.get(0)).val();
+		int n = ((XiInt) params.get(1)).val();
+		int step = 1;
+
+		m = m < 0 ? collection.size() + m : m;
+		n = n < 0 ? collection.size() + n : n;
+		if (params.length() == 3)
+			step = ((XiInt) params.get(2)).val();
+
+		if (step == 0)
+			throw new RuntimeException("Cannot have step length of 0.");
+		
+		List<Integer> indexes = new ArrayList<Integer>();
+		for (int i = m; i < n; i += step)
+			indexes.add(i);
+		Collections.reverse(indexes);
+		//System.out.println(indexes);
+		
+		for (int i : indexes)
+			collection.remove(i);
+	}
+
+	public void del(XiInt params) {
+		collection.remove(params.val());
 	}
 
 }
