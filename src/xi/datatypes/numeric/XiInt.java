@@ -27,7 +27,7 @@ public class XiInt extends XiReal {
 
 	@Override
 	public int compareTo(DataType other) {
-		if (other instanceof XiFloat) {
+		if (other instanceof XiInt) {
 			Integer a = val.intValue();
 			Integer b = ((XiInt) other).num().intValue();
 			return a.compareTo(b);
