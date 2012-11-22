@@ -5,3 +5,7 @@ dotprod := func ["v1" "v2"] {
 vecadd := func ["v1" "v2"] {
 	@ ~ [v1 v2] {$ .}
 }
+
+veclen := func ["v1"] {
+	** $ @ v1 {** . 2} 0.5
+}
