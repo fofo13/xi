@@ -48,4 +48,9 @@ public class OperationNode implements Node {
 		return op.evaluate(arr, cache);
 	}
 	
+	@Override
+	public String toString() {
+		return op.toString();
+	}
+	
 }
