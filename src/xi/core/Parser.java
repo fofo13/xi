@@ -1,11 +1,12 @@
 package xi.core;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Queue;
 
 import xi.datatypes.XiBlock;
-import xi.datatypes.XiNull;
 import xi.datatypes.XiFunc;
 import xi.datatypes.collections.XiList;
 import xi.datatypes.collections.XiString;
@@ -30,11 +31,12 @@ public class Parser {
 
 	private static String[] generateTokenArray(List<String> split, String delim) {
 		List<String> tokens = new ArrayList<String>();
-
-		while (!split.isEmpty()) {
-			String token = split.remove(0);
+		Queue<String> queue = new ArrayDeque<String>(split);
+		
+		while (!queue.isEmpty()) {
+			String token = queue.poll();
 			while (isIncomplete(token)) {
-				token += delim + split.remove(0);
+				token += delim + queue.poll();
 			}
 			tokens.add(token.trim());
 		}
@@ -67,8 +69,6 @@ public class Parser {
 	}
 
 	public static Node parseNode(String exp, VariableCache cache) {
-		if (exp.equals("null"))
-			return new DataNode<XiNull>(XiNull.instance());
 		if (exp.matches("-?\\d+"))
 			return new DataNode<XiInt>(XiInt.parse(exp));
 		if (exp.matches("-?\\d+.\\d+"))
