@@ -41,7 +41,7 @@ public class VariableCache implements Set<XiVar> {
 	
 	@Override
 	public boolean addAll(Collection<? extends XiVar> c) {
-		for (XiVar v : c)
+		for (XiVar v : new HashSet<XiVar>(c))
 			add(v);
 		return true;
 	}
