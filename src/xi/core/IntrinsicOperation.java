@@ -21,6 +21,8 @@ import xi.datatypes.numeric.XiReal;
 
 public enum IntrinsicOperation implements Operation {
 
+	NULL("null", 0),
+	
 	NOT("!", 1), BITNOT("~", 1), ABS("\\", 1), ADD("+", 2), SUBTRACT("-", 2), MULTIPLY(
 			"*", 2), DIVIDE("/", 2), MODULUS("%", 2), EQ("=", 2), NEQ("!=", 2), GREATER(
 			">", 2), LESS("<", 2), GREATER_EQ(">=", 2), LESS_EQ("<=", 2), AND(
@@ -65,6 +67,8 @@ public enum IntrinsicOperation implements Operation {
 	@Override
 	public DataType evaluate(DataType[] args, VariableCache globals) {
 		switch (this) {
+		case NULL:
+			return XiNull.instance();
 		case NOT:
 			return new XiInt(args[0].isEmpty());
 		case BITNOT:
