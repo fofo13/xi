@@ -9,16 +9,20 @@ Descriptions of Certain Examples
 
 **hello.xi**  
 
-    println "hello world"
-    
+```ruby
+println "hello world"
+```
+ 
 Not much to say here - just a simple "hello world" program.
 
 ---
 
 **euler1.xi**
 
-    println $ / , 1000 {| ! % . 3 ! % . 5}
-  
+```ruby
+println $ / , 1000 {| ! % . 3 ! % . 5}
+```
+
 This is a solution to [Problem #1](http://projecteuler.net/problem=1) of [Project Euler](http://projecteuler.net). The problem reads as follows:
 
 >If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. The sum of these multiples is 23.
@@ -31,31 +35,35 @@ find the sum of this list using `$`, resulting in the desired answer.
 
 Equivalent code in Java would be:
 
-    public class Euler1 {
-	    public static void main(String[] args) {
-		    int sum = 0;
-		    for (int i = 1 ; i < 1000 ; i++)
-			    if (i % 3 == 0 || i % 5 == 0)
-				    sum += i;
-		    System.out.println(sum);
-	    }
-    }
+```java
+public class Euler1 {
+	public static void main(String[] args) {
+		int sum = 0;
+		for (int i = 1 ; i < 1000 ; i++)
+			if (i % 3 == 0 || i % 5 == 0)
+				sum += i;
+		System.out.println(sum);
+	}
+}
+```
 
 ---
 
 **fibonacci.xi**  
 
-    n := 5
-    println + "First " + n " Fibonacci numbers:"
+```ruby
+n := 5
+println + "First " + n " Fibonacci numbers:"
 
-    a := 0
-    b := 1
-    do n {
-	    c := a
-	    a := + a b
-	    b := c
-	    println b
-    }
+a := 0
+b := 1
+do n {
+    c := a
+	a := + a b
+	b := c
+	println b
+}
+```
     
 This code prints the first `n` terms of the Fibonacci sequence. We first define `a` and `b` to be the first and second terms of the sequence, respectively.
 Then we have a `do`-loop which performs `n` iterations, shifting `a` and `b` one step up the sequence and printing the appropriate term on each iteration.
