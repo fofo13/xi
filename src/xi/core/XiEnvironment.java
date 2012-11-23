@@ -16,8 +16,6 @@ public class XiEnvironment implements Closeable {
 
 	public XiEnvironment(VariableCache cache) {
 		globals = cache;
-		put("false := 0");
-		put("true := 1");
 	}
 
 	public XiEnvironment() {
@@ -50,6 +48,18 @@ public class XiEnvironment implements Closeable {
 		for (String exp : Parser.splitOnSemiColons(statement)) {
 			if (exp.isEmpty())
 				continue;
+			if (exp.startsWith("import ")) {
+				String name = exp.split("\\s+")[1].replace(".", "/") + ".xi";
+				try {
+					File file = new File(name);
+					XiEnvironment env = new XiEnvironment(file);
+					globals.addAll(env.globals());
+					env.close();
+				} catch (FileNotFoundException fnfe) {
+					throw new RuntimeException("Import could not be resolved: " + name);
+				}
+				return;
+			}
 			if (Parser.containsAssignment(exp)) {
 				int n = exp.indexOf(":=");
 				String[] split = new String[] { exp.substring(0, n),
