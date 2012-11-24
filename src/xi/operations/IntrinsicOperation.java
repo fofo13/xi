@@ -1,7 +1,8 @@
-package xi.core;
+package xi.operations;
 
 import java.util.Random;
 
+import xi.core.VariableCache;
 import xi.datatypes.DataType;
 import xi.datatypes.XiBlock;
 import xi.datatypes.XiDictionary;

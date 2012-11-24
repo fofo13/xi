@@ -1,5 +1,6 @@
-package xi.core;
+package xi.operations;
 
+import xi.core.VariableCache;
 import xi.datatypes.DataType;
 
 public interface Operation {

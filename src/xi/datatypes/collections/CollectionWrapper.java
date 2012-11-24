@@ -6,11 +6,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import xi.core.IntrinsicOperation;
 import xi.datatypes.DataType;
 import xi.datatypes.XiBlock;
 import xi.datatypes.XiVar;
 import xi.datatypes.numeric.XiInt;
+import xi.operations.IntrinsicOperation;
 
 public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 		DataType implements Iterable<DataType> {

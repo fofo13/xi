@@ -16,6 +16,7 @@ import xi.nodes.DataNode;
 import xi.nodes.Node;
 import xi.nodes.OperationNode;
 import xi.nodes.VarNode;
+import xi.operations.IntrinsicOperation;
 
 public class Parser {
 

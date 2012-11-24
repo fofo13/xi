@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import xi.core.Operation;
 import xi.core.VariableCache;
 import xi.datatypes.DataType;
+import xi.operations.Operation;
 
 public class OperationNode implements Node {
 	

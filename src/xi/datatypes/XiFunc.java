@@ -1,9 +1,9 @@
 package xi.datatypes;
 
-import xi.core.Operation;
 import xi.core.VariableCache;
 import xi.datatypes.collections.XiList;
 import xi.datatypes.collections.XiString;
+import xi.operations.Operation;
 
 public class XiFunc extends DataType implements Operation {
 
