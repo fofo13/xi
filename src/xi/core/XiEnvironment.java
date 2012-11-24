@@ -48,7 +48,7 @@ public class XiEnvironment implements Closeable {
 		for (String exp : Parser.splitOnSemiColons(statement)) {
 			if (exp.isEmpty())
 				continue;
-			if (exp.startsWith("import ")) {
+			if (exp.matches("import\\s+\\S+")) {
 				String name = exp.split("\\s+")[1].replace(".", "/") + ".xi";
 				try {
 					File file = new File(name);
