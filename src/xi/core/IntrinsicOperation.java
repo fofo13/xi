@@ -324,5 +324,10 @@ public enum IntrinsicOperation implements Operation {
 				return op;
 		throw new IllegalArgumentException("Invalid identifier: " + id);
 	}
+	
+	@Override
+	public String toString() {
+		return id;
+	}
 
 }

@@ -44,7 +44,11 @@ public class OperationNode implements Node {
 	public DataType evaluate() {
 		DataType[] arr = new DataType[children.size()];
 		for (int i = 0 ; i < arr.length ; i++)
-			arr[i] = children.get(i).evaluate();
+			try {
+				arr[i] = children.get(i).evaluate();
+			} catch (ClassCastException cce) {
+				throw new RuntimeException("Invalid argument types for operator: " + children.get(i));
+			}
 		return op.evaluate(arr, cache);
 	}
 	
