@@ -23,7 +23,7 @@ import xi.datatypes.numeric.XiReal;
 public enum IntrinsicOperation implements Operation {
 
 	NULL("null", 0),
-	
+
 	NOT("!", 1), BITNOT("~", 1), ABS("\\", 1), ADD("+", 2), SUBTRACT("-", 2), MULTIPLY(
 			"*", 2), DIVIDE("/", 2), MODULUS("%", 2), EQ("=", 2), NEQ("!=", 2), GREATER(
 			">", 2), LESS("<", 2), GREATER_EQ(">=", 2), LESS_EQ("<=", 2), AND(
@@ -203,7 +203,10 @@ public enum IntrinsicOperation implements Operation {
 				((ListWrapper) args[0]).del((XiList) args[1]);
 			return XiNull.instance();
 		case PUT:
-			((XiDictionary) args[0]).put(args[1], args[2]);
+			if (args[0] instanceof ListWrapper)
+				((ListWrapper) args[0]).put((XiInt) args[1], args[2]);
+			else
+				((XiDictionary) args[0]).put(args[1], args[2]);
 			return XiNull.instance();
 		case FOR: {
 			String id = ((XiString) args[0]).toString();
@@ -325,7 +328,7 @@ public enum IntrinsicOperation implements Operation {
 				return op;
 		throw new IllegalArgumentException("Invalid identifier: " + id);
 	}
-	
+
 	@Override
 	public String toString() {
 		return id;

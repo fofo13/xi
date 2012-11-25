@@ -155,5 +155,9 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 		
 		return new XiList(list);
 	}
+	
+	public void put(XiInt index, DataType data) {
+		collection.set(index.val(), data);
+	}
 
 }
