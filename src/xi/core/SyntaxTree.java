@@ -9,39 +9,41 @@ import xi.nodes.Node;
 public class SyntaxTree {
 
 	private Node head;
-	private String[] tokens;
-
-	private VariableCache cache;
-
+	private Queue<Node> nodes;
+	
 	public SyntaxTree(String exp, VariableCache cache) {
-		tokens = Parser.tokenize(exp);
-		this.cache = cache;
-		head = parse();
+		String[] tokens = Parser.tokenize(exp);
+		nodes = new ArrayDeque<Node>(tokens.length);
+		
+		for (String tok : tokens)
+			nodes.add(Parser.parseNode(tok, cache));
 	}
 
 	public SyntaxTree(String exp) {
 		this(exp, new VariableCache());
 	}
+	
+	public Queue<Node> nodes() {
+		return nodes;
+	}
 
 	public DataType evaluate() {
+		head = parse();
 		return head.evaluate();
 	}
 
 	private Node parse() {
-		Queue<Node> nodes = new ArrayDeque<Node>(tokens.length);
-		for (String tok : tokens)
-			nodes.add(Parser.parseNode(tok, cache));
-		return create(nodes);
+		return create();
 	}
 
-	private static Node create(Queue<Node> nodes) {
+	private Node create() {
 		if (nodes.isEmpty())
 			throw new RuntimeException("Invalid number of arguments specified.");
 
 		Node node = nodes.poll();
 
 		for (int i = 0; i < node.numChildren(); i++)
-			node.addChild(create(nodes));
+			node.addChild(create());
 
 		return node;
 	}

@@ -3,6 +3,8 @@ package xi.core;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.LineNumberReader;
 import java.util.Scanner;
 
 import xi.datatypes.DataType;
@@ -24,15 +26,16 @@ public class XiEnvironment implements Closeable {
 
 	public XiEnvironment(File file) throws FileNotFoundException {
 		this();
-		Scanner scan = new Scanner(file);
+		LineNumberReader r = new LineNumberReader(new FileReader(file));
+		Scanner scan = new Scanner(r);
 		while (scan.hasNext()) {
 			String exp = scan.nextLine();
 			while (Parser.isIncomplete(exp)) {
 				exp += scan.nextLine();
-				if (! exp.endsWith(";"))
+				if (!exp.endsWith(";"))
 					exp += ";";
 			}
-			put(exp);
+				put(exp);
 		}
 		scan.close();
 	}
@@ -56,7 +59,8 @@ public class XiEnvironment implements Closeable {
 					globals.addAll(env.globals());
 					env.close();
 				} catch (FileNotFoundException fnfe) {
-					throw new RuntimeException("Import could not be resolved: " + name);
+					throw new RuntimeException("Import could not be resolved: "
+							+ name);
 				}
 				return;
 			}
@@ -66,8 +70,9 @@ public class XiEnvironment implements Closeable {
 						exp.substring(n + 2) };
 				globals.add(new XiVar(split[0].trim(), new SyntaxTree(split[1]
 						.trim(), globals).evaluate()));
-			} else
+			} else {
 				last = (new SyntaxTree(exp, globals)).evaluate();
+			}
 		}
 	}
 

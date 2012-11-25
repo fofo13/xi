@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import xi.core.Parser;
+import xi.core.SyntaxTree;
 import xi.core.VariableCache;
 import xi.datatypes.DataType;
 import xi.datatypes.numeric.XiInt;
@@ -29,11 +30,18 @@ public class XiList extends ListWrapper {
 		if (exp.equals("[]"))
 			return new XiList();
 
-		String[] split = Parser.tokenize(exp.substring(1, exp.length() - 1)
-				.trim());
-		List<DataType> list = new ArrayList<DataType>(split.length);
+		String[] split = Parser.splitOnSemiColons(exp.substring(1, exp.length() - 1).trim());
+		StringBuilder result = new StringBuilder(split.length);
 		for (String s : split)
-			list.add(Parser.parseNode(s, cache).evaluate());
+			result.append(s + " ");
+		
+		SyntaxTree t = new SyntaxTree(result.toString());
+
+		List<DataType> list = new ArrayList<DataType>();
+		do {
+			list.add(t.evaluate());
+		} while (! t.nodes().isEmpty());
+		
 		return new XiList(list);
 	}
 
