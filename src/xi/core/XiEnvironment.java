@@ -38,8 +38,7 @@ public class XiEnvironment implements Closeable {
 			try {
 				put(exp);
 			} catch (Exception e) {
-				System.err.println("Line " + r.getLineNumber() + ": "
-						+ e.getMessage());
+				System.err.println("Error: " + e.getMessage());
 			}
 		}
 		scan.close();
