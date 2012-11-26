@@ -35,7 +35,7 @@ public class XiList extends ListWrapper {
 		for (String s : split)
 			result.append(s + " ");
 		
-		SyntaxTree t = new SyntaxTree(result.toString());
+		SyntaxTree t = new SyntaxTree(result.toString(), cache);
 
 		List<DataType> list = new ArrayList<DataType>();
 		do {
