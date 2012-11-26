@@ -67,6 +67,18 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 		return instantiate(newList);
 	}
 
+	public CollectionWrapper<List<DataType>> zip() {
+		int n = ((ListWrapper) collection.get(0)).length();
+		List<DataType> newList = new ArrayList<DataType>(n);
+		for (int i = 0; i < n; i++) {
+			List<DataType> sub = new ArrayList<DataType>(length());
+			for (int j = 0; j < length(); j++)
+				sub.add(((ListWrapper) collection.get(j)).get(i));
+			newList.add(instantiate(sub));
+		}
+		return instantiate(newList);
+	}
+	
 	public CollectionWrapper<List<DataType>> cut(XiList params) {
 		if (params.length() != 2 && params.length() != 3)
 			throw new RuntimeException(

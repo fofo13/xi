@@ -55,18 +55,6 @@ public class XiList extends ListWrapper {
 		return new XiList(newList);
 	}
 
-	public XiList zip() {
-		int n = ((XiList) collection.get(0)).length();
-		List<DataType> newList = new ArrayList<DataType>(n);
-		for (int i = 0; i < n; i++) {
-			List<DataType> sub = new ArrayList<DataType>(length());
-			for (int j = 0; j < length(); j++)
-				sub.add(((XiList) collection.get(j)).get(i));
-			newList.add(new XiList(sub));
-		}
-		return new XiList(newList);
-	}
-
 	@Override
 	public CollectionWrapper<List<DataType>> instantiate(
 			Collection<DataType> col) {

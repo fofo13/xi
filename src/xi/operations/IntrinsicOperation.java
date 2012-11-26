@@ -31,8 +31,8 @@ public enum IntrinsicOperation implements Operation {
 			"**", 2), TERN("?", 3),
 
 	IN("in", 2), AT("at", 2), MAP("@", 2), RANGE(",", 1), SUM("$", 1), RAND(
-			"rnd", 1), SORT("sort", 1), ZIP("zip", 1), CUT("cut", 2), DEL(
-			"del", 2), PUT("put", 3),
+			"rnd", 1), SORT("sort", 1), CUT("cut", 2), DEL("del", 2), PUT(
+			"put", 3),
 
 	FOR("for", 3), IF("if", 3), DO("do", 2), WHILE("while", 2), DOWHILE(
 			"dowhile", 2),
@@ -73,8 +73,8 @@ public enum IntrinsicOperation implements Operation {
 		case NOT:
 			return new XiInt(args[0].isEmpty());
 		case BITNOT:
-			if (args[0] instanceof XiList)
-				return ((XiList) args[0]).zip();
+			if (args[0] instanceof ListWrapper)
+				return ((ListWrapper) args[0]).zip();
 			if (args[0] instanceof XiBlock) {
 				XiBlock block = (XiBlock) args[0];
 				block.addVars(globals);
@@ -190,8 +190,6 @@ public enum IntrinsicOperation implements Operation {
 			return new XiInt((new Random()).nextInt(((XiInt) args[0]).val()));
 		case SORT:
 			return ((ListWrapper) args[0]).sort();
-		case ZIP:
-			return ((XiList) args[0]).zip();
 		case CUT:
 			if (args[1] instanceof XiInt)
 				return ((ListWrapper) args[0]).cut((XiInt) args[1]);
