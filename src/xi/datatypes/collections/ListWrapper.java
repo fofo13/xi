@@ -78,7 +78,7 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 		}
 		return instantiate(newList);
 	}
-	
+
 	public CollectionWrapper<List<DataType>> cut(XiList params) {
 		if (params.length() != 2 && params.length() != 3)
 			throw new RuntimeException(
@@ -132,12 +132,12 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 
 		if (step == 0)
 			throw new RuntimeException("Cannot have step length of 0.");
-		
+
 		List<Integer> indexes = new ArrayList<Integer>();
 		for (int i = m; i < n; i += step)
 			indexes.add(i);
 		Collections.reverse(indexes);
-		
+
 		for (int i : indexes)
 			collection.remove(i);
 	}
@@ -145,7 +145,7 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 	public void del(XiInt params) {
 		collection.remove(params.val());
 	}
-	
+
 	public static XiList range(XiList params) {
 		if (params.length() != 2 && params.length() != 3)
 			throw new RuntimeException(
@@ -160,14 +160,14 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 
 		if (step == 0)
 			throw new RuntimeException("Cannot have step length of 0.");
-		
+
 		List<DataType> list = new ArrayList<DataType>();
 		for (int i = m; i < n; i += step)
 			list.add(new XiInt(i));
-		
+
 		return new XiList(list);
 	}
-	
+
 	public void put(XiInt index, DataType data) {
 		collection.set(index.val(), data);
 	}

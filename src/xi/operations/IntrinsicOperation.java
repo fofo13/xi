@@ -44,7 +44,7 @@ public enum IntrinsicOperation implements Operation {
 
 	PRINT("print", 1), PRINTLN("println", 1),
 
-	SLEEP("slp", 1),
+	SLEEP("sleep", 1),
 
 	HASH("hash", 1), LEN("len", 1);
 
