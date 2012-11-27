@@ -1,7 +1,7 @@
 package xi.datatypes;
 
 import xi.core.VariableCache;
-import xi.datatypes.collections.XiList;
+import xi.datatypes.collections.XiTuple;
 import xi.datatypes.collections.XiString;
 import xi.operations.Operation;
 
@@ -10,7 +10,7 @@ public class XiFunc extends DataType implements Operation {
 	private String[] identifiers;
 	private XiBlock body;
 
-	public XiFunc(XiList list, XiBlock body) {
+	public XiFunc(XiTuple list, XiBlock body) {
 		identifiers = new String[list.length()];
 		for (int i = 0; i < identifiers.length; i++)
 			identifiers[i] = ((XiString) list.get(i)).toString();

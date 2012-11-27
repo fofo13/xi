@@ -14,6 +14,7 @@ import xi.datatypes.collections.ListWrapper;
 import xi.datatypes.collections.XiList;
 import xi.datatypes.collections.XiSet;
 import xi.datatypes.collections.XiString;
+import xi.datatypes.collections.XiTuple;
 import xi.datatypes.numeric.XiComplex;
 import xi.datatypes.numeric.XiFloat;
 import xi.datatypes.numeric.XiInt;
@@ -290,7 +291,7 @@ public enum IntrinsicOperation implements Operation {
 			double im = ((XiReal) args[1]).num().doubleValue();
 			return new XiComplex(re, im);
 		case FUNC:
-			return new XiFunc((XiList) args[0], (XiBlock) args[1]);
+			return new XiFunc((XiTuple) args[0], (XiBlock) args[1]);
 		case PRINT:
 			System.out.print(args[0]);
 			return XiNull.instance();

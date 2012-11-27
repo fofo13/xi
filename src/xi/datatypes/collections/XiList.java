@@ -30,18 +30,19 @@ public class XiList extends ListWrapper {
 		if (exp.matches("[\\[\\(]\\s+[\\)\\]]"))
 			return new XiList();
 
-		String[] split = Parser.splitOnSemiColons(exp.substring(1, exp.length() - 1).trim());
+		String[] split = Parser.splitOnSemiColons(exp.substring(1,
+				exp.length() - 1).trim());
 		StringBuilder result = new StringBuilder(split.length);
 		for (String s : split)
 			result.append(s + " ");
-		
+
 		SyntaxTree t = new SyntaxTree(result.toString(), cache);
 
 		List<DataType> list = new ArrayList<DataType>();
 		do {
 			list.add(t.evaluate());
-		} while (! t.nodes().isEmpty());
-		
+		} while (!t.nodes().isEmpty());
+
 		return new XiList(list);
 	}
 
@@ -60,7 +61,7 @@ public class XiList extends ListWrapper {
 			Collection<DataType> col) {
 		return new XiList(new ArrayList<DataType>(col));
 	}
-	
+
 	public XiTuple asTuple() {
 		return new XiTuple(collection);
 	}
