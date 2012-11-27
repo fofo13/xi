@@ -27,7 +27,7 @@ public class XiList extends ListWrapper {
 	}
 
 	public static XiList parse(String exp, VariableCache cache) {
-		if (exp.equals("[]"))
+		if (exp.matches("[\\[\\(]\\s+[\\)\\]]"))
 			return new XiList();
 
 		String[] split = Parser.splitOnSemiColons(exp.substring(1, exp.length() - 1).trim());
@@ -59,6 +59,10 @@ public class XiList extends ListWrapper {
 	public CollectionWrapper<List<DataType>> instantiate(
 			Collection<DataType> col) {
 		return new XiList(new ArrayList<DataType>(col));
+	}
+	
+	public XiTuple asTuple() {
+		return new XiTuple(collection);
 	}
 
 }

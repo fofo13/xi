@@ -9,6 +9,7 @@ import java.util.Queue;
 import xi.datatypes.XiBlock;
 import xi.datatypes.XiFunc;
 import xi.datatypes.collections.XiList;
+import xi.datatypes.collections.XiTuple;
 import xi.datatypes.collections.XiString;
 import xi.datatypes.numeric.XiFloat;
 import xi.datatypes.numeric.XiInt;
@@ -33,7 +34,7 @@ public class Parser {
 	private static String[] generateTokenArray(List<String> split, String delim) {
 		List<String> tokens = new ArrayList<String>();
 		Queue<String> queue = new ArrayDeque<String>(split);
-		
+
 		while (!queue.isEmpty()) {
 			String token = queue.poll();
 			while (isIncomplete(token)) {
@@ -65,6 +66,8 @@ public class Parser {
 		return (exp.length() - exp.replace("\"", "").length()) % 2 == 1
 				|| mod.replace("]", "").length()
 						- mod.replace("[", "").length() != 0
+				|| mod.replace(")", "").length()
+						- mod.replace("(", "").length() != 0
 				|| mod.replace("}", "").length()
 						- mod.replace("{", "").length() != 0;
 	}
@@ -76,6 +79,8 @@ public class Parser {
 			return new DataNode<XiFloat>(XiFloat.parse(exp));
 		if (exp.startsWith("["))
 			return new DataNode<XiList>(XiList.parse(exp, cache));
+		if (exp.startsWith("("))
+			return new DataNode<XiTuple>(XiTuple.parse(exp, cache));
 		if (exp.startsWith("{")) {
 			XiBlock block = new XiBlock(exp);
 			block.addVars(cache);

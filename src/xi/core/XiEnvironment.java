@@ -55,31 +55,35 @@ public class XiEnvironment implements Closeable {
 		for (String exp : Parser.splitOnSemiColons(statement)) {
 			if (exp.isEmpty())
 				continue;
-			if (exp.matches("import\\s+\\S+")) {
-				String name = exp.split("\\s+")[1].replace(".", "/") + ".xi";
-				try {
-					File file = new File(name);
-					XiEnvironment env = new XiEnvironment(file);
-					globals.addAll(env.globals());
-					env.close();
-				} catch (FileNotFoundException fnfe) {
-					throw new RuntimeException("Import could not be resolved: "
-							+ name);
-				}
-				return;
-			}
-			if (Parser.containsAssignment(exp)) {
-				int n = exp.indexOf(":=");
-				String[] split = new String[] { exp.substring(0, n),
-						exp.substring(n + 2) };
-				globals.add(new XiVar(split[0].trim(), new SyntaxTree(split[1]
-						.trim(), globals).evaluate()));
-			} else {
-				last = (new SyntaxTree(exp, globals)).evaluate();
-			}
+			process(exp);
 		}
 	}
 
+	private void process(String exp) {
+		if (exp.matches("import\\s+\\S+")) {
+			String name = exp.split("\\s+")[1].replace(".", "/") + ".xi";
+			try {
+				File file = new File(name);
+				XiEnvironment env = new XiEnvironment(file);
+				globals.addAll(env.globals());
+				env.close();
+			} catch (FileNotFoundException fnfe) {
+				throw new RuntimeException("Import could not be resolved: "
+						+ name);
+			}
+			return;
+		}
+		if (Parser.containsAssignment(exp)) {
+			int n = exp.indexOf(":=");
+			String[] split = new String[] { exp.substring(0, n),
+					exp.substring(n + 2) };
+			globals.add(new XiVar(split[0].trim(), new SyntaxTree(split[1]
+					.trim(), globals).evaluate()));
+		} else {
+			last = (new SyntaxTree(exp, globals)).evaluate();
+		}
+	}
+	
 	public DataType last() {
 		return last;
 	}
