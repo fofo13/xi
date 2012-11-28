@@ -1,5 +1,7 @@
 package xi.datatypes.numeric;
 
+import xi.datatypes.DataType;
+
 public abstract class XiReal extends XiNum {
 	
 	protected Number val;
@@ -10,6 +12,13 @@ public abstract class XiReal extends XiNum {
 	
 	public Number num() {
 		return val;
+	}
+	
+	@Override
+	public int compareTo(DataType other) {
+		if (! (other instanceof XiReal))
+			return 0;
+		return new Double(val.doubleValue()).compareTo(((XiReal)other).num().doubleValue());
 	}
 	
 	@Override

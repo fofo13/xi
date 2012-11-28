@@ -121,20 +121,20 @@ public enum IntrinsicOperation implements Operation {
 			if (args[0] instanceof XiSet && args[1] instanceof XiSet)
 				return new XiInt((!args[0].equals(args[1]))
 						&& ((XiSet) args[0]).superset((XiSet) args[1]));
-			return new XiInt(((XiInt) args[0]).val() > ((XiInt) args[1]).val());
+			return new XiInt(args[0].compareTo(args[1]) > 0);
 		case LESS:
 			if (args[0] instanceof XiSet && args[1] instanceof XiSet)
 				return new XiInt((!args[0].equals(args[1]))
 						&& ((XiSet) args[0]).subset((XiSet) args[1]));
-			return new XiInt(((XiInt) args[0]).val() < ((XiInt) args[1]).val());
+			return new XiInt(args[0].compareTo(args[1]) < 0);
 		case GREATER_EQ:
 			if (args[0] instanceof XiSet && args[1] instanceof XiSet)
 				return new XiInt(((XiSet) args[0]).superset((XiSet) args[1]));
-			return new XiInt(((XiInt) args[0]).val() >= ((XiInt) args[1]).val());
+			return new XiInt(args[0].compareTo(args[1]) >= 0);
 		case LESS_EQ:
 			if (args[0] instanceof XiSet && args[1] instanceof XiSet)
 				return new XiInt(((XiSet) args[0]).subset((XiSet) args[1]));
-			return new XiInt(((XiInt) args[0]).val() <= ((XiInt) args[1]).val());
+			return new XiInt(args[0].compareTo(args[1]) <= 0);
 		case AND:
 			if (args[0] instanceof XiInt && args[1] instanceof XiInt)
 				return new XiInt(((XiInt) args[0]).val()

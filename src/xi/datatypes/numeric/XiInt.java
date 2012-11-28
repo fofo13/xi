@@ -1,7 +1,5 @@
 package xi.datatypes.numeric;
 
-import xi.datatypes.DataType;
-
 public class XiInt extends XiReal {
 
 	public XiInt(int val) {
@@ -23,16 +21,6 @@ public class XiInt extends XiReal {
 	@Override
 	public boolean isEmpty() {
 		return val.intValue() == 0;
-	}
-
-	@Override
-	public int compareTo(DataType other) {
-		if (other instanceof XiInt) {
-			Integer a = val.intValue();
-			Integer b = ((XiInt) other).num().intValue();
-			return a.compareTo(b);
-		}
-		return 0;
 	}
 
 	@Override
