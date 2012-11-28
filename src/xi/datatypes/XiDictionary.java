@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import xi.datatypes.collections.CollectionWrapper;
-import xi.datatypes.collections.XiList;
+import xi.datatypes.collections.XiTuple;
 import xi.datatypes.collections.XiSet;
 
 public class XiDictionary extends DataType {
@@ -18,7 +18,7 @@ public class XiDictionary extends DataType {
 	public XiDictionary(CollectionWrapper<?> col) {
 		this();
 		for (DataType data : col) {
-			XiList l = (XiList)data;
+			XiTuple l = (XiTuple)data;
 			put(l.get(0), l.get(1));
 		}
 	}
