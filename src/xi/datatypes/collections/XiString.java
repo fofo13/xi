@@ -75,6 +75,13 @@ public class XiString extends ListWrapper {
 	}
 
 	@Override
+	public boolean contains(DataType data) {
+		if (! (data instanceof XiString))
+			return false;
+		return toString().contains(data.toString());
+	}
+	
+	@Override
 	public int hashCode() {
 		return toString().hashCode();
 	}
