@@ -49,6 +49,10 @@ public class XiDictionary extends DataType {
 		return new XiSet(map.keySet());
 	}
 	
+	public boolean containsKey(DataType d) {
+		return map.containsKey(d);
+	}
+	
 	@Override
 	public boolean isEmpty() {
 		return map.isEmpty();

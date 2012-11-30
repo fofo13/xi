@@ -169,6 +169,8 @@ public enum IntrinsicOperation implements Operation {
 		case TERN:
 			return args[0].isEmpty() ? args[2] : args[1];
 		case IN:
+			if (args[1] instanceof XiDictionary)
+				return new XiInt(((XiDictionary) args[1]).containsKey(args[0]));
 			return new XiInt(((CollectionWrapper<?>) args[1]).contains(args[0]));
 		case AT:
 			if (args[0] instanceof XiDictionary)
