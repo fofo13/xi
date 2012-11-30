@@ -35,7 +35,7 @@ find the sum of this list using `$`, resulting in the desired answer.
 
 Equivalent code in Java would be:
 
-```
+```java
 public class Euler1 {
 	public static void main(String[] args) {
 		int sum = 0;
@@ -51,7 +51,7 @@ public class Euler1 {
 
 **fibonacci.xi**  
 
-```
+```ruby
 n := 5
 println + "First " + n " Fibonacci numbers:"
 
@@ -73,7 +73,7 @@ To "shift up the sequence" we simply assign the old value of `a` to `b` and assi
 
 **fibonacci3.xi**
 
-```
+```ruby
 d := dict [(1 0) (2 1)]
 
 fib := func ("n") {
