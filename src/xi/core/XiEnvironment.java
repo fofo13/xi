@@ -8,6 +8,7 @@ import java.io.LineNumberReader;
 import java.util.Scanner;
 
 import xi.datatypes.DataType;
+import xi.datatypes.XiNull;
 import xi.datatypes.XiVar;
 
 public class XiEnvironment implements Closeable {
@@ -18,6 +19,7 @@ public class XiEnvironment implements Closeable {
 
 	public XiEnvironment(VariableCache cache) {
 		globals = cache;
+		last = XiNull.instance();
 	}
 
 	public XiEnvironment() {
