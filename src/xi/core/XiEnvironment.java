@@ -60,17 +60,8 @@ public class XiEnvironment implements Closeable {
 	}
 
 	private void process(String exp) {
-		if (exp.matches("import\\s+\\S+")) {
-			String name = exp.split("\\s+")[1].replace(".", "/") + ".xi";
-			try {
-				File file = new File(name);
-				XiEnvironment env = new XiEnvironment(file);
-				globals.addAll(env.globals());
-				env.close();
-			} catch (FileNotFoundException fnfe) {
-				throw new RuntimeException("Import could not be resolved: "
-						+ name);
-			}
+		if (exp.matches("\\s?+import\\s+.*")) {
+			load(exp.trim().split("\\s+")[1].replace(".", "/") + ".xi");
 			return;
 		}
 		if (Parser.containsAssignment(exp)) {
@@ -83,7 +74,18 @@ public class XiEnvironment implements Closeable {
 			last = (new SyntaxTree(exp, globals)).evaluate();
 		}
 	}
-	
+
+	private void load(String name) {
+		try {
+			File file = new File(name);
+			XiEnvironment env = new XiEnvironment(file);
+			globals.addAll(env.globals());
+			env.close();
+		} catch (FileNotFoundException fnfe) {
+			throw new RuntimeException("Import could not be resolved: " + name);
+		}
+	}
+
 	public DataType last() {
 		return last;
 	}
