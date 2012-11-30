@@ -35,7 +35,7 @@ find the sum of this list using `$`, resulting in the desired answer.
 
 Equivalent code in Java would be:
 
-```java
+```
 public class Euler1 {
 	public static void main(String[] args) {
 		int sum = 0;
@@ -51,7 +51,7 @@ public class Euler1 {
 
 **fibonacci.xi**  
 
-```ruby
+```
 n := 5
 println + "First " + n " Fibonacci numbers:"
 
@@ -68,3 +68,28 @@ do n {
 This code prints the first `n` terms of the Fibonacci sequence. We first define `a` and `b` to be the first and second terms of the sequence, respectively.
 Then we have a `do`-loop which performs `n` iterations, shifting `a` and `b` one step up the sequence and printing the appropriate term on each iteration.
 To "shift up the sequence" we simply assign the old value of `a` to `b` and assign the `a + b` to `a`.
+
+---
+
+**fibonacci3.xi**
+
+```
+d := dict [(1 0) (2 1)]
+
+fib := func ("n") {
+	if in n d { 
+		res := at d n 
+	} {
+		res := + fib - n 1 fib - n 2
+		put d n res
+	}
+	res
+}
+
+for "i" @ , 30 {+ . 1} { 
+	println fib i 
+}
+```
+
+This uses dynamic programming to produce the fibonacci numbers more efficiently. A dictionary `d` is first initialized to map `1` to the first fibonacci number (`0`) and `2` to the second (`1`). The `fib` function then uses recusrion, checking if `n` is in `d` before computing `fib(n)`.
+
