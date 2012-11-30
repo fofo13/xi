@@ -82,6 +82,7 @@ To Do
 - Allow for the easy creation of custom functions from within Xi. **(√)**
 - Make a smarter parser so as to give the user more flexibility.
 - More accurate error messages.
+- More comprehensive and up-to-date documentation.
 
 License
 -------
