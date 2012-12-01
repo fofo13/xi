@@ -47,7 +47,9 @@ public enum IntrinsicOperation implements Operation {
 
 	SLEEP("sleep", 1),
 
-	HASH("hash", 1), LEN("len", 1);
+	HASH("hash", 1), LEN("len", 1),
+	
+	TYPE("type", 1);
 
 	private String id;
 	private int numArgs;
@@ -311,6 +313,8 @@ public enum IntrinsicOperation implements Operation {
 			return new XiInt(args[0].hashCode());
 		case LEN:
 			return new XiInt(args[0].length());
+		case TYPE:
+			return new XiString(args[0].type());
 		default:
 			throw new RuntimeException("Internal error");
 		}
