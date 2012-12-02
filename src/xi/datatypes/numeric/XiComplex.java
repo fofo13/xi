@@ -20,6 +20,13 @@ public class XiComplex extends XiNum {
 		return im;
 	}
 
+	public static XiComplex parseIm(String im) {
+		if (!im.endsWith("i"))
+			throw new IllegalArgumentException();
+		return new XiComplex(0, Double.parseDouble(im.substring(0,
+				im.length() - 1)));
+	}
+
 	public XiComplex conj() {
 		return new XiComplex(re, -im);
 	}

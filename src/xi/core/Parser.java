@@ -11,6 +11,7 @@ import xi.datatypes.XiFunc;
 import xi.datatypes.collections.XiList;
 import xi.datatypes.collections.XiTuple;
 import xi.datatypes.collections.XiString;
+import xi.datatypes.numeric.XiComplex;
 import xi.datatypes.numeric.XiFloat;
 import xi.datatypes.numeric.XiInt;
 import xi.nodes.DataNode;
@@ -77,6 +78,8 @@ public class Parser {
 			return new DataNode<XiInt>(XiInt.parse(exp));
 		if (exp.matches("-?\\d+.\\d+"))
 			return new DataNode<XiFloat>(XiFloat.parse(exp));
+		if (exp.matches("-?\\d+(\\.\\d+)*i"))
+			return new DataNode<XiComplex>(XiComplex.parseIm(exp));
 		if (exp.startsWith("["))
 			return new DataNode<XiList>(XiList.parse(exp, cache));
 		if (exp.startsWith("("))
