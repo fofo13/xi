@@ -41,7 +41,7 @@ public enum IntrinsicOperation implements Operation {
 	EVAL("eval", 1),
 
 	STR("str", 1), INT("int", 1), FLOAT("float", 1), LIST("list", 1), SET(
-			"set", 1), DICT("dict", 1), CMPLX("cmplx", 2), FUNC("func", 2),
+			"set", 1), TUPLE("tuple", 1), DICT("dict", 1), CMPLX("cmplx", 2), FUNC("func", 2),
 
 	PRINT("print", 1), PRINTLN("println", 1),
 
@@ -288,6 +288,8 @@ public enum IntrinsicOperation implements Operation {
 			if (args[0] instanceof XiDictionary)
 				return ((XiDictionary) args[0]).keySet();
 			return ((CollectionWrapper<?>) args[0]).asSet();
+		case TUPLE:
+			return ((CollectionWrapper<?>) args[0]).asTuple();
 		case DICT:
 			return new XiDictionary((CollectionWrapper<?>) args[0]);
 		case CMPLX:

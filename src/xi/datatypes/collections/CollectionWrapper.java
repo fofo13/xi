@@ -81,6 +81,10 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 		return new XiSet(new HashSet<DataType>(collection));
 	}
 	
+	public XiTuple asTuple() {
+		return new XiTuple(new ArrayList<DataType>(collection));
+	}
+	
 	@Override
 	public boolean isEmpty() {
 		return collection.isEmpty();
