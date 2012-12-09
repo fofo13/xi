@@ -26,7 +26,7 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 		return get(index.val());
 	}
 
-	public CollectionWrapper<List<DataType>> shuffle() {
+	public DataType rnd() {
 		List<DataType> newList = new ArrayList<DataType>(collection.size());
 		for (DataType data : collection)
 			newList.add(data);
@@ -79,7 +79,6 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 		return instantiate(newList);
 	}
 
-	public CollectionWrapper<List<DataType>> cut(XiList params) {
 	public CollectionWrapper<List<DataType>> cut(XiTuple params) {
 		if (params.length() != 2 && params.length() != 3)
 			throw new RuntimeException(
@@ -147,7 +146,6 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 		collection.remove(params.val());
 	}
 
-	public static XiList range(XiList params) {
 	public static XiList range(XiTuple params) {
 		if (params.length() != 2 && params.length() != 3)
 			throw new RuntimeException(
