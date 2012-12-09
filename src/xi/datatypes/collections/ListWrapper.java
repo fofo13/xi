@@ -80,6 +80,7 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 	}
 
 	public CollectionWrapper<List<DataType>> cut(XiList params) {
+	public CollectionWrapper<List<DataType>> cut(XiTuple params) {
 		if (params.length() != 2 && params.length() != 3)
 			throw new RuntimeException(
 					"Argument of cut function must be of length 2 or 3.");
@@ -147,6 +148,7 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 	}
 
 	public static XiList range(XiList params) {
+	public static XiList range(XiTuple params) {
 		if (params.length() != 2 && params.length() != 3)
 			throw new RuntimeException(
 					"Argument of cut function must be of length 2 or 3.");

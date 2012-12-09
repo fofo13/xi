@@ -195,20 +195,22 @@ public enum IntrinsicOperation implements Operation {
 		}
 		case RANGE:
 			if (args[0] instanceof XiList)
-				return XiList.range((XiList) args[0]);
+				return XiList.range((XiTuple) args[0]);
 			return new XiList(((XiInt) args[0]).val());
 		case SUM:
 			return ((CollectionWrapper<?>) args[0]).sum();
 		case RAND:
 			if (args[0] instanceof ListWrapper)
-				return ((ListWrapper) args[0]).shuffle();
+				return ((ListWrapper) args[0]).rnd();
 			return new XiInt((new Random()).nextInt(((XiInt) args[0]).val()));
 		case SORT:
 			return ((ListWrapper) args[0]).sort();
 		case CUT:
 			if (args[1] instanceof XiInt)
 				return ((ListWrapper) args[0]).cut((XiInt) args[1]);
-			return ((ListWrapper) args[0]).cut((XiList) args[1]);
+			if (args[1] instanceof XiString)
+				return ((XiString) args[0]).cut((XiString) args[1]);
+			return ((ListWrapper) args[0]).cut((XiTuple) args[1]);
 		case DEL:
 			if (args[1] instanceof XiInt)
 				((ListWrapper) args[0]).del((XiInt) args[1]);

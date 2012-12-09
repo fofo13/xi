@@ -24,6 +24,11 @@ public class XiTuple extends XiList {
 	}
 
 	@Override
+	public DataType rnd() {
+		return collection.get((int)(Math.random() * collection.size()));
+	}
+	
+	@Override
 	public void del(XiList params) {
 		throw new RuntimeException("Tuples are immutable.");
 	}

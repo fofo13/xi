@@ -60,7 +60,11 @@ public class XiString extends ListWrapper {
 	public XiList toList() {
 		return new XiList(collection);
 	}
-
+	
+	public XiString cut(XiString other) {
+		return new XiString(toString().replace(other.toString(), ""));
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
