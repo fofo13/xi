@@ -1,5 +1,7 @@
 package xi.operations;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import xi.core.VariableCache;
@@ -41,15 +43,23 @@ public enum IntrinsicOperation implements Operation {
 	EVAL("eval", 1),
 
 	STR("str", 1), INT("int", 1), FLOAT("float", 1), LIST("list", 1), SET(
-			"set", 1), TUPLE("tuple", 1), DICT("dict", 1), CMPLX("cmplx", 2), FUNC("func", 2),
+			"set", 1), TUPLE("tuple", 1), DICT("dict", 1), CMPLX("cmplx", 2), FUNC(
+			"func", 2),
 
 	PRINT("print", 1), PRINTLN("println", 1),
 
 	SLEEP("sleep", 1),
 
 	HASH("hash", 1), LEN("len", 1),
-	
+
 	TYPE("type", 1);
+
+	private static final Map<String, IntrinsicOperation> ids = new HashMap<String, IntrinsicOperation>(values().length);
+
+	static {
+		for (IntrinsicOperation op : values())
+			ids.put(op.id, op);
+	}
 
 	private String id;
 	private int numArgs;
@@ -323,17 +333,14 @@ public enum IntrinsicOperation implements Operation {
 	}
 
 	public static boolean idExists(String id) {
-		for (IntrinsicOperation op : values())
-			if (id.equals(op.id()))
-				return true;
-		return false;
+		return ids.containsKey(id);
 	}
 
 	public static IntrinsicOperation parse(String id) {
-		for (IntrinsicOperation op : values())
-			if (id.equals(op.id()))
-				return op;
-		throw new IllegalArgumentException("Invalid identifier: " + id);
+		IntrinsicOperation op = ids.get(id);
+		if (op == null)
+			throw new IllegalArgumentException("Invalid identifier: " + id);
+		return op;
 	}
 
 	@Override
