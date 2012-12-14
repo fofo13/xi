@@ -76,7 +76,7 @@ public class Parser {
 	public static Node parseNode(String exp, VariableCache cache) {
 		if (exp.matches("-?\\d+"))
 			return new DataNode<XiInt>(XiInt.parse(exp));
-		if (exp.matches("-?\\d+.\\d+"))
+		if (exp.matches("-?\\d+\\.\\d*"))
 			return new DataNode<XiFloat>(XiFloat.parse(exp));
 		if (exp.matches("-?\\d+(\\.\\d+)*i"))
 			return new DataNode<XiComplex>(XiComplex.parseIm(exp));
