@@ -80,9 +80,11 @@ public class XiString extends ListWrapper {
 
 	@Override
 	public boolean contains(DataType data) {
-		if (! (data instanceof XiString))
-			return false;
-		return toString().contains(data.toString());
+		if (data instanceof XiRegex)
+			return toString().matches(".*" + data + ".*");
+		if (data instanceof XiString)
+			return toString().contains(data.toString());
+		return false;
 	}
 	
 	@Override
@@ -92,6 +94,8 @@ public class XiString extends ListWrapper {
 	
 	@Override
 	public boolean equals(Object o) {
+		if (o instanceof XiRegex)
+			return toString().matches(o.toString());
 		return o instanceof XiString && toString().equals(o.toString());
 	}
 

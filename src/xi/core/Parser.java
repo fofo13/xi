@@ -9,8 +9,9 @@ import java.util.Queue;
 import xi.datatypes.XiBlock;
 import xi.datatypes.XiFunc;
 import xi.datatypes.collections.XiList;
-import xi.datatypes.collections.XiTuple;
+import xi.datatypes.collections.XiRegex;
 import xi.datatypes.collections.XiString;
+import xi.datatypes.collections.XiTuple;
 import xi.datatypes.numeric.XiComplex;
 import xi.datatypes.numeric.XiFloat;
 import xi.datatypes.numeric.XiInt;
@@ -91,6 +92,8 @@ public class Parser {
 		}
 		if (exp.startsWith("\""))
 			return new DataNode<XiString>(new XiString(exp));
+		if (exp.startsWith("r\""))
+			return new DataNode<XiRegex>(new XiRegex(exp));
 		if (IntrinsicOperation.idExists(exp))
 			return new OperationNode(IntrinsicOperation.parse(exp), cache);
 		if (exp.matches("\\D.*+")) {
