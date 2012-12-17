@@ -54,15 +54,16 @@ public enum IntrinsicOperation implements Operation {
 
 	TYPE("type", 1);
 
-	private static final Map<String, IntrinsicOperation> ids = new HashMap<String, IntrinsicOperation>(values().length);
+	private static final Map<String, IntrinsicOperation> ids = new HashMap<String, IntrinsicOperation>(
+			values().length);
 
 	static {
 		for (IntrinsicOperation op : values())
 			ids.put(op.id, op);
 	}
 
-	private String id;
-	private int numArgs;
+	private final String id;
+	private final int numArgs;
 
 	private IntrinsicOperation(String id, int numArgs) {
 		this.id = id;
