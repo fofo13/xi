@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import xi.core.VariableCache;
 import xi.datatypes.DataType;
+import xi.datatypes.XiVar;
 import xi.datatypes.numeric.XiInt;
 
 public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
@@ -170,6 +172,15 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 
 	public void put(XiInt index, DataType data) {
 		collection.set(index.val(), data);
+	}
+	
+	public VariableCache unpack(ListWrapper data) {
+		if (length() != data.length())
+			throw new RuntimeException("Unpacking failed: size mismatch.");
+		VariableCache v = new VariableCache();
+		for (int i = 0; i < length(); i++)
+			v.add(new XiVar(get(i).toString(), data.get(i)));
+		return v;
 	}
 
 }
