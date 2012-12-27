@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.LineNumberReader;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 import xi.datatypes.DataType;
@@ -12,6 +14,22 @@ import xi.datatypes.XiNull;
 import xi.datatypes.XiVar;
 
 public class XiEnvironment implements Closeable {
+
+	private static final Map<String, VariableCache> stdlib = new HashMap<String, VariableCache>();
+	static {
+		File dir = new File("src/modules/");
+		for (File child : dir.listFiles()) {
+			XiEnvironment sub = null;
+			try {
+				sub = new XiEnvironment(child, false);
+			} catch (FileNotFoundException fnfe) {
+				System.err.println("Internal error occured.");
+				System.exit(-1);
+			}
+			stdlib.put(child.getName().split("\\.")[0], sub.globals());
+			sub.close();
+		}
+	}
 
 	private VariableCache globals;
 	private DataType last;
@@ -26,8 +44,14 @@ public class XiEnvironment implements Closeable {
 		this(new VariableCache());
 	}
 
-	public XiEnvironment(File file) throws FileNotFoundException {
+	private XiEnvironment(File file, boolean stdImports) throws FileNotFoundException {
 		this();
+		
+		if (stdImports) {
+			load("const");
+			load("stdlib");
+		}
+		
 		LineNumberReader r = new LineNumberReader(new FileReader(file));
 		Scanner scan = new Scanner(r);
 		while (scan.hasNext()) {
@@ -44,6 +68,10 @@ public class XiEnvironment implements Closeable {
 			}
 		}
 		scan.close();
+	}
+	
+	public XiEnvironment(File file) throws FileNotFoundException {
+		this(file, true);
 	}
 
 	public VariableCache globals() {
@@ -63,7 +91,7 @@ public class XiEnvironment implements Closeable {
 
 	private void process(String exp) {
 		if (exp.matches("\\s?+import\\s+.*")) {
-			load(exp.trim().split("\\s+")[1].replace(".", "/") + ".xi");
+			load(exp.trim().split("\\s+")[1].replace(".", "/"));
 			return;
 		}
 		if (Parser.containsAssignment(exp)) {
@@ -78,8 +106,12 @@ public class XiEnvironment implements Closeable {
 	}
 
 	private void load(String name) {
+		if (stdlib.containsKey(name)) {
+			globals.addAll(stdlib.get(name));
+			return;
+		}
 		try {
-			File file = new File(name);
+			File file = new File(name + ".xi");
 			XiEnvironment env = new XiEnvironment(file);
 			globals.addAll(env.globals());
 			env.close();
