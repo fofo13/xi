@@ -33,9 +33,9 @@ public enum IntrinsicOperation implements Operation {
 			"&", 2), OR("|", 2), XOR("^", 2), RSHIFT(">>", 2), LSHIFT("<<", 2), POW(
 			"**", 2), TERN("?", 3),
 
-	IN("in", 2), AT("at", 2), MAP("@", 2), RANGE(",", 1), SUM("$", 1), RAND(
-			"rnd", 1), SORT("sort", 1), CUT("cut", 2), DEL("del", 2), PUT(
-			"put", 3),
+	IN("in", 2), AT("at", 2), MAP("@", 2), DEEPMAP("@@", 2), RANGE(",", 1), SUM(
+			"$", 1), RAND("rnd", 1), SORT("sort", 1), CUT("cut", 2), DEL("del",
+			2), PUT("put", 3),
 
 	FOR("for", 3), IF("if", 3), DO("do", 2), WHILE("while", 2), DOWHILE(
 			"dowhile", 2),
@@ -192,7 +192,12 @@ public enum IntrinsicOperation implements Operation {
 		case MAP: {
 			XiBlock body = (XiBlock) args[1];
 			body.addVars(globals);
-			return ((CollectionWrapper<?>) args[0]).map(body);
+			return ((CollectionWrapper<?>) args[0]).map(body, false);
+		}
+		case DEEPMAP: {
+			XiBlock body = (XiBlock) args[1];
+			body.addVars(globals);
+			return ((CollectionWrapper<?>) args[0]).map(body, true);
 		}
 		case RANGE:
 			if (args[0] instanceof XiList)
