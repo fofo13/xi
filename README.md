@@ -1,4 +1,4 @@
-Xi <sub>beta</sub>
+Xi <sub>*beta*</sub>
 =======
 **a simple scripting language written in Java**
 
