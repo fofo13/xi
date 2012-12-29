@@ -1,4 +1,4 @@
-Xi (ξ)
+Xi <sub>beta</sub>
 =======
 **a simple scripting language written in Java**
 
