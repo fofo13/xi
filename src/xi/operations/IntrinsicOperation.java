@@ -27,7 +27,7 @@ public enum IntrinsicOperation implements Operation {
 
 	NULL("null", 0),
 
-	NOT("!", 1), BITNOT("~", 1), ABS("\\", 1), ADD("+", 2), SUBTRACT("-", 2), MULTIPLY(
+	NOT("!", 1), BITNOT("~", 1), ABS("abs", 1), ADD("+", 2), SUBTRACT("-", 2), MULTIPLY(
 			"*", 2), DIVIDE("/", 2), MODULUS("%", 2), EQ("=", 2), NEQ("!=", 2), GREATER(
 			">", 2), LESS("<", 2), GREATER_EQ(">=", 2), LESS_EQ("<=", 2), AND(
 			"&", 2), OR("|", 2), XOR("^", 2), RSHIFT(">>", 2), LSHIFT("<<", 2), POW(
