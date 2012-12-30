@@ -40,7 +40,7 @@ public class XiInt extends XiReal {
 
 	@Override
 	public XiNum abs() {
-		return new XiFloat(Math.abs(val.intValue()));
+		return new XiInt(Math.abs(val.intValue()));
 	}
 
 	@Override
