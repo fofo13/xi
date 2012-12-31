@@ -9,6 +9,7 @@ import xi.datatypes.DataType;
 import xi.datatypes.XiBlock;
 import xi.datatypes.XiDictionary;
 import xi.datatypes.XiFunc;
+import xi.datatypes.XiLambda;
 import xi.datatypes.XiNull;
 import xi.datatypes.XiVar;
 import xi.datatypes.collections.CollectionWrapper;
@@ -44,7 +45,7 @@ public enum IntrinsicOperation implements Operation {
 
 	STR("str", 1), INT("int", 1), FLOAT("float", 1), LIST("list", 1), SET(
 			"set", 1), TUPLE("tuple", 1), DICT("dict", 1), CMPLX("cmplx", 2), FUNC(
-			"func", 2),
+			"func", 2), LAMBDA("lambda", 2),
 
 	PRINT("print", 1), PRINTLN("println", 1),
 
@@ -190,6 +191,9 @@ public enum IntrinsicOperation implements Operation {
 				return ((XiDictionary) args[0]).get(args[1]);
 			return ((ListWrapper) args[0]).get((XiInt) args[1]);
 		case MAP: {
+			if (args[0] instanceof XiLambda && args[1] instanceof XiTuple)
+				return ((XiLambda) args[0])
+						.evaluate((XiTuple) args[1], globals);
 			XiBlock body = (XiBlock) args[1];
 			body.addVars(globals);
 			return ((CollectionWrapper<?>) args[0]).map(body, false);
@@ -316,6 +320,8 @@ public enum IntrinsicOperation implements Operation {
 			return new XiComplex(re, im);
 		case FUNC:
 			return new XiFunc((XiTuple) args[0], (XiBlock) args[1]);
+		case LAMBDA:
+			return new XiLambda((XiTuple) args[0], (XiBlock) args[1]);
 		case PRINT:
 			System.out.print(args[0]);
 			return XiNull.instance();
