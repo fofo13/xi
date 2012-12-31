@@ -92,7 +92,7 @@ public class Parser {
 		}
 		if (exp.startsWith("\""))
 			return new DataNode<XiString>(new XiString(exp));
-		if (exp.startsWith("r\""))
+		if (exp.startsWith("re\""))
 			return new DataNode<XiRegex>(new XiRegex(exp));
 		if (IntrinsicOperation.idExists(exp))
 			return new OperationNode(IntrinsicOperation.parse(exp), cache);
