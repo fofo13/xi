@@ -93,3 +93,7 @@ for "i" @ , 30 {+ . 1} {
 
 This uses dynamic programming to produce the fibonacci numbers more efficiently. A dictionary `d` is first initialized to map `1` to the first fibonacci number (`0`) and `2` to the second (`1`). The `fib` function then uses recusrion, checking if `n` is in `d` before computing `fib(n)`.
 
+Important Note
+--------------
+
+As changes to the language structure and syntax continue to be made, some of these examples may become deprecated. Deprecated and out of date examples will be updated as soon as possible, but most likely not instantaneously.
