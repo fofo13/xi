@@ -88,6 +88,13 @@ public class XiString extends ListWrapper {
 	}
 	
 	@Override
+	public int compareTo(DataType other) {
+		if (! (other instanceof XiString))
+			return 0;
+		return toString().compareTo(other.toString());
+	}
+	
+	@Override
 	public int hashCode() {
 		return toString().hashCode();
 	}
