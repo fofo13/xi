@@ -13,7 +13,7 @@ public class XiRegex extends XiString {
 	}
 	
 	public XiRegex(String exp) {
-		super(exp.substring(1));
+		super(exp.substring(2));  // regexs have the form re\".*\"
 	}
 	
 	@Override

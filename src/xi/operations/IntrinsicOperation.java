@@ -3,6 +3,7 @@ package xi.operations;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.Scanner;
 
 import xi.core.VariableCache;
 import xi.datatypes.DataType;
@@ -49,6 +50,8 @@ public enum IntrinsicOperation implements Operation {
 
 	PRINT("print", 1), PRINTLN("println", 1),
 
+	INPUT("input", 0),
+
 	SLEEP("sleep", 1),
 
 	HASH("hash", 1), LEN("len", 1),
@@ -57,6 +60,8 @@ public enum IntrinsicOperation implements Operation {
 
 	private static final Map<String, IntrinsicOperation> ids = new HashMap<String, IntrinsicOperation>(
 			values().length);
+
+	private static final Scanner console = new Scanner(System.in);
 
 	static {
 		for (IntrinsicOperation op : values())
@@ -328,6 +333,8 @@ public enum IntrinsicOperation implements Operation {
 		case PRINTLN:
 			System.out.println(args[0]);
 			return XiNull.instance();
+		case INPUT:
+			return new XiString(console.nextLine());
 		case SLEEP:
 			try {
 				Thread.sleep(((XiInt) args[0]).val());
