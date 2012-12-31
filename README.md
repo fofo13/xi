@@ -5,6 +5,11 @@ Xi <sub>*beta*</sub>
 The goal of Xi is to allow users to write concise code that can carry out complicated tasks. Some concepts are borrowed from Python, others from
 Java, but most are original. Be sure to check out the [wiki](https://github.com/arshajii/Xi/wiki) to learn more.
 
+Installing and Running
+----------------------
+
+Currently the easiest way to do this is to clone the repository and make use of the [`Xi.java`](https://github.com/arshajii/Xi/blob/master/src/xi/Xi.java) file. A more robust and portable shell script will be added to run Xi code in the near future. 
+
 Examples
 --------
 
@@ -36,7 +41,7 @@ we remove any element `.` for which `{| ! % . 3 ! % . 5}` is *not* true. Further
 `! % . 3`) or if it is divisible by `5` (i.e. `! % . 5`). This results in a list of all multiples of either `3` or `5` less than `1000`. Lastly, we
 find the sum of this list using `$`, resulting in the desired answer.
 
-Equivalent code in Java would be:
+Equivalent (in the sense that it also solves the problem) code in Java would be:
 
 ```java
 public class Euler1 {
