@@ -22,6 +22,7 @@ public class XiEnvironment implements Closeable {
 			XiEnvironment sub = null;
 			try {
 				sub = new XiEnvironment(child, false);
+				sub.run();
 			} catch (FileNotFoundException fnfe) {
 				System.err.println("Internal error occured.");
 				System.exit(-1);
