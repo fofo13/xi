@@ -14,6 +14,7 @@ public class Xi {
 	public static void runFromFile(String file) {
 		try {
 			XiEnvironment env = new XiEnvironment(new File(file));
+			env.run();
 			env.close();
 		} catch (FileNotFoundException fnfe) {
 			System.err.println("File " + file + " was not found.");

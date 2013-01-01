@@ -3,9 +3,9 @@ package xi.core;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.LineNumberReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -31,8 +31,11 @@ public class XiEnvironment implements Closeable {
 		}
 	}
 
+	private List<String> statements;
+	
 	private VariableCache globals;
 	private DataType last;
+	//private boolean primary;
 	private boolean closed;
 
 	public XiEnvironment(VariableCache cache) {
@@ -44,30 +47,16 @@ public class XiEnvironment implements Closeable {
 		this(new VariableCache());
 	}
 
-	private XiEnvironment(File file, boolean stdImports) throws FileNotFoundException {
+	private XiEnvironment(File file, boolean primary) throws FileNotFoundException {
 		this();
 		
-		if (stdImports) {
+		//this.primary = primary;
+		if (primary) {
 			load("const");
 			load("stdlib");
 		}
 		
-		LineNumberReader r = new LineNumberReader(new FileReader(file));
-		Scanner scan = new Scanner(r);
-		while (scan.hasNext()) {
-			String exp = scan.nextLine();
-			while (Parser.isIncomplete(exp)) {
-				exp += scan.nextLine();
-				if (!exp.endsWith(";"))
-					exp += ";";
-			}
-			try {
-				put(exp);
-			} catch (Exception e) {
-				System.err.println("Error: " + e.getMessage());
-			}
-		}
-		scan.close();
+		statements = compile(file);
 	}
 	
 	public XiEnvironment(File file) throws FileNotFoundException {
@@ -78,6 +67,16 @@ public class XiEnvironment implements Closeable {
 		return globals;
 	}
 
+	public void run() {
+		for (String statement : statements) {
+			try {
+				put(statement);
+			} catch (Exception e) {
+				System.err.println("Error: " + e.getMessage());
+			}
+		}
+	}
+	
 	public void put(String statement) {
 		if (closed)
 			throw new RuntimeException("XiEnvironment is closed.");
@@ -94,6 +93,12 @@ public class XiEnvironment implements Closeable {
 			load(exp.trim().split("\\s+")[1].replace(".", "/"));
 			return;
 		}
+		/*
+		if (exp.matches("\\s*break\\s*")) {
+			if (primary)
+				throw new RuntimeException("break statement misplaced");
+		}
+		*/
 		if (Parser.containsAssignment(exp)) {
 			int n = exp.indexOf(":=");
 			String[] split = new String[] { exp.substring(0, n),
@@ -120,6 +125,25 @@ public class XiEnvironment implements Closeable {
 		}
 	}
 
+	private static List<String> compile(File file) throws FileNotFoundException {
+		List<String> statements = new ArrayList<String>();
+		
+		Scanner scan = new Scanner(file);
+		while (scan.hasNext()) {
+			String exp = scan.nextLine();
+			while (Parser.isIncomplete(exp)) {
+				exp += scan.nextLine();
+				if (!exp.endsWith(";"))
+					exp += ";";
+			}
+			
+			statements.add(exp);
+		}
+		scan.close();
+		
+		return statements;
+	}
+	
 	public DataType last() {
 		return last;
 	}
