@@ -1,7 +1,7 @@
 package xi.exceptions;
 
-public class BreakException extends ControlFlowException {
-	
+public class ContinueException extends ControlFlowException {
+
 	private static final long serialVersionUID = 0L;
-	
+
 }

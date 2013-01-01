@@ -25,6 +25,7 @@ import xi.datatypes.numeric.XiInt;
 import xi.datatypes.numeric.XiNum;
 import xi.datatypes.numeric.XiReal;
 import xi.exceptions.BreakException;
+import xi.exceptions.ContinueException;
 
 public enum IntrinsicOperation implements Operation {
 
@@ -250,6 +251,8 @@ public enum IntrinsicOperation implements Operation {
 					body.evaluate();
 				} catch (BreakException be) {
 					break;
+				} catch (ContinueException ce) {
+					continue;
 				}
 			}
 			globals.addAll(body.locals());
@@ -271,6 +274,8 @@ public enum IntrinsicOperation implements Operation {
 					body.evaluate();
 				} catch (BreakException be) {
 					break;
+				} catch (ContinueException ce) {
+					continue;
 				}
 			}
 			globals.addAll(body.locals());
@@ -286,6 +291,8 @@ public enum IntrinsicOperation implements Operation {
 					body.evaluate();
 				} catch (BreakException be) {
 					break;
+				} catch (ContinueException ce) {
+					continue;
 				}
 				cond.addVars(body.locals());
 			}
@@ -302,6 +309,8 @@ public enum IntrinsicOperation implements Operation {
 					body.evaluate();
 				} catch (BreakException be) {
 					break;
+				} catch (ContinueException ce) {
+					continue;
 				}
 				cond.addVars(body.locals());
 			} while (!cond.evaluate().isEmpty());

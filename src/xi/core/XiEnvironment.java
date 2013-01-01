@@ -13,6 +13,8 @@ import xi.datatypes.DataType;
 import xi.datatypes.XiNull;
 import xi.datatypes.XiVar;
 import xi.exceptions.BreakException;
+import xi.exceptions.ContinueException;
+import xi.exceptions.ControlFlowException;
 
 public class XiEnvironment implements Closeable {
 
@@ -34,13 +36,15 @@ public class XiEnvironment implements Closeable {
 	}
 
 	private List<String> statements;
-	
+
 	private VariableCache globals;
 	private DataType last;
 	private boolean primary;
 	private boolean closed;
 
 	public XiEnvironment(VariableCache cache) {
+		statements = new ArrayList<String>();
+
 		globals = cache;
 		last = XiNull.instance();
 		primary = false;
@@ -50,15 +54,16 @@ public class XiEnvironment implements Closeable {
 		this(new VariableCache());
 	}
 
-	private XiEnvironment(File file, boolean primary) throws FileNotFoundException {
+	private XiEnvironment(File file, boolean primary)
+			throws FileNotFoundException {
 		this();
-		
+
 		this.primary = primary;
 		if (primary) {
 			load("const");
 			load("stdlib");
 		}
-		
+
 		statements = compile(file);
 	}
 
@@ -70,37 +75,45 @@ public class XiEnvironment implements Closeable {
 		return globals;
 	}
 
-	public void run() throws BreakException {
+	public void run() {
 		for (String statement : statements) {
 			try {
-				put(statement);
+				for (String exp : Parser.splitOnSemiColons(statement)) {
+					if (exp.isEmpty())
+						continue;
+					process(exp);
+				}
+			} catch (ControlFlowException cfe) {
+				throw cfe;
 			} catch (Exception e) {
 				System.err.println("Error: " + e.getMessage());
 			}
 		}
 	}
-	
-	public void put(String statement) throws BreakException {
+
+	public void put(String statement) {
 		if (closed)
 			throw new RuntimeException("XiEnvironment is closed.");
 
-		for (String exp : Parser.splitOnSemiColons(statement)) {
-			if (exp.isEmpty())
-				continue;
-			process(exp);
-		}
+		statements.add(statement);
 	}
 
 	private void process(String exp) throws BreakException {
-		if (exp.matches("\\s?+import\\s+.*")) {
+		if (exp.matches("\\s*import\\s+.*")) {
 			load(exp.trim().split("\\s+")[1].replace(".", "/"));
 			return;
 		}
-		if (exp.matches("\\s*break\\s*")) {
+		if (exp.trim().equals("break")) {
 			if (primary)
 				throw new RuntimeException("break statement misplaced");
-			
+
 			throw new BreakException();
+		}
+		if (exp.trim().equals("continue")) {
+			if (primary)
+				throw new RuntimeException("break statement misplaced");
+
+			throw new ContinueException();
 		}
 		if (Parser.containsAssignment(exp)) {
 			int n = exp.indexOf(":=");
@@ -130,7 +143,7 @@ public class XiEnvironment implements Closeable {
 
 	private static List<String> compile(File file) throws FileNotFoundException {
 		List<String> statements = new ArrayList<String>();
-		
+
 		Scanner scan = new Scanner(file);
 		while (scan.hasNext()) {
 			String exp = scan.nextLine();
@@ -139,14 +152,14 @@ public class XiEnvironment implements Closeable {
 				if (!exp.endsWith(";"))
 					exp += ";";
 			}
-			
+
 			statements.add(exp);
 		}
 		scan.close();
-		
+
 		return statements;
 	}
-	
+
 	public DataType last() {
 		return last;
 	}

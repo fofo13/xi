@@ -1,6 +1,6 @@
 package xi.exceptions;
 
-public class BreakException extends ControlFlowException {
+public class ControlFlowException extends RuntimeException {
 	
 	private static final long serialVersionUID = 0L;
 	
