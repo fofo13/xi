@@ -2,6 +2,7 @@ package xi.datatypes;
 
 import xi.core.VariableCache;
 import xi.core.XiEnvironment;
+import xi.exceptions.BreakException;
 
 public class XiBlock extends DataType {
 	
@@ -52,7 +53,7 @@ public class XiBlock extends DataType {
 		return "{" + exp + "}";
 	}
 	
-	public DataType evaluate() {
+	public DataType evaluate() throws BreakException {
 		XiEnvironment env = null;
 		try {
 			env = new XiEnvironment(locals);

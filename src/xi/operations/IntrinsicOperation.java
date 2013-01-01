@@ -24,6 +24,7 @@ import xi.datatypes.numeric.XiFloat;
 import xi.datatypes.numeric.XiInt;
 import xi.datatypes.numeric.XiNum;
 import xi.datatypes.numeric.XiReal;
+import xi.exceptions.BreakException;
 
 public enum IntrinsicOperation implements Operation {
 
@@ -245,7 +246,11 @@ public enum IntrinsicOperation implements Operation {
 			body.addVars(globals);
 			for (DataType data : col) {
 				body.updateLocal(new XiVar(id, data));
-				body.evaluate();
+				try {
+					body.evaluate();
+				} catch (BreakException be) {
+					break;
+				}
 			}
 			globals.addAll(body.locals());
 			return XiNull.instance();
@@ -261,8 +266,13 @@ public enum IntrinsicOperation implements Operation {
 			int n = ((XiInt) args[0]).val();
 			XiBlock body = (XiBlock) args[1];
 			body.addVars(globals);
-			for (int i = 0; i < n; i++)
-				body.evaluate();
+			for (int i = 0; i < n; i++) {
+				try {
+					body.evaluate();
+				} catch (BreakException be) {
+					break;
+				}
+			}
 			globals.addAll(body.locals());
 			return XiNull.instance();
 		}
@@ -272,7 +282,11 @@ public enum IntrinsicOperation implements Operation {
 			cond.addVars(globals);
 			body.addVars(globals);
 			while (!cond.evaluate().isEmpty()) {
-				body.evaluate();
+				try {
+					body.evaluate();
+				} catch (BreakException be) {
+					break;
+				}
 				cond.addVars(body.locals());
 			}
 			globals.addAll(body.locals());
@@ -284,7 +298,11 @@ public enum IntrinsicOperation implements Operation {
 			cond.addVars(globals);
 			body.addVars(globals);
 			do {
-				body.evaluate();
+				try {
+					body.evaluate();
+				} catch (BreakException be) {
+					break;
+				}
 				cond.addVars(body.locals());
 			} while (!cond.evaluate().isEmpty());
 			globals.addAll(body.locals());

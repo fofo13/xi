@@ -12,6 +12,7 @@ import java.util.Scanner;
 import xi.datatypes.DataType;
 import xi.datatypes.XiNull;
 import xi.datatypes.XiVar;
+import xi.exceptions.BreakException;
 
 public class XiEnvironment implements Closeable {
 
@@ -36,12 +37,13 @@ public class XiEnvironment implements Closeable {
 	
 	private VariableCache globals;
 	private DataType last;
-	//private boolean primary;
+	private boolean primary;
 	private boolean closed;
 
 	public XiEnvironment(VariableCache cache) {
 		globals = cache;
 		last = XiNull.instance();
+		primary = false;
 	}
 
 	public XiEnvironment() {
@@ -51,7 +53,7 @@ public class XiEnvironment implements Closeable {
 	private XiEnvironment(File file, boolean primary) throws FileNotFoundException {
 		this();
 		
-		//this.primary = primary;
+		this.primary = primary;
 		if (primary) {
 			load("const");
 			load("stdlib");
@@ -59,7 +61,7 @@ public class XiEnvironment implements Closeable {
 		
 		statements = compile(file);
 	}
-	
+
 	public XiEnvironment(File file) throws FileNotFoundException {
 		this(file, true);
 	}
@@ -68,7 +70,7 @@ public class XiEnvironment implements Closeable {
 		return globals;
 	}
 
-	public void run() {
+	public void run() throws BreakException {
 		for (String statement : statements) {
 			try {
 				put(statement);
@@ -78,7 +80,7 @@ public class XiEnvironment implements Closeable {
 		}
 	}
 	
-	public void put(String statement) {
+	public void put(String statement) throws BreakException {
 		if (closed)
 			throw new RuntimeException("XiEnvironment is closed.");
 
@@ -89,17 +91,17 @@ public class XiEnvironment implements Closeable {
 		}
 	}
 
-	private void process(String exp) {
+	private void process(String exp) throws BreakException {
 		if (exp.matches("\\s?+import\\s+.*")) {
 			load(exp.trim().split("\\s+")[1].replace(".", "/"));
 			return;
 		}
-		/*
 		if (exp.matches("\\s*break\\s*")) {
 			if (primary)
 				throw new RuntimeException("break statement misplaced");
+			
+			throw new BreakException();
 		}
-		*/
 		if (Parser.containsAssignment(exp)) {
 			int n = exp.indexOf(":=");
 			String[] split = new String[] { exp.substring(0, n),
