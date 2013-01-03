@@ -96,7 +96,7 @@ public class Parser {
 			return new DataNode<XiRegex>(new XiRegex(exp));
 		if (IntrinsicOperation.idExists(exp))
 			return new OperationNode(IntrinsicOperation.parse(exp), cache);
-		if (exp.matches("\\D.*+")) {
+		if (exp.matches("[\\.\\p{Alpha}_]\\w*")) {
 			if (cache.get(exp) instanceof XiFunc)
 				return new OperationNode((XiFunc) cache.get(exp), cache);
 			return new VarNode(exp, cache);
