@@ -1,7 +1,10 @@
-package xi.datatypes;
+package xi.datatypes.functional;
 
 import xi.core.VariableCache;
 import xi.core.XiEnvironment;
+import xi.datatypes.DataType;
+import xi.datatypes.XiNull;
+import xi.datatypes.XiVar;
 import xi.exceptions.ControlFlowException;
 
 public class XiBlock extends DataType {

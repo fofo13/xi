@@ -7,8 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import xi.datatypes.DataType;
-import xi.datatypes.XiBlock;
 import xi.datatypes.XiVar;
+import xi.datatypes.functional.XiBlock;
 import xi.datatypes.numeric.XiInt;
 import xi.operations.IntrinsicOperation;
 

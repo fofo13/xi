@@ -6,12 +6,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Queue;
 
-import xi.datatypes.XiBlock;
-import xi.datatypes.XiFunc;
 import xi.datatypes.collections.XiList;
 import xi.datatypes.collections.XiRegex;
 import xi.datatypes.collections.XiString;
 import xi.datatypes.collections.XiTuple;
+import xi.datatypes.functional.XiBlock;
+import xi.datatypes.functional.XiFunc;
 import xi.datatypes.numeric.XiComplex;
 import xi.datatypes.numeric.XiFloat;
 import xi.datatypes.numeric.XiInt;

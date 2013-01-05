@@ -1,6 +1,8 @@
-package xi.datatypes;
+package xi.datatypes.functional;
 
 import xi.core.VariableCache;
+import xi.datatypes.DataType;
+import xi.datatypes.XiVar;
 import xi.datatypes.collections.XiString;
 import xi.datatypes.collections.XiTuple;
 
