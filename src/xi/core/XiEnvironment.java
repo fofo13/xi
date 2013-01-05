@@ -20,7 +20,7 @@ public class XiEnvironment implements Closeable {
 
 	private static final Map<String, VariableCache> stdlib = new HashMap<String, VariableCache>();
 	static {
-		File dir = new File("src/modules/");
+		File dir = new File("src/xi/modules/");
 		for (File child : dir.listFiles()) {
 			XiEnvironment sub = null;
 			try {
