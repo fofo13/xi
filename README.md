@@ -80,11 +80,11 @@ To "shift up the sequence" we simply assign the old value of `a` to `b` and assi
 To Do
 -----
 
-- `[√]` Implement lists subtypes thereof.
-- `[√]` Allow for the creation of variables.
-- `[√]` Overload various operations for various other data types, e.g. `+` for lists.
-- `[√]` Implement sets and set operations.
-- `[√]` Allow for the easy creation of custom functions from within Xi.
+- `[✓]` Implement lists subtypes thereof.
+- `[✓]` Allow for the creation of variables.
+- `[✓]` Overload various operations for various other data types, e.g. `+` for lists.
+- `[✓]` Implement sets and set operations.
+- `[✓]` Allow for the easy creation of custom functions from within Xi.
 - `[ ]` Make a smarter parser so as to give the user more flexibility.
 - `[ ]` More accurate error messages.
 - `[ ]` More comprehensive and up-to-date documentation.
