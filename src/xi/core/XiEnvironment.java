@@ -19,6 +19,7 @@ import xi.exceptions.ControlFlowException;
 public class XiEnvironment implements Closeable {
 
 	private static final Map<String, VariableCache> stdlib = new HashMap<String, VariableCache>();
+
 	static {
 		File dir = new File("src/xi/modules/");
 		for (File child : dir.listFiles()) {
@@ -152,7 +153,6 @@ public class XiEnvironment implements Closeable {
 				if (!exp.endsWith(";"))
 					exp += ";";
 			}
-
 			statements.add(exp);
 		}
 		scan.close();
