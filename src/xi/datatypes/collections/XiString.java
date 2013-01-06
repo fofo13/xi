@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import xi.core.Parser;
 import xi.datatypes.DataType;
 
 public class XiString extends ListWrapper {
@@ -41,7 +42,7 @@ public class XiString extends ListWrapper {
 
 		@Override
 		public String toString() {
-			return "" + val;
+			return String.valueOf(val);
 		}
 
 	}
@@ -70,7 +71,7 @@ public class XiString extends ListWrapper {
 		StringBuilder sb = new StringBuilder();
 		for (DataType c : collection)
 			sb.append(c.toString());
-		return sb.toString();
+		return Parser.unescapeJava(sb.toString());
 	}
 
 	@Override
