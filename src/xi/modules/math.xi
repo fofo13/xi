@@ -6,9 +6,9 @@ quadsolve := func ("a" "b" "c") {
 }
 
 factorial := func ("n") {
-	i := 1
-	for "j" @ , n {+ . 1} {
-		i := * i j
-	}
-	i 	
+	if < n 2 {
+		return 1
+	} {
+		return * n f - n 1
+	} 	
 }
