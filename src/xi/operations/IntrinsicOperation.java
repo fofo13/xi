@@ -26,6 +26,7 @@ import xi.datatypes.numeric.XiNum;
 import xi.datatypes.numeric.XiReal;
 import xi.exceptions.BreakException;
 import xi.exceptions.ContinueException;
+import xi.exceptions.ReturnException;
 
 public enum IntrinsicOperation implements Operation {
 
@@ -199,8 +200,12 @@ public enum IntrinsicOperation implements Operation {
 			return ((ListWrapper) args[0]).get((XiInt) args[1]);
 		case MAP: {
 			if (args[0] instanceof XiLambda && args[1] instanceof XiTuple)
-				return ((XiLambda) args[0])
-						.evaluate((XiTuple) args[1], globals);
+				try {
+					return ((XiLambda) args[0]).evaluate((XiTuple) args[1],
+							globals);
+				} catch (ReturnException re) {
+					return re.data();
+				}
 			XiBlock body = (XiBlock) args[1];
 			body.addVars(globals);
 			return ((CollectionWrapper<?>) args[0]).map(body, false);

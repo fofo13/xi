@@ -3,8 +3,9 @@ package xi.datatypes.functional;
 import xi.core.VariableCache;
 import xi.datatypes.DataType;
 import xi.datatypes.XiVar;
-import xi.datatypes.collections.XiTuple;
 import xi.datatypes.collections.XiString;
+import xi.datatypes.collections.XiTuple;
+import xi.exceptions.ReturnException;
 import xi.operations.Operation;
 
 public class XiFunc extends DataType implements Operation {
@@ -33,7 +34,11 @@ public class XiFunc extends DataType implements Operation {
 		body.addVars(globals);
 		for (int i = 0; i < args.length; i++)
 			body.updateLocal(new XiVar(identifiers[i], args[i]));
-		return body.evaluate();
+		try {
+			return body.evaluate();
+		} catch (ReturnException re) {
+			return re.data();
+		}
 	}
 
 	@Override
