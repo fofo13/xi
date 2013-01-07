@@ -46,6 +46,29 @@ public class Euler1 {
 	}
 }
 ```
+---
+
+**factorial2.xi**
+
+```ruby
+factorial := func ("n") {
+	if < n 2 {
+		return 1
+	} {
+		return * n factorial - n 1
+	} 	
+}
+
+for "i" , 10 {
+	println factorial i
+}
+```
+
+This example exhibits the classic recursive factorial function, which works based on the fact that `0! = 1` and `n! = n * (n-1)!` for all `n` greater than `0`.
+
+The `if`-statement within the `factorial` function checks if `n` is less than `2` (we could have also checked that `n` is less than `1` but since `0! = 1! = 1` we might as well include both `0` and `1` in the condition). If this condition is true, we know that `n` is either `0` or `1` and hence we return `1`. Otherwise, we return `n` multuplied by `factorial - n 1`, for the reason outlined above.
+
+The subsequent `for`-loop simply prints the factorials of every integer from `0` through `9` to ensure that everything is in order.
 
 ---
 
