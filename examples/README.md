@@ -13,7 +13,7 @@ Descriptions of Certain Examples
 println "hello world"
 ```
  
-Not much to say here - just a simple "hello world" program.
+Not much to say here - just a simple ["hello world" program](http://en.wikipedia.org/wiki/Hello_world_program).
 
 ---
 
