@@ -217,7 +217,7 @@ public enum IntrinsicOperation implements Operation {
 		}
 		case RANGE:
 			if (args[0] instanceof XiList)
-				return XiList.range((XiTuple) args[0]);
+				return ListWrapper.range((XiTuple) args[0]);
 			return new XiList(((XiInt) args[0]).val());
 		case SUM:
 			return ((CollectionWrapper<?>) args[0]).sum();
