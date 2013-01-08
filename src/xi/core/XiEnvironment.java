@@ -101,40 +101,40 @@ public class XiEnvironment implements Closeable {
 	}
 
 	private void process(String exp) throws BreakException {
-		
-		if (exp.matches("\\s*import\\s+.*")) {
-			load(exp.trim().split("\\s+")[1].replace(".", "/"));
+		exp = exp.trim();
+
+		if (exp.matches("import\\s+.*")) {
+			load(exp.trim().split("\\s+", 2)[1].replace(".", "/"));
 			return;
 		}
-		if (exp.trim().equals("break")) {
+		if (exp.equals("break")) {
 			if (primary)
 				throw new RuntimeException("break statement misplaced");
 
 			throw new BreakException();
 		}
-		if (exp.trim().equals("continue")) {
+		if (exp.equals("continue")) {
 			if (primary)
 				throw new RuntimeException("break statement misplaced");
 
 			throw new ContinueException();
 		}
-		if (exp.trim().matches("return\\s+.*")) {
+		if (exp.matches("return\\s+.*")) {
 			if (primary)
 				throw new RuntimeException("return statement misplaced");
-			
-			throw new ReturnException((new SyntaxTree(exp.trim().split("\\s+", 2)[1], globals)).evaluate());
+
+			throw new ReturnException((new SyntaxTree(exp.split("\\s+", 2)[1],
+					globals)).evaluate());
 		}
-		
+
 		if (Parser.containsAssignment(exp)) {
-			int n = exp.indexOf(":=");
-			String[] split = new String[] { exp.substring(0, n),
-					exp.substring(n + 2) };
+			String[] split = exp.split(":=", 2);
 			globals.add(new XiVar(split[0].trim(), new SyntaxTree(split[1]
 					.trim(), globals).evaluate()));
 		} else {
 			last = (new SyntaxTree(exp, globals)).evaluate();
 		}
-		
+
 	}
 
 	private void load(String name) {
