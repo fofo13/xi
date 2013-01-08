@@ -33,8 +33,10 @@ public class XiList extends ListWrapper {
 		String[] split = Parser.splitOnSemiColons(exp.substring(1,
 				exp.length() - 1).trim());
 		StringBuilder result = new StringBuilder(split.length);
-		for (String s : split)
-			result.append(s + " ");
+		for (String s : split) {
+			result.append(s);
+			result.append(" ");
+		}
 
 		SyntaxTree t = new SyntaxTree(result.toString(), cache);
 
