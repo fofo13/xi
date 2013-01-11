@@ -7,7 +7,7 @@ the most effective ways of doing what they do.
 Descriptions of Certain Examples
 --------------------------------
 
-**hello.xi**  
+### hello.xi 
 
 ```ruby
 println "hello world"
@@ -17,7 +17,7 @@ Not much to say here - just a simple ["hello world" program](http://en.wikipedia
 
 ---
 
-**euler1.xi**
+### euler1.xi
 
 ```ruby
 println $ / , 1000 {| ! % . 3 ! % . 5}
@@ -48,7 +48,7 @@ public class Euler1 {
 ```
 ---
 
-**factorial2.xi**
+### factorial2.xi
 
 ```ruby
 factorial := func ("n") {
@@ -72,7 +72,7 @@ The subsequent `for`-loop simply prints the factorials of every integer from `0`
 
 ---
 
-**fibonacci.xi**  
+### fibonacci.xi 
 
 ```ruby
 n := 5
@@ -94,7 +94,7 @@ To "shift up the sequence" we simply assign the old value of `a` to `b` and assi
 
 ---
 
-**fibonacci3.xi**
+### fibonacci3.xi
 
 ```ruby
 d := dict [(1 0) (2 1)]
