@@ -116,6 +116,33 @@ for "i" @ , 30 {+ . 1} {
 
 This uses dynamic programming to produce the fibonacci numbers more efficiently. A dictionary `d` is first initialized to map `1` to the first fibonacci number (`0`) and `2` to the second (`1`). The `fib` function then uses recusrion, checking if `n` is in `d` before computing `fib(n)`.
 
+---
+
+### hailstone.xi
+
+```ruby
+hailstone := func ("n") {
+	println n
+	while {> n 1} {
+		n := ? % n 2 + * 3 n 1 / n 2
+		println n
+	}
+}
+
+hailstone 123456789
+```
+
+This program generates the so-called *hailstone sequence*. This sequence is defined as follows:
+
+1. Choose the first term `a_0` (this must be a natural number).
+2. `a_{n+1} =` 
+     - `a_n / 2`, if `a_n` is even
+     - `3(a_n) + 1`, if `a_n` is odd
+
+The `while`-loop in the `hailstone` function above continues until `a_n` (denoted as `n` in the program) becomes `1`. Once this occurs, subsequent elements of the sequence will simply cycle through `[4, 2, 1]`. 
+
+How do we know `1` will eventually be reached? We don't, but the *Collatz Conjecture* states that, for all natural starting numbers `n`, the sequence will always arrive at `1` (although this conjecture has not yet been proven, so we can't be absolutely certain). For the number included in the program above (`123456789`), `1` is reached in 177 steps.
+
 Important Note
 --------------
 
