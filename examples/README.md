@@ -134,12 +134,12 @@ hailstone 123456789
 
 This program generates the so-called *hailstone sequence*. This sequence is defined as follows:
 
-1. Choose the first term `a_0` (this must be a natural number).
-2. `a_{n+1} =` 
-     - `a_n / 2`, if `a_n` is even
-     - `3(a_n) + 1`, if `a_n` is odd
+1. Choose the first term *`a_0`* (a natural number).
+2. *`a_{n+1} =`* 
+     - *`a_n / 2`*, if *`a_n`* is even
+     - *`3(a_n) + 1`*, if *`a_n`* is odd
 
-The `while`-loop in the `hailstone` function above continues until `a_n` (denoted as `n` in the program) becomes `1`. Once this occurs, subsequent elements of the sequence will simply cycle through `[4, 2, 1]`. 
+The `while`-loop in the `hailstone` function above continues until *`a_n`* (denoted as `n` in the program) becomes `1`. Once this occurs, subsequent elements of the sequence will simply cycle through *`[4, 2, 1]`*. 
 
 How do we know `1` will eventually be reached? We don't, but the *Collatz Conjecture* states that, for all natural starting numbers `n`, the sequence will always arrive at `1` (although this conjecture has not yet been proven, so we can't be absolutely certain). For the number included in the program above (`123456789`), `1` is reached in 177 steps.
 
