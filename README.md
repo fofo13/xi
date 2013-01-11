@@ -15,7 +15,7 @@ Examples
 
 Refer to the [examples](https://github.com/arshajii/Xi/tree/master/examples) folder for a full list of examples and descriptions.
 
-**hello.xi**  
+### hello.xi  
 
 ```ruby
 println "hello world"
@@ -25,7 +25,7 @@ Not much to say here - just a simple "hello world" program.
 
 ---
 
-**euler1.xi**
+### euler1.xi
 
 ```ruby
 println $ / , 1000 {| ! % . 3 ! % . 5}
@@ -57,7 +57,7 @@ public class Euler1 {
 
 ---
 
-**factorial2.xi**
+### factorial2.xi
 
 ```ruby
 factorial := func ("n") {
@@ -81,7 +81,7 @@ The subsequent `for`-loop simply prints the factorials of every integer from `0`
 
 ---
 
-**fibonacci.xi**  
+### fibonacci.xi
 
 ```ruby
 n := 5
@@ -112,6 +112,7 @@ To Do
 - `[ ]` Make a smarter parser so as to give the user more flexibility.
 - `[ ]` More accurate error messages.
 - `[ ]` More comprehensive and up-to-date documentation.
+- `[ ]` More comprehensive and up-to-date to-do list.
 
 License
 -------
