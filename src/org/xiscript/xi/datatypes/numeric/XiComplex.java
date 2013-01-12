@@ -98,6 +98,11 @@ public class XiComplex extends XiNum {
 	}
 
 	@Override
+	public Object getJavaAnalog() {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
 	public int compareTo(DataType other) {
 		if (other instanceof XiComplex) {
 			Double a = ((XiFloat) (abs())).num().doubleValue();

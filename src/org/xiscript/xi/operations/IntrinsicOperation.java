@@ -56,7 +56,7 @@ public enum IntrinsicOperation implements Operation {
 			"set", 1), TUPLE("tuple", 1), DICT("dict", 1), CMPLX("cmplx", 2), FUNC(
 			"func", 2), LAMBDA("lambda", 2),
 
-	PRINT("print", 1), PRINTLN("println", 1),
+	PRINT("print", 1), PRINTLN("println", 1), PRINTF("printf", 2),
 
 	INPUT("input", 0),
 
@@ -139,6 +139,15 @@ public enum IntrinsicOperation implements Operation {
 						.filter((XiBlock) args[1]);
 			return ((XiNum) args[0]).div((XiNum) args[1]);
 		case MODULUS:
+			if (args[0] instanceof XiString) {
+				XiTuple tup = ((XiTuple) args[1]);
+				Object[] objs = new Object[tup.length()];
+
+				for (int i = 0; i < objs.length; i++)
+					objs[i] = tup.get(i).getJavaAnalog();
+
+				return new XiString(String.format(args[0].toString(), objs));
+			}
 			return ((XiInt) args[0]).mod((XiInt) args[1]);
 		case EQ:
 			return new XiInt(args[0].equals(args[1]));
@@ -387,6 +396,16 @@ public enum IntrinsicOperation implements Operation {
 		case PRINTLN:
 			System.out.println(args[0]);
 			return XiNull.instance();
+		case PRINTF: {
+			XiTuple tup = ((XiTuple) args[1]);
+			Object[] objs = new Object[tup.length()];
+
+			for (int i = 0; i < objs.length; i++)
+				objs[i] = tup.get(i).getJavaAnalog();
+
+			System.out.printf(args[0].toString(), objs);
+			return XiNull.instance();
+		}
 		case INPUT:
 			return new XiString(console.nextLine());
 		case SLEEP:

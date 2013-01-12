@@ -55,6 +55,11 @@ public class XiDictionary extends DataType {
 	}
 	
 	@Override
+	public Map<DataType, DataType> getJavaAnalog() {
+		return map;
+	}
+	
+	@Override
 	public boolean isEmpty() {
 		return map.isEmpty();
 	}

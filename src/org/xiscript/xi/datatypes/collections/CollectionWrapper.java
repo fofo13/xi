@@ -12,7 +12,6 @@ import org.xiscript.xi.datatypes.functional.XiBlock;
 import org.xiscript.xi.datatypes.numeric.XiInt;
 import org.xiscript.xi.operations.IntrinsicOperation;
 
-
 public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 		DataType implements Iterable<DataType> {
 
@@ -27,16 +26,17 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 	public T collection() {
 		return collection;
 	}
-	
+
 	public CollectionWrapper<T> map(XiBlock block, boolean deep) {
 		Collection<DataType> col = new ArrayList<DataType>(collection.size());
 		for (DataType a : collection) {
 			block.updateLocal(new XiVar(".", a));
-			col.add((deep && (a instanceof CollectionWrapper<?>)) ? ((CollectionWrapper<?>)a).map(block, true) : block.evaluate());
+			col.add((deep && (a instanceof CollectionWrapper<?>)) ? ((CollectionWrapper<?>) a)
+					.map(block, true) : block.evaluate());
 		}
 		return instantiate(col);
 	}
-	
+
 	public CollectionWrapper<T> filter(XiBlock block) {
 		Collection<DataType> col = new ArrayList<DataType>(collection.size());
 		for (DataType a : collection) {
@@ -61,15 +61,15 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 		List<DataType> list = new ArrayList<DataType>(collection);
 		DataType d = list.get(0);
 		for (int i = 1; i < collection.size(); i++)
-			d = IntrinsicOperation.ADD.evaluate(new DataType[] { d, list.get(i) },
-					null);
+			d = IntrinsicOperation.ADD.evaluate(
+					new DataType[] { d, list.get(i) }, null);
 		return d;
 	}
-	
+
 	public boolean contains(DataType data) {
 		return collection.contains(data);
 	}
-	
+
 	public int size() {
 		return length();
 	}
@@ -77,15 +77,20 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 	public XiList asList() {
 		return new XiList(new ArrayList<DataType>(collection));
 	}
-	
+
 	public XiSet asSet() {
 		return new XiSet(new HashSet<DataType>(collection));
 	}
-	
+
 	public XiTuple asTuple() {
 		return new XiTuple(new ArrayList<DataType>(collection));
 	}
-	
+
+	@Override
+	public Object getJavaAnalog() {
+		return collection;
+	}
+
 	@Override
 	public boolean isEmpty() {
 		return collection.isEmpty();
@@ -107,7 +112,7 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 	public Iterator<DataType> iterator() {
 		return collection.iterator();
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return collection.hashCode();

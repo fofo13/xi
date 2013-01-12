@@ -32,6 +32,11 @@ public class XiLambda extends DataType {
 	}
 
 	@Override
+	public Object getJavaAnalog() {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
 	public boolean isEmpty() {
 		return body.isEmpty();
 	}

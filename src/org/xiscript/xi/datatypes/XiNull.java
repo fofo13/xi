@@ -12,6 +12,11 @@ public final class XiNull extends DataType {
 	}
 
 	@Override
+	public Object getJavaAnalog() {
+		return null;
+	}
+	
+	@Override
 	public boolean isEmpty() {
 		return true;
 	}

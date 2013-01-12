@@ -24,6 +24,11 @@ public class XiVar extends DataType {
 	}
 	
 	@Override
+	public String getJavaAnalog() {
+		return id;
+	}
+	
+	@Override
 	public boolean isEmpty() {
 		return data.isEmpty();
 	}

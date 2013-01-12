@@ -15,6 +15,11 @@ public abstract class XiReal extends XiNum {
 	}
 	
 	@Override
+	public Number getJavaAnalog() {
+		return val;
+	}
+	
+	@Override
 	public int compareTo(DataType other) {
 		if (! (other instanceof XiReal))
 			return 0;

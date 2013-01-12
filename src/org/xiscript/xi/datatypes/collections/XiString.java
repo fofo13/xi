@@ -7,7 +7,6 @@ import java.util.List;
 import org.xiscript.xi.core.Parser;
 import org.xiscript.xi.datatypes.DataType;
 
-
 public class XiString extends ListWrapper {
 
 	private static class XiChar extends DataType {
@@ -26,6 +25,11 @@ public class XiString extends ListWrapper {
 			List<DataType> l = new ArrayList<DataType>();
 			l.add(new XiChar(val));
 			return new XiString(l);
+		}
+
+		@Override
+		public Character getJavaAnalog() {
+			return val;
 		}
 
 		@Override
@@ -62,11 +66,16 @@ public class XiString extends ListWrapper {
 	public XiList toList() {
 		return new XiList(collection);
 	}
-	
+
 	public XiString cut(XiString other) {
 		return new XiString(toString().replace(other.toString(), ""));
 	}
-	
+
+	@Override
+	public String getJavaAnalog() {
+		return toString();
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -88,19 +97,19 @@ public class XiString extends ListWrapper {
 			return toString().contains(data.toString());
 		return false;
 	}
-	
+
 	@Override
 	public int compareTo(DataType other) {
-		if (! (other instanceof XiString))
+		if (!(other instanceof XiString))
 			return 0;
 		return toString().compareTo(other.toString());
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return toString().hashCode();
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof XiRegex)

@@ -26,6 +26,11 @@ public class XiFunc extends DataType implements Operation {
 	}
 
 	@Override
+	public Object getJavaAnalog() {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
 	public int numArgs() {
 		return identifiers.length;
 	}
