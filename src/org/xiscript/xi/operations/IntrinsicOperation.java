@@ -1,6 +1,11 @@
 package org.xiscript.xi.operations;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
@@ -28,7 +33,6 @@ import org.xiscript.xi.exceptions.BreakException;
 import org.xiscript.xi.exceptions.ContinueException;
 import org.xiscript.xi.exceptions.ReturnException;
 
-
 public enum IntrinsicOperation implements Operation {
 
 	NULL("null", 0),
@@ -46,7 +50,7 @@ public enum IntrinsicOperation implements Operation {
 	FOR("for", 3), IF("if", 3), DO("do", 2), WHILE("while", 2), DOWHILE(
 			"dowhile", 2),
 
-	EVAL("eval", 1),
+	EVAL("eval", 1), EXEC("exec", 1),
 
 	STR("str", 1), INT("int", 1), FLOAT("float", 1), LIST("list", 1), SET(
 			"set", 1), TUPLE("tuple", 1), DICT("dict", 1), CMPLX("cmplx", 2), FUNC(
@@ -334,6 +338,23 @@ public enum IntrinsicOperation implements Operation {
 				return block.evaluate();
 			} finally {
 				globals.addAll(block.locals());
+			}
+		}
+		case EXEC: {
+			try {
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+						Runtime.getRuntime().exec(args[0].toString())
+								.getInputStream()));
+
+				List<DataType> out = new ArrayList<DataType>();
+
+				String line = null;
+				while ((line = br.readLine()) != null)
+					out.add(new XiString(line));
+
+				return new XiList(out);
+			} catch (IOException ioe) {
+				throw new RuntimeException("exec failed");
 			}
 		}
 		case STR:
