@@ -8,7 +8,7 @@ Java, but most are original. Be sure to check out the [wiki](https://github.com/
 Installing and Running
 ----------------------
 
-Currently the easiest way to do this is to clone the repository and make use of the [`Xi.java`](https://github.com/arshajii/Xi/blob/master/src/xi/Xi.java) file. A more robust and portable shell script will be added to run Xi code in the near future. 
+Currently the easiest way to do this is to clone the repository and make use of the [`Xi.java`](https://github.com/arshajii/xi/blob/master/src/org/xiscript/xi/Xi.java) file. A more robust and portable shell script will be added to run Xi code in the near future. 
 
 Examples
 --------
