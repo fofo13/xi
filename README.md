@@ -122,4 +122,4 @@ To Do
 License
 -------
 
-This content is released under the MIT License. See [`LICENSE.txt`](https://github.com/arshajii/xi/blob/master/LICENSE.txt) document for details.
+This content is released under the MIT License. See [`LICENSE.txt`](https://github.com/arshajii/xi/blob/master/LICENSE.txt) for details.
