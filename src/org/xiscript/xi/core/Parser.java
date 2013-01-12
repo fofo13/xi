@@ -18,6 +18,7 @@ import org.xiscript.xi.datatypes.functional.XiFunc;
 import org.xiscript.xi.datatypes.numeric.XiComplex;
 import org.xiscript.xi.datatypes.numeric.XiFloat;
 import org.xiscript.xi.datatypes.numeric.XiInt;
+import org.xiscript.xi.datatypes.numeric.XiLong;
 import org.xiscript.xi.nodes.DataNode;
 import org.xiscript.xi.nodes.Node;
 import org.xiscript.xi.nodes.OperationNode;
@@ -80,6 +81,8 @@ public class Parser {
 	public static Node parseNode(String exp, VariableCache cache) {
 		if (exp.matches("-?\\d+"))
 			return new DataNode<XiInt>(XiInt.parse(exp));
+		if (exp.matches("-?\\d+[lL]"))
+			return new DataNode<XiLong>(XiLong.parse(exp));
 		if (exp.matches("-?\\d+\\.\\d*"))
 			return new DataNode<XiFloat>(XiFloat.parse(exp));
 		if (exp.matches("-?\\d+(\\.\\d+)*i"))

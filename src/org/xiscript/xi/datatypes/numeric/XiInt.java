@@ -25,7 +25,7 @@ public class XiInt extends XiReal {
 
 	@Override
 	public String toString() {
-		return "" + val.intValue();
+		return Integer.toString(val.intValue());
 	}
 
 	@Override

@@ -27,6 +27,7 @@ import org.xiscript.xi.datatypes.functional.XiLambda;
 import org.xiscript.xi.datatypes.numeric.XiComplex;
 import org.xiscript.xi.datatypes.numeric.XiFloat;
 import org.xiscript.xi.datatypes.numeric.XiInt;
+import org.xiscript.xi.datatypes.numeric.XiLong;
 import org.xiscript.xi.datatypes.numeric.XiNum;
 import org.xiscript.xi.datatypes.numeric.XiReal;
 import org.xiscript.xi.exceptions.BreakException;
@@ -52,9 +53,9 @@ public enum IntrinsicOperation implements Operation {
 
 	EVAL("eval", 1), EXEC("exec", 1),
 
-	STR("str", 1), INT("int", 1), FLOAT("float", 1), LIST("list", 1), SET(
-			"set", 1), TUPLE("tuple", 1), DICT("dict", 1), CMPLX("cmplx", 2), FUNC(
-			"func", 2), LAMBDA("lambda", 2),
+	STR("str", 1), INT("int", 1), FLOAT("float", 1), LONG("long", 1), LIST(
+			"list", 1), SET("set", 1), TUPLE("tuple", 1), DICT("dict", 1), CMPLX(
+			"cmplx", 2), FUNC("func", 2), LAMBDA("lambda", 2),
 
 	PRINT("print", 1), PRINTLN("println", 1), PRINTF("printf", 2),
 
@@ -63,7 +64,7 @@ public enum IntrinsicOperation implements Operation {
 	SLEEP("sleep", 1),
 
 	HASH("hash", 1), LEN("len", 1),
-	
+
 	ASSERT("assert", 1),
 
 	TYPE("type", 1);
@@ -374,6 +375,8 @@ public enum IntrinsicOperation implements Operation {
 			return XiInt.parse(args[0].toString());
 		case FLOAT:
 			return XiFloat.parse(args[0].toString());
+		case LONG:
+			return XiLong.parse(args[0].toString());
 		case LIST:
 			return ((CollectionWrapper<?>) args[0]).asList();
 		case SET:

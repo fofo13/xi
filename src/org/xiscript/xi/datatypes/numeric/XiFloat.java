@@ -80,7 +80,7 @@ public class XiFloat extends XiReal {
 	
 	@Override
 	public String toString() {
-		return "" + val.doubleValue();
+		return Double.toString(val.doubleValue());
 	}
 
 }
