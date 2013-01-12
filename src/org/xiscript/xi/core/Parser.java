@@ -24,7 +24,6 @@ import org.xiscript.xi.nodes.OperationNode;
 import org.xiscript.xi.nodes.VarNode;
 import org.xiscript.xi.operations.IntrinsicOperation;
 
-
 public class Parser {
 
 	public static String[] splitOnSemiColons(String exp) {
@@ -107,7 +106,7 @@ public class Parser {
 		}
 		throw new RuntimeException("Cannot parse expression: " + exp);
 	}
-	
+
 	public static String unescapeJava(String str) {
 		if (str == null) {
 			return null;
