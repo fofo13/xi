@@ -63,6 +63,8 @@ public enum IntrinsicOperation implements Operation {
 	SLEEP("sleep", 1),
 
 	HASH("hash", 1), LEN("len", 1),
+	
+	ASSERT("assert", 1),
 
 	TYPE("type", 1);
 
@@ -419,6 +421,10 @@ public enum IntrinsicOperation implements Operation {
 			return new XiInt(args[0].hashCode());
 		case LEN:
 			return new XiInt(args[0].length());
+		case ASSERT:
+			if (args[0].isEmpty())
+				throw new RuntimeException("assertion failed");
+			return XiNull.instance();
 		case TYPE:
 			return new XiString(args[0].type());
 		default:
