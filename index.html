@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Xi by arshajii</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Xi</h1>
+        <p>A simple scripting language written in Java</p>
+
+        <p class="view"><a href="https://github.com/arshajii/xi">View the Project on GitHub <small>arshajii/xi</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/arshajii/xi/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/arshajii/xi/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/arshajii/xi">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>Xi <sub><em>beta</em></sub>
+</h1>
+
+<p><strong>a simple scripting language written in Java</strong></p>
+
+<p>The goal of Xi is to allow users to write concise code that can carry out complicated tasks. Some concepts are borrowed from Python, others from
+Java, but most are original. Be sure to check out the <a href="https://github.com/arshajii/Xi/wiki">wiki</a> to learn more.</p>
+
+<h2>Installing and Running</h2>
+
+<p>Currently the easiest way to do this is to clone the repository and make use of the <a href="https://github.com/arshajii/Xi/blob/master/src/xi/Xi.java"><code>Xi.java</code></a> file. A more robust and portable shell script will be added to run Xi code in the near future. </p>
+
+<h2>Examples</h2>
+
+<p>Refer to the <a href="https://github.com/arshajii/Xi/tree/master/examples">examples</a> folder for a full list of examples and descriptions.</p>
+
+<h3>hello.xi</h3>
+
+<div class="highlight"><pre><span class="n">println</span> <span class="s2">"hello world"</span>
+</pre></div>
+
+<p>Not much to say here - just a simple "hello world" program.</p>
+
+<hr><h3>euler1.xi</h3>
+
+<div class="highlight"><pre><span class="n">println</span> <span class="err">$</span> <span class="o">/</span> <span class="p">,</span> <span class="mi">1000</span> <span class="p">{</span><span class="o">|</span> <span class="o">!</span> <span class="sx">% . </span><span class="mi">3</span> <span class="o">!</span> <span class="sx">% . </span><span class="mi">5</span><span class="p">}</span>
+</pre></div>
+
+<p>This is a solution to <a href="http://projecteuler.net/problem=1">Problem #1</a> of <a href="http://projecteuler.net">Project Euler</a>. The problem reads as follows:</p>
+
+<blockquote>
+<p>If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. The sum of these multiples is 23.
+Find the sum of all the multiples of 3 or 5 below 1000.</p>
+</blockquote>
+
+<p>First, we create a list of integers from <code>0</code> to <code>999</code> with <code>, 1000</code>. Next, we filter this list (using <code>/</code>) with the block <code>{| ! % . 3 ! % . 5}</code>; in other words,
+we remove any element <code>.</code> for which <code>{| ! % . 3 ! % . 5}</code> is <em>not</em> true. Further, this block only returns true if <code>.</code> is either divisible by <code>3</code> (i.e.
+<code>! % . 3</code>) or if it is divisible by <code>5</code> (i.e. <code>! % . 5</code>). This results in a list of all multiples of either <code>3</code> or <code>5</code> less than <code>1000</code>. Lastly, we
+find the sum of this list using <code>$</code>, resulting in the desired answer.</p>
+
+<p>Equivalent (in the sense that it also solves the problem) code in Java would be:</p>
+
+<div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Euler1</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1000</span> <span class="o">;</span> <span class="n">i</span><span class="o">++)</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span>
+                <span class="n">sum</span> <span class="o">+=</span> <span class="n">i</span><span class="o">;</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">sum</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+
+<hr><h3>factorial2.xi</h3>
+
+<div class="highlight"><pre><span class="n">factorial</span> <span class="p">:</span><span class="o">=</span> <span class="n">func</span> <span class="p">(</span><span class="s2">"n"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="mi">2</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="p">}</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="o">*</span> <span class="n">n</span> <span class="n">factorial</span> <span class="o">-</span> <span class="n">n</span> <span class="mi">1</span>
+    <span class="p">}</span>   
+<span class="p">}</span>
+
+<span class="k">for</span> <span class="s2">"i"</span> <span class="p">,</span> <span class="mi">10</span> <span class="p">{</span>
+    <span class="n">println</span> <span class="n">factorial</span> <span class="n">i</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>This example exhibits the classic recursive factorial function, which works based on the fact that <code>0! = 1</code> and <code>n! = n * (n-1)!</code> for all <code>n</code> greater than <code>0</code>.</p>
+
+<p>The <code>if</code>-statement within the <code>factorial</code> function checks if <code>n</code> is less than <code>2</code> (we could have also checked that <code>n</code> is less than <code>1</code> but since <code>0! = 1! = 1</code> we might as well include both <code>0</code> and <code>1</code> in the condition). If this condition is true, we know that <code>n</code> is either <code>0</code> or <code>1</code> and hence we return <code>1</code>. Otherwise, we return <code>n</code> multuplied by <code>factorial - n 1</code>, for the reason outlined above.</p>
+
+<p>The subsequent <code>for</code>-loop simply prints the factorials of every integer from <code>0</code> through <code>9</code> to ensure that everything is in order.</p>
+
+<hr><h3>fibonacci.xi</h3>
+
+<div class="highlight"><pre><span class="n">n</span> <span class="p">:</span><span class="o">=</span> <span class="mi">5</span>
+<span class="n">println</span> <span class="o">+</span> <span class="s2">"First "</span> <span class="o">+</span> <span class="n">n</span> <span class="s2">" Fibonacci numbers:"</span>
+
+<span class="n">a</span> <span class="p">:</span><span class="o">=</span> <span class="mi">0</span>
+<span class="n">b</span> <span class="p">:</span><span class="o">=</span> <span class="mi">1</span>
+<span class="k">do</span> <span class="n">n</span> <span class="p">{</span>
+    <span class="n">c</span> <span class="p">:</span><span class="o">=</span> <span class="n">a</span>
+    <span class="n">a</span> <span class="p">:</span><span class="o">=</span> <span class="o">+</span> <span class="n">a</span> <span class="n">b</span>
+    <span class="n">b</span> <span class="p">:</span><span class="o">=</span> <span class="n">c</span>
+    <span class="n">println</span> <span class="n">b</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>This code prints the first <code>n</code> terms of the Fibonacci sequence. We first define <code>a</code> and <code>b</code> to be the first and second terms of the sequence, respectively.
+Then we have a <code>do</code>-loop which performs <code>n</code> iterations, shifting <code>a</code> and <code>b</code> one step up the sequence and printing the appropriate term on each iteration.
+To "shift up the sequence" we simply assign the old value of <code>a</code> to <code>b</code> and assign the <code>a + b</code> to <code>a</code>.</p>
+
+<h2>To Do</h2>
+
+<h3>Language-Related</h3>
+
+<ul>
+<li>
+<code>[✓]</code> Implement lists subtypes thereof.</li>
+<li>
+<code>[✓]</code> Allow for the creation of variables.</li>
+<li>
+<code>[✓]</code> Overload various operations for various other data types, e.g. <code>+</code> for lists.</li>
+<li>
+<code>[✓]</code> Implement sets and set operations.</li>
+<li>
+<code>[✓]</code> Allow for the easy creation of custom functions from within Xi.</li>
+<li>
+<code>[ ]</code> Make a smarter parser so as to give the user more flexibility.</li>
+<li>
+<code>[ ]</code> More accurate and more specific error messages, including line number and specifically why an error occured.</li>
+<li>
+<code>[ ]</code> Add a <em>long</em> or <em>BigInteger</em> numerical data type.</li>
+</ul><h3>Other</h3>
+
+<ul>
+<li>
+<code>[✓]</code> Include domain name in Java source package name.</li>
+<li>
+<code>[ ]</code> More comprehensive and up-to-date documentation.</li>
+<li>
+<code>[ ]</code> More comprehensive and up-to-date to-do list.</li>
+</ul><h2>License</h2>
+
+<p>This content is released under the MIT License. See <a href="https://github.com/arshajii/xi/blob/master/LICENSE.txt"><code>LICENSE.txt</code></a> document for details.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/arshajii">arshajii</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
