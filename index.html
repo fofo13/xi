@@ -1,34 +1,45 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
-
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
     <title>Xi by arshajii</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
   </head>
-
   <body>
-    <header>
-      <div class="inner">
-        <h1>Xi</h1>
-        <h2>A simple scripting language written in Java</h2>
-        <a href="https://github.com/arshajii/xi" class="button"><small>View project on</small>GitHub</a>
-      </div>
-    </header>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h1>Xi <sub><em>beta</em></sub>
+      <header>
+        <h1>Xi</h1>
+        <p>A simple scripting language written in Java</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/arshajii/xi" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/arshajii/xi/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/arshajii/xi/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h1>Xi <sub><em>beta</em></sub>
 </h1>
 
 <p><strong>a simple scripting language written in Java</strong></p>
@@ -76,6 +87,42 @@ find the sum of this list using <code>$</code>, resulting in the desired answer.
         <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1000</span> <span class="o">;</span> <span class="n">i</span><span class="o">++)</span>
             <span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span>
                 <span class="n">sum</span> <span class="o">+=</span> <span class="n">i</span><span class="o">;</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">sum</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+
+<hr><h3>euler16.xi</h3>
+
+<div class="highlight"><pre><span class="n">println</span> <span class="err">$</span> <span class="err">@</span> <span class="n">list</span> <span class="n">str</span> <span class="o">**</span> <span class="mi">2</span><span class="n">L</span> <span class="mi">1000</span> <span class="p">{</span><span class="n">int</span> <span class="o">.</span><span class="p">}</span>
+</pre></div>
+
+<p>This is a solution to <a href="http://projecteuler.net/problem=16">Problem #16</a> of <a href="http://projecteuler.net">Project Euler</a>. The problem reads as follows:</p>
+
+<blockquote>
+<p>2^15 = 32768 and the sum of its digits is 3 + 2 + 7 + 6 + 8 = 26.</p>
+
+<p>What is the sum of the digits of the number 2^1000?</p>
+</blockquote>
+
+<p>This program works by first actually evaluating 2^1000: <code>** 2L 1000</code>. Notice here that <code>2L</code> is a <em>long</em> literal so we have the capacity to store a number this large. </p>
+
+<p>Once we have this number, we perform two operations, namely <code>str</code> followed by <code>list</code>. <code>str</code> turns the number into a string, and <code>list</code> turns this string into a list of its constituent character. For example, <code>list str "1234"</code> would result in <code>["1", "2", "3", "4"]</code>.</p>
+
+<p>After forming this list, we perform an <code>@</code> mapping on it using the block <code>{int .}</code>. In other words, we convert each 'int string' element of the list to an actual integer. For the previous example, we would obtain <code>[1, 2, 3, 4]</code>. Ultimately, we have taken a number and used it to create a list of nonnegative integers less than 10 representing its digits.</p>
+
+<p>The final operation is <code>$</code>, which simply adds up the elements of this list to obtain the desired result.</p>
+
+<p>A short solution to this problem in Java would be</p>
+
+<div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Euler16</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">char</span><span class="o">[]</span> <span class="n">digits</span> <span class="o">=</span> <span class="n">BigInteger</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="mi">2L</span><span class="o">).</span><span class="na">pow</span><span class="o">(</span><span class="mi">1000</span><span class="o">).</span><span class="na">toString</span><span class="o">().</span><span class="na">toCharArray</span><span class="o">();</span>
+        <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+
+        <span class="k">for</span> <span class="o">(</span><span class="kt">char</span> <span class="n">c</span> <span class="o">:</span> <span class="n">digits</span><span class="o">)</span>
+            <span class="n">sum</span> <span class="o">+=</span> <span class="n">c</span> <span class="o">-</span> <span class="sc">'0'</span><span class="o">;</span>
+
         <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">sum</span><span class="o">);</span>
     <span class="o">}</span>
 <span class="o">}</span>
@@ -154,25 +201,13 @@ To "shift up the sequence" we simply assign the old value of <code>a</code> to <
 </ul><h2>License</h2>
 
 <p>This content is released under the MIT License. See <a href="https://github.com/arshajii/xi/blob/master/LICENSE.txt"><code>LICENSE.txt</code></a> for details.</p>
-        </section>
-
-        <aside id="sidebar">
-          <a href="https://github.com/arshajii/xi/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/arshajii/xi/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
-
-          <p class="repo-owner"><a href="https://github.com/arshajii/xi"></a> is maintained by <a href="https://github.com/arshajii">arshajii</a>.</p>
-
-          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/arshajii">arshajii</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+      </footer>
     </div>
-
-  
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
   </body>
 </html>
