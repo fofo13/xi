@@ -72,15 +72,15 @@ A short solution to this problem in Java would be
 
 ```java
 public class Euler16 {
-	public static void main(String[] args) throws IOException {
-		char[] digits = BigInteger.valueOf(2L).pow(1000).toString().toCharArray();
-		int sum = 0;
+    public static void main(String[] args) {
+        char[] digits = BigInteger.valueOf(2L).pow(1000).toString().toCharArray();
+        int sum = 0;
 		
-		for (char c : digits)
-			sum += c - '0';
+        for (char c : digits)
+            sum += c - '0';
 		
-		System.out.println(sum);
-	}
+        System.out.println(sum);
+    }
 }
 ```
 
