@@ -4,31 +4,40 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>Xi by arshajii</title>
-
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="javascripts/scale.fix.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
     <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
   </head>
   <body>
-    <div class="wrapper">
+
       <header>
-        <h1 class="header">Xi</h1>
-        <p class="header">A simple scripting language written in Java</p>
-
-        <ul>
-          <li class="download"><a class="buttons" href="https://github.com/arshajii/xi/zipball/master">Download ZIP</a></li>
-          <li class="download"><a class="buttons" href="https://github.com/arshajii/xi/tarball/master">Download TAR</a></li>
-          <li><a class="buttons github" href="https://github.com/arshajii/xi">View On GitHub</a></li>
-        </ul>
-
-        <p class="header">This project is maintained by <a class="header name" href="https://github.com/arshajii">arshajii</a></p>
-
-
+        <h1>Xi</h1>
+        <p>A simple scripting language written in Java</p>
       </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/arshajii/xi" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/arshajii/xi/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/arshajii/xi/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
       <section>
         <h1>Xi <sub><em>beta</em></sub>
 </h1>
@@ -40,7 +49,7 @@ Java, but most are original. Be sure to check out the <a href="https://github.co
 
 <h2>Installing and Running</h2>
 
-<p>Currently the easiest way to do this is to clone the repository and make use of the <a href="https://github.com/arshajii/Xi/blob/master/src/xi/Xi.java"><code>Xi.java</code></a> file. A more robust and portable shell script will be added to run Xi code in the near future. </p>
+<p>Currently the easiest way to do this is to clone the repository and make use of the <a href="https://github.com/arshajii/xi/blob/master/src/org/xiscript/xi/Xi.java"><code>Xi.java</code></a> file. A more robust and portable shell script will be added to run Xi code in the near future. </p>
 
 <h2>Examples</h2>
 
@@ -155,13 +164,14 @@ To "shift up the sequence" we simply assign the old value of <code>a</code> to <
 <code>[ ]</code> More comprehensive and up-to-date to-do list.</li>
 </ul><h2>License</h2>
 
-<p>This content is released under the MIT License. See <a href="https://github.com/arshajii/xi/blob/master/LICENSE.txt"><code>LICENSE.txt</code></a> document for details.</p>
+<p>This content is released under the MIT License. See <a href="https://github.com/arshajii/xi/blob/master/LICENSE.txt"><code>LICENSE.txt</code></a> for details.</p>
       </section>
       <footer>
-        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+        <p>Project maintained by <a href="https://github.com/arshajii">arshajii</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
       </footer>
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-		
+    
   </body>
 </html>
