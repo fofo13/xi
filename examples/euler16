@@ -1,0 +1,1 @@
+println $ @ list str ** 2L 1000 {int .}

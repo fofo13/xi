@@ -48,6 +48,44 @@ public class Euler1 {
 ```
 ---
 
+### euler16.xi
+
+```ruby
+println $ @ list str ** 2L 1000 {int .}
+```
+
+This is a solution to [Problem #16](http://projecteuler.net/problem=16) of [Project Euler](http://projecteuler.net). The problem reads as follows:
+
+>2^15 = 32768 and the sum of its digits is 3 + 2 + 7 + 6 + 8 = 26.
+
+>What is the sum of the digits of the number 2^1000?
+
+This program works by first actually evaluating 2^1000: `** 2L 1000`. Notice here that `2L` is a *long* literal so we have the capacity to store a number this large. 
+
+Once we have this number, we perform two operations, namely `str` followed by `list`. `str` turns the number into a string, and `list` turns this string into a list of its constituent character. For example, `list str "1234"` would result in `["1", "2", "3", "4"]`.
+
+After forming this list, we perform an `@` mapping on it using the block `{int .}`. In other words, we convert each 'int string' element of the list to an actual integer. For the previous example, we would obtain `[1, 2, 3, 4]`. Ultimately, we have taken a number and used it to create a list of nonnegative integers less than 10 representing its digits.
+
+The final operation is `$`, which simply adds up the elements of this list to obtain the desired result.
+
+A short solution to this problem in Java would be
+
+```java
+public class Euler16 {
+	public static void main(String[] args) throws IOException {
+		char[] digits = BigInteger.valueOf(2L).pow(1000).toString().toCharArray();
+		int sum = 0;
+		
+		for (char c : digits)
+			sum += c - '0';
+		
+		System.out.println(sum);
+	}
+}
+```
+
+---
+
 ### factorial2.xi
 
 ```ruby
