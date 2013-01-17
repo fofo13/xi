@@ -131,12 +131,8 @@ public class Parser {
 		for (int i = 0; i < sz; i++) {
 			char ch = str.charAt(i);
 			if (inUnicode) {
-				// if in unicode, then we're reading unicode
-				// values in somehow
 				unicode.append(ch);
 				if (unicode.length() == 4) {
-					// unicode now contains the four hex digits
-					// which represents our unicode character
 					try {
 						int value = Integer.parseInt(unicode.toString(), 16);
 						out.write((char) value);
@@ -152,7 +148,6 @@ public class Parser {
 				continue;
 			}
 			if (hadSlash) {
-				// handle an escaped value
 				hadSlash = false;
 				switch (ch) {
 				case '\\':
@@ -180,7 +175,6 @@ public class Parser {
 					out.write('\b');
 					break;
 				case 'u': {
-					// uh-oh, we're in unicode country....
 					inUnicode = true;
 					break;
 				}
@@ -196,8 +190,6 @@ public class Parser {
 			out.write(ch);
 		}
 		if (hadSlash) {
-			// then we're in the weird case of a \ at the end of the
-			// string, let's output it anyway.
 			out.write('\\');
 		}
 	}
