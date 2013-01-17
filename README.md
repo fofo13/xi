@@ -150,9 +150,10 @@ To Do
 - `[✓]` Allow for the easy creation of custom functions from within Xi.
 - `[ ]` Make a smarter parser so as to give the user more flexibility.
 - `[ ]` More accurate and more specific error messages, including line number and specifically why an error occured.
-- `[ ]` Add a *long* or *BigInteger* numerical data type.
+- `[✓]` Add a *long* or *BigInteger* numerical data type.
+- `[ ]` Thoroughly update built-in modules.
 
-### Other
+### Miscellaneous
 - `[✓]` Include domain name in Java source package name.
 - `[ ]` More comprehensive and up-to-date documentation.
 - `[ ]` More comprehensive and up-to-date to-do list.
