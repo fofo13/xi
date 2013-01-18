@@ -29,10 +29,13 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 
 	public CollectionWrapper<T> map(XiBlock block, boolean deep) {
 		Collection<DataType> col = new ArrayList<DataType>(collection.size());
+		int index = 0;
 		for (DataType a : collection) {
 			block.updateLocal(new XiVar(".", a));
+			block.updateLocal(new XiVar("_", new XiInt(index)));
 			col.add((deep && (a instanceof CollectionWrapper<?>)) ? ((CollectionWrapper<?>) a)
 					.map(block, true) : block.evaluate());
+			index++;
 		}
 		return instantiate(col);
 	}

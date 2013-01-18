@@ -343,8 +343,10 @@ public enum IntrinsicOperation implements Operation {
 			CollectionWrapper<?> col = (CollectionWrapper<?>) args[0];
 			XiBlock body = (XiBlock) args[1];
 			body.addVars(globals);
+			int index = 0;
 			for (DataType data : col) {
 				body.updateLocal(new XiVar(".", data));
+				body.updateLocal(new XiVar("_", new XiInt(index)));
 				try {
 					body.evaluate();
 				} catch (BreakException be) {
@@ -352,6 +354,7 @@ public enum IntrinsicOperation implements Operation {
 				} catch (ContinueException ce) {
 					continue;
 				}
+				index++;
 			}
 			globals.addAll(body.locals());
 			return XiNull.instance();
