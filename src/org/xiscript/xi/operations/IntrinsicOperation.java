@@ -49,7 +49,7 @@ public enum IntrinsicOperation implements Operation {
 			2), PUT("put", 3),
 
 	FOR("for", 3), IF("if", 3), DO("do", 2), WHILE("while", 2), DOWHILE(
-			"dowhile", 2),
+			"dowhile", 2), LOOP("loop", 2),
 
 	EVAL("eval", 1), EXEC("exec", 1),
 
@@ -336,6 +336,23 @@ public enum IntrinsicOperation implements Operation {
 				}
 				cond.addVars(body.locals());
 			} while (!cond.evaluate().isEmpty());
+			globals.addAll(body.locals());
+			return XiNull.instance();
+		}
+		case LOOP: {
+			CollectionWrapper<?> col = (CollectionWrapper<?>) args[0];
+			XiBlock body = (XiBlock) args[1];
+			body.addVars(globals);
+			for (DataType data : col) {
+				body.updateLocal(new XiVar(".", data));
+				try {
+					body.evaluate();
+				} catch (BreakException be) {
+					break;
+				} catch (ContinueException ce) {
+					continue;
+				}
+			}
 			globals.addAll(body.locals());
 			return XiNull.instance();
 		}
