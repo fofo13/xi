@@ -46,7 +46,7 @@ public enum IntrinsicOperation implements Operation {
 
 	FIND("find", 2), IN("in", 2), AT("at", 2), MAP("@", 2), DEEPMAP("@@", 2), RANGE(
 			",", 1), SUM("$", 1), RAND("rnd", 1), SORT("sort", 1), CUT("cut", 2), DEL(
-			"del", 2), PUT("put", 3),
+			"del", 2), PUT("put", 3), REPLACE("replace", 3),
 
 	FOR("for", 3), IF("if", 3), DO("do", 2), WHILE("while", 2), DOWHILE(
 			"dowhile", 2), LOOP("loop", 2),
@@ -253,10 +253,7 @@ public enum IntrinsicOperation implements Operation {
 				return ((XiString) args[0]).cut((XiString) args[1]);
 			return ((ListWrapper) args[0]).cut((XiTuple) args[1]);
 		case DEL:
-			if (args[1] instanceof XiInt)
-				((ListWrapper) args[0]).del((XiInt) args[1]);
-			else
-				((ListWrapper) args[0]).del((XiList) args[1]);
+			((ListWrapper) args[0]).del(args[1]);
 			return XiNull.instance();
 		case PUT:
 			if (args[0] instanceof ListWrapper)
@@ -264,6 +261,9 @@ public enum IntrinsicOperation implements Operation {
 			else
 				((XiDictionary) args[0]).put(args[1], args[2]);
 			return XiNull.instance();
+		case REPLACE:
+			return ((XiString) args[0]).replace((XiString) args[1],
+					(XiString) args[2]);
 		case FOR: {
 			String id = ((XiString) args[0]).toString();
 			CollectionWrapper<?> col = (CollectionWrapper<?>) args[1];

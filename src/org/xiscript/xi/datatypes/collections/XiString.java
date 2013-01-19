@@ -73,6 +73,13 @@ public class XiString extends ListWrapper {
 		return new XiString(toString().replace(other.toString(), ""));
 	}
 
+	public XiString replace(XiString sub, XiString rep) {
+		if (sub instanceof XiRegex)
+			return new XiString(toString().replaceAll(sub.toString(),
+					rep.toString()));
+		return new XiString(toString().replace(sub.toString(), rep.toString()));
+	}
+
 	@Override
 	public DataType find(DataType data) {
 		if (data instanceof XiRegex) {

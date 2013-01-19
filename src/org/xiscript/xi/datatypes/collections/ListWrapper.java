@@ -9,7 +9,6 @@ import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.datatypes.numeric.XiInt;
 
-
 public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 
 	public ListWrapper(List<DataType> list) {
@@ -119,7 +118,7 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 		return instantiate(newList);
 	}
 
-	public void del(XiList params) {
+	public void del(XiTuple params) {
 		if (params.length() != 2 && params.length() != 3)
 			throw new RuntimeException(
 					"Argument of cut function must be of length 2 or 3.");
@@ -146,7 +145,14 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 	}
 
 	public void del(XiInt params) {
-		collection.remove(params.val());
+		int index = params.val() % collection.size();
+		collection.remove(index < 0 ? collection.size() + index : index);
+	}
+
+	public void del(DataType params) {
+		if (params instanceof XiInt)
+			del((XiInt) params);
+		del((XiTuple) params);
 	}
 
 	public static XiList range(XiTuple params) {
@@ -170,15 +176,15 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 
 		return new XiList(list);
 	}
-
+	
 	public void put(XiInt index, DataType data) {
 		collection.set(index.val(), data);
 	}
-	
+
 	public DataType find(DataType data) {
 		return new XiInt(collection.indexOf(data));
 	}
-	
+
 	public VariableCache unpack(ListWrapper data) {
 		if (length() != data.length())
 			throw new RuntimeException("Unpacking failed: size mismatch.");

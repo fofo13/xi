@@ -30,7 +30,7 @@ public class XiTuple extends XiList {
 	}
 	
 	@Override
-	public void del(XiList params) {
+	public void del(XiTuple params) {
 		throw new RuntimeException("Tuples are immutable.");
 	}
 
