@@ -445,16 +445,12 @@ public enum IntrinsicOperation implements Operation {
 				e.printStackTrace();
 			}
 			return XiNull.instance();
-		case HASH:
-			return new XiInt(args[0].hashCode());
 		case LEN:
 			return new XiInt(args[0].length());
 		case ASSERT:
 			if (args[0].isEmpty())
 				throw new RuntimeException("assertion failed");
 			return XiNull.instance();
-		case TYPE:
-			return new XiString(args[0].type());
 		case GETATTR:
 			return args[0].getAttribute((XiAttribute) args[1]);
 		default:

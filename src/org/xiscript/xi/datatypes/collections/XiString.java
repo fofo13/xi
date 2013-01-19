@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import org.xiscript.xi.core.Parser;
 import org.xiscript.xi.datatypes.DataType;
+import org.xiscript.xi.datatypes.XiAttribute;
 
 public class XiString extends ListWrapper {
 
@@ -78,6 +79,23 @@ public class XiString extends ListWrapper {
 			return new XiString(toString().replaceAll(sub.toString(),
 					rep.toString()));
 		return new XiString(toString().replace(sub.toString(), rep.toString()));
+	}
+
+	@Override
+	protected void refreshAttributes() {
+		String str = toString();
+
+		attributes.put(new XiAttribute("regex"), new XiRegex(str));
+
+		String[] split = toString().split("\\s+");
+		List<DataType> l = new ArrayList<DataType>(split.length);
+
+		for (String s : split)
+			l.add(new XiString(s));
+
+		attributes.put(new XiAttribute("split"), new XiList(l));
+		
+		super.refreshAttributes();
 	}
 
 	@Override

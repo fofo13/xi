@@ -5,6 +5,7 @@ import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.datatypes.collections.XiTuple;
+import org.xiscript.xi.datatypes.numeric.XiInt;
 
 public class XiLambda extends DataType {
 
@@ -22,6 +23,7 @@ public class XiLambda extends DataType {
 		this.body = body;
 
 		attributes.put(new XiAttribute("args"), list);
+		attributes.put(new XiAttribute("arglen"), new XiInt(list.length()));
 	}
 
 	public DataType evaluate(XiTuple args, VariableCache globals) {
