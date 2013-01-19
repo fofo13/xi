@@ -5,7 +5,6 @@ import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.datatypes.collections.XiTuple;
-import org.xiscript.xi.datatypes.numeric.XiInt;
 
 public class XiLambda extends DataType {
 
@@ -13,6 +12,9 @@ public class XiLambda extends DataType {
 	private XiBlock body;
 
 	public XiLambda(XiTuple list, XiBlock body) {
+		if (list == null)
+			return;
+		
 		identifiers = new String[list.length()];
 		for (int i = 0; i < identifiers.length; i++) {
 			if (!(list.get(i) instanceof XiAttribute))
@@ -21,9 +23,6 @@ public class XiLambda extends DataType {
 			identifiers[i] = ((XiAttribute) list.get(i)).toString();
 		}
 		this.body = body;
-
-		attributes.put(new XiAttribute("args"), list);
-		attributes.put(new XiAttribute("arglen"), new XiInt(list.length()));
 	}
 
 	public DataType evaluate(XiTuple args, VariableCache globals) {

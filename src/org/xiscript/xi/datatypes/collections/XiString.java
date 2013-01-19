@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import org.xiscript.xi.core.Parser;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
+import org.xiscript.xi.datatypes.functional.HiddenLambda;
 
 public class XiString extends ListWrapper {
 
@@ -83,7 +84,7 @@ public class XiString extends ListWrapper {
 
 	@Override
 	protected void refreshAttributes() {
-		String str = toString();
+		final String str = toString();
 
 		attributes.put(new XiAttribute("regex"), new XiRegex(str));
 
@@ -94,7 +95,27 @@ public class XiString extends ListWrapper {
 			l.add(new XiString(s));
 
 		attributes.put(new XiAttribute("split"), new XiList(l));
-		
+
+		HiddenLambda splitter = new HiddenLambda() {
+			@Override
+			public DataType evaluate(DataType... args) {
+
+				String delim = args[0].toString();
+				if (!(args[0] instanceof XiRegex))
+					delim = Pattern.quote(delim);
+
+				String[] split = str.split(delim);
+				List<DataType> l = new ArrayList<DataType>(split.length);
+
+				for (String s : split)
+					l.add(new XiString(s));
+
+				return new XiList(l);
+			}
+		};
+
+		attributes.put(new XiAttribute("splitter"), splitter);
+
 		super.refreshAttributes();
 	}
 
