@@ -89,7 +89,7 @@ public class Euler16 {
 ### factorial2.xi
 
 ```ruby
-factorial := func ("n") {
+factorial := func ('n') {
 	if < n 2 {
 		return 1
 	} {
@@ -97,7 +97,7 @@ factorial := func ("n") {
 	} 	
 }
 
-for "i" , 10 {
+for 'i' , 10 {
 	println factorial i
 }
 ```
@@ -137,7 +137,7 @@ To "shift up the sequence" we simply assign the old value of `a` to `b` and assi
 ```ruby
 d := dict [(1 0) (2 1)]
 
-fib := func ("n") {
+fib := func ('n') {
 	if in n d { 
 		res := at d n 
 	} {
@@ -147,7 +147,7 @@ fib := func ("n") {
 	res
 }
 
-for "i" @ , 30 {+ . 1} { 
+for 'i' @ , 30 {+ . 1} { 
 	println fib i 
 }
 ```
@@ -159,7 +159,7 @@ This uses dynamic programming to produce the fibonacci numbers more efficiently.
 ### hailstone.xi
 
 ```ruby
-hailstone := func ("n") {
+hailstone := func ('n') {
 	println n
 	while {> n 1} {
 		n := ? % n 2 + * 3 n 1 / n 2

@@ -98,7 +98,7 @@ public class Euler16 {
 ### factorial2.xi
 
 ```ruby
-factorial := func ("n") {
+factorial := func ('n') {
 	if < n 2 {
 		return 1
 	} {
@@ -106,7 +106,7 @@ factorial := func ("n") {
 	} 	
 }
 
-for "i" , 10 {
+for 'i' , 10 {
 	println factorial i
 }
 ```
