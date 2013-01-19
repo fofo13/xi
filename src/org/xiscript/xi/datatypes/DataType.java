@@ -1,6 +1,11 @@
 package org.xiscript.xi.datatypes;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class DataType implements Comparable<DataType> {
+
+	protected Map<XiAttribute, DataType> attributes = new HashMap<XiAttribute, DataType>();
 
 	public abstract boolean isEmpty();
 
@@ -15,5 +20,13 @@ public abstract class DataType implements Comparable<DataType> {
 	}
 
 	public abstract Object getJavaAnalog();
+
+	public DataType getAttribute(XiAttribute attribute) {
+		DataType d = attributes.get(attribute);
+		if (d == null)
+			throw new RuntimeException(toString() + " has no attribute: "
+					+ attribute);
+		return d;
+	}
 
 }

@@ -73,11 +73,17 @@ public class XiInt extends XiReal {
 
 	@Override
 	public XiNum pow(XiNum other) {
-		if (other instanceof XiFloat)
-			return new XiFloat(Math.pow(val.doubleValue(), ((XiFloat) other)
-					.num().doubleValue()));
-		return new XiInt((int) Math.pow(val.intValue(), ((XiReal) other).num()
-				.intValue()));
+		if (!(other instanceof XiInt))
+			return new XiFloat(val.doubleValue()).pow(other);
+
+		double pow = Math
+				.pow(val.intValue(), ((XiReal) other).num().intValue());
+
+		if (Double.isNaN(pow)) {
+			return new XiComplex(val.intValue(), 0).pow(other);
+		}
+		
+		return new XiInt((int) pow);
 	}
 
 	public XiInt mod(XiInt other) {

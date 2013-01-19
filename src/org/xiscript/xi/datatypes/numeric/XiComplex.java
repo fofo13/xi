@@ -1,6 +1,7 @@
 package org.xiscript.xi.datatypes.numeric;
 
 import org.xiscript.xi.datatypes.DataType;
+import org.xiscript.xi.datatypes.XiAttribute;
 
 public class XiComplex extends XiNum {
 
@@ -10,6 +11,8 @@ public class XiComplex extends XiNum {
 	public XiComplex(double re, double im) {
 		this.re = re;
 		this.im = im;
+		attributes.put(new XiAttribute("re"), new XiFloat(re));
+		attributes.put(new XiAttribute("im"), new XiFloat(im));
 	}
 
 	public double re() {
@@ -32,23 +35,23 @@ public class XiComplex extends XiNum {
 	}
 
 	@Override
-	public XiNum neg() {
+	public XiComplex neg() {
 		return new XiComplex(-re, -im);
 	}
 
 	@Override
-	public XiNum inv() {
+	public XiComplex inv() {
 		double r = re * re + im * im;
 		return new XiComplex(re / r, -im / r);
 	}
 
 	@Override
-	public XiNum abs() {
+	public XiReal abs() {
 		return new XiFloat(Math.sqrt(re * re + im * im));
 	}
 
 	@Override
-	public XiNum add(XiNum other) {
+	public XiComplex add(XiNum other) {
 		if (other instanceof XiComplex) {
 			XiComplex c = (XiComplex) other;
 			return new XiComplex(re + c.re(), im + c.im());
@@ -57,7 +60,7 @@ public class XiComplex extends XiNum {
 	}
 
 	@Override
-	public XiNum sub(XiNum other) {
+	public XiComplex sub(XiNum other) {
 		if (other instanceof XiComplex) {
 			XiComplex c = (XiComplex) other;
 			return new XiComplex(re - c.re(), im - c.im());
@@ -66,7 +69,7 @@ public class XiComplex extends XiNum {
 	}
 
 	@Override
-	public XiNum mul(XiNum other) {
+	public XiComplex mul(XiNum other) {
 		if (other instanceof XiComplex) {
 			XiComplex c = (XiComplex) other;
 			return new XiComplex(re * c.re() - im * c.im(), re * c.im() + im
@@ -77,7 +80,7 @@ public class XiComplex extends XiNum {
 	}
 
 	@Override
-	public XiNum div(XiNum other) {
+	public XiComplex div(XiNum other) {
 		if (other instanceof XiReal) {
 			double r = ((XiReal) other).num().doubleValue();
 			return new XiComplex(re / r, im / r);
@@ -88,20 +91,28 @@ public class XiComplex extends XiNum {
 
 	@Override
 	public XiNum pow(XiNum other) {
-		XiComplex c = new XiComplex(re, im);
-		int n = ((XiReal) other).num().intValue();
-		for (int i = 0; i < Math.abs(n) - 1; i++)
-			c = (XiComplex) c.mul(this);
-		if (n < 0)
-			c = (XiComplex) c.inv();
-		return c;
+		XiComplex a = (this.log()).mul(other);
+		return a.exp();
+	}
+
+	public XiComplex log() {
+		double rpart = Math.sqrt(re * re + im * im);
+		double ipart = Math.atan2(im, re);
+		if (ipart > Math.PI)
+			ipart = ipart - 2.0 * StrictMath.PI;
+		return new XiComplex(Math.log(rpart), ipart);
+	}
+
+	public XiComplex exp() {
+		double exp_x = Math.exp(re);
+		return new XiComplex(exp_x * StrictMath.cos(im), exp_x * Math.sin(im));
 	}
 
 	@Override
 	public Object getJavaAnalog() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public int compareTo(DataType other) {
 		if (other instanceof XiComplex) {

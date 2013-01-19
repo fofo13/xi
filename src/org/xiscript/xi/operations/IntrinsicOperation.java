@@ -12,6 +12,7 @@ import java.util.Scanner;
 
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
+import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.XiDictionary;
 import org.xiscript.xi.datatypes.XiNull;
 import org.xiscript.xi.datatypes.XiVar;
@@ -67,7 +68,9 @@ public enum IntrinsicOperation implements Operation {
 
 	ASSERT("assert", 1),
 
-	TYPE("type", 1);
+	TYPE("type", 1),
+	
+	GETATTR("=>", 2);
 
 	private static final Map<String, IntrinsicOperation> ids = new HashMap<String, IntrinsicOperation>(
 			values().length);
@@ -452,6 +455,8 @@ public enum IntrinsicOperation implements Operation {
 			return XiNull.instance();
 		case TYPE:
 			return new XiString(args[0].type());
+		case GETATTR:
+			return args[0].getAttribute((XiAttribute) args[1]);
 		default:
 			throw new RuntimeException("Internal error");
 		}

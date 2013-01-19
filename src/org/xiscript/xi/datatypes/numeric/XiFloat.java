@@ -9,22 +9,22 @@ public class XiFloat extends XiReal {
 	public static XiFloat parse(String exp) {
 		return new XiFloat(Double.parseDouble(exp));
 	}
-	
+
 	@Override
 	public XiNum neg() {
 		return new XiFloat(-val.doubleValue());
 	}
-	
+
 	@Override
 	public XiNum inv() {
 		return new XiFloat(1.0 / val.doubleValue());
 	}
-	
+
 	@Override
 	public XiNum abs() {
 		return new XiFloat(Math.abs(val.doubleValue()));
 	}
-	
+
 	@Override
 	public XiNum add(XiNum other) {
 		if (other instanceof XiComplex)
@@ -59,25 +59,33 @@ public class XiFloat extends XiReal {
 
 	@Override
 	public XiNum pow(XiNum other) {
-		return new XiFloat(Math.pow(val.doubleValue(), ((XiReal) other).num()
-				.doubleValue()));
+		if (other instanceof XiReal) {
+			double pow = Math.pow(val.doubleValue(), ((XiReal) other).num()
+					.doubleValue());
+
+			if (!Double.isNaN(pow)) {
+				return new XiFloat(pow);
+			}
+		}
+
+		return new XiComplex(val.doubleValue(), 0).pow(other);
 	}
-	
+
 	@Override
 	public boolean isEmpty() {
 		return val.doubleValue() == 0;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return val.hashCode();
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
-		return o instanceof XiFloat && val.equals(((XiFloat)o).num());
+		return o instanceof XiFloat && val.equals(((XiFloat) o).num());
 	}
-	
+
 	@Override
 	public String toString() {
 		return Double.toString(val.doubleValue());

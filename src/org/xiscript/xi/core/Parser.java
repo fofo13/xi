@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Queue;
 
+import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.collections.XiList;
 import org.xiscript.xi.datatypes.collections.XiRegex;
 import org.xiscript.xi.datatypes.collections.XiString;
@@ -68,8 +69,9 @@ public class Parser {
 	}
 
 	public static boolean isIncomplete(String exp) {
-		String mod = exp.replace("\"\"", "").replaceAll("\"[^\"]+\"", "");
+		String mod = exp.replaceAll("\'[^\']*\'|\"[^\"]*\"", "");
 		return (exp.length() - exp.replace("\"", "").length()) % 2 == 1
+				|| (exp.length() - exp.replace("'", "").length()) % 2 == 1
 				|| mod.replace("]", "").length()
 						- mod.replace("[", "").length() != 0
 				|| mod.replace(")", "").length()
@@ -98,6 +100,8 @@ public class Parser {
 		}
 		if (exp.startsWith("\""))
 			return new DataNode<XiString>(new XiString(exp));
+		if (exp.startsWith("'"))
+			return new DataNode<XiAttribute>(new XiAttribute(exp));
 		if (exp.startsWith("re\""))
 			return new DataNode<XiRegex>(new XiRegex(exp));
 		if (IntrinsicOperation.idExists(exp))
