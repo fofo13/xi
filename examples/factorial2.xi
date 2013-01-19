@@ -1,4 +1,4 @@
-factorial := func ("n") {
+factorial := func ('n') {
 	if < n 2 {
 		return 1
 	} {
@@ -6,6 +6,6 @@ factorial := func ("n") {
 	} 	
 }
 
-for "i" , 6 {
+for 'i' , 6 {
 	println factorial i
 }

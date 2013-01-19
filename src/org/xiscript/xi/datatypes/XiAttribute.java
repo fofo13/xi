@@ -6,6 +6,8 @@ public class XiAttribute extends DataType {
 	
 	public XiAttribute(String val) {
 		this.val = val.replace("'", "");
+		if (! this.val.matches("\\w*"))
+			throw new RuntimeException("Invalid attribute name: " + this.val);
 	}
 	
 	@Override

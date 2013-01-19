@@ -6,7 +6,7 @@ import java.util.Map;
 public abstract class DataType implements Comparable<DataType> {
 
 	protected Map<XiAttribute, DataType> attributes = new HashMap<XiAttribute, DataType>();
-
+	
 	public abstract boolean isEmpty();
 
 	public int length() {

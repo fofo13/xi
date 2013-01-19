@@ -1,6 +1,6 @@
 d := dict [(1 0) (2 1)]
 
-fib := func ("n") {
+fib := func ('n') {
 	if in n d { 
 		res := at d n 
 	} {
@@ -10,6 +10,6 @@ fib := func ("n") {
 	res
 }
 
-for "i" @ , 30 {+ . 1} { 
+for 'i' @ , 30 {+ . 1} { 
 	println fib i 
 }

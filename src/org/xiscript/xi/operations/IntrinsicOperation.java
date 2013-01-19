@@ -69,7 +69,7 @@ public enum IntrinsicOperation implements Operation {
 	ASSERT("assert", 1),
 
 	TYPE("type", 1),
-	
+
 	GETATTR("=>", 2);
 
 	private static final Map<String, IntrinsicOperation> ids = new HashMap<String, IntrinsicOperation>(
@@ -268,7 +268,7 @@ public enum IntrinsicOperation implements Operation {
 			return ((XiString) args[0]).replace((XiString) args[1],
 					(XiString) args[2]);
 		case FOR: {
-			String id = ((XiString) args[0]).toString();
+			String id = ((XiAttribute) args[0]).toString();
 			CollectionWrapper<?> col = (CollectionWrapper<?>) args[1];
 			XiBlock body = (XiBlock) args[2];
 			body.addVars(globals);

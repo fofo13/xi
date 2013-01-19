@@ -2,12 +2,11 @@ package org.xiscript.xi.datatypes.functional;
 
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
+import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.XiVar;
-import org.xiscript.xi.datatypes.collections.XiString;
 import org.xiscript.xi.datatypes.collections.XiTuple;
 import org.xiscript.xi.exceptions.ReturnException;
 import org.xiscript.xi.operations.Operation;
-
 
 public class XiFunc extends DataType implements Operation {
 
@@ -16,8 +15,12 @@ public class XiFunc extends DataType implements Operation {
 
 	public XiFunc(XiTuple list, XiBlock body) {
 		identifiers = new String[list.length()];
-		for (int i = 0; i < identifiers.length; i++)
-			identifiers[i] = ((XiString) list.get(i)).toString();
+		for (int i = 0; i < identifiers.length; i++) {
+			if (!(list.get(i) instanceof XiAttribute))
+				throw new RuntimeException(
+						"Argument-tuple must consist of only attribute identifiers.");
+			identifiers[i] = ((XiAttribute) list.get(i)).toString();
+		}
 		this.body = body;
 	}
 
@@ -29,7 +32,7 @@ public class XiFunc extends DataType implements Operation {
 	public Object getJavaAnalog() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public int numArgs() {
 		return identifiers.length;

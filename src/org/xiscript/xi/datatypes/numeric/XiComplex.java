@@ -145,7 +145,13 @@ public class XiComplex extends XiNum {
 
 	@Override
 	public String toString() {
-		return (float) re + " + " + (float) im + "i";
+		if (Math.abs(im) < 1E-15)
+			return Double.toString(re);
+		if (Math.abs(re) < 1E-15)
+			return im + "i";
+		if (im < 0)
+			return re + " - " + (-im) + "i";
+		return re + " + " + im + "i";
 	}
 
 }
