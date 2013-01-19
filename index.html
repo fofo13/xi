@@ -130,7 +130,7 @@ find the sum of this list using <code>$</code>, resulting in the desired answer.
 
 <hr><h3>factorial2.xi</h3>
 
-<div class="highlight"><pre><span class="n">factorial</span> <span class="p">:</span><span class="o">=</span> <span class="n">func</span> <span class="p">(</span><span class="s2">"n"</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span class="n">factorial</span> <span class="p">:</span><span class="o">=</span> <span class="n">func</span> <span class="p">(</span><span class="s1">'n'</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="mi">2</span> <span class="p">{</span>
         <span class="k">return</span> <span class="mi">1</span>
     <span class="p">}</span> <span class="p">{</span>
@@ -138,7 +138,7 @@ find the sum of this list using <code>$</code>, resulting in the desired answer.
     <span class="p">}</span>   
 <span class="p">}</span>
 
-<span class="k">for</span> <span class="s2">"i"</span> <span class="p">,</span> <span class="mi">10</span> <span class="p">{</span>
+<span class="k">for</span> <span class="s1">'i'</span> <span class="p">,</span> <span class="mi">10</span> <span class="p">{</span>
     <span class="n">println</span> <span class="n">factorial</span> <span class="n">i</span>
 <span class="p">}</span>
 </pre></div>
@@ -188,8 +188,10 @@ To "shift up the sequence" we simply assign the old value of <code>a</code> to <
 <li>
 <code>[ ]</code> More accurate and more specific error messages, including line number and specifically why an error occured.</li>
 <li>
-<code>[ ]</code> Add a <em>long</em> or <em>BigInteger</em> numerical data type.</li>
-</ul><h3>Other</h3>
+<code>[✓]</code> Add a <em>long</em> or <em>BigInteger</em> numerical data type.</li>
+<li>
+<code>[ ]</code> Thoroughly update built-in modules.</li>
+</ul><h3>Miscellaneous</h3>
 
 <ul>
 <li>
