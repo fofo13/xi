@@ -3,6 +3,8 @@ package org.xiscript.xi.datatypes.collections;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.xiscript.xi.core.Parser;
 import org.xiscript.xi.datatypes.DataType;
@@ -69,6 +71,21 @@ public class XiString extends ListWrapper {
 
 	public XiString cut(XiString other) {
 		return new XiString(toString().replace(other.toString(), ""));
+	}
+
+	@Override
+	public DataType find(DataType data) {
+		if (data instanceof XiRegex) {
+			Pattern p = Pattern.compile(((XiRegex) data).toString());
+			Matcher m = p.matcher(toString());
+
+			XiList matches = new XiList();
+			while (m.find())
+				matches = (XiList) matches.add(new XiString(m.group()));
+
+			return matches;
+		}
+		return super.find(data);
 	}
 
 	@Override

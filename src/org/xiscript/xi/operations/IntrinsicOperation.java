@@ -44,9 +44,9 @@ public enum IntrinsicOperation implements Operation {
 			"&", 2), OR("|", 2), XOR("^", 2), RSHIFT(">>", 2), LSHIFT("<<", 2), POW(
 			"**", 2), TERN("?", 3),
 
-	IN("in", 2), AT("at", 2), MAP("@", 2), DEEPMAP("@@", 2), RANGE(",", 1), SUM(
-			"$", 1), RAND("rnd", 1), SORT("sort", 1), CUT("cut", 2), DEL("del",
-			2), PUT("put", 3),
+	FIND("find", 2), IN("in", 2), AT("at", 2), MAP("@", 2), DEEPMAP("@@", 2), RANGE(
+			",", 1), SUM("$", 1), RAND("rnd", 1), SORT("sort", 1), CUT("cut", 2), DEL(
+			"del", 2), PUT("put", 3),
 
 	FOR("for", 3), IF("if", 3), DO("do", 2), WHILE("while", 2), DOWHILE(
 			"dowhile", 2), LOOP("loop", 2),
@@ -207,6 +207,8 @@ public enum IntrinsicOperation implements Operation {
 			return ((XiNum) args[0]).pow((XiNum) args[1]);
 		case TERN:
 			return args[0].isEmpty() ? args[2] : args[1];
+		case FIND:
+			return ((ListWrapper) args[0]).find(args[1]);
 		case IN:
 			if (args[1] instanceof XiDictionary)
 				return new XiInt(((XiDictionary) args[1]).containsKey(args[0]));

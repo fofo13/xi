@@ -16,14 +16,14 @@ import org.xiscript.xi.exceptions.BreakException;
 import org.xiscript.xi.exceptions.ContinueException;
 import org.xiscript.xi.exceptions.ControlFlowException;
 import org.xiscript.xi.exceptions.ReturnException;
-
+import org.xiscript.xi.operations.IntrinsicOperation;
 
 public class XiEnvironment implements Closeable {
 
 	private static final Map<String, VariableCache> stdlib = new HashMap<String, VariableCache>();
 
 	private static final String libpath = "src/org/xiscript/xi/modules/";
-	
+
 	static {
 		File dir = new File(libpath);
 		for (File child : dir.listFiles()) {
@@ -92,6 +92,7 @@ public class XiEnvironment implements Closeable {
 				throw cfe;
 			} catch (Exception e) {
 				System.err.println("Error: " + e.getMessage());
+				System.exit(-1);
 			}
 		}
 	}
@@ -132,6 +133,16 @@ public class XiEnvironment implements Closeable {
 
 		if (Parser.containsAssignment(exp)) {
 			String[] split = exp.split(":=", 2);
+			split[0] = split[0].trim();
+
+			if (IntrinsicOperation.idExists(split[0]))
+				throw new RuntimeException(
+						"Cannot redefine built-in function: " + split[0]);
+
+			if (!split[0].matches("[\\.\\p{Alpha}_]\\w*"))
+				throw new RuntimeException("Invalid variable identifier: "
+						+ split[0]);
+
 			globals.add(new XiVar(split[0].trim(), new SyntaxTree(split[1]
 					.trim(), globals).evaluate()));
 		} else {

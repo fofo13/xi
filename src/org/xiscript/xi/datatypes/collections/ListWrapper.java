@@ -175,6 +175,10 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 		collection.set(index.val(), data);
 	}
 	
+	public DataType find(DataType data) {
+		return new XiInt(collection.indexOf(data));
+	}
+	
 	public VariableCache unpack(ListWrapper data) {
 		if (length() != data.length())
 			throw new RuntimeException("Unpacking failed: size mismatch.");
