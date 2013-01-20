@@ -139,6 +139,24 @@ This code prints the first `n` terms of the Fibonacci sequence. We first define 
 Then we have a `do`-loop which performs `n` iterations, shifting `a` and `b` one step up the sequence and printing the appropriate term on each iteration.
 To "shift up the sequence" we simply assign the old value of `a` to `b` and assign the `a + b` to `a`.
 
+---
+
+### quine.xi
+
+```ruby
+reader := => file "examples/quine.xi" 'lnreader'
+
+s := ~ reader
+while {!= s null} {
+	println s
+	s := ~ reader
+}
+```
+
+In computer programming, a *quine* is a program that outputs a copy of its own source code. The above code accomplishes this by first creating a file object representing its own source file (i.e. `file "examples/quine.xi"`) and then obtaining the `'lnreader'` attribute of this file (using the `=>` operator). All files have an `'lnreader'` attribute that holds a lambda function capable of reading the file line by line. This lambda is stored in a variable called `reader` and subsequently used to print the contents of the source file.
+
+Note that the `~` operator can be used to evaluate lambda functions that take no arguments.
+
 To Do
 -----
 
