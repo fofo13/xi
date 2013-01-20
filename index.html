@@ -168,6 +168,21 @@ find the sum of this list using <code>$</code>, resulting in the desired answer.
 Then we have a <code>do</code>-loop which performs <code>n</code> iterations, shifting <code>a</code> and <code>b</code> one step up the sequence and printing the appropriate term on each iteration.
 To "shift up the sequence" we simply assign the old value of <code>a</code> to <code>b</code> and assign the <code>a + b</code> to <code>a</code>.</p>
 
+<hr><h3>quine.xi</h3>
+
+<div class="highlight"><pre><span class="n">reader</span> <span class="p">:</span><span class="o">=</span> <span class="o">=&gt;</span> <span class="n">file</span> <span class="s2">"examples/quine.xi"</span> <span class="s1">'lnreader'</span>
+
+<span class="n">s</span> <span class="p">:</span><span class="o">=</span> <span class="o">~</span> <span class="n">reader</span>
+<span class="k">while</span> <span class="p">{</span><span class="o">!=</span> <span class="n">s</span> <span class="n">null</span><span class="p">}</span> <span class="p">{</span>
+    <span class="n">println</span> <span class="n">s</span>
+    <span class="n">s</span> <span class="p">:</span><span class="o">=</span> <span class="o">~</span> <span class="n">reader</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>In computer programming, a <em>quine</em> is a program that outputs a copy of its own source code. The above code accomplishes this by first creating a file object representing its own source file (i.e. <code>file "examples/quine.xi"</code>) and then obtaining the <code>'lnreader'</code> attribute of this file (using the <code>=&gt;</code> operator). All files have an <code>'lnreader'</code> attribute that holds a lambda function capable of reading the file line by line. This lambda is stored in a variable called <code>reader</code> and subsequently used to print the contents of the source file.</p>
+
+<p>Note that the <code>~</code> operator can be used to evaluate lambda functions that take no arguments.</p>
+
 <h2>To Do</h2>
 
 <h3>Language-Related</h3>
