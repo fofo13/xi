@@ -14,6 +14,7 @@ import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.XiDictionary;
+import org.xiscript.xi.datatypes.XiFile;
 import org.xiscript.xi.datatypes.XiNull;
 import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.datatypes.collections.CollectionWrapper;
@@ -56,7 +57,7 @@ public enum IntrinsicOperation implements Operation {
 
 	STR("str", 1), INT("int", 1), FLOAT("float", 1), LONG("long", 1), LIST(
 			"list", 1), SET("set", 1), TUPLE("tuple", 1), DICT("dict", 1), CMPLX(
-			"cmplx", 2), FUNC("func", 2), LAMBDA("lambda", 2),
+			"cmplx", 2), FUNC("func", 2), LAMBDA("lambda", 2), FILE("file", 1),
 
 	PRINT("print", 1), PRINTLN("println", 1), PRINTF("printf", 2),
 
@@ -420,6 +421,8 @@ public enum IntrinsicOperation implements Operation {
 			return new XiFunc((XiTuple) args[0], (XiBlock) args[1]);
 		case LAMBDA:
 			return new XiLambda((XiTuple) args[0], (XiBlock) args[1]);
+		case FILE:
+			return new XiFile((XiString) args[0]);
 		case PRINT:
 			System.out.print(args[0]);
 			return XiNull.instance();
