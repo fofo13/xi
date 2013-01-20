@@ -6,8 +6,11 @@ import org.xiscript.xi.datatypes.collections.XiTuple;
 
 public abstract class HiddenLambda extends XiLambda {
 
-	public HiddenLambda() {
+	private int numArgs;
+
+	public HiddenLambda(int numArgs) {
 		super(null, null);
+		this.numArgs = numArgs;
 	}
 
 	public abstract DataType evaluate(DataType... dataTypes);
@@ -16,7 +19,12 @@ public abstract class HiddenLambda extends XiLambda {
 	public DataType evaluate(XiTuple args, VariableCache globals) {
 		return evaluate(args.collection().toArray(new DataType[args.length()]));
 	}
-	
+
+	@Override
+	public int length() {
+		return numArgs;
+	}
+
 	@Override
 	public boolean isEmpty() {
 		return false;

@@ -14,7 +14,7 @@ public class XiLambda extends DataType {
 	public XiLambda(XiTuple list, XiBlock body) {
 		if (list == null)
 			return;
-		
+
 		identifiers = new String[list.length()];
 		for (int i = 0; i < identifiers.length; i++) {
 			if (!(list.get(i) instanceof XiAttribute))
@@ -40,6 +40,11 @@ public class XiLambda extends DataType {
 	@Override
 	public Object getJavaAnalog() {
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public int length() {
+		return identifiers.length;
 	}
 
 	@Override

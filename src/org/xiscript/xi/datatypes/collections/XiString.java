@@ -96,7 +96,7 @@ public class XiString extends ListWrapper {
 
 		attributes.put(new XiAttribute("split"), new XiList(l));
 
-		HiddenLambda splitter = new HiddenLambda() {
+		HiddenLambda splitter = new HiddenLambda(1) {
 			@Override
 			public DataType evaluate(DataType... args) {
 

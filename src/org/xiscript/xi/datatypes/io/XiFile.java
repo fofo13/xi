@@ -24,7 +24,7 @@ public class XiFile extends DataType {
 		writer = getWriter();
 		reader = getReader();
 
-		HiddenLambda wrtr = new HiddenLambda() {
+		HiddenLambda wrtr = new HiddenLambda(1) {
 			@Override
 			public DataType evaluate(DataType... args) {
 				writer.print(args[0]);
@@ -32,7 +32,7 @@ public class XiFile extends DataType {
 			}
 		};
 
-		HiddenLambda lnwrtr = new HiddenLambda() {
+		HiddenLambda lnwrtr = new HiddenLambda(1) {
 			@Override
 			public DataType evaluate(DataType... args) {
 				writer.println(args[0]);
@@ -40,7 +40,7 @@ public class XiFile extends DataType {
 			}
 		};
 
-		HiddenLambda rdr = new HiddenLambda() {
+		HiddenLambda rdr = new HiddenLambda(0) {
 			@Override
 			public DataType evaluate(DataType... args) {
 				try {
@@ -51,7 +51,7 @@ public class XiFile extends DataType {
 			}
 		};
 
-		HiddenLambda lnrdr = new HiddenLambda() {
+		HiddenLambda lnrdr = new HiddenLambda(0) {
 			@Override
 			public DataType evaluate(DataType... args) {
 				try {
