@@ -1,9 +1,12 @@
-package org.xiscript.xi.datatypes;
+package org.xiscript.xi.datatypes.io;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 
+import org.xiscript.xi.datatypes.DataType;
+import org.xiscript.xi.datatypes.XiAttribute;
+import org.xiscript.xi.datatypes.XiNull;
 import org.xiscript.xi.datatypes.collections.XiString;
 import org.xiscript.xi.datatypes.functional.HiddenLambda;
 
@@ -49,6 +52,8 @@ public class XiFile extends DataType {
 
 		attributes.put(new XiAttribute("writer"), printWriter);
 		attributes.put(new XiAttribute("lnwriter"), lineWriter);
+
+		attributes.put(new XiAttribute("plain_writer"), writer);
 	}
 
 	@Override

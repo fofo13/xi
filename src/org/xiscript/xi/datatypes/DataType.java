@@ -38,4 +38,8 @@ public abstract class DataType implements Comparable<DataType> {
 		return d;
 	}
 
+	public void setAttribute(XiAttribute attribute, DataType data) {
+		attributes.put(attribute, data);
+	}
+
 }

@@ -14,8 +14,8 @@ import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.XiDictionary;
-import org.xiscript.xi.datatypes.XiFile;
 import org.xiscript.xi.datatypes.XiNull;
+import org.xiscript.xi.datatypes.XiSys;
 import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.datatypes.collections.CollectionWrapper;
 import org.xiscript.xi.datatypes.collections.ListWrapper;
@@ -26,6 +26,7 @@ import org.xiscript.xi.datatypes.collections.XiTuple;
 import org.xiscript.xi.datatypes.functional.XiBlock;
 import org.xiscript.xi.datatypes.functional.XiFunc;
 import org.xiscript.xi.datatypes.functional.XiLambda;
+import org.xiscript.xi.datatypes.io.XiFile;
 import org.xiscript.xi.datatypes.numeric.XiComplex;
 import org.xiscript.xi.datatypes.numeric.XiFloat;
 import org.xiscript.xi.datatypes.numeric.XiInt;
@@ -71,7 +72,7 @@ public enum IntrinsicOperation implements Operation {
 
 	TYPE("type", 1),
 
-	GETATTR("=>", 2);
+	GETATTR("=>", 2), SETATTR("<=", 3);
 
 	private static final Map<String, IntrinsicOperation> ids = new HashMap<String, IntrinsicOperation>(
 			values().length);
@@ -424,10 +425,10 @@ public enum IntrinsicOperation implements Operation {
 		case FILE:
 			return new XiFile((XiString) args[0]);
 		case PRINT:
-			System.out.print(args[0]);
+			XiSys.instance().stdout().print(args[0]);
 			return XiNull.instance();
 		case PRINTLN:
-			System.out.println(args[0]);
+			XiSys.instance().stdout().println(args[0]);
 			return XiNull.instance();
 		case PRINTF: {
 			XiTuple tup = ((XiTuple) args[1]);
@@ -436,7 +437,7 @@ public enum IntrinsicOperation implements Operation {
 			for (int i = 0; i < objs.length; i++)
 				objs[i] = tup.get(i).getJavaAnalog();
 
-			System.out.printf(args[0].toString(), objs);
+			XiSys.instance().stdout().printf(args[0].toString(), objs);
 			return XiNull.instance();
 		}
 		case INPUT:
@@ -456,6 +457,9 @@ public enum IntrinsicOperation implements Operation {
 			return XiNull.instance();
 		case GETATTR:
 			return args[0].getAttribute((XiAttribute) args[1]);
+		case SETATTR:
+			args[0].setAttribute((XiAttribute) args[1], args[2]);
+			return XiNull.instance();
 		default:
 			throw new RuntimeException("Internal error");
 		}

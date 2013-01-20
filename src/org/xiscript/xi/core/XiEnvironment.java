@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiNull;
+import org.xiscript.xi.datatypes.XiSys;
 import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.exceptions.BreakException;
 import org.xiscript.xi.exceptions.ContinueException;
@@ -38,6 +39,8 @@ public class XiEnvironment implements Closeable {
 			stdlib.put(child.getName().split("\\.")[0], sub.globals());
 			sub.close();
 		}
+
+		stdlib.get("sys").add(new XiVar("sys", XiSys.instance()));
 	}
 
 	private List<String> statements;
