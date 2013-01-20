@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Scanner;
 
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
@@ -76,8 +75,6 @@ public enum IntrinsicOperation implements Operation {
 
 	private static final Map<String, IntrinsicOperation> ids = new HashMap<String, IntrinsicOperation>(
 			values().length);
-
-	private static final Scanner console = new Scanner(System.in);
 
 	static {
 		for (IntrinsicOperation op : values())
@@ -441,7 +438,7 @@ public enum IntrinsicOperation implements Operation {
 			return XiNull.instance();
 		}
 		case INPUT:
-			return new XiString(console.nextLine());
+			return XiSys.instance().stdin().readln();
 		case SLEEP:
 			try {
 				Thread.sleep(((XiInt) args[0]).val());

@@ -2,7 +2,10 @@ package org.xiscript.xi.datatypes.io;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.PrintStream;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
@@ -14,10 +17,58 @@ public class XiFile extends DataType {
 
 	private final File file;
 	private final XiWriter writer;
+	private final XiReader reader;
 
-	public XiFile(String file) {
+	public XiFile(final String file) {
 		this.file = new File(file);
 		writer = getWriter();
+		reader = getReader();
+
+		HiddenLambda wrtr = new HiddenLambda() {
+			@Override
+			public DataType evaluate(DataType... args) {
+				writer.print(args[0]);
+				return XiNull.instance();
+			}
+		};
+
+		HiddenLambda lnwrtr = new HiddenLambda() {
+			@Override
+			public DataType evaluate(DataType... args) {
+				writer.println(args[0]);
+				return XiNull.instance();
+			}
+		};
+
+		HiddenLambda rdr = new HiddenLambda() {
+			@Override
+			public DataType evaluate(DataType... args) {
+				try {
+					return reader.read();
+				} catch (NoSuchElementException nsee) {
+					return XiNull.instance();
+				}
+			}
+		};
+
+		HiddenLambda lnrdr = new HiddenLambda() {
+			@Override
+			public DataType evaluate(DataType... args) {
+				try {
+					return reader.readln();
+				} catch (NoSuchElementException nsee) {
+					return XiNull.instance();
+				}
+			}
+		};
+
+		attributes.put(new XiAttribute("writer"), wrtr);
+		attributes.put(new XiAttribute("lnwriter"), lnwrtr);
+		attributes.put(new XiAttribute("reader"), rdr);
+		attributes.put(new XiAttribute("lnreader"), lnrdr);
+
+		attributes.put(new XiAttribute("plain_writer"), writer);
+		attributes.put(new XiAttribute("plain_reader"), reader);
 	}
 
 	public XiFile(XiString file) {
@@ -26,34 +77,19 @@ public class XiFile extends DataType {
 
 	private XiWriter getWriter() {
 		try {
-			return new XiWriter(new PrintStream(file));
+			return new XiWriter(new PrintStream(
+					new FileOutputStream(file, true)));
 		} catch (FileNotFoundException fnfe) {
 			throw new RuntimeException("File not found: " + file);
 		}
 	}
 
-	@Override
-	protected void refreshAttributes() {
-		HiddenLambda printWriter = new HiddenLambda() {
-			@Override
-			public DataType evaluate(DataType... args) {
-				writer.print(args[0]);
-				return XiNull.instance();
-			}
-		};
-
-		HiddenLambda lineWriter = new HiddenLambda() {
-			@Override
-			public DataType evaluate(DataType... args) {
-				writer.println(args[0]);
-				return XiNull.instance();
-			}
-		};
-
-		attributes.put(new XiAttribute("writer"), printWriter);
-		attributes.put(new XiAttribute("lnwriter"), lineWriter);
-
-		attributes.put(new XiAttribute("plain_writer"), writer);
+	private XiReader getReader() {
+		try {
+			return new XiReader(new Scanner(file));
+		} catch (FileNotFoundException fnfe) {
+			throw new RuntimeException("File not found: " + file);
+		}
 	}
 
 	@Override
