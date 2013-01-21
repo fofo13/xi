@@ -2,7 +2,9 @@ package org.xiscript.xi.core;
 
 import java.io.Closeable;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,20 +25,28 @@ public class XiEnvironment implements Closeable {
 
 	private static final Map<String, VariableCache> stdlib = new HashMap<String, VariableCache>();
 
-	private static final String libpath = "src/org/xiscript/xi/modules/";
+	private static final String libpath = "/org/xiscript/xi/modules/";
+	
+	private static final String[] files = { "const.xi", "listutils.xi",
+			"math.xi", "operator.xi", "stat.xi", "stdlib.xi", "sys.xi",
+			"vecmath.xi" };
 
 	static {
-		File dir = new File(libpath);
-		for (File child : dir.listFiles()) {
+		List<InputStream> dir = new ArrayList<InputStream>(files.length);
+
+		for (String file : files)
+			dir.add(XiEnvironment.class.getResourceAsStream(libpath + file));
+
+		for (int i = 0; i < files.length; i++) {
 			XiEnvironment sub = null;
 			try {
-				sub = new XiEnvironment(child, false);
+				sub = new XiEnvironment(dir.get(i), false);
 				sub.run();
 			} catch (FileNotFoundException fnfe) {
 				System.err.println("Internal error occured.");
 				System.exit(-1);
 			}
-			stdlib.put(child.getName().split("\\.")[0], sub.globals());
+			stdlib.put(files[i].split("\\.")[0], sub.globals());
 			sub.close();
 		}
 
@@ -62,7 +72,7 @@ public class XiEnvironment implements Closeable {
 		this(new VariableCache());
 	}
 
-	private XiEnvironment(File file, boolean primary)
+	private XiEnvironment(InputStream file, boolean primary)
 			throws FileNotFoundException {
 		this();
 
@@ -76,7 +86,7 @@ public class XiEnvironment implements Closeable {
 	}
 
 	public XiEnvironment(File file) throws FileNotFoundException {
-		this(file, true);
+		this(new FileInputStream(file), true);
 	}
 
 	public VariableCache globals() {
@@ -169,7 +179,8 @@ public class XiEnvironment implements Closeable {
 		}
 	}
 
-	private static List<String> compile(File file) throws FileNotFoundException {
+	private static List<String> compile(InputStream file)
+			throws FileNotFoundException {
 		List<String> statements = new ArrayList<String>();
 
 		Scanner scan = new Scanner(file);
