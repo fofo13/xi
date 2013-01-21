@@ -64,7 +64,7 @@ Java, but most are original. Be sure to check out the <a href="https://github.co
 
 <hr><h3>euler1.xi</h3>
 
-<div class="highlight"><pre><span class="n">println</span> <span class="err">$</span> <span class="o">/</span> <span class="p">,</span> <span class="mi">1000</span> <span class="p">{</span><span class="o">|</span> <span class="o">!</span> <span class="sx">% . </span><span class="mi">3</span> <span class="o">!</span> <span class="sx">% . </span><span class="mi">5</span><span class="p">}</span>
+<div class="highlight"><pre><span class="n">println</span> <span class="err">$</span> <span class="o">/</span> <span class="p">{</span><span class="o">|</span> <span class="o">!</span> <span class="sx">% . </span><span class="mi">3</span> <span class="o">!</span> <span class="sx">% . </span><span class="mi">5</span><span class="p">}</span> <span class="p">,</span> <span class="mi">1000</span>
 </pre></div>
 
 <p>This is a solution to <a href="http://projecteuler.net/problem=1">Problem #1</a> of <a href="http://projecteuler.net">Project Euler</a>. The problem reads as follows:</p>
@@ -79,7 +79,7 @@ we remove any element <code>.</code> for which <code>{| ! % . 3 ! % . 5}</code> 
 <code>! % . 3</code>) or if it is divisible by <code>5</code> (i.e. <code>! % . 5</code>). This results in a list of all multiples of either <code>3</code> or <code>5</code> less than <code>1000</code>. Lastly, we
 find the sum of this list using <code>$</code>, resulting in the desired answer.</p>
 
-<p>Equivalent (in the sense that it also solves the problem) code in Java would be:</p>
+<p>Equivalent code in Java would be:</p>
 
 <div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Euler1</span> <span class="o">{</span>
     <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
@@ -94,7 +94,7 @@ find the sum of this list using <code>$</code>, resulting in the desired answer.
 
 <hr><h3>euler16.xi</h3>
 
-<div class="highlight"><pre><span class="n">println</span> <span class="err">$</span> <span class="err">@</span> <span class="n">list</span> <span class="n">str</span> <span class="o">**</span> <span class="mi">2</span><span class="n">L</span> <span class="mi">1000</span> <span class="p">{</span><span class="n">int</span> <span class="o">.</span><span class="p">}</span>
+<div class="highlight"><pre><span class="n">println</span> <span class="err">$</span> <span class="err">@</span> <span class="p">{</span><span class="n">int</span> <span class="o">.</span><span class="p">}</span> <span class="n">list</span> <span class="n">str</span> <span class="o">**</span> <span class="mi">2</span><span class="n">L</span> <span class="mi">1000</span>
 </pre></div>
 
 <p>This is a solution to <a href="http://projecteuler.net/problem=16">Problem #16</a> of <a href="http://projecteuler.net">Project Euler</a>. The problem reads as follows:</p>
