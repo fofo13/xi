@@ -18,7 +18,7 @@ public class SyntaxTree {
 
 		for (String tok : tokens) {
 			Node node = Parser.parseNode(tok, cache);
-			
+
 			if (node instanceof PackedDataNode)
 				nodes.addAll(((PackedDataNode) node).contents());
 			else
