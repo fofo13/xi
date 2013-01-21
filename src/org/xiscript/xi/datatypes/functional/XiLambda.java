@@ -5,6 +5,7 @@ import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.datatypes.collections.XiTuple;
+import org.xiscript.xi.exceptions.ReturnException;
 
 public class XiLambda extends DataType {
 
@@ -34,7 +35,12 @@ public class XiLambda extends DataType {
 		body.addVars(globals);
 		for (int i = 0; i < args.length(); i++)
 			body.updateLocal(new XiVar(identifiers[i], args.get(i)));
-		return body.evaluate();
+
+		try {
+			return body.evaluate();
+		} catch (ReturnException re) {
+			return re.data();
+		}
 	}
 
 	@Override

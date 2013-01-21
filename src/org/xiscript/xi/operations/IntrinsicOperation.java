@@ -34,7 +34,6 @@ import org.xiscript.xi.datatypes.numeric.XiNum;
 import org.xiscript.xi.datatypes.numeric.XiReal;
 import org.xiscript.xi.exceptions.BreakException;
 import org.xiscript.xi.exceptions.ContinueException;
-import org.xiscript.xi.exceptions.ReturnException;
 
 public enum IntrinsicOperation implements Operation {
 
@@ -285,7 +284,7 @@ public enum IntrinsicOperation implements Operation {
 			XiBlock body = (XiBlock) args[2];
 			body.addVars(globals);
 			for (DataType data : col) {
-				body.updateLocal(new XiVar(id, data));
+				body.updateLocal(new XiVar(id, data, true));
 				try {
 					body.evaluate();
 				} catch (BreakException be) {
@@ -362,8 +361,8 @@ public enum IntrinsicOperation implements Operation {
 			body.addVars(globals);
 			int index = 0;
 			for (DataType data : col) {
-				body.updateLocal(new XiVar(".", data));
-				body.updateLocal(new XiVar("_", new XiInt(index)));
+				body.updateLocal(new XiVar(".", data, true));
+				body.updateLocal(new XiVar("_", new XiInt(index), true));
 				try {
 					body.evaluate();
 				} catch (BreakException be) {
@@ -407,12 +406,7 @@ public enum IntrinsicOperation implements Operation {
 			}
 		}
 		case APPLY: {
-			try {
-				return ((XiLambda) args[0])
-						.evaluate((XiTuple) args[1], globals);
-			} catch (ReturnException re) {
-				return re.data();
-			}
+			return ((XiLambda) args[0]).evaluate((XiTuple) args[1], globals);
 		}
 		case STR:
 			return new XiString(args[0].toString());
