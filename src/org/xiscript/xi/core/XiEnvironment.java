@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import org.xiscript.xi.datatypes.DataType;
@@ -26,7 +27,7 @@ public class XiEnvironment implements Closeable {
 	private static final Map<String, VariableCache> stdlib = new HashMap<String, VariableCache>();
 
 	private static final String libpath = "/org/xiscript/xi/modules/";
-	
+
 	private static final String[] files = { "const.xi", "listutils.xi",
 			"math.xi", "operator.xi", "stat.xi", "stdlib.xi", "sys.xi",
 			"vecmath.xi" };
@@ -187,7 +188,13 @@ public class XiEnvironment implements Closeable {
 		while (scan.hasNext()) {
 			String exp = scan.nextLine();
 			while (Parser.isIncomplete(exp)) {
-				exp += scan.nextLine();
+				try {
+					exp += scan.nextLine();
+				} catch (NoSuchElementException nsee) {
+					System.err
+							.println("Error: Incomplete expression detected.");
+					System.exit(-1);
+				}
 				if (!exp.endsWith(";"))
 					exp += ";";
 			}
