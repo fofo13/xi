@@ -4,7 +4,7 @@ import org.xiscript.xi.datatypes.DataType;
 
 public class DataNode<T extends DataType> implements Node {
 
-	private T data;
+	protected T data;
 
 	public DataNode(T data) {
 		this.data = data;

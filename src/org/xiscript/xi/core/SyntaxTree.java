@@ -5,6 +5,7 @@ import java.util.Queue;
 
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.nodes.Node;
+import org.xiscript.xi.nodes.PackedDataNode;
 
 public class SyntaxTree {
 
@@ -15,8 +16,14 @@ public class SyntaxTree {
 		String[] tokens = Parser.tokenize(exp);
 		nodes = new ArrayDeque<Node>(tokens.length);
 
-		for (String tok : tokens)
-			nodes.add(Parser.parseNode(tok, cache));
+		for (String tok : tokens) {
+			Node node = Parser.parseNode(tok, cache);
+			
+			if (node instanceof PackedDataNode)
+				nodes.addAll(((PackedDataNode) node).contents());
+			else
+				nodes.add(node);
+		}
 	}
 
 	public SyntaxTree(String exp) {

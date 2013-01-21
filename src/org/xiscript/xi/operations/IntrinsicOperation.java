@@ -110,8 +110,8 @@ public enum IntrinsicOperation implements Operation {
 			if (args[0] instanceof XiLambda) {
 				XiLambda lambda = (XiLambda) args[0];
 				if (lambda.length() == 0)
-					return MAP.evaluate(
-							new DataType[] { lambda, new XiTuple() }, globals);
+					return APPLY.evaluate(new DataType[] { lambda,
+							new XiTuple() }, globals);
 			}
 			if (args[0] instanceof XiBlock) {
 				XiBlock block = (XiBlock) args[0];

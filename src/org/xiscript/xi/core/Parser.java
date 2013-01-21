@@ -9,7 +9,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Queue;
 
+import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
+import org.xiscript.xi.datatypes.collections.CollectionWrapper;
 import org.xiscript.xi.datatypes.collections.XiList;
 import org.xiscript.xi.datatypes.collections.XiRegex;
 import org.xiscript.xi.datatypes.collections.XiString;
@@ -23,6 +25,7 @@ import org.xiscript.xi.datatypes.numeric.XiLong;
 import org.xiscript.xi.nodes.DataNode;
 import org.xiscript.xi.nodes.Node;
 import org.xiscript.xi.nodes.OperationNode;
+import org.xiscript.xi.nodes.PackedDataNode;
 import org.xiscript.xi.nodes.VarNode;
 import org.xiscript.xi.operations.IntrinsicOperation;
 
@@ -110,6 +113,13 @@ public class Parser {
 			if (cache.get(exp) instanceof XiFunc)
 				return new OperationNode((XiFunc) cache.get(exp), cache);
 			return new VarNode(exp, cache);
+		}
+		if (exp.startsWith("`")) {
+			DataType d = parseNode(exp.substring(1), cache).evaluate();
+			if (!(d instanceof CollectionWrapper<?>))
+				throw new RuntimeException("Cannot unpack non-collection.");
+
+			return new PackedDataNode((CollectionWrapper<?>) d);
 		}
 		throw new RuntimeException("Cannot parse expression: " + exp);
 	}
