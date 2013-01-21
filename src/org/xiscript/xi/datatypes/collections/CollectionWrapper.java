@@ -54,14 +54,18 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 		return instantiate(col);
 	}
 
-	public CollectionWrapper<T> filter(XiBlock block) {
+	public CollectionWrapper<T> filter(XiBlock block, boolean deep) {
 		Collection<DataType> col = new ArrayList<DataType>(collection.size());
 		int index = 0;
 		for (DataType a : collection) {
 			block.updateLocal(new XiVar(".", a));
 			block.updateLocal(new XiVar("_", new XiInt(index)));
-			if (!block.evaluate().isEmpty())
+
+			if (deep && (a instanceof CollectionWrapper<?>))
+				col.add(((CollectionWrapper<?>) a).filter(block, deep));
+			else if (!block.evaluate().isEmpty())
 				col.add(a);
+
 			index++;
 		}
 		return instantiate(col);

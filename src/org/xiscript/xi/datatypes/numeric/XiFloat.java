@@ -11,17 +11,17 @@ public class XiFloat extends XiReal {
 	}
 
 	@Override
-	public XiNum neg() {
+	public XiFloat neg() {
 		return new XiFloat(-val.doubleValue());
 	}
 
 	@Override
-	public XiNum inv() {
+	public XiFloat inv() {
 		return new XiFloat(1.0 / val.doubleValue());
 	}
 
 	@Override
-	public XiNum abs() {
+	public XiFloat abs() {
 		return new XiFloat(Math.abs(val.doubleValue()));
 	}
 

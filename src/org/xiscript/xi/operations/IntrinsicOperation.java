@@ -41,10 +41,10 @@ public enum IntrinsicOperation implements Operation {
 	NULL("null", 0),
 
 	NOT("!", 1), BITNOT("~", 1), ABS("abs", 1), ADD("+", 2), SUBTRACT("-", 2), MULTIPLY(
-			"*", 2), DIVIDE("/", 2), MODULUS("%", 2), EQ("=", 2), NEQ("!=", 2), GREATER(
-			">", 2), LESS("<", 2), GREATER_EQ(">=", 2), LESS_EQ("<=", 2), AND(
-			"&", 2), OR("|", 2), XOR("^", 2), RSHIFT(">>", 2), LSHIFT("<<", 2), POW(
-			"**", 2), TERN("?", 3),
+			"*", 2), DIVIDE("/", 2), INTDIV("//", 2), MODULUS("%", 2), EQ("=",
+			2), NEQ("!=", 2), GREATER(">", 2), LESS("<", 2), GREATER_EQ(">=", 2), LESS_EQ(
+			"<=", 2), AND("&", 2), OR("|", 2), XOR("^", 2), RSHIFT(">>", 2), LSHIFT(
+			"<<", 2), POW("**", 2), TERN("?", 3),
 
 	FIND("find", 2), IN("in", 2), AT("at", 2), MAP("@", 2), DEEPMAP("@@", 2), RANGE(
 			",", 1), SUM("$", 1), RAND("rnd", 1), SORT("sort", 1), CUT("cut", 2), DEL(
@@ -146,9 +146,15 @@ public enum IntrinsicOperation implements Operation {
 			return ((XiNum) args[0]).mul((XiNum) args[1]);
 		case DIVIDE:
 			if (args[0] instanceof XiBlock)
-				return ((CollectionWrapper<?>) args[1])
-						.filter((XiBlock) args[0]);
+				return ((CollectionWrapper<?>) args[1]).filter(
+						(XiBlock) args[0], false);
 			return ((XiNum) args[0]).div((XiNum) args[1]);
+		case INTDIV:
+			if (args[0] instanceof XiBlock)
+				return ((CollectionWrapper<?>) args[1]).filter(
+						(XiBlock) args[0], true);
+
+			return ((XiReal) args[0]).intdiv((XiReal) args[1]);
 		case MODULUS:
 			if (args[0] instanceof XiString) {
 				XiTuple tup = ((XiTuple) args[1]);
@@ -226,11 +232,19 @@ public enum IntrinsicOperation implements Operation {
 				return ((XiDictionary) args[0]).get(args[1]);
 			return ((ListWrapper) args[0]).get((XiInt) args[1]);
 		case MAP: {
+			if (args[0] instanceof XiLambda)
+				return ((CollectionWrapper<?>) args[1]).map((XiLambda) args[0],
+						false, globals);
+
 			XiBlock body = (XiBlock) args[0];
 			body.addVars(globals);
 			return ((CollectionWrapper<?>) args[1]).map(body, false);
 		}
 		case DEEPMAP: {
+			if (args[0] instanceof XiLambda)
+				return ((CollectionWrapper<?>) args[1]).map((XiLambda) args[0],
+						true, globals);
+
 			XiBlock body = (XiBlock) args[0];
 			body.addVars(globals);
 			return ((CollectionWrapper<?>) args[1]).map(body, true);
