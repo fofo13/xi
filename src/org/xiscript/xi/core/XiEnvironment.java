@@ -6,15 +6,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiNull;
-import org.xiscript.xi.datatypes.XiSys;
 import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.exceptions.BreakException;
 import org.xiscript.xi.exceptions.ContinueException;
@@ -23,36 +20,6 @@ import org.xiscript.xi.exceptions.ReturnException;
 import org.xiscript.xi.operations.IntrinsicOperation;
 
 public class XiEnvironment implements Closeable {
-
-	private static final Map<String, VariableCache> stdlib = new HashMap<String, VariableCache>();
-
-	private static final String libpath = "/org/xiscript/xi/modules/";
-
-	private static final String[] files = { "const.xi", "listutils.xi",
-			"math.xi", "operator.xi", "stat.xi", "stdlib.xi", "sys.xi",
-			"vecmath.xi" };
-
-	static {
-		List<InputStream> dir = new ArrayList<InputStream>(files.length);
-
-		for (String file : files)
-			dir.add(XiEnvironment.class.getResourceAsStream(libpath + file));
-
-		for (int i = 0; i < files.length; i++) {
-			XiEnvironment sub = null;
-			try {
-				sub = new XiEnvironment(dir.get(i), false);
-				sub.run();
-			} catch (FileNotFoundException fnfe) {
-				System.err.println("Internal error occured.");
-				System.exit(-1);
-			}
-			stdlib.put(files[i].split("\\.")[0], sub.globals());
-			sub.close();
-		}
-
-		stdlib.get("sys").add(new XiVar("sys", XiSys.instance()));
-	}
 
 	private List<String> statements;
 
@@ -73,14 +40,14 @@ public class XiEnvironment implements Closeable {
 		this(new VariableCache());
 	}
 
-	private XiEnvironment(InputStream file, boolean primary)
+	protected XiEnvironment(InputStream file, boolean primary)
 			throws FileNotFoundException {
 		this();
 
 		this.primary = primary;
 		if (primary) {
-			load("const");
-			load("stdlib");
+			globals.addAll(ModuleLoader.stdlib.get("stdlib").contents());
+			globals.addAll(ModuleLoader.stdlib.get("const").contents());
 		}
 
 		statements = compile(file);
@@ -121,10 +88,6 @@ public class XiEnvironment implements Closeable {
 	private void process(String exp) throws BreakException {
 		exp = exp.trim();
 
-		if (exp.matches("import\\s+.*")) {
-			load(exp.trim().split("\\s+", 2)[1].replace(".", "/"));
-			return;
-		}
 		if (exp.equals("break")) {
 			if (primary)
 				throw new RuntimeException("break statement misplaced");
@@ -163,21 +126,6 @@ public class XiEnvironment implements Closeable {
 			last = (new SyntaxTree(exp, globals)).evaluate();
 		}
 
-	}
-
-	private void load(String name) {
-		if (stdlib.containsKey(name)) {
-			globals.addAll(stdlib.get(name));
-			return;
-		}
-		try {
-			File file = new File(name + ".xi");
-			XiEnvironment env = new XiEnvironment(file);
-			globals.addAll(env.globals());
-			env.close();
-		} catch (FileNotFoundException fnfe) {
-			throw new RuntimeException("Import could not be resolved: " + name);
-		}
 	}
 
 	private static List<String> compile(InputStream file)

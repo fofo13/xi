@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.xiscript.xi.core.ModuleLoader;
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
@@ -69,6 +70,8 @@ public enum IntrinsicOperation implements Operation {
 	ASSERT("assert", 1),
 
 	TYPE("type", 1),
+
+	IMPORT("import", 1),
 
 	GETATTR("=>", 2), SETATTR("<=", 3);
 
@@ -467,6 +470,8 @@ public enum IntrinsicOperation implements Operation {
 			if (args[0].isEmpty())
 				throw new RuntimeException("assertion failed");
 			return XiNull.instance();
+		case IMPORT:
+			return ModuleLoader.load(args[0].toString());
 		case GETATTR:
 			return args[0].getAttribute((XiAttribute) args[1]);
 		case SETATTR:
