@@ -28,7 +28,7 @@ Not much to say here - just a simple "hello world" program.
 ### euler1.xi
 
 ```ruby
-println $ / , 1000 {| ! % . 3 ! % . 5}
+println $ / {| ! % . 3 ! % . 5} , 1000
 ```
 
 This is a solution to [Problem #1](http://projecteuler.net/problem=1) of [Project Euler](http://projecteuler.net). The problem reads as follows:
@@ -41,7 +41,7 @@ we remove any element `.` for which `{| ! % . 3 ! % . 5}` is *not* true. Further
 `! % . 3`) or if it is divisible by `5` (i.e. `! % . 5`). This results in a list of all multiples of either `3` or `5` less than `1000`. Lastly, we
 find the sum of this list using `$`, resulting in the desired answer.
 
-Equivalent (in the sense that it also solves the problem) code in Java would be:
+Equivalent code in Java would be:
 
 ```java
 public class Euler1 {
@@ -54,13 +54,12 @@ public class Euler1 {
 	}
 }
 ```
-
 ---
 
 ### euler16.xi
 
 ```ruby
-println $ @ list str ** 2L 1000 {int .}
+println $ @ {int .} list str ** 2L 1000
 ```
 
 This is a solution to [Problem #16](http://projecteuler.net/problem=16) of [Project Euler](http://projecteuler.net). The problem reads as follows:

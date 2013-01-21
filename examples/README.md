@@ -20,7 +20,7 @@ Not much to say here - just a simple ["hello world" program](http://en.wikipedia
 ### euler1.xi
 
 ```ruby
-println $ / , 1000 {| ! % . 3 ! % . 5}
+println $ / {| ! % . 3 ! % . 5} , 1000
 ```
 
 This is a solution to [Problem #1](http://projecteuler.net/problem=1) of [Project Euler](http://projecteuler.net). The problem reads as follows:
@@ -51,7 +51,7 @@ public class Euler1 {
 ### euler16.xi
 
 ```ruby
-println $ @ list str ** 2L 1000 {int .}
+println $ @ {int .} list str ** 2L 1000
 ```
 
 This is a solution to [Problem #16](http://projecteuler.net/problem=16) of [Project Euler](http://projecteuler.net). The problem reads as follows:
@@ -147,7 +147,7 @@ fib := func ('n') {
 	res
 }
 
-for 'i' @ , 30 {+ . 1} { 
+for 'i' @ {+ . 1} , 30 { 
 	println fib i 
 }
 ```

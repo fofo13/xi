@@ -1,14 +1,17 @@
 package org.xiscript.xi.datatypes.collections;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.datatypes.functional.XiBlock;
+import org.xiscript.xi.datatypes.functional.XiLambda;
 import org.xiscript.xi.datatypes.numeric.XiInt;
 import org.xiscript.xi.operations.IntrinsicOperation;
 
@@ -36,6 +39,17 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 			col.add((deep && (a instanceof CollectionWrapper<?>)) ? ((CollectionWrapper<?>) a)
 					.map(block, true) : block.evaluate());
 			index++;
+		}
+		return instantiate(col);
+	}
+
+	public CollectionWrapper<T> map(XiLambda block, boolean deep,
+			VariableCache globals) {
+		Collection<DataType> col = new ArrayList<DataType>(collection.size());
+		for (DataType a : collection) {
+			col.add((deep && (a instanceof CollectionWrapper<?>)) ? ((CollectionWrapper<?>) a)
+					.map(block, true, globals) : block.evaluate(new XiTuple(
+					Arrays.asList(a)), globals));
 		}
 		return instantiate(col);
 	}

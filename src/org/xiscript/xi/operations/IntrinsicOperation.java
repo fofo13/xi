@@ -53,7 +53,7 @@ public enum IntrinsicOperation implements Operation {
 	FOR("for", 3), IF("if", 3), DO("do", 2), WHILE("while", 2), DOWHILE(
 			"dowhile", 2), LOOP("loop", 2),
 
-	EVAL("eval", 1), EXEC("exec", 1),
+	EVAL("eval", 1), EXEC("exec", 1), APPLY("::", 2),
 
 	STR("str", 1), INT("int", 1), FLOAT("float", 1), LONG("long", 1), LIST(
 			"list", 1), SET("set", 1), TUPLE("tuple", 1), DICT("dict", 1), CMPLX(
@@ -145,9 +145,9 @@ public enum IntrinsicOperation implements Operation {
 				return ((ListWrapper) args[0]).mul((XiInt) args[1]);
 			return ((XiNum) args[0]).mul((XiNum) args[1]);
 		case DIVIDE:
-			if (args[0] instanceof CollectionWrapper)
-				return ((CollectionWrapper<?>) args[0])
-						.filter((XiBlock) args[1]);
+			if (args[0] instanceof XiBlock)
+				return ((CollectionWrapper<?>) args[1])
+						.filter((XiBlock) args[0]);
 			return ((XiNum) args[0]).div((XiNum) args[1]);
 		case MODULUS:
 			if (args[0] instanceof XiString) {
@@ -226,21 +226,14 @@ public enum IntrinsicOperation implements Operation {
 				return ((XiDictionary) args[0]).get(args[1]);
 			return ((ListWrapper) args[0]).get((XiInt) args[1]);
 		case MAP: {
-			if (args[0] instanceof XiLambda && args[1] instanceof XiTuple)
-				try {
-					return ((XiLambda) args[0]).evaluate((XiTuple) args[1],
-							globals);
-				} catch (ReturnException re) {
-					return re.data();
-				}
-			XiBlock body = (XiBlock) args[1];
+			XiBlock body = (XiBlock) args[0];
 			body.addVars(globals);
-			return ((CollectionWrapper<?>) args[0]).map(body, false);
+			return ((CollectionWrapper<?>) args[1]).map(body, false);
 		}
 		case DEEPMAP: {
-			XiBlock body = (XiBlock) args[1];
+			XiBlock body = (XiBlock) args[0];
 			body.addVars(globals);
-			return ((CollectionWrapper<?>) args[0]).map(body, true);
+			return ((CollectionWrapper<?>) args[1]).map(body, true);
 		}
 		case RANGE:
 			if (args[0] instanceof XiList)
@@ -397,6 +390,14 @@ public enum IntrinsicOperation implements Operation {
 				return new XiList(out);
 			} catch (IOException ioe) {
 				throw new RuntimeException("exec failed");
+			}
+		}
+		case APPLY: {
+			try {
+				return ((XiLambda) args[0])
+						.evaluate((XiTuple) args[1], globals);
+			} catch (ReturnException re) {
+				return re.data();
 			}
 		}
 		case STR:

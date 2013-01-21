@@ -4,4 +4,4 @@ do 10 {
 	fib := + fib + at fib -1 at fib -2
 }
 
-@ fib {println .}
+@ {println .} fib

@@ -10,6 +10,6 @@ fib := func ('n') {
 	res
 }
 
-for 'i' @ , 30 {+ . 1} { 
+for 'i' @ {+ . 1} , 30 { 
 	println fib i 
 }
