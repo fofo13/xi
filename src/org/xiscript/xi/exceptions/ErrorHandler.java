@@ -24,6 +24,8 @@ public class ErrorHandler {
 
 		EXEC_ERROR("Could not execute: %s"),
 
+		STRING_FORMAT("String format error: \"%s\", %s"),
+
 		ASSERT_ERROR("Assertion failed."),
 
 		FILE_NOT_FOUND("File not found: %s"),

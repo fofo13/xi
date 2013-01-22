@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.IllegalFormatException;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -167,7 +168,12 @@ public enum IntrinsicOperation implements Operation {
 				for (int i = 0; i < objs.length; i++)
 					objs[i] = tup.get(i).getJavaAnalog();
 
-				return new XiString(String.format(args[0].toString(), objs));
+				try {
+					return new XiString(String.format(args[0].toString(), objs));
+				} catch (IllegalFormatException ife) {
+					ErrorHandler.invokeError(ErrorType.STRING_FORMAT, args[0],
+							tup);
+				}
 			}
 			return ((XiInt) args[0]).mod((XiInt) args[1]);
 		case EQ:
