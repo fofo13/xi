@@ -2,7 +2,7 @@ package org.xiscript.xi.exceptions;
 
 public class ErrorHandler {
 
-	private static final String template = "[Error] %s";
+	private static final String template = "[Error] %s%n";
 	private static final int errCode = -1;
 
 	public enum ErrorType {
