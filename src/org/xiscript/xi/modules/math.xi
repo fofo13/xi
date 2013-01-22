@@ -12,3 +12,11 @@ factorial := func ('n') {
 		return * n f - n 1
 	} 	
 }
+
+digitsum := func ('n') {
+	sum := 0
+	loop str n {
+		sum := + sum int .
+	}
+	sum
+}
