@@ -15,3 +15,11 @@ join := func ('delim' 'l') {
 	}
 	s
 }
+
+reduce := func ('f' 'l') {
+	x := at l 0
+	loop cut l 1 {
+		x := :: f (x .)
+	}
+	x
+}
