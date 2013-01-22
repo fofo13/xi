@@ -492,7 +492,7 @@ public enum IntrinsicOperation implements Operation {
 			try {
 				Thread.sleep(((XiInt) args[0]).val());
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				ErrorHandler.invokeError(ErrorType.INTERRUPTION);
 			}
 			return XiNull.instance();
 		case LEN:

@@ -26,6 +26,8 @@ public class ErrorHandler {
 
 		STRING_FORMAT("String format error: \"%s\", %s"),
 
+		INTERRUPTION("Unexpected thread interruption occured."),
+
 		ASSERT_ERROR("Assertion failed."),
 
 		FILE_NOT_FOUND("File not found: %s"),
