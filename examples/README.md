@@ -86,6 +86,26 @@ public class Euler16 {
 
 ---
 
+### evil.xi
+
+```ruby
+sys := => import "sys" 'sys'
+
+<= sys 'stdout' => sys 'stderr'
+
+println "hello world"
+```
+
+This is "evil" because it redirects all output from stdout to stderr. First, we `import` the `sys` variable from the sys module. Next, we do the actual redirecting:
+
+    <= sys 'stdout' => sys 'stderr'
+
+This first obtains the `'stderr'` attribute from `sys` using `=>` and, then, uses it to override the `stdout` attribute of the variable using `<=`.
+
+Because of this change, the next print statement prints `"hello world"` to stderr.
+
+---
+
 ### factorial2.xi
 
 ```ruby

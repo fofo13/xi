@@ -9,11 +9,13 @@ public class XiSys extends DataType {
 
 	private static final XiAttribute stdout = new XiAttribute("stdout", true);
 	private static final XiAttribute stdin = new XiAttribute("stdin", true);
+	private static final XiAttribute stderr = new XiAttribute("stderr", true);
 	private static final XiSys instance = new XiSys();
 
 	private XiSys() {
 		attributes.put(stdout, new XiWriter(System.out));
 		attributes.put(stdin, new XiReader(new Scanner(System.in)));
+		attributes.put(stderr, new XiWriter(System.err));
 	}
 
 	public static XiSys instance() {
