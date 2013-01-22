@@ -57,8 +57,8 @@ public class XiLong extends XiReal {
 
 	@Override
 	public XiNum mul(XiNum other) {
-		return new XiLong(
-				((BigInteger) val).multiply((BigInteger) ((XiLong) other).val));
+		return new XiLong(((BigInteger) val).multiply(BigInteger
+				.valueOf(((XiReal) other).val.longValue())));
 	}
 
 	@Override
