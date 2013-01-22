@@ -282,12 +282,33 @@ public enum IntrinsicOperation implements Operation {
 			return ((XiString) args[0]).replace((XiString) args[1],
 					(XiString) args[2]);
 		case FOR: {
-			String id = ((XiAttribute) args[0]).toString();
+			String id = null;
+			XiTuple t = null;
+
+			boolean packed = args[0] instanceof XiTuple;
+			if (packed)
+				t = (XiTuple) args[0];
+			else
+				id = ((XiAttribute) args[0]).toString();
+
 			CollectionWrapper<?> col = (CollectionWrapper<?>) args[1];
 			XiBlock body = (XiBlock) args[2];
 			body.addVars(globals);
 			for (DataType data : col) {
-				body.updateLocal(new XiVar(id, data, true));
+				if (packed) {
+					ListWrapper lw = (ListWrapper) data;
+
+					if (lw.length() != t.length())
+						throw new RuntimeException("Unpacking error: " + lw);
+
+					for (int i = 0; i < t.length(); i++) {
+						String subid = ((XiAttribute) t.get(i)).toString();
+						body.updateLocal(new XiVar(subid, lw.get(i)));
+					}
+				} else {
+					body.updateLocal(new XiVar(id, data, true));
+				}
+
 				try {
 					body.evaluate();
 				} catch (BreakException be) {

@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
-import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.datatypes.numeric.XiInt;
 
 public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
@@ -176,22 +174,13 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 
 		return new XiList(list);
 	}
-	
+
 	public void put(XiInt index, DataType data) {
 		collection.set(index.val(), data);
 	}
 
 	public DataType find(DataType data) {
 		return new XiInt(collection.indexOf(data));
-	}
-
-	public VariableCache unpack(ListWrapper data) {
-		if (length() != data.length())
-			throw new RuntimeException("Unpacking failed: size mismatch.");
-		VariableCache v = new VariableCache();
-		for (int i = 0; i < length(); i++)
-			v.add(new XiVar(get(i).toString(), data.get(i)));
-		return v;
 	}
 
 }
