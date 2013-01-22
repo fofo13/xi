@@ -3,6 +3,8 @@ package org.xiscript.xi.datatypes.io;
 import java.io.PrintStream;
 
 import org.xiscript.xi.datatypes.DataType;
+import org.xiscript.xi.exceptions.ErrorHandler;
+import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public class XiWriter extends DataType {
 
@@ -19,7 +21,8 @@ public class XiWriter extends DataType {
 
 	@Override
 	public int compareTo(DataType other) {
-		throw new UnsupportedOperationException();
+		ErrorHandler.invokeError(ErrorType.UNCOMPARABLE, type());
+		return 0;
 	}
 
 	@Override

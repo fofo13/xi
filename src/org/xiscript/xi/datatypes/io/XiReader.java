@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.collections.XiString;
+import org.xiscript.xi.exceptions.ErrorHandler;
+import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public class XiReader extends DataType {
 
@@ -20,7 +22,8 @@ public class XiReader extends DataType {
 
 	@Override
 	public int compareTo(DataType other) {
-		throw new UnsupportedOperationException();
+		ErrorHandler.invokeError(ErrorType.UNCOMPARABLE, type());
+		return 0;
 	}
 
 	@Override

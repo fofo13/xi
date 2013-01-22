@@ -41,7 +41,7 @@ public class XiBlock extends DataType {
 	public Object getJavaAnalog() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public int compareTo(DataType other) {
 		if (other instanceof XiBlock)

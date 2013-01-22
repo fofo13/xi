@@ -5,6 +5,8 @@ import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.datatypes.collections.XiTuple;
+import org.xiscript.xi.exceptions.ErrorHandler;
+import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 import org.xiscript.xi.exceptions.ReturnException;
 import org.xiscript.xi.operations.Operation;
 
@@ -17,8 +19,9 @@ public class XiFunc extends DataType implements Operation {
 		identifiers = new String[list.length()];
 		for (int i = 0; i < identifiers.length; i++) {
 			if (!(list.get(i) instanceof XiAttribute))
-				throw new RuntimeException(
-						"Argument-tuple must consist of only attribute identifiers.");
+				ErrorHandler.invokeError(ErrorType.INVALID_ATTRIBUTE_TUPLE,
+						list);
+
 			identifiers[i] = ((XiAttribute) list.get(i)).toString();
 		}
 		this.body = body;

@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.numeric.XiInt;
+import org.xiscript.xi.exceptions.ErrorHandler;
+import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
+import org.xiscript.xi.operations.IntrinsicOperation;
 
 public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 
@@ -81,8 +84,8 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 
 	public CollectionWrapper<List<DataType>> cut(XiTuple params) {
 		if (params.length() != 2 && params.length() != 3)
-			throw new RuntimeException(
-					"Argument of cut function must be of length 2 or 3.");
+			ErrorHandler
+					.invokeError(ErrorType.ARGUMENT, IntrinsicOperation.CUT);
 
 		int m = ((XiInt) params.get(0)).val();
 		int n = ((XiInt) params.get(1)).val();
@@ -94,7 +97,8 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 			step = ((XiInt) params.get(2)).val();
 
 		if (step == 0)
-			throw new RuntimeException("Cannot have step length of 0.");
+			ErrorHandler
+					.invokeError(ErrorType.ARGUMENT, IntrinsicOperation.CUT);
 
 		List<DataType> newList = new ArrayList<DataType>(n);
 		for (int i = m; i < n; i += Math.abs(step))
@@ -118,8 +122,8 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 
 	public void del(XiTuple params) {
 		if (params.length() != 2 && params.length() != 3)
-			throw new RuntimeException(
-					"Argument of cut function must be of length 2 or 3.");
+			ErrorHandler
+					.invokeError(ErrorType.ARGUMENT, IntrinsicOperation.DEL);
 
 		int m = ((XiInt) params.get(0)).val();
 		int n = ((XiInt) params.get(1)).val();
@@ -131,7 +135,8 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 			step = ((XiInt) params.get(2)).val();
 
 		if (step == 0)
-			throw new RuntimeException("Cannot have step length of 0.");
+			ErrorHandler
+					.invokeError(ErrorType.ARGUMENT, IntrinsicOperation.DEL);
 
 		List<Integer> indexes = new ArrayList<Integer>();
 		for (int i = m; i < n; i += step)
@@ -155,8 +160,8 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 
 	public static XiList range(XiTuple params) {
 		if (params.length() != 2 && params.length() != 3)
-			throw new RuntimeException(
-					"Argument of cut function must be of length 2 or 3.");
+			ErrorHandler.invokeError(ErrorType.ARGUMENT,
+					IntrinsicOperation.RANGE);
 
 		int m = ((XiInt) params.get(0)).val();
 		int n = ((XiInt) params.get(1)).val();
@@ -166,7 +171,8 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 			step = ((XiInt) params.get(2)).val();
 
 		if (step == 0)
-			throw new RuntimeException("Cannot have step length of 0.");
+			ErrorHandler.invokeError(ErrorType.ARGUMENT,
+					IntrinsicOperation.RANGE);
 
 		List<DataType> list = new ArrayList<DataType>();
 		for (int i = m; i < n; i += step)

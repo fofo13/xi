@@ -7,6 +7,8 @@ import java.util.Set;
 
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiVar;
+import org.xiscript.xi.exceptions.ErrorHandler;
+import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public class VariableCache implements Set<XiVar> {
 
@@ -24,8 +26,9 @@ public class VariableCache implements Set<XiVar> {
 		for (XiVar v : cache)
 			if (v.id().equals(id))
 				return v.val();
-		throw new IllegalArgumentException(
-				"Variable identifier not found in cache: " + id);
+
+		ErrorHandler.invokeError(ErrorType.IDNETIFIER_NOT_FOUND, id);
+		return null;
 	}
 
 	public boolean containsId(String id) {

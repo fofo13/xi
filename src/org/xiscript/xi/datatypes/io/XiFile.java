@@ -12,6 +12,8 @@ import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.XiNull;
 import org.xiscript.xi.datatypes.collections.XiString;
 import org.xiscript.xi.datatypes.functional.HiddenLambda;
+import org.xiscript.xi.exceptions.ErrorHandler;
+import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public class XiFile extends DataType {
 
@@ -80,7 +82,8 @@ public class XiFile extends DataType {
 			return new XiWriter(new PrintStream(
 					new FileOutputStream(file, true)));
 		} catch (FileNotFoundException fnfe) {
-			throw new RuntimeException("File not found: " + file);
+			ErrorHandler.invokeError(ErrorType.FILE_NOT_FOUND, file);
+			return null;
 		}
 	}
 
@@ -88,7 +91,8 @@ public class XiFile extends DataType {
 		try {
 			return new XiReader(new Scanner(file));
 		} catch (FileNotFoundException fnfe) {
-			throw new RuntimeException("File not found: " + file);
+			ErrorHandler.invokeError(ErrorType.FILE_NOT_FOUND, file);
+			return null;
 		}
 	}
 

@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
+import org.xiscript.xi.exceptions.ErrorHandler;
+import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 import org.xiscript.xi.operations.Operation;
 
 public class OperationNode implements Node {
@@ -49,15 +51,13 @@ public class OperationNode implements Node {
 			try {
 				arr[i] = children.get(i).evaluate();
 			} catch (ClassCastException cce) {
-				throw new RuntimeException(
-						"Invalid argument types for operator: "
-								+ children.get(i));
+				ErrorHandler.invokeError(ErrorType.ARGUMENT, children.get(i));
 			}
 		try {
 			return op.evaluate(arr, cache);
 		} catch (ClassCastException cce) {
-			throw new RuntimeException("Invalid argument types for operator: "
-					+ op);
+			ErrorHandler.invokeError(ErrorType.ARGUMENT, op);
+			return null;
 		}
 	}
 

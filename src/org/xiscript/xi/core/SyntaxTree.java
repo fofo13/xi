@@ -4,6 +4,8 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 
 import org.xiscript.xi.datatypes.DataType;
+import org.xiscript.xi.exceptions.ErrorHandler;
+import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 import org.xiscript.xi.nodes.Node;
 import org.xiscript.xi.nodes.PackedDataNode;
 
@@ -45,7 +47,7 @@ public class SyntaxTree {
 
 	private Node create() {
 		if (nodes.isEmpty())
-			throw new RuntimeException("Invalid number of arguments specified.");
+			ErrorHandler.invokeError(ErrorType.INCOMPLETE_EXPRESSION);
 
 		Node node = nodes.poll();
 

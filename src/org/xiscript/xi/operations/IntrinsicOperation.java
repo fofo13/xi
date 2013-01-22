@@ -35,6 +35,8 @@ import org.xiscript.xi.datatypes.numeric.XiNum;
 import org.xiscript.xi.datatypes.numeric.XiReal;
 import org.xiscript.xi.exceptions.BreakException;
 import org.xiscript.xi.exceptions.ContinueException;
+import org.xiscript.xi.exceptions.ErrorHandler;
+import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public enum IntrinsicOperation implements Operation {
 
@@ -299,7 +301,8 @@ public enum IntrinsicOperation implements Operation {
 					ListWrapper lw = (ListWrapper) data;
 
 					if (lw.length() != t.length())
-						throw new RuntimeException("Unpacking error: " + lw);
+						ErrorHandler.invokeError(ErrorType.UNPACKING_ERROR,
+								lw.toString());
 
 					for (int i = 0; i < t.length(); i++) {
 						String subid = ((XiAttribute) t.get(i)).toString();
@@ -426,7 +429,8 @@ public enum IntrinsicOperation implements Operation {
 
 				return new XiList(out);
 			} catch (IOException ioe) {
-				throw new RuntimeException("exec failed");
+				ErrorHandler.invokeError(ErrorType.EXEC_ERROR,
+						args[0].toString());
 			}
 		}
 		case APPLY: {
@@ -489,7 +493,7 @@ public enum IntrinsicOperation implements Operation {
 			return new XiInt(args[0].length());
 		case ASSERT:
 			if (args[0].isEmpty())
-				throw new RuntimeException("assertion failed");
+				ErrorHandler.invokeError(ErrorType.ASSERT_ERROR);
 			return XiNull.instance();
 		case IMPORT:
 			return ModuleLoader.load(args[0].toString());
@@ -499,7 +503,8 @@ public enum IntrinsicOperation implements Operation {
 			args[0].setAttribute((XiAttribute) args[1], args[2]);
 			return XiNull.instance();
 		default:
-			throw new RuntimeException("Internal error");
+			ErrorHandler.invokeError(ErrorType.INTERNAL);
+			return null;
 		}
 	}
 

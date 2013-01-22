@@ -22,6 +22,8 @@ import org.xiscript.xi.datatypes.numeric.XiComplex;
 import org.xiscript.xi.datatypes.numeric.XiFloat;
 import org.xiscript.xi.datatypes.numeric.XiInt;
 import org.xiscript.xi.datatypes.numeric.XiLong;
+import org.xiscript.xi.exceptions.ErrorHandler;
+import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 import org.xiscript.xi.nodes.DataNode;
 import org.xiscript.xi.nodes.Node;
 import org.xiscript.xi.nodes.OperationNode;
@@ -117,11 +119,13 @@ public class Parser {
 		if (exp.startsWith("`")) {
 			DataType d = parseNode(exp.substring(1), cache).evaluate();
 			if (!(d instanceof CollectionWrapper<?>))
-				throw new RuntimeException("Cannot unpack non-collection.");
+				ErrorHandler.invokeError(ErrorType.UNPACKING_ERROR, d);
 
 			return new PackedDataNode((CollectionWrapper<?>) d);
 		}
-		throw new RuntimeException("Cannot parse expression: " + exp);
+
+		ErrorHandler.invokeError(ErrorType.PARSE_ERROR, exp);
+		return null;
 	}
 
 	public static String unescapeJava(String str) {
@@ -154,9 +158,7 @@ public class Parser {
 						inUnicode = false;
 						hadSlash = false;
 					} catch (NumberFormatException nfe) {
-						throw new RuntimeException(
-								"Unable to parse unicode value: " + unicode,
-								nfe);
+						ErrorHandler.invokeError(ErrorType.UNICODE_ERROR, str);
 					}
 				}
 				continue;

@@ -5,7 +5,9 @@ import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.datatypes.collections.XiTuple;
+import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ReturnException;
+import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public class XiLambda extends DataType {
 
@@ -19,8 +21,9 @@ public class XiLambda extends DataType {
 		identifiers = new String[list.length()];
 		for (int i = 0; i < identifiers.length; i++) {
 			if (!(list.get(i) instanceof XiAttribute))
-				throw new RuntimeException(
-						"Argument-tuple must consist of only attribute identifiers.");
+				ErrorHandler.invokeError(ErrorType.INVALID_ATTRIBUTE_TUPLE,
+						list);
+
 			identifiers[i] = ((XiAttribute) list.get(i)).toString();
 		}
 		this.body = body;
@@ -28,9 +31,7 @@ public class XiLambda extends DataType {
 
 	public DataType evaluate(XiTuple args, VariableCache globals) {
 		if (identifiers.length != args.length())
-			throw new RuntimeException(
-					"Argument tuple length mismatch for lambda function: "
-							+ this);
+			ErrorHandler.invokeError(ErrorType.ARGUMENT, args);
 
 		body.addVars(globals);
 		for (int i = 0; i < args.length(); i++)
@@ -45,7 +46,7 @@ public class XiLambda extends DataType {
 
 	@Override
 	public Object getJavaAnalog() {
-		throw new UnsupportedOperationException();
+		return this;
 	}
 
 	@Override

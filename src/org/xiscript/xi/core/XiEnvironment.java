@@ -16,6 +16,8 @@ import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.exceptions.BreakException;
 import org.xiscript.xi.exceptions.ContinueException;
 import org.xiscript.xi.exceptions.ControlFlowException;
+import org.xiscript.xi.exceptions.ErrorHandler;
+import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 import org.xiscript.xi.exceptions.ReturnException;
 import org.xiscript.xi.operations.IntrinsicOperation;
 
@@ -71,16 +73,13 @@ public class XiEnvironment implements Closeable {
 				}
 			} catch (ControlFlowException cfe) {
 				throw cfe;
-			} catch (Exception e) {
-				System.err.println("Error: " + e.getMessage());
-				System.exit(-1);
 			}
 		}
 	}
 
 	public void put(String statement) {
 		if (closed)
-			throw new RuntimeException("XiEnvironment is closed.");
+			throw new IllegalStateException();
 
 		statements.add(statement);
 	}
@@ -90,19 +89,21 @@ public class XiEnvironment implements Closeable {
 
 		if (exp.equals("break")) {
 			if (primary)
-				throw new RuntimeException("break statement misplaced");
+				ErrorHandler
+						.invokeError(ErrorType.MISPLACED_STATEMENT, "break");
 
 			throw new BreakException();
 		}
 		if (exp.equals("continue")) {
 			if (primary)
-				throw new RuntimeException("break statement misplaced");
+				ErrorHandler.invokeError(ErrorType.MISPLACED_STATEMENT,
+						"continue");
 
 			throw new ContinueException();
 		}
 		if (exp.matches("return\\s+.*")) {
 			if (primary)
-				throw new RuntimeException("return statement misplaced");
+				ErrorHandler.invokeError(ErrorType.MISPLACED_STATEMENT, exp);
 
 			throw new ReturnException((new SyntaxTree(exp.split("\\s+", 2)[1],
 					globals)).evaluate());
@@ -113,12 +114,11 @@ public class XiEnvironment implements Closeable {
 			split[0] = split[0].trim();
 
 			if (IntrinsicOperation.idExists(split[0]))
-				throw new RuntimeException(
-						"Cannot redefine built-in function: " + split[0]);
+				ErrorHandler.invokeError(ErrorType.INVALID_OVERRIDE, split[0]);
 
 			if (!split[0].matches("[\\.\\p{Alpha}_]\\w*"))
-				throw new RuntimeException("Invalid variable identifier: "
-						+ split[0]);
+				ErrorHandler
+						.invokeError(ErrorType.INVALID_IDENTIFIER, split[0]);
 
 			globals.add(new XiVar(split[0].trim(), new SyntaxTree(split[1]
 					.trim(), globals).evaluate()));
@@ -139,9 +139,8 @@ public class XiEnvironment implements Closeable {
 				try {
 					exp += scan.nextLine();
 				} catch (NoSuchElementException nsee) {
-					System.err
-							.println("Error: Incomplete expression detected.");
-					System.exit(-1);
+					ErrorHandler
+							.invokeError(ErrorHandler.ErrorType.INCOMPLETE_EXPRESSION);
 				}
 				if (!exp.endsWith(";"))
 					exp += ";";

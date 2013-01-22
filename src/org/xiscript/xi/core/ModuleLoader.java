@@ -10,6 +10,8 @@ import java.util.Map;
 
 import org.xiscript.xi.datatypes.XiModule;
 import org.xiscript.xi.datatypes.XiSys;
+import org.xiscript.xi.exceptions.ErrorHandler;
+import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public class ModuleLoader {
 
@@ -33,8 +35,7 @@ public class ModuleLoader {
 				sub = new XiEnvironment(dir.get(i), false);
 				sub.run();
 			} catch (FileNotFoundException fnfe) {
-				System.err.println("Internal error occured.");
-				System.exit(-1);
+				ErrorHandler.invokeError(ErrorType.INTERNAL);
 			}
 			stdlib.put(files[i].split("\\.")[0], new XiModule(sub.globals()));
 			sub.close();
@@ -50,12 +51,14 @@ public class ModuleLoader {
 
 		XiEnvironment env = null;
 		try {
-			File file = new File(name.replace(".", "/") + ".xi");
+			name = name.replace(".", "/") + ".xi";
+			File file = new File(name);
 			env = new XiEnvironment(file);
 			env.run();
 			return new XiModule(env.globals());
 		} catch (FileNotFoundException fnfe) {
-			throw new RuntimeException("Import could not be resolved: " + name);
+			ErrorHandler.invokeError(ErrorType.FILE_NOT_FOUND, name);
+			return null;
 		} finally {
 			env.close();
 		}
