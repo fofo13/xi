@@ -134,18 +134,19 @@ public class XiEnvironment implements Closeable {
 
 		Scanner scan = new Scanner(file);
 		while (scan.hasNext()) {
-			String exp = scan.nextLine();
-			while (Parser.isIncomplete(exp)) {
+			StringBuilder exp = new StringBuilder(scan.nextLine());
+			while (Parser.isIncomplete(exp.toString())) {
 				try {
-					exp += scan.nextLine();
+					exp.append(scan.nextLine());
 				} catch (NoSuchElementException nsee) {
 					ErrorHandler
 							.invokeError(ErrorHandler.ErrorType.INCOMPLETE_EXPRESSION);
 				}
-				if (!exp.endsWith(";"))
-					exp += ";";
+
+				if (!exp.toString().endsWith(";"))
+					exp.append(';');
 			}
-			statements.add(exp);
+			statements.add(exp.toString());
 		}
 		scan.close();
 
