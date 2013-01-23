@@ -113,4 +113,10 @@ public class XiFile extends DataType {
 		return 0;
 	}
 
+	@Override
+	public void delete() {
+		writer.close();
+		reader.close();
+	}
+
 }
