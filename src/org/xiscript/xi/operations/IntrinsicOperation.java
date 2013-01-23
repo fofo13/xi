@@ -51,7 +51,7 @@ public enum IntrinsicOperation implements Operation {
 
 	FIND("find", 2), IN("in", 2), AT("at", 2), MAP("@", 2), DEEPMAP("@@", 2), RANGE(
 			",", 1), SUM("$", 1), RAND("rnd", 1), SORT("sort", 1), CUT("cut", 2), DEL(
-			"del", 2), PUT("put", 3), REPLACE("replace", 3),
+			"del", 1), PUT("put", 3), REPLACE("replace", 3),
 
 	FOR("for", 3), IF("if", 3), DO("do", 2), WHILE("while", 2), DOWHILE(
 			"dowhile", 2), LOOP("loop", 2),
@@ -141,7 +141,7 @@ public enum IntrinsicOperation implements Operation {
 			return ((XiNum) args[0]).add((XiNum) args[1]);
 		case SUBTRACT:
 			if (args[0] instanceof ListWrapper)
-				return ((ListWrapper) args[0]).remove((XiInt) args[1]);
+				return ((ListWrapper) args[0]).delete(args[1]);
 			if (args[0] instanceof XiSet && args[1] instanceof XiSet)
 				return ((XiSet) args[0]).difference((XiSet) args[1], false);
 			return ((XiNum) args[0]).sub((XiNum) args[1]);
@@ -277,9 +277,16 @@ public enum IntrinsicOperation implements Operation {
 			if (args[1] instanceof XiString)
 				return ((XiString) args[0]).cut((XiString) args[1]);
 			return ((ListWrapper) args[0]).cut((XiTuple) args[1]);
-		case DEL:
-			((ListWrapper) args[0]).del(args[1]);
+		case DEL: {
+			String id = ((XiAttribute) args[0]).toString();
+			if (!globals.containsId(id))
+				ErrorHandler.invokeError(ErrorType.IDNETIFIER_NOT_FOUND, id);
+
+			globals.get(id).delete();
+			globals.removeId(id);
+
 			return XiNull.instance();
+		}
 		case PUT:
 			if (args[0] instanceof ListWrapper)
 				((ListWrapper) args[0]).put((XiInt) args[1], args[2]);

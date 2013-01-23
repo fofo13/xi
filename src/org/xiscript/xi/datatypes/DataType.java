@@ -42,4 +42,8 @@ public abstract class DataType implements Comparable<DataType> {
 		attributes.put(attribute, data);
 	}
 
+	public void delete() {
+
+	}
+
 }

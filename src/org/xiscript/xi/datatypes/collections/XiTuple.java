@@ -8,7 +8,9 @@ import java.util.List;
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.numeric.XiInt;
-
+import org.xiscript.xi.exceptions.ErrorHandler;
+import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
+import org.xiscript.xi.operations.IntrinsicOperation;
 
 public class XiTuple extends XiList {
 
@@ -26,17 +28,14 @@ public class XiTuple extends XiList {
 
 	@Override
 	public DataType rnd() {
-		return collection.get((int)(Math.random() * collection.size()));
-	}
-	
-	@Override
-	public void del(XiTuple params) {
-		throw new RuntimeException("Tuples are immutable.");
+		return collection.get((int) (Math.random() * collection.size()));
 	}
 
 	@Override
-	public void del(XiInt params) {
-		throw new RuntimeException("Tuples are immutable.");
+	public CollectionWrapper<List<DataType>> delete(DataType params) {
+		ErrorHandler.invokeError(ErrorType.ARGUMENT,
+				IntrinsicOperation.SUBTRACT);
+		return null;
 	}
 
 	@Override

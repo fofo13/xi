@@ -1,13 +1,11 @@
 package org.xiscript.xi.datatypes.io;
 
+import java.io.Closeable;
 import java.util.Scanner;
 
-import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.collections.XiString;
-import org.xiscript.xi.exceptions.ErrorHandler;
-import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
-public class XiReader extends DataType {
+public class XiReader extends XiStream implements Closeable {
 
 	private Scanner in;
 
@@ -16,14 +14,13 @@ public class XiReader extends DataType {
 	}
 
 	@Override
-	public Scanner getJavaAnalog() {
-		return in;
+	public void close() {
+		in.close();
 	}
 
 	@Override
-	public int compareTo(DataType other) {
-		ErrorHandler.invokeError(ErrorType.UNCOMPARABLE, type());
-		return 0;
+	public Scanner getJavaAnalog() {
+		return in;
 	}
 
 	@Override

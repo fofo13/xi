@@ -1,12 +1,9 @@
 package org.xiscript.xi.datatypes.io;
 
+import java.io.Closeable;
 import java.io.PrintStream;
 
-import org.xiscript.xi.datatypes.DataType;
-import org.xiscript.xi.exceptions.ErrorHandler;
-import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
-
-public class XiWriter extends DataType {
+public class XiWriter extends XiStream implements Closeable {
 
 	private PrintStream out;
 
@@ -15,14 +12,13 @@ public class XiWriter extends DataType {
 	}
 
 	@Override
-	public boolean isEmpty() {
-		return out.checkError();
+	public void close() {
+		out.close();
 	}
 
 	@Override
-	public int compareTo(DataType other) {
-		ErrorHandler.invokeError(ErrorType.UNCOMPARABLE, type());
-		return 0;
+	public boolean isEmpty() {
+		return out.checkError();
 	}
 
 	@Override

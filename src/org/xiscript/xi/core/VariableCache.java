@@ -38,6 +38,10 @@ public class VariableCache implements Set<XiVar> {
 		return false;
 	}
 
+	public void removeId(String id) {
+		cache.remove(new XiVar(id, null));
+	}
+
 	@Override
 	public int size() {
 		return cache.size();

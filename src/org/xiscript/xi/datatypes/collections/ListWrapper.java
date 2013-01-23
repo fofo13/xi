@@ -37,13 +37,6 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 		return instantiate(newList);
 	}
 
-	public CollectionWrapper<List<DataType>> remove(XiInt n) {
-		int index = n.val();
-		List<DataType> newList = new ArrayList<DataType>(collection);
-		newList.remove(index < 0 ? size() + index : index);
-		return instantiate(newList);
-	}
-
 	public CollectionWrapper<List<DataType>> mul(XiInt n) {
 		List<DataType> newList = new ArrayList<DataType>(collection.size()
 				* n.val());
@@ -120,7 +113,7 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 		return instantiate(newList);
 	}
 
-	public void del(XiTuple params) {
+	private CollectionWrapper<List<DataType>> delete(XiTuple params) {
 		if (params.length() != 2 && params.length() != 3)
 			ErrorHandler
 					.invokeError(ErrorType.ARGUMENT, IntrinsicOperation.DEL);
@@ -143,19 +136,26 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 			indexes.add(i);
 		Collections.reverse(indexes);
 
+		List<DataType> newList = new ArrayList<DataType>(collection);
+
 		for (int i : indexes)
-			collection.remove(i);
+			newList.remove(i);
+
+		return instantiate(newList);
 	}
 
-	public void del(XiInt params) {
+	private CollectionWrapper<List<DataType>> delete(XiInt params) {
 		int index = params.val() % collection.size();
-		collection.remove(index < 0 ? collection.size() + index : index);
+		List<DataType> newList = new ArrayList<DataType>(collection);
+		newList.remove(index < 0 ? newList.size() + index : index);
+
+		return instantiate(newList);
 	}
 
-	public void del(DataType params) {
+	public CollectionWrapper<List<DataType>> delete(DataType params) {
 		if (params instanceof XiInt)
-			del((XiInt) params);
-		del((XiTuple) params);
+			return delete((XiInt) params);
+		return delete((XiTuple) params);
 	}
 
 	public static XiList range(XiTuple params) {
