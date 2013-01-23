@@ -2,7 +2,7 @@ package org.xiscript.xi.datatypes.numeric;
 
 import java.math.BigInteger;
 
-public class XiLong extends XiReal {
+public class XiLong extends XiReal<BigInteger> {
 
 	public XiLong(BigInteger val) {
 		super(val);
@@ -29,51 +29,51 @@ public class XiLong extends XiReal {
 	}
 
 	@Override
-	public XiNum neg() {
-		return new XiLong(((BigInteger) val).negate());
+	public XiLong neg() {
+		return new XiLong(val.negate());
 	}
 
 	@Override
-	public XiNum inv() {
+	public XiInt inv() {
 		return new XiInt(1 / val.intValue());
 	}
 
 	@Override
-	public XiNum abs() {
-		return new XiInt(Math.abs(val.intValue()));
+	public XiLong abs() {
+		return new XiLong(val.abs());
 	}
 
 	@Override
-	public XiNum add(XiNum other) {
-		return new XiLong(
-				((BigInteger) val).add((BigInteger) ((XiLong) other).val));
+	public XiLong add(XiNum other) {
+		return new XiLong(val.add(BigInteger.valueOf(((XiReal<?>) other).num()
+				.longValue())));
 	}
 
 	@Override
-	public XiNum sub(XiNum other) {
-		return new XiLong(
-				((BigInteger) val).subtract((BigInteger) ((XiLong) other).val));
+	public XiLong sub(XiNum other) {
+		return new XiLong(val.subtract(BigInteger.valueOf(((XiReal<?>) other)
+				.num().longValue())));
 	}
 
 	@Override
-	public XiNum mul(XiNum other) {
-		return new XiLong(((BigInteger) val).multiply(BigInteger
-				.valueOf(((XiReal) other).val.longValue())));
+	public XiLong mul(XiNum other) {
+		return new XiLong(val.multiply(BigInteger.valueOf(((XiReal<?>) other)
+				.num().longValue())));
 	}
 
 	@Override
-	public XiNum div(XiNum other) {
-		return new XiLong(
-				((BigInteger) val).divide((BigInteger) ((XiLong) other).val));
+	public XiLong div(XiNum other) {
+		return new XiLong(val.divide(BigInteger.valueOf(((XiReal<?>) other)
+				.num().longValue())));
 	}
 
 	@Override
-	public XiNum pow(XiNum other) {
-		return new XiLong(((BigInteger) val).pow(((XiInt) other).val()));
+	public XiLong pow(XiNum other) {
+		return new XiLong(val.pow(((XiReal<?>) other).num().intValue()));
 	}
 
-	public XiLong mod(XiReal other) {
-		return new XiLong(((BigInteger) val).mod((BigInteger) other.val));
+	public XiLong mod(XiReal<?> other) {
+		return new XiLong(val.mod(BigInteger.valueOf(other.val.longValue())));
 	}
 
 }

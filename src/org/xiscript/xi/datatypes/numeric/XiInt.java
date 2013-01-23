@@ -1,6 +1,6 @@
 package org.xiscript.xi.datatypes.numeric;
 
-public class XiInt extends XiReal {
+public class XiInt extends XiReal<Integer> {
 
 	public XiInt(int val) {
 		super(val);
@@ -11,7 +11,7 @@ public class XiInt extends XiReal {
 	}
 
 	public int val() {
-		return val.intValue();
+		return val;
 	}
 
 	public static XiInt parse(String exp) {
@@ -20,55 +20,55 @@ public class XiInt extends XiReal {
 
 	@Override
 	public boolean isEmpty() {
-		return val.intValue() == 0;
+		return val == 0;
 	}
 
 	@Override
 	public String toString() {
-		return Integer.toString(val.intValue());
+		return Integer.toString(val);
 	}
 
 	@Override
 	public XiNum neg() {
-		return new XiInt(-val.intValue());
+		return new XiInt(-val);
 	}
 
 	@Override
 	public XiNum inv() {
-		return new XiInt(1 / val.intValue());
+		return new XiInt(1 / val);
 	}
 
 	@Override
 	public XiNum abs() {
-		return new XiInt(Math.abs(val.intValue()));
+		return new XiInt(Math.abs(val));
 	}
 
 	@Override
 	public XiNum add(XiNum other) {
 		if (other instanceof XiComplex || other instanceof XiFloat)
 			return other.add(this);
-		return new XiInt(val.intValue() + ((XiReal) other).num().intValue());
+		return new XiInt(val + ((XiReal<?>) other).num().intValue());
 	}
 
 	@Override
 	public XiNum sub(XiNum other) {
 		if (other instanceof XiComplex || other instanceof XiFloat)
 			return other.sub(this).neg();
-		return new XiInt(val.intValue() - ((XiReal) other).num().intValue());
+		return new XiInt(val - ((XiReal<?>) other).num().intValue());
 	}
 
 	@Override
 	public XiNum mul(XiNum other) {
 		if (other instanceof XiComplex || other instanceof XiFloat)
 			return other.mul(this);
-		return new XiInt(val.intValue() * ((XiReal) other).num().intValue());
+		return new XiInt(val * ((XiReal<?>) other).num().intValue());
 	}
 
 	@Override
 	public XiNum div(XiNum other) {
 		if (other instanceof XiComplex || other instanceof XiFloat)
 			return other.div(this).inv();
-		return new XiInt(val.intValue() / ((XiReal) other).num().intValue());
+		return new XiInt(val / ((XiReal<?>) other).num().intValue());
 	}
 
 	@Override
@@ -76,18 +76,17 @@ public class XiInt extends XiReal {
 		if (!(other instanceof XiInt))
 			return new XiFloat(val.doubleValue()).pow(other);
 
-		double pow = Math
-				.pow(val.intValue(), ((XiReal) other).num().intValue());
+		double pow = Math.pow(val, ((XiReal<?>) other).num().intValue());
 
 		if (Double.isNaN(pow)) {
-			return new XiComplex(val.intValue(), 0).pow(other);
+			return new XiComplex(val, 0).pow(other);
 		}
-		
+
 		return new XiInt((int) pow);
 	}
 
 	public XiInt mod(XiInt other) {
-		return new XiInt(val.intValue() % other.num().intValue());
+		return new XiInt(val % other.num().intValue());
 	}
 
 }

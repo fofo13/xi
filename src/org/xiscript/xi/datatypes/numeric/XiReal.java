@@ -2,11 +2,11 @@ package org.xiscript.xi.datatypes.numeric;
 
 import org.xiscript.xi.datatypes.DataType;
 
-public abstract class XiReal extends XiNum {
+public abstract class XiReal<T extends Number> extends XiNum {
 
-	protected Number val;
+	protected T val;
 
-	public XiReal(Number val) {
+	public XiReal(T val) {
 		this.val = val;
 	}
 
@@ -14,7 +14,7 @@ public abstract class XiReal extends XiNum {
 		return val;
 	}
 
-	public XiInt intdiv(XiReal other) {
+	public XiInt intdiv(XiReal<?> other) {
 		return new XiInt((int) (val.doubleValue() / other.num().doubleValue()));
 	}
 
@@ -27,7 +27,7 @@ public abstract class XiReal extends XiNum {
 	public int compareTo(DataType other) {
 		if (!(other instanceof XiReal))
 			return 0;
-		return new Double(val.doubleValue()).compareTo(((XiReal) other).num()
+		return new Double(val.doubleValue()).compareTo(((XiReal<?>) other).num()
 				.doubleValue());
 	}
 

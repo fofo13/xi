@@ -46,7 +46,7 @@ public class XiComplex extends XiNum {
 	}
 
 	@Override
-	public XiReal abs() {
+	public XiReal<?> abs() {
 		return new XiFloat(Math.sqrt(re * re + im * im));
 	}
 
@@ -56,7 +56,7 @@ public class XiComplex extends XiNum {
 			XiComplex c = (XiComplex) other;
 			return new XiComplex(re + c.re(), im + c.im());
 		}
-		return new XiComplex(re + ((XiReal) other).num().doubleValue(), im);
+		return new XiComplex(re + ((XiReal<?>) other).num().doubleValue(), im);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class XiComplex extends XiNum {
 			XiComplex c = (XiComplex) other;
 			return new XiComplex(re - c.re(), im - c.im());
 		}
-		return new XiComplex(re - ((XiReal) other).num().doubleValue(), im);
+		return new XiComplex(re - ((XiReal<?>) other).num().doubleValue(), im);
 	}
 
 	@Override
@@ -75,14 +75,14 @@ public class XiComplex extends XiNum {
 			return new XiComplex(re * c.re() - im * c.im(), re * c.im() + im
 					* c.re());
 		}
-		double d = ((XiReal) other).num().doubleValue();
+		double d = ((XiReal<?>) other).num().doubleValue();
 		return new XiComplex(re * d, im * d);
 	}
 
 	@Override
 	public XiComplex div(XiNum other) {
 		if (other instanceof XiReal) {
-			double r = ((XiReal) other).num().doubleValue();
+			double r = ((XiReal<?>) other).num().doubleValue();
 			return new XiComplex(re / r, im / r);
 		}
 		XiComplex c = (XiComplex) other;
