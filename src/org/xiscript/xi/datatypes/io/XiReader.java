@@ -34,11 +34,11 @@ public class XiReader extends XiStream implements Closeable {
 	}
 
 	public XiString read() {
-		return new XiString(in.next());
+		return new XiString(in.next(), false);
 	}
 
 	public XiString readln() {
-		return new XiString(in.nextLine());
+		return new XiString(in.nextLine(), false);
 	}
 
 }
