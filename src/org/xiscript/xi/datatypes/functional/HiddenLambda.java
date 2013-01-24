@@ -35,9 +35,4 @@ public abstract class HiddenLambda extends XiLambda {
 		throw new UnsupportedOperationException();
 	}
 
-	@Override
-	public String toString() {
-		return "{?}";
-	}
-
 }

@@ -46,4 +46,10 @@ public abstract class DataType implements Comparable<DataType> {
 
 	}
 
+	@Override
+	public String toString() {
+		String string = super.toString();
+		return string.substring(string.lastIndexOf('.') + 1);
+	}
+
 }

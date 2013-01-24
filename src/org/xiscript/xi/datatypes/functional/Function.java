@@ -65,9 +65,4 @@ public abstract class Function extends DataType {
 		return body.compareTo(other);
 	}
 
-	@Override
-	public String toString() {
-		return body.toString();
-	}
-
 }
