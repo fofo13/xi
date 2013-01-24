@@ -60,16 +60,11 @@ public class XiString extends ListWrapper {
 		super(list);
 	}
 
-	public XiString(String exp, boolean delQuotes) {
+	public XiString(String exp) {
 		this(new ArrayList<DataType>());
-		if (delQuotes)
-			exp = exp.replace("\"", "");
+
 		for (char c : exp.toCharArray())
 			collection.add((new XiChar(c)).toXiString());
-	}
-
-	public XiString(String exp) {
-		this(exp, true);
 	}
 
 	public XiList toList() {

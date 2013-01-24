@@ -104,7 +104,8 @@ public class Parser {
 			return new DataNode<XiBlock>(block);
 		}
 		if (exp.startsWith("\""))
-			return new DataNode<XiString>(new XiString(exp));
+			return new DataNode<XiString>(new XiString(exp.substring(1,
+					exp.length() - 1)));
 		if (exp.startsWith("'"))
 			return new DataNode<XiAttribute>(new XiAttribute(exp, true));
 		if (exp.startsWith("re\""))
