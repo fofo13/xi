@@ -3,6 +3,8 @@ package org.xiscript.xi.datatypes.functional;
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.collections.XiTuple;
+import org.xiscript.xi.exceptions.ErrorHandler;
+import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public abstract class HiddenLambda extends XiLambda {
 
@@ -32,7 +34,8 @@ public abstract class HiddenLambda extends XiLambda {
 
 	@Override
 	public int compareTo(DataType other) {
-		throw new UnsupportedOperationException();
+		ErrorHandler.invokeError(ErrorType.UNCOMPARABLE, type());
+		return 0;
 	}
 
 }
