@@ -13,7 +13,7 @@ public class XiRegex extends XiString {
 	}
 
 	public XiRegex(String exp) {
-		super(exp.startsWith("re\"") ? exp.substring(3, exp.length() - 1) : exp);
+		super(exp);
 	}
 
 	@Override

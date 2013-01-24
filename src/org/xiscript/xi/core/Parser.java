@@ -110,7 +110,8 @@ public class Parser {
 		if (exp.startsWith("'"))
 			return new DataNode<XiAttribute>(new XiAttribute(exp, true));
 		if (exp.startsWith("re\""))
-			return new DataNode<XiRegex>(new XiRegex(exp));
+			return new DataNode<XiRegex>(new XiRegex(exp.substring(3,
+					exp.length() - 1)));
 		if (IntrinsicOperation.idExists(exp))
 			return new OperationNode(IntrinsicOperation.parse(exp), cache);
 		if (exp.matches("[\\.\\p{Alpha}_]\\w*")) {
