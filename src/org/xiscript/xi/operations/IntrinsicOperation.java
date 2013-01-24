@@ -159,7 +159,7 @@ public enum IntrinsicOperation implements Operation {
 				return ((CollectionWrapper<?>) args[1]).filter(
 						(XiBlock) args[0], true);
 
-			return ((XiReal) args[0]).intdiv((XiReal) args[1]);
+			return ((XiReal<?>) args[0]).intdiv((XiReal<?>) args[1]);
 		case MODULUS:
 			if (args[0] instanceof XiString) {
 				XiTuple tup = ((XiTuple) args[1]);
@@ -468,8 +468,8 @@ public enum IntrinsicOperation implements Operation {
 		case DICT:
 			return new XiDictionary((CollectionWrapper<?>) args[0]);
 		case CMPLX:
-			double re = ((XiReal) args[0]).num().doubleValue();
-			double im = ((XiReal) args[1]).num().doubleValue();
+			double re = ((XiReal<?>) args[0]).num().doubleValue();
+			double im = ((XiReal<?>) args[1]).num().doubleValue();
 			return new XiComplex(re, im);
 		case FUNC:
 			return new XiFunc((XiTuple) args[0], (XiBlock) args[1]);
