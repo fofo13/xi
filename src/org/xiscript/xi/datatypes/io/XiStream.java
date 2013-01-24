@@ -17,7 +17,7 @@ public abstract class XiStream extends DataType implements Closeable {
 			ErrorHandler.invokeError(ErrorType.INTERNAL);
 		}
 	}
-	
+
 	@Override
 	public int compareTo(DataType other) {
 		ErrorHandler.invokeError(ErrorType.UNCOMPARABLE, type());
