@@ -18,6 +18,7 @@ import org.xiscript.xi.datatypes.collections.XiString;
 import org.xiscript.xi.datatypes.collections.XiTuple;
 import org.xiscript.xi.datatypes.functional.XiBlock;
 import org.xiscript.xi.datatypes.functional.XiFunc;
+import org.xiscript.xi.datatypes.functional.XiLambda;
 import org.xiscript.xi.datatypes.numeric.XiComplex;
 import org.xiscript.xi.datatypes.numeric.XiFloat;
 import org.xiscript.xi.datatypes.numeric.XiInt;
@@ -118,7 +119,17 @@ public class Parser {
 			return new VarNode(exp, cache);
 		}
 		if (exp.startsWith("`")) {
-			DataType d = parseNode(exp.substring(1), cache).evaluate();
+			String id = exp.substring(1);
+
+			Node n = parseNode(id, cache);
+
+			if (n instanceof OperationNode && cache.get(id) instanceof XiFunc) {
+				return new DataNode<XiLambda>(
+						((XiFunc) cache.get(id)).asLambda());
+			}
+
+			DataType d = n.evaluate();
+
 			if (!(d instanceof CollectionWrapper<?>))
 				ErrorHandler.invokeError(ErrorType.UNPACKING_ERROR, d);
 

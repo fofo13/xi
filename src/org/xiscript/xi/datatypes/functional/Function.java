@@ -14,6 +14,11 @@ public abstract class Function extends DataType {
 	protected String[] identifiers;
 	protected XiBlock body;
 
+	public Function(String[] identifiers, XiBlock body) {
+		this.identifiers = identifiers;
+		this.body = body;
+	}
+
 	public Function(XiTuple list, XiBlock body) {
 		if (list == null)
 			return;

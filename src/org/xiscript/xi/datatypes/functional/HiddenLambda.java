@@ -9,7 +9,7 @@ public abstract class HiddenLambda extends XiLambda {
 	private int numArgs;
 
 	public HiddenLambda(int numArgs) {
-		super(null, null);
+		super(new String[0], null);
 		this.numArgs = numArgs;
 	}
 

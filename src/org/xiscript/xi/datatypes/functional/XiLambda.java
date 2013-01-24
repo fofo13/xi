@@ -10,6 +10,10 @@ public class XiLambda extends Function {
 		super(list, body);
 	}
 
+	public XiLambda(String[] identifiers, XiBlock body) {
+		super(identifiers, body);
+	}
+
 	public DataType evaluate(XiTuple args, VariableCache globals) {
 		return evaluate(args.collection().toArray(new DataType[args.length()]),
 				globals);

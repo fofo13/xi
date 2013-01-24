@@ -14,4 +14,8 @@ public class XiFunc extends Function implements Operation {
 		return length();
 	}
 
+	public XiLambda asLambda() {
+		return new XiLambda(identifiers, body);
+	}
+
 }
