@@ -17,7 +17,7 @@ public class Xi {
 			env.run();
 			env.close();
 		} catch (FileNotFoundException fnfe) {
-			System.err.printf("File %s was not found.", file);
+			System.err.printf("File %s was not found.%n", file);
 		}
 	}
 
