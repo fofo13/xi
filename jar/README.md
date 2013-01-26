@@ -1,7 +1,7 @@
 Xi Java Archive
 ===============
 
-This JAR-file is composed of the code in the [`src`](https://github.com/arshajii/xi/tree/master/src) folder. Check the [commit history](https://github.com/arshajii/xi/commits/master) for information regarding when it was last updated.
+This JAR-file is composed of the code in the [`src`](https://github.com/arshajii/xi/tree/master/src) folder. Refer to the [commit history](https://github.com/arshajii/xi/commits/master/jar/xi.jar) for information regarding when it was last updated.
 
 Running Xi
 ----------
