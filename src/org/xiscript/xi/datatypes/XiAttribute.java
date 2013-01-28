@@ -1,5 +1,8 @@
 package org.xiscript.xi.datatypes;
 
+import org.xiscript.xi.exceptions.ErrorHandler;
+import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
+
 public class XiAttribute extends DataType {
 
 	private String val;
@@ -8,7 +11,7 @@ public class XiAttribute extends DataType {
 	public XiAttribute(String val, boolean setable) {
 		this.val = val.replace("'", "");
 		if (!this.val.matches("\\w*"))
-			throw new RuntimeException("Invalid attribute name: " + this.val);
+			ErrorHandler.invokeError(ErrorType.INVALID_IDENTIFIER, val);
 
 		this.setable = setable;
 	}
@@ -16,7 +19,7 @@ public class XiAttribute extends DataType {
 	public XiAttribute(String val) {
 		this(val, false);
 	}
-	
+
 	public boolean setable() {
 		return setable;
 	}
