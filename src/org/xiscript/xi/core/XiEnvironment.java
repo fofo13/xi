@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiNull;
@@ -22,6 +23,11 @@ import org.xiscript.xi.exceptions.ReturnException;
 import org.xiscript.xi.operations.IntrinsicOperation;
 
 public class XiEnvironment implements Closeable {
+
+	private static final Pattern returnStatement = Pattern
+			.compile("return\\s+.*");
+
+	private static final Pattern assignOp = Pattern.compile(":=");
 
 	private List<String> statements;
 
@@ -94,6 +100,7 @@ public class XiEnvironment implements Closeable {
 
 			throw new BreakException();
 		}
+
 		if (exp.equals("continue")) {
 			if (primary)
 				ErrorHandler.invokeError(ErrorType.MISPLACED_STATEMENT,
@@ -101,22 +108,23 @@ public class XiEnvironment implements Closeable {
 
 			throw new ContinueException();
 		}
-		if (exp.matches("return\\s+.*")) {
+
+		if (returnStatement.matcher(exp).matches()) {
 			if (primary)
 				ErrorHandler.invokeError(ErrorType.MISPLACED_STATEMENT, exp);
 
-			throw new ReturnException((new SyntaxTree(exp.split("\\s+", 2)[1],
-					globals)).evaluate());
+			throw new ReturnException((new SyntaxTree(Parser.whitespace.split(
+					exp, 2)[1], globals)).evaluate());
 		}
 
 		if (Parser.containsAssignment(exp)) {
-			String[] split = exp.split(":=", 2);
+			String[] split = assignOp.split(exp, 2);
 			split[0] = split[0].trim();
 
 			if (IntrinsicOperation.idExists(split[0]))
 				ErrorHandler.invokeError(ErrorType.INVALID_OVERRIDE, split[0]);
 
-			if (!split[0].matches("[\\.\\p{Alpha}_]\\w*"))
+			if (!Parser.identifier.matcher(split[0]).matches())
 				ErrorHandler
 						.invokeError(ErrorType.INVALID_IDENTIFIER, split[0]);
 

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Queue;
+import java.util.regex.Pattern;
 
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
@@ -34,14 +35,38 @@ import org.xiscript.xi.operations.IntrinsicOperation;
 
 public class Parser {
 
+	private static final Pattern intPattern = Pattern.compile("-?\\d+");
+
+	private static final Pattern longPattern = Pattern.compile("-?\\d+[lL]");
+
+	private static final Pattern floatPattern = Pattern
+			.compile("[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?");
+
+	private static final Pattern imPattern = Pattern
+			.compile("-?\\d+(\\.\\d+)*i");
+
+	private static final Pattern assignmentSplit = Pattern
+			.compile(":=(?![^\\{]*\\})");
+
+	private static final Pattern quoteDel = Pattern
+			.compile("\'[^\']*\'|\"[^\"]*\"");
+
+	public static final Pattern identifier = Pattern
+			.compile("[\\.\\p{Alpha}_]\\w*");
+
+	public static final Pattern whitespace = Pattern.compile("\\s+");
+
+	public static final Pattern semicolon = Pattern.compile(";");
+
 	public static String[] splitOnSemiColons(String exp) {
 		return generateTokenArray(
-				new ArrayList<String>(Arrays.asList(exp.split(";"))), ";");
+				new ArrayList<String>(Arrays.asList(semicolon.split(exp))), ";");
 	}
 
 	public static String[] tokenize(String exp) {
 		return generateTokenArray(
-				new ArrayList<String>(Arrays.asList(exp.split("\\s+"))), " ");
+				new ArrayList<String>(Arrays.asList(whitespace.split(exp))),
+				" ");
 	}
 
 	private static String[] generateTokenArray(List<String> split, String delim) {
@@ -60,7 +85,7 @@ public class Parser {
 	}
 
 	public static boolean containsAssignment(String exp) {
-		String[] split = exp.split(":=(?![^\\{]*\\})");
+		String[] split = assignmentSplit.split(exp);
 
 		if (split.length == 1)
 			return false;
@@ -75,7 +100,8 @@ public class Parser {
 	}
 
 	public static boolean isIncomplete(String exp) {
-		String mod = exp.replaceAll("\'[^\']*\'|\"[^\"]*\"", "");
+		String mod = quoteDel.matcher(exp).replaceAll("");
+
 		return (exp.length() - exp.replace("\"", "").length()) % 2 == 1
 				|| (exp.length() - exp.replace("'", "").length()) % 2 == 1
 				|| mod.replace("]", "").length()
@@ -87,13 +113,13 @@ public class Parser {
 	}
 
 	public static Node parseNode(String exp, VariableCache cache) {
-		if (exp.matches("-?\\d+"))
+		if (intPattern.matcher(exp).matches())
 			return new DataNode<XiInt>(XiInt.parse(exp));
-		if (exp.matches("-?\\d+[lL]"))
+		if (longPattern.matcher(exp).matches())
 			return new DataNode<XiLong>(XiLong.parse(exp));
-		if (exp.matches("[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?"))
+		if (floatPattern.matcher(exp).matches())
 			return new DataNode<XiFloat>(XiFloat.parse(exp));
-		if (exp.matches("-?\\d+(\\.\\d+)*i"))
+		if (imPattern.matcher(exp).matches())
 			return new DataNode<XiComplex>(XiComplex.parseIm(exp));
 		if (exp.startsWith("["))
 			return new DataNode<XiList>(XiList.parse(exp, cache));
@@ -114,7 +140,7 @@ public class Parser {
 					exp.length() - 1)));
 		if (IntrinsicOperation.idExists(exp))
 			return new OperationNode(IntrinsicOperation.parse(exp), cache);
-		if (exp.matches("[\\.\\p{Alpha}_]\\w*")) {
+		if (identifier.matcher(exp).matches()) {
 			if (cache.get(exp) instanceof XiFunc)
 				return new OperationNode((XiFunc) cache.get(exp), cache);
 			return new VarNode(exp, cache);
