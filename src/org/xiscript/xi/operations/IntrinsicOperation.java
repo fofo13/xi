@@ -508,6 +508,8 @@ public enum IntrinsicOperation implements Operation {
 			if (args[0].isEmpty())
 				ErrorHandler.invokeError(ErrorType.ASSERT_ERROR);
 			return XiNull.instance();
+		case TYPE:
+			return new XiString(args[0].type());
 		case IMPORT:
 			return ModuleLoader.load(args[0].toString());
 		case GETATTR:
