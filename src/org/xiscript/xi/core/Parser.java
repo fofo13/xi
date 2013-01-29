@@ -91,7 +91,7 @@ public class Parser {
 			return new DataNode<XiInt>(XiInt.parse(exp));
 		if (exp.matches("-?\\d+[lL]"))
 			return new DataNode<XiLong>(XiLong.parse(exp));
-		if (exp.matches("-?\\d+\\.\\d*"))
+		if (exp.matches("[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?"))
 			return new DataNode<XiFloat>(XiFloat.parse(exp));
 		if (exp.matches("-?\\d+(\\.\\d+)*i"))
 			return new DataNode<XiComplex>(XiComplex.parseIm(exp));
