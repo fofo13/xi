@@ -8,12 +8,12 @@ Java, but most are original. Be sure to check out the [wiki](https://github.com/
 Installing and Running
 ----------------------
 
-The easiest way to do this is to make use of the Xi Java Archive (see [`jar`](https://github.com/arshajii/xi/tree/master/jar) folder and the [`README`](https://github.com/arshajii/xi/tree/master/jar#xi-java-archive) therein). 
+The easiest way to do this is to make use of the Xi Java Archive (see [`jar`](jar/) folder and the [`README`](https://github.com/arshajii/xi/tree/master/jar#xi-java-archive) therein). 
 
 Examples
 --------
 
-Refer to the [examples](https://github.com/arshajii/Xi/tree/master/examples) folder for a full list of examples and descriptions.
+Refer to the [examples](examples/) folder for a full list of examples and descriptions.
 
 ### hello.xi  
 
@@ -178,4 +178,4 @@ To Do
 License
 -------
 
-This content is released under the MIT License. See [`LICENSE.txt`](https://github.com/arshajii/xi/blob/master/LICENSE.txt) for details.
+This content is released under the MIT License. See [`LICENSE.txt`](LICENSE.txt) for details.
