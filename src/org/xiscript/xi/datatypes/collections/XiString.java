@@ -88,7 +88,7 @@ public class XiString extends ListWrapper {
 
 		attributes.put(new XiAttribute("regex"), new XiRegex(str));
 
-		String[] split = toString().split("\\s+");
+		String[] split = Parser.whitespace.split(toString());
 		List<DataType> l = new ArrayList<DataType>(split.length);
 
 		for (String s : split)
