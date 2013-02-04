@@ -24,6 +24,7 @@ import org.xiscript.xi.datatypes.collections.XiList;
 import org.xiscript.xi.datatypes.collections.XiSet;
 import org.xiscript.xi.datatypes.collections.XiString;
 import org.xiscript.xi.datatypes.collections.XiTuple;
+import org.xiscript.xi.datatypes.functional.HiddenLambda;
 import org.xiscript.xi.datatypes.functional.XiBlock;
 import org.xiscript.xi.datatypes.functional.XiFunc;
 import org.xiscript.xi.datatypes.functional.XiLambda;
@@ -521,6 +522,17 @@ public enum IntrinsicOperation implements Operation {
 			ErrorHandler.invokeError(ErrorType.INTERNAL);
 			return null;
 		}
+	}
+
+	@Override
+	public XiLambda asLambda() {
+		final IntrinsicOperation op = this;
+		return new HiddenLambda(numArgs) {
+			@Override
+			public DataType evaluate(DataType... args) {
+				return op.evaluate(args, new VariableCache());
+			}
+		};
 	}
 
 	public static boolean idExists(String id) {

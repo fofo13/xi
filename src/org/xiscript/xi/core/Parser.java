@@ -32,6 +32,7 @@ import org.xiscript.xi.nodes.OperationNode;
 import org.xiscript.xi.nodes.PackedDataNode;
 import org.xiscript.xi.nodes.VarNode;
 import org.xiscript.xi.operations.IntrinsicOperation;
+import org.xiscript.xi.operations.Operation;
 
 public class Parser {
 
@@ -148,11 +149,16 @@ public class Parser {
 		if (exp.startsWith("`")) {
 			String id = exp.substring(1);
 
+			if (IntrinsicOperation.idExists(id))
+				return new DataNode<XiLambda>(IntrinsicOperation.parse(id)
+						.asLambda());
+
 			Node n = parseNode(id, cache);
 
-			if (n instanceof OperationNode && cache.get(id) instanceof XiFunc) {
+			if (n instanceof OperationNode
+					&& cache.get(id) instanceof Operation) {
 				return new DataNode<XiLambda>(
-						((XiFunc) cache.get(id)).asLambda());
+						((Operation) cache.get(id)).asLambda());
 			}
 
 			DataType d = n.evaluate();
