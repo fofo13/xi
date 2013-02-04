@@ -447,9 +447,8 @@ public enum IntrinsicOperation implements Operation {
 						args[0].toString());
 			}
 		}
-		case APPLY: {
+		case APPLY:
 			return ((XiLambda) args[0]).evaluate((XiTuple) args[1], globals);
-		}
 		case STR:
 			return new XiString(args[0].toString());
 		case INT:

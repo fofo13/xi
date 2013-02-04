@@ -2,6 +2,7 @@ package org.xiscript.xi.datatypes.collections;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.xiscript.xi.datatypes.DataType;
@@ -48,6 +49,12 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 	public CollectionWrapper<List<DataType>> sort() {
 		List<DataType> newList = new ArrayList<DataType>(collection);
 		Collections.sort(newList);
+		return instantiate(newList);
+	}
+
+	public CollectionWrapper<List<DataType>> sort(Comparator<DataType> cmp) {
+		List<DataType> newList = new ArrayList<DataType>(collection);
+		Collections.sort(newList, cmp);
 		return instantiate(newList);
 	}
 

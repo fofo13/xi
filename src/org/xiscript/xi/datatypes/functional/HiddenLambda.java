@@ -23,6 +23,11 @@ public abstract class HiddenLambda extends XiLambda {
 	}
 
 	@Override
+	public DataType evaluate(DataType[] args, VariableCache globals) {
+		return evaluate(args);
+	}
+
+	@Override
 	public int length() {
 		return numArgs;
 	}

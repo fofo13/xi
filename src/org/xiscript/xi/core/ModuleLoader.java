@@ -4,12 +4,19 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiModule;
 import org.xiscript.xi.datatypes.XiSys;
+import org.xiscript.xi.datatypes.collections.ListWrapper;
+import org.xiscript.xi.datatypes.functional.HiddenFunc;
+import org.xiscript.xi.datatypes.functional.XiFunc;
+import org.xiscript.xi.datatypes.functional.XiLambda;
+import org.xiscript.xi.datatypes.numeric.XiInt;
 import org.xiscript.xi.datatypes.numeric.XiMath;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
@@ -90,6 +97,38 @@ public class ModuleLoader {
 		stdlib.get("math").addVar("log10", XiMath.log10);
 		stdlib.get("math").addVar("floor", XiMath.floor);
 		stdlib.get("math").addVar("ceil", XiMath.ceil);
+
+		XiFunc sort = new HiddenFunc(2) {
+			@Override
+			public DataType evaluate(DataType... args) {
+				final XiLambda key = (XiLambda) args[0];
+				final VariableCache cache = new VariableCache();
+
+				Comparator<DataType> cmp = new Comparator<DataType>() {
+					@Override
+					public int compare(DataType d1, DataType d2) {
+						switch (key.length()) {
+						case 1:
+							return key.evaluate(new DataType[] { d1 }, cache)
+									.compareTo(
+											key.evaluate(new DataType[] { d2 },
+													cache));
+						case 2:
+							return ((XiInt) key.evaluate(new DataType[] { d1,
+									d2 }, cache)).val();
+						default:
+							ErrorHandler.invokeError(ErrorType.ARGUMENT,
+									"cmpsort");
+						}
+						return 0;
+					}
+				};
+
+				return ((ListWrapper) args[1]).sort(cmp);
+			};
+		};
+
+		stdlib.get("listutils").addVar("cmpsort", sort);
 	}
 
 }
