@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.xiscript.xi.datatypes.XiModule;
 import org.xiscript.xi.datatypes.XiSys;
+import org.xiscript.xi.datatypes.numeric.XiMath;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
@@ -41,7 +42,7 @@ public class ModuleLoader {
 			sub.close();
 		}
 
-		stdlib.get("sys").addVar("sys", XiSys.instance());
+		addSpecialVars();
 	}
 
 	public static XiModule load(String name) {
@@ -62,6 +63,33 @@ public class ModuleLoader {
 		} finally {
 			env.close();
 		}
+	}
+
+	private static void addSpecialVars() {
+		stdlib.get("sys").addVar("sys", XiSys.instance());
+
+		stdlib.get("math").addVar("sin", XiMath.sin);
+		stdlib.get("math").addVar("cos", XiMath.cos);
+		stdlib.get("math").addVar("tan", XiMath.tan);
+		stdlib.get("math").addVar("cot", XiMath.cot);
+		stdlib.get("math").addVar("sec", XiMath.sec);
+		stdlib.get("math").addVar("csc", XiMath.csc);
+		stdlib.get("math").addVar("asin", XiMath.asin);
+		stdlib.get("math").addVar("acos", XiMath.acos);
+		stdlib.get("math").addVar("atan", XiMath.atan);
+		stdlib.get("math").addVar("acot", XiMath.acot);
+		stdlib.get("math").addVar("asec", XiMath.asec);
+		stdlib.get("math").addVar("acsc", XiMath.acsc);
+		stdlib.get("math").addVar("sinh", XiMath.sinh);
+		stdlib.get("math").addVar("cosh", XiMath.cosh);
+		stdlib.get("math").addVar("tanh", XiMath.tanh);
+		stdlib.get("math").addVar("coth", XiMath.coth);
+		stdlib.get("math").addVar("sech", XiMath.sech);
+		stdlib.get("math").addVar("csch", XiMath.csch);
+		stdlib.get("math").addVar("log", XiMath.log);
+		stdlib.get("math").addVar("log10", XiMath.log10);
+		stdlib.get("math").addVar("floor", XiMath.floor);
+		stdlib.get("math").addVar("ceil", XiMath.ceil);
 	}
 
 }

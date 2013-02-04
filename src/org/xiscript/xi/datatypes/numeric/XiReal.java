@@ -10,7 +10,7 @@ public abstract class XiReal<T extends Number> extends XiNum {
 		this.val = val;
 	}
 
-	public Number num() {
+	public T num() {
 		return val;
 	}
 
@@ -27,8 +27,8 @@ public abstract class XiReal<T extends Number> extends XiNum {
 	public int compareTo(DataType other) {
 		if (!(other instanceof XiReal))
 			return 0;
-		return new Double(val.doubleValue()).compareTo(((XiReal<?>) other).num()
-				.doubleValue());
+		return new Double(val.doubleValue()).compareTo(((XiReal<?>) other)
+				.num().doubleValue());
 	}
 
 	@Override
