@@ -49,11 +49,11 @@ Java, but most are original. Be sure to check out the <a href="https://github.co
 
 <h2>Installing and Running</h2>
 
-<p>The easiest way to do this is to make use of the Xi Java Archive (see <a href="https://github.com/arshajii/xi/tree/master/jar"><code>jar</code></a> folder and the <a href="https://github.com/arshajii/xi/tree/master/jar#xi-java-archive"><code>README</code></a> therein). </p>
+<p>The easiest way to do this is to make use of the Xi Java Archive (see <a href="jar/"><code>jar</code></a> folder and the <a href="https://github.com/arshajii/xi/tree/master/jar#xi-java-archive"><code>README</code></a> therein). </p>
 
 <h2>Examples</h2>
 
-<p>Refer to the <a href="https://github.com/arshajii/Xi/tree/master/examples">examples</a> folder for a full list of examples and descriptions.</p>
+<p>Refer to the <a href="examples/">examples</a> folder for a full list of examples and descriptions.</p>
 
 <h3>hello.xi</h3>
 
@@ -168,6 +168,20 @@ find the sum of this list using <code>$</code>, resulting in the desired answer.
 Then we have a <code>do</code>-loop which performs <code>n</code> iterations, shifting <code>a</code> and <code>b</code> one step up the sequence and printing the appropriate term on each iteration.
 To "shift up the sequence" we simply assign the old value of <code>a</code> to <code>b</code> and assign the <code>a + b</code> to <code>a</code>.</p>
 
+<hr><h3>identity.xi</h3>
+
+<p>This example demonstrates <em>Euler's identity</em>: <em><code>e^(iπ) + 1 = 0</code></em>:</p>
+
+<div class="highlight"><pre><span class="n">math</span> <span class="p">:</span><span class="o">=</span> <span class="n">import</span> <span class="s1">'math'</span>
+<span class="n">pi</span>   <span class="p">:</span><span class="o">=</span> <span class="o">=&gt;</span> <span class="n">math</span> <span class="s1">'PI'</span>
+<span class="n">e</span>    <span class="p">:</span><span class="o">=</span> <span class="o">=&gt;</span> <span class="n">math</span> <span class="s1">'E'</span>
+
+<span class="n">z</span> <span class="p">:</span><span class="o">=</span> <span class="o">*</span> <span class="n">pi</span> <span class="mi">1</span><span class="n">i</span>
+<span class="n">println</span> <span class="o">+</span> <span class="o">**</span> <span class="n">e</span> <span class="n">z</span> <span class="mi">1</span>
+</pre></div>
+
+<p>First, we import <code>PI</code> and <code>E</code> from the <code>math</code> module, and assign them to local variables <code>pi</code> and <code>e</code>, respectively. Next, we create a complex variable <code>z</code> with the value <code>* pi 1i</code>, or in standard mathematical notation: <code>πi</code>. Finally, we print <code>e</code> to the power of <code>z</code> plus <code>1</code>, resulting in <code>0</code>.</p>
+
 <hr><h3>quine.xi</h3>
 
 <div class="highlight"><pre><span class="n">reader</span> <span class="p">:</span><span class="o">=</span> <span class="o">=&gt;</span> <span class="n">file</span> <span class="s2">"examples/quine.xi"</span> <span class="s1">'lnreader'</span>
@@ -217,7 +231,30 @@ To "shift up the sequence" we simply assign the old value of <code>a</code> to <
 <code>[ ]</code> More comprehensive and up-to-date to-do list.</li>
 </ul><h2>License</h2>
 
-<p>This content is released under the MIT License. See <a href="https://github.com/arshajii/xi/blob/master/LICENSE.txt"><code>LICENSE.txt</code></a> for details.</p>
+<blockquote>
+<p>Copyright (c) 2013 A. R. Shajii</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+</blockquote>
+
+<p>The text above is included in <a href="LICENSE.txt"><code>LICENSE.txt</code></a>.</p>
       </section>
       <footer>
         <p>Project maintained by <a href="https://github.com/arshajii">arshajii</a></p>
