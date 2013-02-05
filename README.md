@@ -140,6 +140,23 @@ To "shift up the sequence" we simply assign the old value of `a` to `b` and assi
 
 ---
 
+### identity.xi
+
+This example demonstrates *Euler's identity*: *`e^(iπ) + 1 = 0`*:
+
+```ruby
+math := import 'math'
+pi   := => math 'PI'
+e    := => math 'E'
+
+z := * pi 1i
+println + ** e z 1
+```
+
+First, we import `PI` and `E` from the `math` module, and assign them to local variables `pi` and `e`, respectively. Next, we create a complex variable `z` with the value `* pi 1i`, or in standard mathematical notation: *`πi`*. Finally, we print `e` to the power of `z` plus `1`, resulting in **`0`**.
+
+---
+
 ### quine.xi
 
 ```ruby
