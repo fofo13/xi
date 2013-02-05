@@ -50,9 +50,9 @@ public enum IntrinsicOperation implements Operation {
 			"<=", 2), AND("&", 2), OR("|", 2), XOR("^", 2), RSHIFT(">>", 2), LSHIFT(
 			"<<", 2), POW("**", 2), TERN("?", 3),
 
-	FIND("find", 2), IN("in", 2), AT("at", 2), MAP("@", 2), DEEPMAP("@@", 2), RANGE(
-			",", 1), SUM("$", 1), RAND("rnd", 1), SORT("sort", 1), CUT("cut", 2), DEL(
-			"del", 1), PUT("put", 3), REPLACE("replace", 3),
+	FIND("find", 2), IN("in", 2), MAP("@", 2), DEEPMAP("@@", 2), RANGE(",", 1), SUM(
+			"$", 1), RAND("rnd", 1), SORT("sort", 1), CUT("cut", 2), DEL("del",
+			1), REPLACE("replace", 3),
 
 	FOR("for", 3), IF("if", 3), DO("do", 2), WHILE("while", 2), DOWHILE(
 			"dowhile", 2), LOOP("loop", 2),
@@ -238,10 +238,6 @@ public enum IntrinsicOperation implements Operation {
 			if (args[1] instanceof XiDictionary)
 				return new XiInt(((XiDictionary) args[1]).containsKey(args[0]));
 			return new XiInt(((CollectionWrapper<?>) args[1]).contains(args[0]));
-		case AT:
-			if (args[0] instanceof XiDictionary)
-				return ((XiDictionary) args[0]).get(args[1]);
-			return ((ListWrapper) args[0]).get((XiInt) args[1]);
 		case MAP: {
 			if (args[0] instanceof XiLambda)
 				return ((CollectionWrapper<?>) args[1]).map((XiLambda) args[0],
@@ -288,12 +284,6 @@ public enum IntrinsicOperation implements Operation {
 
 			return XiNull.instance();
 		}
-		case PUT:
-			if (args[0] instanceof ListWrapper)
-				((ListWrapper) args[0]).put((XiInt) args[1], args[2]);
-			else
-				((XiDictionary) args[0]).put(args[1], args[2]);
-			return XiNull.instance();
 		case REPLACE:
 			return ((XiString) args[0]).replace((XiString) args[1],
 					(XiString) args[2]);
@@ -512,11 +502,24 @@ public enum IntrinsicOperation implements Operation {
 			return new XiString(args[0].type());
 		case IMPORT:
 			return ModuleLoader.load(args[0].toString());
-		case GETATTR:
+		case GETATTR: {
+			if (!(args[1] instanceof XiAttribute)) {
+				if (args[0] instanceof XiDictionary)
+					return ((XiDictionary) args[0]).get(args[1]);
+				return ((ListWrapper) args[0]).get((XiInt) args[1]);
+			}
 			return args[0].getAttribute((XiAttribute) args[1]);
-		case SETATTR:
-			args[0].setAttribute((XiAttribute) args[1], args[2]);
+		}
+		case SETATTR: {
+			if (!(args[1] instanceof XiAttribute)) {
+				if (args[0] instanceof ListWrapper)
+					((ListWrapper) args[0]).put((XiInt) args[1], args[2]);
+				else
+					((XiDictionary) args[0]).put(args[1], args[2]);
+			} else
+				args[0].setAttribute((XiAttribute) args[1], args[2]);
 			return XiNull.instance();
+		}
 		default:
 			ErrorHandler.invokeError(ErrorType.INTERNAL);
 			return null;
