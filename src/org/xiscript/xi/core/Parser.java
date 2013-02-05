@@ -135,8 +135,7 @@ public class Parser {
 			return new DataNode<XiString>(new XiString(exp.substring(1,
 					exp.length() - 1)));
 		if (exp.startsWith("'"))
-			return new DataNode<XiAttribute>(new XiAttribute(exp.substring(0,
-					exp.length() - 1), true));
+			return new DataNode<XiAttribute>(new XiAttribute(exp, true));
 		if (exp.startsWith("re\""))
 			return new DataNode<XiRegex>(new XiRegex(exp.substring(3,
 					exp.length() - 1)));
