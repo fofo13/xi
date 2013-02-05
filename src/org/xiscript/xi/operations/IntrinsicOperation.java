@@ -541,7 +541,7 @@ public enum IntrinsicOperation implements Operation {
 	public static IntrinsicOperation parse(String id) {
 		IntrinsicOperation op = ids.get(id);
 		if (op == null)
-			throw new IllegalArgumentException("Invalid identifier: " + id);
+			ErrorHandler.invokeError(ErrorType.IDNETIFIER_NOT_FOUND, id);
 		return op;
 	}
 
