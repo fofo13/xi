@@ -110,7 +110,7 @@ public class XiComplex extends XiNum {
 
 	@Override
 	public Object getJavaAnalog() {
-		throw new UnsupportedOperationException();
+		return this;
 	}
 
 	@Override
@@ -145,9 +145,9 @@ public class XiComplex extends XiNum {
 
 	@Override
 	public String toString() {
-		if (Math.abs(im) < 1E-15)
+		if (Math.abs(im) < 1E-10)
 			return Double.toString(re);
-		if (Math.abs(re) < 1E-15)
+		if (Math.abs(re) < 1E-10)
 			return im + "i";
 		if (im < 0)
 			return re + " - " + (-im) + "i";
