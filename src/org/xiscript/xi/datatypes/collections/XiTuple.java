@@ -40,7 +40,8 @@ public class XiTuple extends XiList {
 
 	@Override
 	public void put(XiInt index, DataType data) {
-		ErrorHandler.invokeError(ErrorType.ARGUMENT, IntrinsicOperation.PUT);
+		ErrorHandler
+				.invokeError(ErrorType.ARGUMENT, IntrinsicOperation.SETATTR);
 	}
 
 	public static XiTuple parse(String exp, VariableCache cache) {
