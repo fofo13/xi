@@ -8,12 +8,29 @@ Java, but most are original. Be sure to check out the [wiki](https://github.com/
 Installing and Running
 ----------------------
 
-The easiest way to do this is to make use of the Xi Java Archive (see [`jar`](jar/) folder and the [`README`](https://github.com/arshajii/xi/tree/master/jar#xi-java-archive) therein). 
+### Download
+
+    $ curl -O http://xiscript.org/xi.jar
+    
+### Run
+
+    $ java -jar xi.jar myfile.xi
+    
+For example:
+
+<pre>
+$ touch myscript.xi
+$ echo "println \"hello world\"" >> myscript.xi
+$ cat myscript.xi
+<i><b>println "hello world"</b></i>
+$ java -jar xi.jar myscript.xi
+<i><b>hello world</b></i>
+</pre>
 
 Examples
 --------
 
-Refer to the [examples](examples/) folder for a full list of examples and descriptions.
+Refer to the [examples](https://github.com/arshajii/xi/tree/master/examples) folder for a full list of examples and descriptions.
 
 ### hello.xi  
 
@@ -216,4 +233,4 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-The text above is included in [`LICENSE.txt`](LICENSE.txt).
+The text above is included in [`LICENSE.txt`](https://github.com/arshajii/xi/blob/master/LICENSE.txt).
