@@ -1,18 +1,22 @@
 package org.xiscript.xi.datatypes;
 
+import java.util.regex.Pattern;
+
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public class XiAttribute extends DataType {
 
+	private static final Pattern FORM = Pattern.compile("\\w*");
+
 	private String val;
 	private boolean setable;
 
 	public XiAttribute(String val, boolean setable) {
-		this.val = val.replace("'", "");
-		if (!this.val.matches("\\w*"))
+		if (!FORM.matcher(val).matches())
 			ErrorHandler.invokeError(ErrorType.INVALID_IDENTIFIER, val);
 
+		this.val = val;
 		this.setable = setable;
 	}
 
