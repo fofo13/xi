@@ -40,7 +40,7 @@ public class XiTuple extends XiList {
 
 	@Override
 	public void put(XiInt index, DataType data) {
-		throw new RuntimeException("Tuples are immutable.");
+		ErrorHandler.invokeError(ErrorType.ARGUMENT, IntrinsicOperation.PUT);
 	}
 
 	public static XiTuple parse(String exp, VariableCache cache) {
