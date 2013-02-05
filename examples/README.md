@@ -216,7 +216,7 @@ z := * pi 1i
 println + ** e z 1
 ```
 
-First, we import `PI` and `E` from the `math` module, and assign them to local variables `pi` and `e`, respectively. Next, we create a complex variable `z` with the value `* pi 1i`, or in standard mathematical notation: *`πi`*. Finally, we print `e` to the power of `z`, plus `1`, resulting in **`0`**.
+First, we import `PI` and `E` from the `math` module, and assign them to local variables `pi` and `e`, respectively. Next, we create a complex variable `z` with the value `* pi 1i`, or in standard mathematical notation: `πi`. Finally, we print `e` to the power of `z`, plus `1`, resulting in `0`.
 
 ---
 
