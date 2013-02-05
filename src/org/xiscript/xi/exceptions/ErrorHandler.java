@@ -34,6 +34,8 @@ public class ErrorHandler {
 
 		UNCOMPARABLE("Cannot compare objects of type: %s"),
 
+		INVALID_ATTRIBUTE("%s has no attribute: %s"),
+
 		INVALID_ATTRIBUTE_TUPLE(
 				"Argument-tuple must consist of only attribute identifiers: %s"),
 

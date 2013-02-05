@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.xiscript.xi.datatypes.collections.XiString;
 import org.xiscript.xi.datatypes.numeric.XiInt;
+import org.xiscript.xi.exceptions.ErrorHandler;
+import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public abstract class DataType implements Comparable<DataType> {
 
@@ -33,8 +35,8 @@ public abstract class DataType implements Comparable<DataType> {
 		refreshAttributes();
 		DataType d = attributes.get(attribute);
 		if (d == null)
-			throw new RuntimeException(toString() + " has no attribute: "
-					+ attribute);
+			ErrorHandler.invokeError(ErrorType.INVALID_ATTRIBUTE, this,
+					attribute);
 		return d;
 	}
 
