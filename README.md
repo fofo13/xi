@@ -10,7 +10,7 @@ Installing and Running
 
 ### Download
 
-    $ curl -O http://xiscript.org/xi.jar
+    $ curl -O xiscript.org/xi.jar
     
 ### Run
 
