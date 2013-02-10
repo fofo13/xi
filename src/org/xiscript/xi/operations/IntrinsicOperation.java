@@ -82,6 +82,8 @@ public enum IntrinsicOperation implements Operation {
 	private static final Map<String, IntrinsicOperation> ids = new HashMap<String, IntrinsicOperation>(
 			values().length);
 
+	private static final Random random = new Random();
+
 	static {
 		for (IntrinsicOperation op : values())
 			ids.put(op.id, op);
@@ -265,7 +267,10 @@ public enum IntrinsicOperation implements Operation {
 		case RAND:
 			if (args[0] instanceof ListWrapper)
 				return ((ListWrapper) args[0]).rnd();
-			return new XiInt((new Random()).nextInt(((XiInt) args[0]).val()));
+			if (args[0] instanceof XiFloat)
+				return new XiFloat(random.nextDouble()
+						* ((XiFloat) args[0]).num());
+			return new XiInt(random.nextInt(((XiInt) args[0]).val()));
 		case SORT:
 			return ((ListWrapper) args[0]).sort();
 		case CUT:
