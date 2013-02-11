@@ -75,7 +75,7 @@ public enum IntrinsicOperation implements Operation {
 
 	TYPE("type", 1),
 
-	IMPORT("import", 1),
+	IMPORT("import", 1), LOAD("load", 1),
 
 	GETATTR("=>", 2), SETATTR("<=", 3);
 
@@ -507,6 +507,9 @@ public enum IntrinsicOperation implements Operation {
 			return new XiString(args[0].type());
 		case IMPORT:
 			return ModuleLoader.load(args[0].toString());
+		case LOAD:
+			globals.addAll(ModuleLoader.load(args[0].toString()).contents());
+			return XiNull.instance();
 		case GETATTR: {
 			if (!(args[1] instanceof XiAttribute)) {
 				if (args[0] instanceof XiDictionary)
