@@ -23,6 +23,17 @@ public abstract class HiddenFunc extends XiFunc {
 	}
 
 	@Override
+	public XiLambda asLambda() {
+		final HiddenFunc function = this;
+		return new HiddenLambda(numArgs) {
+			@Override
+			public DataType evaluate(DataType... args) {
+				return function.evaluate(args);
+			}
+		};
+	}
+
+	@Override
 	public int length() {
 		return numArgs;
 	}
