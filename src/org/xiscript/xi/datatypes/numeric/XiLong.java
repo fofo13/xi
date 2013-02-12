@@ -2,6 +2,9 @@ package org.xiscript.xi.datatypes.numeric;
 
 import java.math.BigInteger;
 
+import org.xiscript.xi.exceptions.ErrorHandler;
+import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
+
 public class XiLong extends XiReal<BigInteger> {
 
 	public XiLong(BigInteger val) {
@@ -15,7 +18,12 @@ public class XiLong extends XiReal<BigInteger> {
 	public static XiLong parse(String exp) {
 		if (exp.endsWith("l") || exp.endsWith("L"))
 			exp = exp.substring(0, exp.length() - 1);
-		return new XiLong(new BigInteger(exp));
+		try {
+			return new XiLong(new BigInteger(exp));
+		} catch (NumberFormatException nfe) {
+			ErrorHandler.invokeError(ErrorType.NUMBER_FORMAT, exp);
+			return null;
+		}
 	}
 
 	@Override

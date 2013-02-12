@@ -1,5 +1,8 @@
 package org.xiscript.xi.datatypes.numeric;
 
+import org.xiscript.xi.exceptions.ErrorHandler;
+import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
+
 public class XiInt extends XiReal<Integer> {
 
 	public XiInt(int val) {
@@ -15,7 +18,12 @@ public class XiInt extends XiReal<Integer> {
 	}
 
 	public static XiInt parse(String exp) {
-		return new XiInt(Integer.parseInt(exp));
+		try {
+			return new XiInt(Integer.parseInt(exp));
+		} catch (NumberFormatException nfe) {
+			ErrorHandler.invokeError(ErrorType.NUMBER_FORMAT, exp);
+			return null;
+		}
 	}
 
 	@Override

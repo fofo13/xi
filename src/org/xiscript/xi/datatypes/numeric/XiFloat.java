@@ -1,5 +1,8 @@
 package org.xiscript.xi.datatypes.numeric;
 
+import org.xiscript.xi.exceptions.ErrorHandler;
+import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
+
 public class XiFloat extends XiReal<Double> {
 
 	public XiFloat(double val) {
@@ -7,7 +10,12 @@ public class XiFloat extends XiReal<Double> {
 	}
 
 	public static XiFloat parse(String exp) {
-		return new XiFloat(Double.parseDouble(exp));
+		try {
+			return new XiFloat(Double.parseDouble(exp));
+		} catch (NumberFormatException nfe) {
+			ErrorHandler.invokeError(ErrorType.NUMBER_FORMAT, exp);
+			return null;
+		}
 	}
 
 	@Override

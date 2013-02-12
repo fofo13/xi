@@ -24,6 +24,8 @@ public class ErrorHandler {
 
 		EXEC_ERROR("Could not execute: %s"),
 
+		NUMBER_FORMAT("Number format error for input string: %s"),
+
 		STRING_FORMAT("String format error: \"%s\", %s"),
 
 		INTERRUPTION("Unexpected thread interruption occured."),
