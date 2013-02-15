@@ -72,7 +72,7 @@ public class XiDictionary extends DataType {
 	public int compareTo(DataType other) {
 		if (!(other instanceof XiDictionary))
 			return 0;
-		return (new Integer(length())).compareTo(other.length());
+		return Integer.valueOf(length()).compareTo(other.length());
 	}
 
 	@Override
