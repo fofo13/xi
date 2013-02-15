@@ -64,13 +64,13 @@ public class XiFile extends DataType {
 			}
 		};
 
-		attributes.put(new XiAttribute("writer"), wrtr);
-		attributes.put(new XiAttribute("lnwriter"), lnwrtr);
-		attributes.put(new XiAttribute("reader"), rdr);
-		attributes.put(new XiAttribute("lnreader"), lnrdr);
+		attributes.put(new XiAttribute("w"), wrtr);
+		attributes.put(new XiAttribute("lnw"), lnwrtr);
+		attributes.put(new XiAttribute("r"), rdr);
+		attributes.put(new XiAttribute("lnr"), lnrdr);
 
-		attributes.put(new XiAttribute("plain_writer"), writer);
-		attributes.put(new XiAttribute("plain_reader"), reader);
+		attributes.put(new XiAttribute("raw_w"), writer);
+		attributes.put(new XiAttribute("raw_r"), reader);
 	}
 
 	public XiFile(XiString file) {
@@ -117,6 +117,21 @@ public class XiFile extends DataType {
 	public void delete() {
 		writer.close();
 		reader.close();
+	}
+
+	@Override
+	public String toString() {
+		return file.toString();
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		return (other instanceof XiFile) && file.equals(((XiFile) other).file);
+	}
+
+	@Override
+	public int hashCode() {
+		return file.hashCode();
 	}
 
 }
