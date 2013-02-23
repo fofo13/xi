@@ -177,13 +177,21 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 		if (params.length() == 3)
 			step = ((XiInt) params.get(2)).val();
 
+		return range(m, n, step);
+	}
+
+	private static XiList range(int m, int n, int step) {
 		if (step == 0)
 			ErrorHandler.invokeError(ErrorType.ARGUMENT,
 					IntrinsicOperation.RANGE);
 
+		int r = Math.abs(step);
 		List<DataType> list = new ArrayList<DataType>();
-		for (int i = m; i < n; i += step)
+		for (int i = m; i < n; i += r)
 			list.add(new XiInt(i));
+
+		if (step < 0)
+			Collections.reverse(list);
 
 		return new XiList(list);
 	}
