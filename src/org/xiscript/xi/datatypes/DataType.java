@@ -45,7 +45,6 @@ public abstract class DataType implements Comparable<DataType> {
 	}
 
 	public void delete() {
-
 	}
 
 	@Override

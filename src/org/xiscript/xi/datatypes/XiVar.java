@@ -48,6 +48,11 @@ public class XiVar extends DataType {
 	}
 
 	@Override
+	public void delete() {
+		data.delete();
+	}
+
+	@Override
 	public String toString() {
 		return id;
 	}

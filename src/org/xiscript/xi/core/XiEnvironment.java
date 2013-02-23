@@ -165,6 +165,11 @@ public class XiEnvironment implements Closeable {
 		return last;
 	}
 
+	public void delete() {
+		for (XiVar v : globals)
+			v.delete();
+	}
+
 	@Override
 	public void close() {
 		closed = true;
