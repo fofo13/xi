@@ -13,6 +13,14 @@ public class XiReader extends XiStream implements Closeable {
 		this.in = in;
 	}
 
+	public boolean hasNext() {
+		return in.hasNext();
+	}
+
+	public boolean hasNextLine() {
+		return in.hasNextLine();
+	}
+
 	@Override
 	public void close() {
 		in.close();

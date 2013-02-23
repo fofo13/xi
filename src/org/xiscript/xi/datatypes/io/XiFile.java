@@ -51,6 +51,11 @@ public class XiFile extends DataType {
 					return XiNull.instance();
 				}
 			}
+
+			@Override
+			public boolean isEmpty() {
+				return !reader.hasNext();
+			}
 		};
 
 		HiddenLambda lnrdr = new HiddenLambda(0) {
@@ -61,6 +66,11 @@ public class XiFile extends DataType {
 				} catch (NoSuchElementException nsee) {
 					return XiNull.instance();
 				}
+			}
+
+			@Override
+			public boolean isEmpty() {
+				return !reader.hasNextLine();
 			}
 		};
 
