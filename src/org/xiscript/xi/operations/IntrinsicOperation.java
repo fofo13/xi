@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.IllegalFormatException;
 import java.util.List;
@@ -51,8 +52,8 @@ public enum IntrinsicOperation implements Operation {
 			"<<", 2), POW("**", 2), TERN("?", 3),
 
 	FIND("find", 2), IN("in", 2), MAP("@", 2), DEEPMAP("@@", 2), RANGE(",", 1), SUM(
-			"$", 1), RAND("rnd", 1), SORT("sort", 1), CUT("cut", 2), DEL("del",
-			1), REPLACE("replace", 3),
+			"$", 1), RAND("rnd", 1), SORT("sort", 1), CSORT("csort", 2), CUT(
+			"cut", 2), DEL("del", 1), REPLACE("replace", 3),
 
 	FOR("for", 3), IF("if", 3), DO("do", 2), WHILE("while", 2), DOWHILE(
 			"dowhile", 2), LOOP("loop", 2),
@@ -107,7 +108,7 @@ public enum IntrinsicOperation implements Operation {
 	}
 
 	@Override
-	public DataType evaluate(DataType[] args, VariableCache globals) {
+	public DataType evaluate(final DataType[] args, final VariableCache globals) {
 		switch (this) {
 		case NULL:
 			return XiNull.instance();
@@ -273,6 +274,32 @@ public enum IntrinsicOperation implements Operation {
 			return new XiInt(random.nextInt(((XiInt) args[0]).val()));
 		case SORT:
 			return ((ListWrapper) args[0]).sort();
+		case CSORT: {
+			final XiLambda key = (args[0] instanceof XiLambda) ? (XiLambda) args[0]
+					: new XiLambda(new String[] { "." }, (XiBlock) args[0]);
+
+			Comparator<DataType> cmp = new Comparator<DataType>() {
+				@Override
+				public int compare(DataType d1, DataType d2) {
+					switch (key.length()) {
+					case 1:
+						return key.evaluate(new DataType[] { d1 }, globals)
+								.compareTo(
+										key.evaluate(new DataType[] { d2 },
+												globals));
+					case 2:
+						return ((XiInt) key.evaluate(new DataType[] { d1, d2 },
+								globals)).val();
+					default:
+						ErrorHandler
+								.invokeError(ErrorType.ARGUMENT, CSORT.id());
+					}
+					return 0;
+				}
+			};
+
+			return ((ListWrapper) args[1]).sort(cmp);
+		}
 		case CUT:
 			if (args[1] instanceof XiInt)
 				return ((ListWrapper) args[0]).cut((XiInt) args[1]);
