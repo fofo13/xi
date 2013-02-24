@@ -342,7 +342,7 @@ public enum IntrinsicOperation implements Operation {
 
 					for (int i = 0; i < t.length(); i++) {
 						String subid = ((XiAttribute) t.get(i)).toString();
-						body.updateLocal(new XiVar(subid, lw.get(i)));
+						body.updateLocal(new XiVar(subid, lw.get(i), true));
 					}
 				} else {
 					body.updateLocal(new XiVar(id, data, true));

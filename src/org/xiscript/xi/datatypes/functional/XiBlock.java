@@ -30,7 +30,8 @@ public class XiBlock extends DataType {
 	}
 
 	public void addVars(VariableCache cache) {
-		locals.addAll(cache);
+		for (XiVar var : cache)
+			locals.add(var);
 	}
 
 	public VariableCache locals() {
