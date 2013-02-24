@@ -12,9 +12,9 @@ import org.xiscript.xi.operations.Operation;
 
 public class OperationNode implements Node {
 
-	private Operation op;
-	private List<Node> children;
-	private VariableCache cache;
+	protected Operation op;
+	protected List<Node> children;
+	protected VariableCache cache;
 
 	public OperationNode(List<Node> children, Operation op, VariableCache cache) {
 		this.op = op;

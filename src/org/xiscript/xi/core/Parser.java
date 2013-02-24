@@ -33,6 +33,7 @@ import org.xiscript.xi.nodes.PackedDataNode;
 import org.xiscript.xi.nodes.VarNode;
 import org.xiscript.xi.operations.IntrinsicOperation;
 import org.xiscript.xi.operations.Operation;
+import org.xiscript.xi.operations.ShortCircuitOperation;
 
 public class Parser {
 
@@ -142,6 +143,8 @@ public class Parser {
 					exp.length() - 1)));
 		if (IntrinsicOperation.idExists(exp))
 			return new OperationNode(IntrinsicOperation.parse(exp), cache);
+		if (ShortCircuitOperation.idExists(exp))
+			return ShortCircuitOperation.parse(exp).getNode(cache);
 		if (identifier.matcher(exp).matches()) {
 			if (cache.get(exp) instanceof XiFunc)
 				return new OperationNode((XiFunc) cache.get(exp), cache);

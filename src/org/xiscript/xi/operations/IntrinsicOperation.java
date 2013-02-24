@@ -49,7 +49,7 @@ public enum IntrinsicOperation implements Operation {
 			"*", 2), DIVIDE("/", 2), INTDIV("//", 2), MODULUS("%", 2), EQ("=",
 			2), NEQ("!=", 2), GREATER(">", 2), LESS("<", 2), GREATER_EQ(">=", 2), LESS_EQ(
 			"<=", 2), AND("&", 2), OR("|", 2), XOR("^", 2), RSHIFT(">>", 2), LSHIFT(
-			"<<", 2), POW("**", 2), TERN("?", 3),
+			"<<", 2), POW("**", 2),
 
 	FIND("find", 2), IN("in", 2), MAP("@", 2), DEEPMAP("@@", 2), RANGE(",", 1), SUM(
 			"$", 1), RAND("rnd", 1), SORT("sort", 1), CSORT("csort", 2), CUT(
@@ -233,8 +233,6 @@ public enum IntrinsicOperation implements Operation {
 			return new XiInt(((XiInt) args[0]).val() << ((XiInt) args[1]).val());
 		case POW:
 			return ((XiNum) args[0]).pow((XiNum) args[1]);
-		case TERN:
-			return args[0].isEmpty() ? args[2] : args[1];
 		case FIND:
 			return ((ListWrapper) args[0]).find(args[1]);
 		case IN:
