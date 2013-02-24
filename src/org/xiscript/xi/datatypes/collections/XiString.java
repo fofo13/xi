@@ -72,6 +72,8 @@ public class XiString extends ListWrapper {
 	}
 
 	public XiString cut(XiString other) {
+		if (other instanceof XiRegex)
+			return new XiString(toString().replaceAll(other.toString(), ""));
 		return new XiString(toString().replace(other.toString(), ""));
 	}
 
