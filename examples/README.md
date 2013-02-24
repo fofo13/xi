@@ -236,6 +236,25 @@ In computer programming, a *quine* is a program that outputs a copy of its own s
 
 Note that the `~` operator can be used to evaluate lambda functions that take no arguments.
 
+---
+
+### wordcount.xi
+
+```ruby
+r := => file "samples/bartleby.txt" 'r'
+d := dict ()
+
+while {r} {
+	s := cut ~ r re"[^\\w]"
+	<= d s ? in s d + => d s 1 1
+}
+
+@ {printf "%s %s%n" .} cut csort {~ => . 1} list set d (0 5)
+```
+
+This program reads a txt-file and outputs the top 5 most common words within that file, followed by their counts. This is done by maintaining the dictionary `d` which maps words to their frequencies. After creating the word reader `r`, we loop through the file word by word and update the dictionary at each stage. Note that we strip away any punctuation that may be attached to the word with `cut ~ r re"[^\\w]"` before we use it to update `d`. In the last line, we sort the dictionary and print the top 5 results.
+
+
 Important Note
 --------------
 
