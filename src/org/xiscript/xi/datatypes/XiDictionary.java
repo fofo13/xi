@@ -1,7 +1,9 @@
 package org.xiscript.xi.datatypes;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.xiscript.xi.datatypes.collections.CollectionWrapper;
 import org.xiscript.xi.datatypes.collections.XiSet;
@@ -47,6 +49,13 @@ public class XiDictionary extends DataType {
 
 	public XiSet keySet() {
 		return new XiSet(map.keySet());
+	}
+
+	public XiSet itemSet() {
+		Set<DataType> set = new HashSet<DataType>(length());
+		for (DataType key : map.keySet())
+			set.add(new XiTuple(key, map.get(key)));
+		return new XiSet(set);
 	}
 
 	public boolean containsKey(DataType d) {

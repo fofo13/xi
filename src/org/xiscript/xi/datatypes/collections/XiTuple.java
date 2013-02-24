@@ -1,6 +1,7 @@
 package org.xiscript.xi.datatypes.collections;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -16,6 +17,10 @@ public class XiTuple extends XiList {
 
 	public XiTuple(List<DataType> list) {
 		super(Collections.unmodifiableList(list));
+	}
+
+	public XiTuple(DataType... elements) {
+		super(Arrays.asList(elements));
 	}
 
 	public XiTuple(int n) {

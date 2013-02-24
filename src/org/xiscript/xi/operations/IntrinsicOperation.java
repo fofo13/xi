@@ -456,7 +456,7 @@ public enum IntrinsicOperation implements Operation {
 			return ((CollectionWrapper<?>) args[0]).asList();
 		case SET:
 			if (args[0] instanceof XiDictionary)
-				return ((XiDictionary) args[0]).keySet();
+				return ((XiDictionary) args[0]).itemSet();
 			return ((CollectionWrapper<?>) args[0]).asSet();
 		case TUPLE:
 			return ((CollectionWrapper<?>) args[0]).asTuple();
