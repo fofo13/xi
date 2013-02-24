@@ -204,4 +204,28 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 		return new XiInt(collection.indexOf(data));
 	}
 
+	public ListWrapper mod(int n) {
+		int m = Math.abs(n);
+		int size = length();
+		int nlists = size / m + 1;
+		List<DataType> newList = new ArrayList<DataType>(nlists);
+		int r = 0;
+		for (int i = 0; i < nlists; i++) {
+			List<DataType> subList = new ArrayList<DataType>(m);
+			for (int j = 0; j < m; j++) {
+				if (r >= size)
+					break;
+				subList.add(collection.get(r));
+				r++;
+			}
+			if (!subList.isEmpty())
+				newList.add(instantiate(subList));
+		}
+
+		if (n < 0)
+			Collections.reverse(newList);
+
+		return new XiList(newList);
+	}
+
 }

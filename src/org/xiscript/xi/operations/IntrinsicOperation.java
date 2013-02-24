@@ -179,6 +179,8 @@ public enum IntrinsicOperation implements Operation {
 							tup);
 				}
 			}
+			if (args[0] instanceof ListWrapper)
+				return ((ListWrapper) args[0]).mod(((XiInt) args[1]).val());
 			return ((XiInt) args[0]).mod((XiInt) args[1]);
 		case EQ:
 			return new XiInt(args[0].equals(args[1]));
