@@ -70,15 +70,19 @@ public class XiEnvironment implements Closeable {
 	}
 
 	public void run() {
+		String stmt = null;
 		for (String statement : statements) {
 			try {
 				for (String exp : Parser.splitOnSemiColons(statement)) {
+					stmt = exp;
 					if (exp.isEmpty())
 						continue;
 					process(exp);
 				}
 			} catch (ControlFlowException cfe) {
 				throw cfe;
+			} catch (ArithmeticException ae) {
+				ErrorHandler.invokeError(ErrorType.ZERO_DIV, stmt);
 			}
 		}
 	}

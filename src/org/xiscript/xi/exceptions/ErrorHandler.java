@@ -36,6 +36,8 @@ public class ErrorHandler {
 
 		UNCOMPARABLE("Cannot compare objects of type: %s"),
 
+		ZERO_DIV("Division by zero: %s"),
+
 		INVALID_ATTRIBUTE("%s has no attribute: %s"),
 
 		INVALID_ATTRIBUTE_TUPLE(
