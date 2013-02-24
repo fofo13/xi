@@ -11,7 +11,7 @@ import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.functional.HiddenLambda;
 
-public class XiString extends ListWrapper {
+public class XiString extends ListWrapper implements CharSequence {
 
 	private static class XiChar extends DataType {
 
@@ -82,6 +82,16 @@ public class XiString extends ListWrapper {
 			return new XiString(toString().replaceAll(sub.toString(),
 					rep.toString()));
 		return new XiString(toString().replace(sub.toString(), rep.toString()));
+	}
+
+	@Override
+	public char charAt(int index) {
+		return toString().charAt(index);
+	}
+
+	@Override
+	public CharSequence subSequence(int beginIndex, int endIndex) {
+		return toString().substring(beginIndex, endIndex);
 	}
 
 	@Override
