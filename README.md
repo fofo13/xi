@@ -204,6 +204,7 @@ To Do
 - `[ ]` More accurate and more specific error messages, including line number and specifically why an error occured.
 - `[✓]` Add a *long* or *BigInteger* numerical data type.
 - `[ ]` Thoroughly update built-in modules.
+- `[ ]` Implement something similar to Python's *iterators*.
 
 ### Miscellaneous
 - `[✓]` Include domain name in Java source package name.
