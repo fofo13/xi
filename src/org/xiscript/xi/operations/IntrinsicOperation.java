@@ -40,6 +40,7 @@ import org.xiscript.xi.exceptions.BreakException;
 import org.xiscript.xi.exceptions.ContinueException;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
+import org.xiscript.xi.util.TimerManager;
 
 public enum IntrinsicOperation implements Operation {
 
@@ -78,7 +79,9 @@ public enum IntrinsicOperation implements Operation {
 
 	IMPORT("import", 1), LOAD("load", 1),
 
-	GETATTR("=>", 2), SETATTR("<=", 3);
+	GETATTR("=>", 2), SETATTR("<=", 3),
+
+	TIC("tic", 1), TOC("toc", 1);
 
 	private static final Map<String, IntrinsicOperation> ids = new HashMap<String, IntrinsicOperation>(
 			values().length);
@@ -555,6 +558,11 @@ public enum IntrinsicOperation implements Operation {
 				args[0].setAttribute((XiAttribute) args[1], args[2]);
 			return XiNull.instance();
 		}
+		case TIC:
+			TimerManager.addTimer(((XiInt) args[0]).val());
+			return XiNull.instance();
+		case TOC:
+			return new XiLong(TimerManager.readTimer(((XiInt) args[0]).val()));
 		default:
 			ErrorHandler.invokeError(ErrorType.INTERNAL);
 			return null;
