@@ -86,7 +86,9 @@ public enum IntrinsicOperation implements Operation {
 	private static final Map<String, IntrinsicOperation> ids = new HashMap<String, IntrinsicOperation>(
 			values().length);
 
-	private static final Random random = new Random();
+	private static final Random RND = new Random();
+
+	private static final VariableCache EMPTY_CACHE = new VariableCache();
 
 	static {
 		for (IntrinsicOperation op : values())
@@ -142,7 +144,7 @@ public enum IntrinsicOperation implements Operation {
 			return ((XiNum) args[0]).abs();
 		case ADD:
 			if (args[0] instanceof CollectionWrapper)
-				return ((CollectionWrapper<?>) args[0]).add(args[1]);
+				return ((CollectionWrapper<?>) args[0]).plus(args[1]);
 			if (args[0] instanceof XiString || args[1] instanceof XiString)
 				return new XiString(args[0].toString() + args[1].toString());
 			return ((XiNum) args[0]).add((XiNum) args[1]);
@@ -272,9 +274,8 @@ public enum IntrinsicOperation implements Operation {
 			if (args[0] instanceof ListWrapper)
 				return ((ListWrapper) args[0]).rnd();
 			if (args[0] instanceof XiFloat)
-				return new XiFloat(random.nextDouble()
-						* ((XiFloat) args[0]).num());
-			return new XiInt(random.nextInt(((XiInt) args[0]).val()));
+				return new XiFloat(RND.nextDouble() * ((XiFloat) args[0]).num());
+			return new XiInt(RND.nextInt(((XiInt) args[0]).val()));
 		case SORT:
 			return ((ListWrapper) args[0]).sort();
 		case CSORT: {
@@ -567,6 +568,10 @@ public enum IntrinsicOperation implements Operation {
 			ErrorHandler.invokeError(ErrorType.INTERNAL);
 			return null;
 		}
+	}
+
+	public DataType evaluate(DataType... dataTypes) {
+		return evaluate(dataTypes, EMPTY_CACHE);
 	}
 
 	@Override
