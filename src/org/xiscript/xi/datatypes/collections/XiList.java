@@ -3,6 +3,7 @@ package org.xiscript.xi.datatypes.collections;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.xiscript.xi.core.Parser;
 import org.xiscript.xi.core.SyntaxTree;
@@ -10,8 +11,10 @@ import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.numeric.XiInt;
 
-
 public class XiList extends ListWrapper {
+
+	private static final Pattern EMPTY_LIST = Pattern
+			.compile("\\s*\\[\\s*\\]\\s*");
 
 	public XiList(List<DataType> list) {
 		super(list);
@@ -28,7 +31,7 @@ public class XiList extends ListWrapper {
 	}
 
 	public static XiList parse(String exp, VariableCache cache) {
-		if (exp.replaceAll("\\s+", "").length() == 2)
+		if (EMPTY_LIST.matcher(exp).matches())
 			return new XiList();
 
 		String[] split = Parser.splitOnSemiColons(exp.substring(1,
@@ -56,6 +59,7 @@ public class XiList extends ListWrapper {
 				newList.addAll(((XiList) data).abs().list());
 			else
 				newList.add(data);
+		
 		return new XiList(newList);
 	}
 
@@ -63,10 +67,6 @@ public class XiList extends ListWrapper {
 	public CollectionWrapper<List<DataType>> instantiate(
 			Collection<DataType> col) {
 		return new XiList(new ArrayList<DataType>(col));
-	}
-
-	public XiTuple asTuple() {
-		return new XiTuple(collection);
 	}
 
 }
