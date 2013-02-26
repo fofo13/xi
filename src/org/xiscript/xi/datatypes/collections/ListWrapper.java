@@ -1,9 +1,11 @@
 package org.xiscript.xi.datatypes.collections;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.numeric.XiInt;
@@ -11,7 +13,8 @@ import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 import org.xiscript.xi.operations.IntrinsicOperation;
 
-public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
+public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
+		implements List<DataType> {
 
 	public ListWrapper(List<DataType> list) {
 		super(list);
@@ -21,6 +24,7 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 		return collection;
 	}
 
+	@Override
 	public DataType get(int index) {
 		index %= collection.size();
 		return collection.get(index < 0 ? collection.size() + index : index);
@@ -196,12 +200,17 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 		return new XiList(list);
 	}
 
+	@Override
+	public DataType set(int index, DataType data) {
+		return collection.set(index, data);
+	}
+
 	public void put(XiInt index, DataType data) {
-		collection.set(index.val(), data);
+		set(index.val(), data);
 	}
 
 	public DataType find(DataType data) {
-		return new XiInt(collection.indexOf(data));
+		return new XiInt(indexOf(data));
 	}
 
 	public ListWrapper mod(int n) {
@@ -209,6 +218,7 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 		int size = length();
 		int nlists = size / m + 1;
 		List<DataType> newList = new ArrayList<DataType>(nlists);
+		
 		int r = 0;
 		for (int i = 0; i < nlists; i++) {
 			List<DataType> subList = new ArrayList<DataType>(m);
@@ -226,6 +236,46 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>> {
 			Collections.reverse(newList);
 
 		return new XiList(newList);
+	}
+
+	@Override
+	public void add(int index, DataType data) {
+		collection.add(index, data);
+	}
+
+	@Override
+	public DataType remove(int index) {
+		return collection.remove(index);
+	}
+
+	@Override
+	public int indexOf(Object o) {
+		return collection.indexOf(o);
+	}
+
+	@Override
+	public int lastIndexOf(Object o) {
+		return collection.lastIndexOf(o);
+	}
+
+	@Override
+	public boolean addAll(int index, Collection<? extends DataType> c) {
+		return collection.addAll(index, c);
+	}
+
+	@Override
+	public ListIterator<DataType> listIterator() {
+		return collection.listIterator();
+	}
+
+	@Override
+	public ListIterator<DataType> listIterator(int index) {
+		return collection.listIterator(index);
+	}
+
+	@Override
+	public List<DataType> subList(int fromIndex, int toIndex) {
+		return collection.subList(fromIndex, toIndex);
 	}
 
 }

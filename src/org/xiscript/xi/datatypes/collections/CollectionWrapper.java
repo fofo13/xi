@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
@@ -16,7 +15,7 @@ import org.xiscript.xi.datatypes.numeric.XiInt;
 import org.xiscript.xi.operations.IntrinsicOperation;
 
 public abstract class CollectionWrapper<T extends Collection<DataType>> extends
-		DataType implements Iterable<DataType> {
+		DataType implements Collection<DataType> {
 
 	protected T collection;
 
@@ -57,21 +56,21 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 	public CollectionWrapper<T> filter(XiBlock block, boolean deep) {
 		Collection<DataType> col = new ArrayList<DataType>(collection.size());
 		int index = 0;
-		for (DataType a : collection) {
-			block.updateLocal(new XiVar(".", a, true));
+		for (DataType data : collection) {
+			block.updateLocal(new XiVar(".", data, true));
 			block.updateLocal(new XiVar("_", new XiInt(index), true));
 
-			if (deep && (a instanceof CollectionWrapper<?>))
-				col.add(((CollectionWrapper<?>) a).filter(block, deep));
+			if (deep && (data instanceof CollectionWrapper<?>))
+				col.add(((CollectionWrapper<?>) data).filter(block, deep));
 			else if (!block.evaluate().isEmpty())
-				col.add(a);
+				col.add(data);
 
 			index++;
 		}
 		return instantiate(col);
 	}
 
-	public CollectionWrapper<T> add(DataType data) {
+	public CollectionWrapper<T> plus(DataType data) {
 		Collection<DataType> col = new ArrayList<DataType>(
 				collection.size() + 1);
 		col.addAll(collection);
@@ -82,20 +81,11 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 	public DataType sum() {
 		if (isEmpty())
 			return new XiInt(0);
-		List<DataType> list = new ArrayList<DataType>(collection);
-		DataType d = list.get(0);
-		for (int i = 1; i < collection.size(); i++)
-			d = IntrinsicOperation.ADD.evaluate(
-					new DataType[] { d, list.get(i) }, null);
-		return d;
-	}
-
-	public boolean contains(DataType data) {
-		return collection.contains(data);
-	}
-
-	public int size() {
-		return length();
+		DataType result = null;
+		for (DataType data : collection)
+			result = (result == null) ? data : IntrinsicOperation.ADD.evaluate(
+					result, data);
+		return result;
 	}
 
 	public XiList asList() {
@@ -116,11 +106,6 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 	}
 
 	@Override
-	public boolean isEmpty() {
-		return collection.isEmpty();
-	}
-
-	@Override
 	public int length() {
 		return collection.size();
 	}
@@ -133,8 +118,68 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 	}
 
 	@Override
+	public boolean add(DataType data) {
+		return collection.add(data);
+	}
+
+	@Override
+	public boolean addAll(Collection<? extends DataType> c) {
+		return collection.addAll(c);
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return collection.isEmpty();
+	}
+
+	@Override
+	public int size() {
+		return length();
+	}
+
+	@Override
+	public boolean contains(Object o) {
+		return collection.contains(o);
+	}
+
+	@Override
+	public boolean containsAll(Collection<?> c) {
+		return collection.containsAll(c);
+	}
+
+	@Override
 	public Iterator<DataType> iterator() {
 		return collection.iterator();
+	}
+
+	@Override
+	public boolean remove(Object o) {
+		return collection.remove(o);
+	}
+
+	@Override
+	public boolean removeAll(Collection<?> c) {
+		return collection.removeAll(c);
+	}
+
+	@Override
+	public boolean retainAll(Collection<?> c) {
+		return collection.retainAll(c);
+	}
+
+	@Override
+	public Object[] toArray() {
+		return collection.toArray();
+	}
+
+	@Override
+	public <U> U[] toArray(U[] a) {
+		return collection.toArray(a);
+	}
+
+	@Override
+	public void clear() {
+		collection.clear();
 	}
 
 	@Override
