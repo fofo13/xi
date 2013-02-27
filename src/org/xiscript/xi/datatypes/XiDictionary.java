@@ -1,5 +1,6 @@
 package org.xiscript.xi.datatypes;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -9,7 +10,7 @@ import org.xiscript.xi.datatypes.collections.CollectionWrapper;
 import org.xiscript.xi.datatypes.collections.XiSet;
 import org.xiscript.xi.datatypes.collections.XiTuple;
 
-public class XiDictionary extends DataType {
+public class XiDictionary extends DataType implements Map<DataType, DataType> {
 
 	private Map<DataType, DataType> map;
 
@@ -33,18 +34,56 @@ public class XiDictionary extends DataType {
 		return map;
 	}
 
-	public void put(DataType key, DataType value) {
-		map.put(key, value);
+	@Override
+	public DataType put(DataType key, DataType value) {
+		return map.put(key, value);
 	}
 
-	public void del(DataType key) {
-		map.remove(key);
+	@Override
+	public void putAll(Map<? extends DataType, ? extends DataType> m) {
+		map.putAll(m);
 	}
 
-	public DataType get(DataType key) {
+	@Override
+	public DataType remove(Object key) {
+		return map.remove(key);
+	}
+
+	@Override
+	public boolean containsKey(Object o) {
+		return map.containsKey(o);
+	}
+
+	@Override
+	public boolean containsValue(Object o) {
+		return map.containsValue(o);
+	}
+
+	@Override
+	public DataType get(Object key) {
 		if (!map.containsKey(key))
 			return XiNull.instance();
 		return map.get(key);
+	}
+
+	@Override
+	public void clear() {
+		map.clear();
+	}
+
+	@Override
+	public Collection<DataType> values() {
+		return map.values();
+	}
+
+	@Override
+	public Set<Map.Entry<DataType, DataType>> entrySet() {
+		return map.entrySet();
+	}
+
+	@Override
+	public int size() {
+		return length();
 	}
 
 	public XiSet keySet() {
@@ -56,10 +95,6 @@ public class XiDictionary extends DataType {
 		for (DataType key : map.keySet())
 			set.add(new XiTuple(key, map.get(key)));
 		return new XiSet(set);
-	}
-
-	public boolean containsKey(DataType d) {
-		return map.containsKey(d);
 	}
 
 	@Override
