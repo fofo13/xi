@@ -59,7 +59,7 @@ public class XiList extends ListWrapper {
 				newList.addAll(((XiList) data).abs().list());
 			else
 				newList.add(data);
-		
+
 		return new XiList(newList);
 	}
 

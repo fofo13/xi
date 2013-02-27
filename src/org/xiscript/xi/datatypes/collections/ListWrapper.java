@@ -218,7 +218,7 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 		int size = length();
 		int nlists = size / m + 1;
 		List<DataType> newList = new ArrayList<DataType>(nlists);
-		
+
 		int r = 0;
 		for (int i = 0; i < nlists; i++) {
 			List<DataType> subList = new ArrayList<DataType>(m);
