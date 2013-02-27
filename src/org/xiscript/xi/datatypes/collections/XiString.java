@@ -56,16 +56,8 @@ public class XiString extends ListWrapper implements CharSequence {
 
 	}
 
-	private String asString;
-
 	public XiString(List<DataType> list) {
 		super(list);
-		
-		StringBuilder sb = new StringBuilder();
-		for (DataType c : collection)
-			sb.append(c.toString());
-		
-		asString =  Parser.unescapeJava(sb.toString());
 	}
 
 	public XiString(String exp) {
@@ -73,8 +65,6 @@ public class XiString extends ListWrapper implements CharSequence {
 
 		for (char c : exp.toCharArray())
 			collection.add((new XiChar(c)).toXiString());
-
-		asString = Parser.unescapeJava(exp);
 	}
 
 	public XiList toList() {
@@ -163,7 +153,10 @@ public class XiString extends ListWrapper implements CharSequence {
 
 	@Override
 	public String toString() {
-		return asString;
+		StringBuilder sb = new StringBuilder();
+		for (DataType c : collection)
+			sb.append(c.toString());
+		return Parser.unescapeJava(sb.toString());
 	}
 
 	@Override
