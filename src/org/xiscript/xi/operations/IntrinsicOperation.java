@@ -59,7 +59,7 @@ public enum IntrinsicOperation implements Operation {
 	FOR("for", 3), IF("if", 3), DO("do", 2), WHILE("while", 2), DOWHILE(
 			"dowhile", 2), LOOP("loop", 2),
 
-	EVAL("eval", 1), EXEC("exec", 1), APPLY("::", 2),
+	EVAL("eval", 1), EXEC("exec", 1),
 
 	STR("str", 1), INT("int", 1), FLOAT("float", 1), LONG("long", 1), LIST(
 			"list", 1), SET("set", 1), TUPLE("tuple", 1), DICT("dict", 1), CMPLX(
@@ -97,10 +97,13 @@ public enum IntrinsicOperation implements Operation {
 
 	private final String id;
 	private final int numArgs;
+	private final XiLambda asLambda;
 
 	private IntrinsicOperation(String id, int numArgs) {
 		this.id = id;
 		this.numArgs = numArgs;
+
+		asLambda = genLambda();
 	}
 
 	public String id() {
@@ -125,7 +128,7 @@ public enum IntrinsicOperation implements Operation {
 			if (args[0] instanceof XiLambda) {
 				XiLambda lambda = (XiLambda) args[0];
 				if (lambda.length() == 0)
-					return APPLY.evaluate(new DataType[] { lambda,
+					return SETATTR.evaluate(new DataType[] { lambda,
 							new XiTuple() }, globals);
 			}
 			if (args[0] instanceof XiBlock) {
@@ -474,8 +477,6 @@ public enum IntrinsicOperation implements Operation {
 						args[0].toString());
 			}
 		}
-		case APPLY:
-			return ((XiLambda) args[0]).evaluate((XiTuple) args[1], globals);
 		case STR:
 			return new XiString(args[0].toString());
 		case INT:
@@ -544,6 +545,9 @@ public enum IntrinsicOperation implements Operation {
 			return XiNull.instance();
 		case GETATTR: {
 			if (!(args[1] instanceof XiAttribute)) {
+				if (args[0] instanceof XiLambda)
+					return ((XiLambda) args[0]).evaluate((XiTuple) args[1],
+							globals);
 				if (args[0] instanceof XiDictionary)
 					return ((XiDictionary) args[0]).get(args[1]);
 				return ((ListWrapper) args[0]).get((XiInt) args[1]);
@@ -575,8 +579,7 @@ public enum IntrinsicOperation implements Operation {
 		return evaluate(dataTypes, EMPTY_CACHE);
 	}
 
-	@Override
-	public XiLambda asLambda() {
+	private XiLambda genLambda() {
 		final IntrinsicOperation op = this;
 		return new HiddenLambda(numArgs) {
 			@Override
@@ -586,15 +589,19 @@ public enum IntrinsicOperation implements Operation {
 		};
 	}
 
+	@Override
+	public XiLambda asLambda() {
+		return asLambda;
+	}
+
 	public static boolean idExists(String id) {
 		return ids.containsKey(id);
 	}
 
 	public static IntrinsicOperation parse(String id) {
-		IntrinsicOperation op = ids.get(id);
-		if (op == null)
+		if (!ids.containsKey(id))
 			ErrorHandler.invokeError(ErrorType.IDNETIFIER_NOT_FOUND, id);
-		return op;
+		return ids.get(id);
 	}
 
 	@Override

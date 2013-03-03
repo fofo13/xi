@@ -3,7 +3,6 @@ package org.xiscript.xi.nodes;
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 
-
 public class VarNode implements Node {
 
 	private VariableCache cache;
