@@ -114,6 +114,9 @@ public class XiEnvironment implements Closeable {
 		}
 
 		if (returnStatement.matcher(exp).matches()) {
+			if (exp.equals("return"))
+				throw new ReturnException(XiNull.instance());
+
 			if (primary)
 				ErrorHandler.invokeError(ErrorType.MISPLACED_STATEMENT, exp);
 
