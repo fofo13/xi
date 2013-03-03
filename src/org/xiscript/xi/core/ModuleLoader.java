@@ -21,8 +21,7 @@ public class ModuleLoader {
 	private static final String libpath = "/org/xiscript/xi/modules/";
 
 	private static final String[] files = { "const.xi", "listutils.xi",
-			"math.xi", "operator.xi", "stat.xi", "stdlib.xi", "sys.xi",
-			"vecmath.xi" };
+			"math.xi", "stat.xi", "stdlib.xi", "sys.xi", "vecmath.xi" };
 
 	static {
 		List<InputStream> dir = new ArrayList<InputStream>(files.length);
