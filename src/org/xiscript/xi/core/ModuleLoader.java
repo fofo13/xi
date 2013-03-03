@@ -20,14 +20,17 @@ public class ModuleLoader {
 
 	private static final String libpath = "/org/xiscript/xi/modules/";
 
-	private static final String[] files = { "const.xi", "listutils.xi",
-			"math.xi", "stat.xi", "stdlib.xi", "sys.xi", "vecmath.xi" };
+	private static final String[] files = { "const", "listutils", "math",
+			"stat", "stdlib", "sys", "vecmath" };
+
+	private static final String EXT = ".xi";
 
 	static {
 		List<InputStream> dir = new ArrayList<InputStream>(files.length);
 
 		for (String file : files)
-			dir.add(XiEnvironment.class.getResourceAsStream(libpath + file));
+			dir.add(XiEnvironment.class.getResourceAsStream(libpath + file
+					+ EXT));
 
 		for (int i = 0; i < files.length; i++) {
 			XiEnvironment sub = null;
@@ -37,7 +40,7 @@ public class ModuleLoader {
 			} catch (FileNotFoundException fnfe) {
 				ErrorHandler.invokeError(ErrorType.INTERNAL);
 			}
-			stdlib.put(files[i].split("\\.")[0], new XiModule(sub.globals()));
+			stdlib.put(files[i], new XiModule(sub.globals()));
 			sub.close();
 		}
 
@@ -51,7 +54,7 @@ public class ModuleLoader {
 
 		XiEnvironment env = null;
 		try {
-			name = name.replace(".", "/") + ".xi";
+			name = name.replace(".", "/") + EXT;
 			File file = new File(name);
 			env = new XiEnvironment(file);
 			env.run();
@@ -67,28 +70,29 @@ public class ModuleLoader {
 	private static void addSpecialVars() {
 		stdlib.get("sys").addVar("sys", XiSys.instance());
 
-		stdlib.get("math").addVar("sin", XiMath.sin);
-		stdlib.get("math").addVar("cos", XiMath.cos);
-		stdlib.get("math").addVar("tan", XiMath.tan);
-		stdlib.get("math").addVar("cot", XiMath.cot);
-		stdlib.get("math").addVar("sec", XiMath.sec);
-		stdlib.get("math").addVar("csc", XiMath.csc);
-		stdlib.get("math").addVar("asin", XiMath.asin);
-		stdlib.get("math").addVar("acos", XiMath.acos);
-		stdlib.get("math").addVar("atan", XiMath.atan);
-		stdlib.get("math").addVar("acot", XiMath.acot);
-		stdlib.get("math").addVar("asec", XiMath.asec);
-		stdlib.get("math").addVar("acsc", XiMath.acsc);
-		stdlib.get("math").addVar("sinh", XiMath.sinh);
-		stdlib.get("math").addVar("cosh", XiMath.cosh);
-		stdlib.get("math").addVar("tanh", XiMath.tanh);
-		stdlib.get("math").addVar("coth", XiMath.coth);
-		stdlib.get("math").addVar("sech", XiMath.sech);
-		stdlib.get("math").addVar("csch", XiMath.csch);
-		stdlib.get("math").addVar("log", XiMath.log);
-		stdlib.get("math").addVar("log10", XiMath.log10);
-		stdlib.get("math").addVar("floor", XiMath.floor);
-		stdlib.get("math").addVar("ceil", XiMath.ceil);
+		XiModule math = stdlib.get("math");
+		math.addVar("sin", XiMath.sin);
+		math.addVar("cos", XiMath.cos);
+		math.addVar("tan", XiMath.tan);
+		math.addVar("cot", XiMath.cot);
+		math.addVar("sec", XiMath.sec);
+		math.addVar("csc", XiMath.csc);
+		math.addVar("asin", XiMath.asin);
+		math.addVar("acos", XiMath.acos);
+		math.addVar("atan", XiMath.atan);
+		math.addVar("acot", XiMath.acot);
+		math.addVar("asec", XiMath.asec);
+		math.addVar("acsc", XiMath.acsc);
+		math.addVar("sinh", XiMath.sinh);
+		math.addVar("cosh", XiMath.cosh);
+		math.addVar("tanh", XiMath.tanh);
+		math.addVar("coth", XiMath.coth);
+		math.addVar("sech", XiMath.sech);
+		math.addVar("csch", XiMath.csch);
+		math.addVar("log", XiMath.log);
+		math.addVar("log10", XiMath.log10);
+		math.addVar("floor", XiMath.floor);
+		math.addVar("ceil", XiMath.ceil);
 	}
 
 }
