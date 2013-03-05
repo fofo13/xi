@@ -4,9 +4,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import org.xiscript.xi.core.XiIterable;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.XiNull;
@@ -15,7 +17,7 @@ import org.xiscript.xi.datatypes.functional.HiddenLambda;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
-public class XiFile extends DataType {
+public class XiFile extends XiIterable {
 
 	private final File file;
 	private final XiWriter writer;
@@ -100,6 +102,35 @@ public class XiFile extends DataType {
 	private XiReader getReader() {
 		try {
 			return new XiReader(new Scanner(file));
+		} catch (FileNotFoundException fnfe) {
+			ErrorHandler.invokeError(ErrorType.FILE_NOT_FOUND, file);
+			return null;
+		}
+	}
+
+	@Override
+	public Iterator<DataType> iterator() {
+		try {
+			final Scanner scan = new Scanner(file);
+			return new Iterator<DataType>() {
+				@Override
+				public boolean hasNext() {
+					boolean b = scan.hasNextLine();
+					if (!b)
+						scan.close();
+					return b;
+				}
+
+				@Override
+				public DataType next() {
+					return new XiString(scan.nextLine());
+				}
+
+				@Override
+				public void remove() {
+					throw new UnsupportedOperationException();
+				}
+			};
 		} catch (FileNotFoundException fnfe) {
 			ErrorHandler.invokeError(ErrorType.FILE_NOT_FOUND, file);
 			return null;

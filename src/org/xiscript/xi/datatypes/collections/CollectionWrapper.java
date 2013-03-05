@@ -7,15 +7,15 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import org.xiscript.xi.core.VariableCache;
+import org.xiscript.xi.core.XiIterable;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.datatypes.functional.XiBlock;
 import org.xiscript.xi.datatypes.functional.XiLambda;
 import org.xiscript.xi.datatypes.numeric.XiInt;
-import org.xiscript.xi.operations.IntrinsicOperation;
 
 public abstract class CollectionWrapper<T extends Collection<DataType>> extends
-		DataType implements Collection<DataType> {
+		XiIterable implements Collection<DataType> {
 
 	protected T collection;
 
@@ -27,6 +27,11 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 
 	public T collection() {
 		return collection;
+	}
+
+	@Override
+	public CollectionWrapper<T> map(final XiBlock block) {
+		return map(block, false);
 	}
 
 	public CollectionWrapper<T> map(XiBlock block, boolean deep) {
@@ -76,16 +81,6 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 		col.addAll(collection);
 		col.add(data);
 		return instantiate(col);
-	}
-
-	public DataType sum() {
-		if (isEmpty())
-			return new XiInt(0);
-		DataType result = null;
-		for (DataType data : collection)
-			result = (result == null) ? data : IntrinsicOperation.ADD.evaluate(
-					result, data);
-		return result;
 	}
 
 	public XiList asList() {

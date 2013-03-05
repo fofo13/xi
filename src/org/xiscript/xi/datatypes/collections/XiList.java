@@ -8,8 +8,8 @@ import java.util.regex.Pattern;
 import org.xiscript.xi.core.Parser;
 import org.xiscript.xi.core.SyntaxTree;
 import org.xiscript.xi.core.VariableCache;
+import org.xiscript.xi.core.XiGenerator;
 import org.xiscript.xi.datatypes.DataType;
-import org.xiscript.xi.datatypes.numeric.XiInt;
 
 public class XiList extends ListWrapper {
 
@@ -24,10 +24,10 @@ public class XiList extends ListWrapper {
 		this(new ArrayList<DataType>());
 	}
 
-	public XiList(int n) {
-		this(new ArrayList<DataType>(n));
-		for (int i = 0; i < n; i++)
-			collection.add(new XiInt(i));
+	public XiList(XiGenerator iter) {
+		this();
+		for (DataType d : iter)
+			add(d);
 	}
 
 	public static XiList parse(String exp, VariableCache cache) {

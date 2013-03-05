@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.xiscript.xi.core.XiGenerator;
 import org.xiscript.xi.datatypes.DataType;
 
 public class XiSet extends CollectionWrapper<Set<DataType>> implements
@@ -19,6 +20,12 @@ public class XiSet extends CollectionWrapper<Set<DataType>> implements
 
 	public XiSet() {
 		this(new HashSet<DataType>());
+	}
+
+	public XiSet(XiGenerator iter) {
+		this();
+		for (DataType d : iter)
+			add(d);
 	}
 
 	public XiSet union(XiSet other) {

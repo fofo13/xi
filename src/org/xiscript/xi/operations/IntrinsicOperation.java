@@ -12,7 +12,10 @@ import java.util.Map;
 import java.util.Random;
 
 import org.xiscript.xi.core.ModuleLoader;
+import org.xiscript.xi.core.RangeGenerator;
 import org.xiscript.xi.core.VariableCache;
+import org.xiscript.xi.core.XiGenerator;
+import org.xiscript.xi.core.XiIterable;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.XiDictionary;
@@ -128,8 +131,7 @@ public enum IntrinsicOperation implements Operation {
 			if (args[0] instanceof XiLambda) {
 				XiLambda lambda = (XiLambda) args[0];
 				if (lambda.length() == 0)
-					return SETATTR.evaluate(new DataType[] { lambda,
-							new XiTuple() }, globals);
+					return lambda.evaluate(new DataType[0], globals);
 			}
 			if (args[0] instanceof XiBlock) {
 				XiBlock block = (XiBlock) args[0];
@@ -163,8 +165,10 @@ public enum IntrinsicOperation implements Operation {
 			return ((XiNum) args[0]).mul((XiNum) args[1]);
 		case DIVIDE:
 			if (args[0] instanceof XiBlock)
-				return ((CollectionWrapper<?>) args[1]).filter(
-						(XiBlock) args[0], false);
+				return ((XiIterable) args[1]).filter((XiBlock) args[0]);
+			if (args[0] instanceof XiLambda)
+				return ((XiIterable) args[1]).filter((XiLambda) args[0],
+						globals);
 			return ((XiNum) args[0]).div((XiNum) args[1]);
 		case INTDIV:
 			if (args[0] instanceof XiBlock)
@@ -252,12 +256,11 @@ public enum IntrinsicOperation implements Operation {
 			return new XiInt(((CollectionWrapper<?>) args[1]).contains(args[0]));
 		case MAP: {
 			if (args[0] instanceof XiLambda)
-				return ((CollectionWrapper<?>) args[1]).map((XiLambda) args[0],
-						false, globals);
+				return ((XiIterable) args[1]).map((XiLambda) args[0], globals);
 
 			XiBlock body = (XiBlock) args[0];
 			body.addVars(globals);
-			return ((CollectionWrapper<?>) args[1]).map(body, false);
+			return ((XiIterable) args[1]).map(body);
 		}
 		case DEEPMAP: {
 			if (args[0] instanceof XiLambda)
@@ -269,11 +272,24 @@ public enum IntrinsicOperation implements Operation {
 			return ((CollectionWrapper<?>) args[1]).map(body, true);
 		}
 		case RANGE:
-			if (args[0] instanceof XiTuple)
-				return ListWrapper.range((XiTuple) args[0]);
-			return new XiList(((XiInt) args[0]).val());
+			if (args[0] instanceof XiTuple) {
+				XiTuple t = (XiTuple) args[0];
+				switch (t.length()) {
+				case 1:
+					return new RangeGenerator(((XiInt) t.get(0)).val());
+				case 2:
+					return new RangeGenerator(((XiInt) t.get(0)).val(),
+							((XiInt) t.get(1)).val());
+				case 3:
+					return new RangeGenerator(((XiInt) t.get(0)).val(),
+							((XiInt) t.get(1)).val(), ((XiInt) t.get(2)).val());
+				default:
+					ErrorHandler.invokeError(ErrorType.ARGUMENT, this);
+				}
+			}
+			return new RangeGenerator(((XiInt) args[0]).val());
 		case SUM:
-			return ((CollectionWrapper<?>) args[0]).sum();
+			return ((XiIterable) args[0]).sum();
 		case RAND:
 			if (args[0] instanceof ListWrapper)
 				return ((ListWrapper) args[0]).rnd();
@@ -337,7 +353,7 @@ public enum IntrinsicOperation implements Operation {
 			else
 				id = ((XiAttribute) args[0]).toString();
 
-			CollectionWrapper<?> col = (CollectionWrapper<?>) args[1];
+			XiIterable col = (XiIterable) args[1];
 			XiBlock body = (XiBlock) args[2];
 			body.addVars(globals);
 			for (DataType data : col) {
@@ -427,7 +443,7 @@ public enum IntrinsicOperation implements Operation {
 			return XiNull.instance();
 		}
 		case LOOP: {
-			CollectionWrapper<?> col = (CollectionWrapper<?>) args[0];
+			XiIterable col = (XiIterable) args[0];
 			XiBlock body = (XiBlock) args[1];
 			body.addVars(globals);
 			int index = 0;
@@ -486,12 +502,18 @@ public enum IntrinsicOperation implements Operation {
 		case LONG:
 			return XiLong.parse(args[0].toString());
 		case LIST:
+			if (args[0] instanceof XiGenerator)
+				return new XiList((XiGenerator) args[0]);
 			return ((CollectionWrapper<?>) args[0]).asList();
 		case SET:
 			if (args[0] instanceof XiDictionary)
 				return ((XiDictionary) args[0]).itemSet();
+			if (args[0] instanceof XiGenerator)
+				return new XiSet((XiGenerator) args[0]);
 			return ((CollectionWrapper<?>) args[0]).asSet();
 		case TUPLE:
+			if (args[0] instanceof XiGenerator)
+				return new XiTuple((XiGenerator) args[0]);
 			return ((CollectionWrapper<?>) args[0]).asTuple();
 		case DICT:
 			return new XiDictionary((CollectionWrapper<?>) args[0]);
@@ -550,7 +572,10 @@ public enum IntrinsicOperation implements Operation {
 							globals);
 				if (args[0] instanceof XiDictionary)
 					return ((XiDictionary) args[0]).get(args[1]);
-				return ((ListWrapper) args[0]).get((XiInt) args[1]);
+				if (args[1] instanceof XiInt)
+					return ((ListWrapper) args[0]).get((XiInt) args[1]);
+				if (args[1] instanceof XiTuple)
+					return ((ListWrapper) args[0]).get((XiTuple) args[1]);
 			}
 			return args[0].getAttribute((XiAttribute) args[1]);
 		}

@@ -12,6 +12,7 @@ import org.xiscript.xi.datatypes.numeric.XiInt;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 import org.xiscript.xi.operations.IntrinsicOperation;
+import org.xiscript.xi.util.Range;
 
 public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 		implements List<DataType> {
@@ -28,6 +29,29 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 	public DataType get(int index) {
 		index %= collection.size();
 		return collection.get(index < 0 ? collection.size() + index : index);
+	}
+
+	public DataType get(XiTuple t) {
+		int len = t.length();
+
+		if (len == 1)
+			return get(((XiInt) t.get(0)).val());
+
+		int min = ((XiInt) t.get(0)).val();
+		int max = ((XiInt) t.get(1)).val();
+		int step = (len > 2) ? ((XiInt) t.get(2)).val() : 1;
+
+		if (min > max && step > 0)
+			max += length();
+
+		List<DataType> newList = new ArrayList<DataType>(
+				(int) Math.ceil((double) Math.abs(max - min) / Math.abs(step)));
+
+		Range range = new Range(min, max, step);
+		while (range.hasNext())
+			newList.add(get(range.next()));
+
+		return instantiate(newList);
 	}
 
 	public DataType get(XiInt index) {

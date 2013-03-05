@@ -45,6 +45,10 @@ public abstract class Function extends DataType {
 		}
 	}
 
+	public DataType evaluate(VariableCache globals, DataType... args) {
+		return evaluate(args, globals);
+	}
+
 	@Override
 	public Object getJavaAnalog() {
 		return this;
