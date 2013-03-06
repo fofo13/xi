@@ -23,6 +23,10 @@ public class Range implements Iterator<Integer> {
 		this(0, max, 1);
 	}
 
+	public Range(Range r) {
+		this(r.min, r.max, r.step);
+	}
+
 	@Override
 	public Integer next() {
 		if (!hasNext())
