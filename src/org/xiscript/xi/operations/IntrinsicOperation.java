@@ -128,6 +128,10 @@ public enum IntrinsicOperation implements Operation {
 		case BITNOT:
 			if (args[0] instanceof ListWrapper)
 				return ((ListWrapper) args[0]).zip();
+			if (args[0] instanceof XiGenerator) {
+				DataType d = ((XiGenerator) args[0]).next();
+				return (d == null) ? XiNull.instance() : d;
+			}
 			if (args[0] instanceof XiLambda) {
 				XiLambda lambda = (XiLambda) args[0];
 				if (lambda.length() == 0)
@@ -576,6 +580,8 @@ public enum IntrinsicOperation implements Operation {
 					return ((ListWrapper) args[0]).get((XiInt) args[1]);
 				if (args[1] instanceof XiTuple)
 					return ((ListWrapper) args[0]).get((XiTuple) args[1]);
+				if (args[1] instanceof XiList)
+					return ((ListWrapper) args[0]).get((XiList) args[1]);
 			}
 			return args[0].getAttribute((XiAttribute) args[1]);
 		}
