@@ -6,3 +6,21 @@ bin := func ('n') {
 	}
 	? s s "0"
 }
+
+all := func ('l') {
+	for 'i' l {
+		if ! i {
+			return 0
+		} {}
+	}
+	1
+}
+
+any := func ('l') {
+	for 'i' l {
+		if i {
+			return 1
+		} {}
+	}
+	0
+}
