@@ -20,6 +20,7 @@ public class RangeGenerator extends XiGenerator {
 		this(0, max, 1);
 	}
 
+	@Override
 	public DataType next() {
 		if (range.hasNext())
 			return new XiInt(range.next());
