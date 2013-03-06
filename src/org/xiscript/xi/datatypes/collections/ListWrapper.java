@@ -54,6 +54,19 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 		return instantiate(newList);
 	}
 
+	public DataType get(XiList l) {
+		XiInt last = (XiInt) l.get(-1);
+
+		if (l.length() == 1)
+			return get(last);
+
+		ListWrapper sub = (ListWrapper) get((XiInt) l.get(0));
+		for (int i = 1; i < l.length() - 1; i++)
+			sub = (ListWrapper) sub.get((XiInt) l.get(i));
+
+		return sub.get(last);
+	}
+
 	public DataType get(XiInt index) {
 		return get(index.val());
 	}
