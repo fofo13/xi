@@ -133,10 +133,18 @@ public class Parser {
 		else if (start == '`')
 			return chars.poll().toString() + generateToken(chars.peek(), chars);
 
+		else if (start == '#')
+			readComment(chars);
+
 		else
 			chars.poll();
 
 		return null;
+	}
+
+	private static void readComment(Queue<Character> chars) {
+		while (chars.poll() != '\n')
+			;
 	}
 
 	private static CharSequence readSpec(Queue<Character> chars) {
