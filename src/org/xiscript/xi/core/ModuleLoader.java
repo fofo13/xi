@@ -18,7 +18,7 @@ public class ModuleLoader {
 
 	protected static final Map<String, XiModule> stdlib = new HashMap<String, XiModule>();
 
-	private static final String libpath = "/org/xiscript/xi/modules/";
+	private static final String PATH = "/org/xiscript/xi/modules/";
 
 	private static final String[] files = { "listutils", "math", "stat",
 			"stdlib", "sys", "vecmath" };
@@ -29,17 +29,12 @@ public class ModuleLoader {
 		List<InputStream> dir = new ArrayList<InputStream>(files.length);
 
 		for (String file : files)
-			dir.add(XiEnvironment.class.getResourceAsStream(libpath + file
-					+ EXT));
+			dir.add(XiEnvironment.class.getResourceAsStream(PATH + file + EXT));
 
 		for (int i = 0; i < files.length; i++) {
 			XiEnvironment sub = null;
-			try {
-				sub = new XiEnvironment(dir.get(i), false);
-				sub.run();
-			} catch (FileNotFoundException fnfe) {
-				ErrorHandler.invokeError(ErrorType.INTERNAL);
-			}
+			sub = new XiEnvironment(dir.get(i), false);
+			sub.run();
 			stdlib.put(files[i], new XiModule(sub.globals()));
 		}
 

@@ -43,9 +43,9 @@ public class Parser {
 	private static final Pattern LONG = Pattern.compile("-?\\d+[lL]");
 
 	private static final Pattern FLOAT = Pattern
-			.compile("[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?");
+			.compile("-?\\d*\\.?\\d+([eE][-+]?\\d+)?");
 
-	private static final Pattern IM = Pattern.compile("-?\\d+(\\.\\d+)*i");
+	private static final Pattern IM = Pattern.compile("-?\\d+(\\.\\d+)*[iI]");
 
 	public static final Pattern IDENTIFIER = Pattern
 			.compile("[\\.\\p{Alpha}_]\\w*");
@@ -57,6 +57,11 @@ public class Parser {
 	private static final Pattern NUMBER = Pattern
 			.compile("-?\\d*\\.?\\d*[LliI]?");
 
+	private static final String WORD_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+			+ "abcdefghijklmnopqrstuvwxyz1234567890_";
+
+	private static final String SPECIAL_CHARS = "!+~-*/%=<>&|^$@,?:";
+
 	private static final String ASSIGNMENT = ":=";
 	private static final String PLUS_EQUALS = "+=";
 	private static final String MINUS_EQUALS = "-=";
@@ -66,25 +71,21 @@ public class Parser {
 	private static final String PLUS_PLUS = "++";
 	private static final String MINUS_MINUS = "--";
 
-	static {
-		for (char c : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_"
-				.toCharArray())
-			W.add(c);
+	private static final char COMMENT = '#';
 
-		for (char c : "!+~-*/%=<>&|^$@,?:".toCharArray())
-			SPEC.add(c);
+	static {
+		for (int i = 0; i < WORD_CHARS.length(); i++)
+			W.add(WORD_CHARS.charAt(i));
+
+		for (int i = 0; i < SPECIAL_CHARS.length(); i++)
+			SPEC.add(SPECIAL_CHARS.charAt(i));
 	}
 
-	public static Queue<Node> genNodeQueue(CharSequence source) {
+	public static Queue<Node> genNodeQueue(Queue<Character> source) {
 		ArrayDeque<Node> nodes = new ArrayDeque<Node>();
-		Queue<Character> chars = new ArrayDeque<Character>(source.length());
-		for (int i = 0; i < source.length(); i++)
-			chars.add(source.charAt(i));
 
-		while (!chars.isEmpty()) {
-			char c = chars.peek();
-
-			CharSequence token = generateToken(c, chars);
+		while (!source.isEmpty()) {
+			CharSequence token = generateToken(source);
 
 			if (token == null)
 				continue;
@@ -102,7 +103,18 @@ public class Parser {
 		return nodes;
 	}
 
-	private static CharSequence generateToken(char start, Queue<Character> chars) {
+	public static Queue<Node> genNodeQueue(CharSequence source) {
+		Queue<Character> chars = new ArrayDeque<Character>(source.length());
+
+		for (int i = 0; i < source.length(); i++)
+			chars.add(source.charAt(i));
+
+		return genNodeQueue(chars);
+	}
+
+	private static CharSequence generateToken(Queue<Character> chars) {
+		char start = chars.peek();
+
 		if (Character.isDigit(start))
 			return readNum(chars);
 
@@ -130,10 +142,7 @@ public class Parser {
 		else if (start == '\"')
 			return readString(chars);
 
-		else if (start == '`')
-			return chars.poll().toString() + generateToken(chars.peek(), chars);
-
-		else if (start == '#')
+		else if (start == COMMENT)
 			readComment(chars);
 
 		else

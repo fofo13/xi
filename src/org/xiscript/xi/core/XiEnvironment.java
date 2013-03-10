@@ -3,23 +3,25 @@ package org.xiscript.xi.core;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Scanner;
 
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiNull;
 import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.exceptions.ControlFlowException;
+import org.xiscript.xi.exceptions.ErrorHandler;
+import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 import org.xiscript.xi.nodes.Node;
 
 public class XiEnvironment {
 
-	private CharSequence source;
+	private Queue<Character> source;
 	private VariableCache globals;
 
-	protected XiEnvironment(InputStream file, boolean primary)
-			throws FileNotFoundException {
+	protected XiEnvironment(InputStream file, boolean primary) {
 		globals = new VariableCache();
 
 		if (primary) {
@@ -52,19 +54,19 @@ public class XiEnvironment {
 		return last;
 	}
 
-	private static CharSequence compile(InputStream file)
-			throws FileNotFoundException {
+	private static Queue<Character> compile(InputStream file) {
+		Queue<Character> source = new LinkedList<Character>();
 
-		Scanner scan = new Scanner(file);
-		StringBuilder source = new StringBuilder();
-		while (scan.hasNextLine()) {
-			String line = scan.nextLine();
-			if (!line.isEmpty()) {
-				source.append(line);
-				source.append('\n');
+		int next = -1;
+
+		try {
+			while ((next = file.read()) != -1) {
+				source.add((char) next);
 			}
+			file.close();
+		} catch (IOException ioe) {
+			ErrorHandler.invokeError(ErrorType.INTERNAL);
 		}
-		scan.close();
 
 		return source;
 	}

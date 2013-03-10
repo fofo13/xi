@@ -43,6 +43,8 @@ public class ErrorHandler {
 		INVALID_ATTRIBUTE_TUPLE(
 				"Argument-tuple must consist of only attribute identifiers: %s"),
 
+		FUNCTION_REASSIGN("Functions cannot be reassigned."),
+
 		PARSE_ERROR("Could not parse expression: %s"),
 
 		UNICODE_ERROR("Unable to parse unicode value: %s"),
