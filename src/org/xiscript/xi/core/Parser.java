@@ -75,7 +75,7 @@ public class Parser {
 			SPEC.add(c);
 	}
 
-	public static Queue<Node> genNodeQueue(String source) {
+	public static Queue<Node> genNodeQueue(CharSequence source) {
 		ArrayDeque<Node> nodes = new ArrayDeque<Node>();
 		Queue<Character> chars = new ArrayDeque<Character>(source.length());
 		for (int i = 0; i < source.length(); i++)

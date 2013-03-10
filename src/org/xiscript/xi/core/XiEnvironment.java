@@ -15,13 +15,8 @@ import org.xiscript.xi.nodes.Node;
 
 public class XiEnvironment {
 
-	private String source;
+	private CharSequence source;
 	private VariableCache globals;
-
-	public XiEnvironment(String source, VariableCache globals) {
-		this.source = source;
-		this.globals = globals;
-	}
 
 	protected XiEnvironment(InputStream file, boolean primary)
 			throws FileNotFoundException {
@@ -58,7 +53,7 @@ public class XiEnvironment {
 		return last;
 	}
 
-	private static String compile(InputStream file)
+	private static CharSequence compile(InputStream file)
 			throws FileNotFoundException {
 
 		Scanner scan = new Scanner(file);
@@ -72,7 +67,7 @@ public class XiEnvironment {
 		}
 		scan.close();
 
-		return source.toString();
+		return source;
 	}
 
 	public void delete() {
