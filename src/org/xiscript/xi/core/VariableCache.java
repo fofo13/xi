@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.xiscript.xi.datatypes.DataType;
+import org.xiscript.xi.datatypes.XiNull;
 import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
@@ -28,7 +29,7 @@ public class VariableCache implements Set<XiVar> {
 				return v.val();
 
 		ErrorHandler.invokeError(ErrorType.IDNETIFIER_NOT_FOUND, id);
-		return null;
+		return XiNull.instance();
 	}
 
 	public boolean containsId(String id) {
@@ -120,7 +121,7 @@ public class VariableCache implements Set<XiVar> {
 			return "[]";
 		String s = "";
 		for (XiVar var : cache)
-			s += ", " + var.id() + " := " + var.val().toString();
+			s += ", " + var.id() + " := " + var.val();
 		return "[" + s.substring(2) + "]";
 	}
 

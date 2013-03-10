@@ -43,6 +43,7 @@ import org.xiscript.xi.exceptions.BreakException;
 import org.xiscript.xi.exceptions.ContinueException;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
+import org.xiscript.xi.exceptions.ReturnException;
 import org.xiscript.xi.util.TimerManager;
 
 public enum IntrinsicOperation implements Operation {
@@ -83,6 +84,8 @@ public enum IntrinsicOperation implements Operation {
 	IMPORT("import", 1), LOAD("load", 1),
 
 	GETATTR("=>", 2), SETATTR("<=", 3),
+
+	RETURN("return", 1), CONTINUE("continue", 0), BREAK("break", 0),
 
 	TIC("tic", 1), TOC("toc", 1);
 
@@ -595,6 +598,12 @@ public enum IntrinsicOperation implements Operation {
 				args[0].setAttribute((XiAttribute) args[1], args[2]);
 			return XiNull.instance();
 		}
+		case RETURN:
+			throw new ReturnException(args[0]);
+		case CONTINUE:
+			throw new ContinueException();
+		case BREAK:
+			throw new BreakException();
 		case TIC:
 			TimerManager.addTimer(((XiInt) args[0]).val());
 			return XiNull.instance();

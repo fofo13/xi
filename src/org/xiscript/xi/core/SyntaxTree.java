@@ -1,35 +1,50 @@
 package org.xiscript.xi.core;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 
 import org.xiscript.xi.datatypes.DataType;
+import org.xiscript.xi.datatypes.functional.XiFunc;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 import org.xiscript.xi.nodes.Node;
+import org.xiscript.xi.nodes.OperationNode;
 import org.xiscript.xi.nodes.PackedDataNode;
+import org.xiscript.xi.nodes.VarNode;
 
 public class SyntaxTree {
 
-	private Node head;
 	private Queue<Node> nodes;
+	private VariableCache globals;
 
-	public SyntaxTree(String exp, VariableCache cache) {
-		String[] tokens = Parser.tokenize(exp);
-		nodes = new ArrayDeque<Node>(tokens.length);
+	private Node head;
 
-		for (String tok : tokens) {
-			Node node = Parser.parseNode(tok, cache);
+	public SyntaxTree(Queue<Node> nodes, VariableCache globals) {
+		this.globals = globals;
 
-			if (node instanceof PackedDataNode)
-				nodes.addAll(((PackedDataNode) node).contents());
-			else
-				nodes.add(node);
+		List<Node> nodesList = new ArrayList<Node>(nodes.size());
+
+		for (Node node : nodes) {
+			if (node instanceof VarNode) {
+				VarNode vnode = (VarNode) node;
+				if (globals.containsId(vnode.id())
+						&& globals.get(vnode.id()) instanceof XiFunc)
+					nodesList.add(new OperationNode((XiFunc) globals.get(vnode
+							.id())));
+				else
+					nodesList.add(node);
+			} else
+				nodesList.add(node);
 		}
+
+		this.nodes = new ArrayDeque<Node>(nodesList);
+		head = create(this.nodes);
 	}
 
-	public SyntaxTree(String exp) {
-		this(exp, new VariableCache());
+	public SyntaxTree(String exp, VariableCache globals) {
+		this(Parser.genNodeQueue(exp), globals);
 	}
 
 	public Queue<Node> nodes() {
@@ -37,22 +52,23 @@ public class SyntaxTree {
 	}
 
 	public DataType evaluate() {
-		head = parse();
-		return head.evaluate();
+		return head.evaluate(globals);
 	}
 
-	private Node parse() {
-		return create();
-	}
-
-	private Node create() {
-		if (nodes.isEmpty())
+	public static Node create(Queue<Node> nodes) {
+		if (nodes.isEmpty()) {
 			ErrorHandler.invokeError(ErrorType.INCOMPLETE_EXPRESSION);
+		}
 
 		Node node = nodes.poll();
 
-		for (int i = 0; i < node.numChildren(); i++)
-			node.addChild(create());
+		for (int i = 0; i < node.numChildren(); i++) {
+			Node child = create(nodes);
+			node.addChild(child);
+
+			if (child instanceof PackedDataNode)
+				break;
+		}
 
 		return node;
 	}

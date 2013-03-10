@@ -5,16 +5,10 @@ import org.xiscript.xi.datatypes.DataType;
 
 public class VarNode implements Node {
 
-	private VariableCache cache;
 	private String id;
 
-	public VarNode(String id, VariableCache cache) {
-		this.cache = cache;
-		this.id = id;
-	}
-
 	public VarNode(String id) {
-		this(id, null);
+		this.id = id;
 	}
 
 	public String id() {
@@ -32,8 +26,28 @@ public class VarNode implements Node {
 	}
 
 	@Override
-	public DataType evaluate() {
+	public DataType evaluate(VariableCache cache) {
 		return cache.get(id);
+	}
+
+	@Override
+	public void clear() {
+
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		return (o instanceof VarNode) && id.equals(((VarNode) o).id);
+	}
+
+	@Override
+	public int hashCode() {
+		return id.hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return id;
 	}
 
 }

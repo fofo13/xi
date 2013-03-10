@@ -34,6 +34,11 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 		return map(block, false);
 	}
 
+	@Override
+	public CollectionWrapper<T> map(XiLambda block, VariableCache globals) {
+		return map(block, false, globals);
+	}
+
 	public CollectionWrapper<T> map(XiBlock block, boolean deep) {
 		Collection<DataType> col = new ArrayList<DataType>(collection.size());
 		int index = 0;

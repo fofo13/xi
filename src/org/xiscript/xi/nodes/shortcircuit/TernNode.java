@@ -6,8 +6,8 @@ import org.xiscript.xi.nodes.OperationNode;
 
 public class TernNode extends OperationNode {
 
-	public TernNode(VariableCache cache) {
-		super(null, cache);
+	public TernNode() {
+		super(null);
 	}
 
 	@Override
@@ -16,9 +16,10 @@ public class TernNode extends OperationNode {
 	}
 
 	@Override
-	public DataType evaluate() {
-		return children.get(0).evaluate().isEmpty() ? children.get(2)
-				.evaluate() : children.get(1).evaluate();
+	public DataType evaluate(VariableCache cache) {
+		checkAndUnpack(cache);
+		return children.get(0).evaluate(cache).isEmpty() ? children.get(2)
+				.evaluate(cache) : children.get(1).evaluate(cache);
 	}
 
 }

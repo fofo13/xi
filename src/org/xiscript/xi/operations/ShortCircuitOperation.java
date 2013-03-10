@@ -3,7 +3,6 @@ package org.xiscript.xi.operations;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 import org.xiscript.xi.nodes.Node;
@@ -29,14 +28,14 @@ public enum ShortCircuitOperation {
 		this.id = id;
 	}
 
-	public Node getNode(VariableCache globals) {
+	public Node getNode() {
 		switch (this) {
 		case OR:
-			return new OrNode(globals);
+			return new OrNode();
 		case AND:
-			return new AndNode(globals);
+			return new AndNode();
 		case TERN:
-			return new TernNode(globals);
+			return new TernNode();
 		default:
 			ErrorHandler.invokeError(ErrorType.INTERNAL);
 			return null;

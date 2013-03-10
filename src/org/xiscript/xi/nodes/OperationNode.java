@@ -14,24 +14,27 @@ public class OperationNode implements Node {
 
 	protected Operation op;
 	protected List<Node> children;
-	protected VariableCache cache;
 
-	public OperationNode(List<Node> children, Operation op, VariableCache cache) {
+	public OperationNode(List<Node> children, Operation op) {
 		this.op = op;
 		this.children = children;
-		this.cache = cache;
 	}
 
-	public OperationNode(Node[] children, Operation op, VariableCache cache) {
-		this(Arrays.asList(children), op, cache);
+	public OperationNode(Node[] children, Operation op) {
+		this(Arrays.asList(children), op);
 	}
 
-	public OperationNode(Operation op, VariableCache cache) {
-		this(new ArrayList<Node>(), op, cache);
+	public OperationNode(Operation op) {
+		this(new ArrayList<Node>((op == null) ? 10 : op.numArgs()), op);
 	}
 
 	public List<Node> children() {
 		return children;
+	}
+
+	protected void checkAndUnpack(VariableCache cache) {
+		if ((!children.isEmpty()) && children.get(0) instanceof PackedDataNode)
+			children = ((PackedDataNode) children.get(0)).contents(cache);
 	}
 
 	@Override
@@ -45,11 +48,12 @@ public class OperationNode implements Node {
 	}
 
 	@Override
-	public DataType evaluate() {
+	public DataType evaluate(VariableCache cache) {
+		checkAndUnpack(cache);
 		DataType[] arr = new DataType[children.size()];
 		for (int i = 0; i < arr.length; i++)
 			try {
-				arr[i] = children.get(i).evaluate();
+				arr[i] = children.get(i).evaluate(cache);
 			} catch (ClassCastException cce) {
 				ErrorHandler.invokeError(ErrorType.ARGUMENT, children.get(i));
 			}
@@ -62,8 +66,24 @@ public class OperationNode implements Node {
 	}
 
 	@Override
+	public void clear() {
+		children.clear();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		return (o instanceof OperationNode)
+				&& op.equals(((OperationNode) o).op);
+	}
+
+	@Override
+	public int hashCode() {
+		return op.hashCode();
+	}
+
+	@Override
 	public String toString() {
-		return op.toString();
+		return (op == null) ? "op-node" : op.toString();
 	}
 
 }

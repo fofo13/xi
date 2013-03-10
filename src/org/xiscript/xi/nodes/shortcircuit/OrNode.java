@@ -7,8 +7,8 @@ import org.xiscript.xi.nodes.OperationNode;
 
 public class OrNode extends OperationNode {
 
-	public OrNode(VariableCache cache) {
-		super(null, cache);
+	public OrNode() {
+		super(null);
 	}
 
 	@Override
@@ -17,9 +17,10 @@ public class OrNode extends OperationNode {
 	}
 
 	@Override
-	public DataType evaluate() {
-		return new XiInt(!children.get(0).evaluate().isEmpty()
-				|| !children.get(1).evaluate().isEmpty());
+	public DataType evaluate(VariableCache cache) {
+		checkAndUnpack(cache);
+		return new XiInt(!children.get(0).evaluate(cache).isEmpty()
+				|| !children.get(1).evaluate(cache).isEmpty());
 	}
 
 }

@@ -5,9 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Pattern;
 
-import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.core.XiGenerator;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.numeric.XiInt;
@@ -16,9 +14,6 @@ import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 import org.xiscript.xi.operations.IntrinsicOperation;
 
 public class XiTuple extends XiList {
-
-	private static final Pattern EMPTY_TUPLE = Pattern
-			.compile("\\s*\\(\\s*\\)\\s*");
 
 	public XiTuple(List<DataType> list) {
 		super(Collections.unmodifiableList(list));
@@ -54,12 +49,6 @@ public class XiTuple extends XiList {
 	public void put(XiInt index, DataType data) {
 		ErrorHandler
 				.invokeError(ErrorType.ARGUMENT, IntrinsicOperation.SETATTR);
-	}
-
-	public static XiTuple parse(String exp, VariableCache cache) {
-		if (EMPTY_TUPLE.matcher(exp).matches())
-			return new XiTuple();
-		return XiList.parse(exp, cache).asTuple();
 	}
 
 	@Override

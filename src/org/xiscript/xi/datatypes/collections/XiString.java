@@ -13,6 +13,8 @@ import org.xiscript.xi.datatypes.functional.HiddenLambda;
 
 public class XiString extends ListWrapper implements CharSequence {
 
+	private static final Pattern WHITESPACE = Pattern.compile("\\s+");
+
 	private static class XiChar extends DataType {
 
 		private char val;
@@ -100,7 +102,7 @@ public class XiString extends ListWrapper implements CharSequence {
 
 		attributes.put(new XiAttribute("regex"), new XiRegex(str));
 
-		String[] split = Parser.whitespace.split(toString());
+		String[] split = WHITESPACE.split(toString());
 		List<DataType> l = new ArrayList<DataType>(split.length);
 
 		for (String s : split)

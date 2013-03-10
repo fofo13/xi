@@ -1,28 +1,29 @@
 package org.xiscript.xi.datatypes.functional;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
+
+import org.xiscript.xi.core.Parser;
+import org.xiscript.xi.core.SyntaxTree;
 import org.xiscript.xi.core.VariableCache;
-import org.xiscript.xi.core.XiEnvironment;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiNull;
 import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.exceptions.ControlFlowException;
+import org.xiscript.xi.nodes.Node;
 
 public class XiBlock extends DataType {
 
-	private String exp;
 	private VariableCache locals;
+	private Queue<Node> nodes;
 
 	public XiBlock(String exp, VariableCache locals) {
-		this.exp = exp.substring(1, exp.length() - 1);
 		this.locals = locals;
+		nodes = Parser.genNodeQueue(exp.substring(1, exp.length() - 1));
 	}
 
 	public XiBlock(String exp) {
 		this(exp, new VariableCache());
-	}
-
-	public String exp() {
-		return exp;
 	}
 
 	public void updateLocal(XiVar v) {
@@ -54,24 +55,27 @@ public class XiBlock extends DataType {
 
 	@Override
 	public boolean isEmpty() {
-		return exp.isEmpty();
+		return nodes.isEmpty();
 	}
 
-	@Override
-	public String toString() {
-		return "{" + exp + "}";
-	}
+	public DataType evaluate() {
+		DataType last = XiNull.instance();
 
-	public DataType evaluate() throws ControlFlowException {
-		XiEnvironment env = null;
+		for (Node node : this.nodes)
+			node.clear();
+
+		Queue<Node> nodes = new ArrayDeque<Node>(this.nodes);
+
 		try {
-			env = new XiEnvironment(locals);
-			env.put(exp);
-			env.run();
-			return env.last();
-		} finally {
-			env.close();
+			while (!nodes.isEmpty()) {
+				SyntaxTree tree = new SyntaxTree(nodes, locals);
+				last = tree.evaluate();
+				nodes = tree.nodes();
+			}
+		} catch (ControlFlowException cfe) {
+			throw cfe;
 		}
+		return last;
 	}
 
 }

@@ -1,4 +1,4 @@
-reader := => file "examples/quine.xi" 'lnreader'
+reader := => file "examples/quine.xi" 'lnr'
 
 s := ~ reader
 while {!= s null} {

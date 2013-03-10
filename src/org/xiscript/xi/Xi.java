@@ -15,7 +15,6 @@ public class Xi {
 		try {
 			XiEnvironment env = new XiEnvironment(new File(file));
 			env.run();
-			env.close();
 			env.delete();
 		} catch (FileNotFoundException fnfe) {
 			System.err.printf("File %s was not found.%n", file);

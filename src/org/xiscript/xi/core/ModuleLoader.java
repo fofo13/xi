@@ -41,7 +41,6 @@ public class ModuleLoader {
 				ErrorHandler.invokeError(ErrorType.INTERNAL);
 			}
 			stdlib.put(files[i], new XiModule(sub.globals()));
-			sub.close();
 		}
 
 		addSpecialVars();
@@ -62,8 +61,6 @@ public class ModuleLoader {
 		} catch (FileNotFoundException fnfe) {
 			ErrorHandler.invokeError(ErrorType.FILE_NOT_FOUND, name);
 			return null;
-		} finally {
-			env.close();
 		}
 	}
 
