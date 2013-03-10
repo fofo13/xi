@@ -1,9 +1,10 @@
-package org.xiscript.xi.nodes;
+package org.xiscript.xi.nodes.assignments;
 
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
-import org.xiscript.xi.datatypes.XiNull;
 import org.xiscript.xi.datatypes.XiVar;
+import org.xiscript.xi.nodes.OperationNode;
+import org.xiscript.xi.nodes.VarNode;
 
 public class AssignmentNode extends OperationNode {
 
@@ -18,10 +19,10 @@ public class AssignmentNode extends OperationNode {
 
 	@Override
 	public DataType evaluate(VariableCache cache) {
-		XiVar var = new XiVar(((VarNode) children.get(0)).id(), children.get(1)
-				.evaluate(cache));
+		DataType rhs = children.get(1).evaluate(cache);
+		XiVar var = new XiVar(((VarNode) children.get(0)).id(), rhs);
 		cache.add(var);
-		return XiNull.instance();
+		return rhs;
 	}
 
 }

@@ -20,29 +20,34 @@ import org.xiscript.xi.datatypes.numeric.XiInt;
 import org.xiscript.xi.datatypes.numeric.XiLong;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
-import org.xiscript.xi.nodes.AssignmentNode;
 import org.xiscript.xi.nodes.CollectionNode;
 import org.xiscript.xi.nodes.DataNode;
 import org.xiscript.xi.nodes.FunctionConverterNode;
 import org.xiscript.xi.nodes.Node;
 import org.xiscript.xi.nodes.OperationNode;
 import org.xiscript.xi.nodes.VarNode;
+import org.xiscript.xi.nodes.assignments.AssignmentNode;
+import org.xiscript.xi.nodes.assignments.DivEqualsNode;
+import org.xiscript.xi.nodes.assignments.MinusEqualsNode;
+import org.xiscript.xi.nodes.assignments.MinusMinusNode;
+import org.xiscript.xi.nodes.assignments.PlusEqualsNode;
+import org.xiscript.xi.nodes.assignments.PlusPlusNode;
+import org.xiscript.xi.nodes.assignments.TimesEqualsNode;
 import org.xiscript.xi.operations.IntrinsicOperation;
 import org.xiscript.xi.operations.ShortCircuitOperation;
 
 public class Parser {
 
-	private static final Pattern intPattern = Pattern.compile("-?\\d+");
+	private static final Pattern INT = Pattern.compile("-?\\d+");
 
-	private static final Pattern longPattern = Pattern.compile("-?\\d+[lL]");
+	private static final Pattern LONG = Pattern.compile("-?\\d+[lL]");
 
-	private static final Pattern floatPattern = Pattern
+	private static final Pattern FLOAT = Pattern
 			.compile("[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?");
 
-	private static final Pattern imPattern = Pattern
-			.compile("-?\\d+(\\.\\d+)*i");
+	private static final Pattern IM = Pattern.compile("-?\\d+(\\.\\d+)*i");
 
-	public static final Pattern identifier = Pattern
+	public static final Pattern IDENTIFIER = Pattern
 			.compile("[\\.\\p{Alpha}_]\\w*");
 
 	private static final Set<Character> W = new HashSet<Character>(63);
@@ -51,6 +56,15 @@ public class Parser {
 
 	private static final Pattern NUMBER = Pattern
 			.compile("-?\\d*\\.?\\d*[LliI]?");
+
+	private static final String ASSIGNMENT = ":=";
+	private static final String PLUS_EQUALS = "+=";
+	private static final String MINUS_EQUALS = "-=";
+	private static final String TIMES_EQUALS = "*=";
+	private static final String DIV_EQUALS = "/=";
+
+	private static final String PLUS_PLUS = "++";
+	private static final String MINUS_MINUS = "--";
 
 	static {
 		for (char c : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_"
@@ -150,7 +164,7 @@ public class Parser {
 			}
 		}
 
-		if (chars.peek() == '`')
+		if (!chars.isEmpty() && chars.peek() == '`')
 			sb.append(chars.poll());
 
 		return sb;
@@ -233,16 +247,28 @@ public class Parser {
 	}
 
 	public static Node parseNode(String exp) {
-		if (intPattern.matcher(exp).matches())
+		if (INT.matcher(exp).matches())
 			return new DataNode<XiInt>(XiInt.parse(exp));
-		if (longPattern.matcher(exp).matches())
+		if (LONG.matcher(exp).matches())
 			return new DataNode<XiLong>(XiLong.parse(exp));
-		if (floatPattern.matcher(exp).matches())
+		if (FLOAT.matcher(exp).matches())
 			return new DataNode<XiFloat>(XiFloat.parse(exp));
-		if (imPattern.matcher(exp).matches())
+		if (IM.matcher(exp).matches())
 			return new DataNode<XiComplex>(XiComplex.parseIm(exp));
-		if (exp.equals(":="))
+		if (exp.equals(ASSIGNMENT))
 			return new AssignmentNode();
+		if (exp.equals(PLUS_EQUALS))
+			return new PlusEqualsNode();
+		if (exp.equals(MINUS_EQUALS))
+			return new MinusEqualsNode();
+		if (exp.equals(TIMES_EQUALS))
+			return new TimesEqualsNode();
+		if (exp.equals(DIV_EQUALS))
+			return new DivEqualsNode();
+		if (exp.equals(PLUS_PLUS))
+			return new PlusPlusNode();
+		if (exp.equals(MINUS_MINUS))
+			return new MinusMinusNode();
 		if (exp.startsWith("[") || exp.startsWith("("))
 			return new CollectionNode(exp);
 		if (exp.startsWith("{"))
@@ -263,7 +289,7 @@ public class Parser {
 			return new OperationNode(IntrinsicOperation.parse(exp));
 		if (ShortCircuitOperation.idExists(exp))
 			return ShortCircuitOperation.parse(exp).getNode();
-		if (identifier.matcher(exp).matches()) {
+		if (IDENTIFIER.matcher(exp).matches()) {
 			return new VarNode(exp);
 		}
 		if (exp.endsWith("`")) {
