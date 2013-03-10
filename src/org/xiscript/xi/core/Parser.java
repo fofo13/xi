@@ -252,6 +252,9 @@ public class Parser {
 		if (exp.startsWith("re\""))
 			return new DataNode<XiRegex>(new XiRegex(exp.substring(3,
 					exp.length() - 1)));
+		if (exp.startsWith("r\""))
+			return new DataNode<XiString>(new XiString(exp.substring(2,
+					exp.length() - 1), true));
 		if (IntrinsicOperation.idExists(exp))
 			return new OperationNode(IntrinsicOperation.parse(exp));
 		if (ShortCircuitOperation.idExists(exp))
