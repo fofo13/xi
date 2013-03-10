@@ -200,11 +200,11 @@ To Do
 - `[✓]` Overload various operations for various other data types, e.g. `+` for lists.
 - `[✓]` Implement sets and set operations.
 - `[✓]` Allow for the easy creation of custom functions from within Xi.
-- `[ ]` Make a smarter parser so as to give the user more flexibility.
+- `[✓]` Make a smarter parser so as to give the user more flexibility.
 - `[ ]` More accurate and more specific error messages, including line number and specifically why an error occured.
 - `[✓]` Add a *long* or *BigInteger* numerical data type.
 - `[ ]` Thoroughly update built-in modules.
-- `[ ]` Implement something similar to Python's *iterators*.
+- `[✓]` Implement something similar to Python's *iterators*.
 
 ### Miscellaneous
 - `[✓]` Include domain name in Java source package name.
