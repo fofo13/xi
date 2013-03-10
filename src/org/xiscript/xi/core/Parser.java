@@ -125,7 +125,10 @@ public class Parser {
 	}
 
 	private static CharSequence readSpec(Queue<Character> chars) {
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder(chars.poll().toString());
+
+		if (sb.charAt(0) == '-' && Character.isDigit(chars.peek()))
+			return '-' + readNum(chars).toString();
 
 		while (SPEC.contains(chars.peek())) {
 			sb.append(chars.poll());
@@ -140,7 +143,7 @@ public class Parser {
 		while (W.contains(chars.peek())) {
 			sb.append(chars.poll());
 
-			if (chars.peek() == '"') {
+			if (!chars.isEmpty() && chars.peek() == '"') {
 				sb.append(readString(chars));
 				break;
 			}
@@ -150,7 +153,7 @@ public class Parser {
 	}
 
 	private static CharSequence readNum(Queue<Character> chars) {
-		StringBuilder sb = new StringBuilder(Character.toString(chars.poll()));
+		StringBuilder sb = new StringBuilder(chars.poll().toString());
 
 		while (NUMBER.matcher(sb.toString() + chars.peek()).matches()) {
 			sb.append(chars.poll());
@@ -160,7 +163,7 @@ public class Parser {
 	}
 
 	private static CharSequence readAttribute(Queue<Character> chars) {
-		StringBuilder sb = new StringBuilder(Character.toString(chars.poll()));
+		StringBuilder sb = new StringBuilder(chars.poll().toString());
 
 		while (true) {
 			sb.append(chars.poll());
@@ -175,7 +178,7 @@ public class Parser {
 	}
 
 	private static CharSequence readString(Queue<Character> chars) {
-		StringBuilder sb = new StringBuilder(Character.toString(chars.poll()));
+		StringBuilder sb = new StringBuilder(chars.poll().toString());
 
 		int escapeCount = 0;
 		while (true) {
@@ -198,7 +201,7 @@ public class Parser {
 
 	private static CharSequence readBalanced(Queue<Character> chars,
 			final char open, final char close) {
-		StringBuilder sb = new StringBuilder(Character.toString(chars.poll()));
+		StringBuilder sb = new StringBuilder(chars.poll().toString());
 
 		int net = 1;
 		boolean inQuote = false;
