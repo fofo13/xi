@@ -10,7 +10,6 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.xiscript.xi.datatypes.XiAttribute;
-import org.xiscript.xi.datatypes.collections.CollectionWrapper;
 import org.xiscript.xi.datatypes.collections.XiRegex;
 import org.xiscript.xi.datatypes.collections.XiString;
 import org.xiscript.xi.datatypes.functional.XiBlock;
@@ -27,7 +26,6 @@ import org.xiscript.xi.nodes.DataNode;
 import org.xiscript.xi.nodes.FunctionConverterNode;
 import org.xiscript.xi.nodes.Node;
 import org.xiscript.xi.nodes.OperationNode;
-import org.xiscript.xi.nodes.PackedDataNode;
 import org.xiscript.xi.nodes.VarNode;
 import org.xiscript.xi.operations.IntrinsicOperation;
 import org.xiscript.xi.operations.ShortCircuitOperation;
@@ -118,6 +116,9 @@ public class Parser {
 		else if (start == '\"')
 			return readString(chars);
 
+		else if (start == '`')
+			return chars.poll().toString() + generateToken(chars.peek(), chars);
+
 		else
 			chars.poll();
 
@@ -148,6 +149,9 @@ public class Parser {
 				break;
 			}
 		}
+
+		if (chars.peek() == '`')
+			sb.append(chars.poll());
 
 		return sb;
 	}
@@ -261,17 +265,6 @@ public class Parser {
 			return ShortCircuitOperation.parse(exp).getNode();
 		if (identifier.matcher(exp).matches()) {
 			return new VarNode(exp);
-		}
-		if (exp.startsWith("`")) {
-			String id = exp.substring(1);
-
-			Node node = parseNode(id);
-
-			if (node instanceof DataNode)
-				return new PackedDataNode(
-						(CollectionWrapper<?>) ((DataNode<?>) node).data());
-
-			return new PackedDataNode((VarNode) node);
 		}
 		if (exp.endsWith("`")) {
 			String id = exp.substring(0, exp.length() - 1);

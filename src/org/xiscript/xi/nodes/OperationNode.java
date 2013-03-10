@@ -32,11 +32,6 @@ public class OperationNode implements Node {
 		return children;
 	}
 
-	protected void checkAndUnpack(VariableCache cache) {
-		if ((!children.isEmpty()) && children.get(0) instanceof PackedDataNode)
-			children = ((PackedDataNode) children.get(0)).contents(cache);
-	}
-
 	@Override
 	public void addChild(Node node) {
 		children.add(node);
@@ -49,7 +44,6 @@ public class OperationNode implements Node {
 
 	@Override
 	public DataType evaluate(VariableCache cache) {
-		checkAndUnpack(cache);
 		DataType[] arr = new DataType[children.size()];
 		for (int i = 0; i < arr.length; i++)
 			try {

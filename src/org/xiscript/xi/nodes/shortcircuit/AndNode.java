@@ -18,7 +18,6 @@ public class AndNode extends OperationNode {
 
 	@Override
 	public DataType evaluate(VariableCache cache) {
-		checkAndUnpack(cache);
 		return new XiInt(!children.get(0).evaluate(cache).isEmpty()
 				&& !children.get(1).evaluate(cache).isEmpty());
 	}

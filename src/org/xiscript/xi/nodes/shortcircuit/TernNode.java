@@ -17,7 +17,6 @@ public class TernNode extends OperationNode {
 
 	@Override
 	public DataType evaluate(VariableCache cache) {
-		checkAndUnpack(cache);
 		return children.get(0).evaluate(cache).isEmpty() ? children.get(2)
 				.evaluate(cache) : children.get(1).evaluate(cache);
 	}

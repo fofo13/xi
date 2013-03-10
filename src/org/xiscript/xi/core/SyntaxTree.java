@@ -11,7 +11,6 @@ import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 import org.xiscript.xi.nodes.Node;
 import org.xiscript.xi.nodes.OperationNode;
-import org.xiscript.xi.nodes.PackedDataNode;
 import org.xiscript.xi.nodes.VarNode;
 
 public class SyntaxTree {
@@ -63,11 +62,7 @@ public class SyntaxTree {
 		Node node = nodes.poll();
 
 		for (int i = 0; i < node.numChildren(); i++) {
-			Node child = create(nodes);
-			node.addChild(child);
-
-			if (child instanceof PackedDataNode)
-				break;
+			node.addChild(create(nodes));
 		}
 
 		return node;
