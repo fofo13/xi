@@ -24,7 +24,6 @@ public class XiEnvironment {
 
 		if (primary) {
 			globals.addAll(ModuleLoader.stdlib.get("stdlib").contents());
-			globals.addAll(ModuleLoader.stdlib.get("const").contents());
 		}
 
 		source = compile(file);

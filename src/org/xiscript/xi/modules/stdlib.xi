@@ -1,3 +1,6 @@
+true	:= 1
+false 	:= 0
+
 bin := func ('n') {
 	s := ""
 	while {!= n 0} {

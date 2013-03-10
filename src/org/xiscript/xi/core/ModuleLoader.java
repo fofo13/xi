@@ -20,8 +20,8 @@ public class ModuleLoader {
 
 	private static final String libpath = "/org/xiscript/xi/modules/";
 
-	private static final String[] files = { "const", "listutils", "math",
-			"stat", "stdlib", "sys", "vecmath" };
+	private static final String[] files = { "listutils", "math", "stat",
+			"stdlib", "sys", "vecmath" };
 
 	private static final String EXT = ".xi";
 
