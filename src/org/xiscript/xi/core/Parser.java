@@ -116,7 +116,7 @@ public class Parser {
 			return readBalanced(chars, '(', ')');
 
 		else if (start == '\"')
-			return readQuote(chars);
+			return readString(chars);
 
 		else
 			chars.poll();
@@ -139,6 +139,11 @@ public class Parser {
 
 		while (W.contains(chars.peek())) {
 			sb.append(chars.poll());
+
+			if (chars.peek() == '"') {
+				sb.append(readString(chars));
+				break;
+			}
 		}
 
 		return sb;
@@ -169,7 +174,7 @@ public class Parser {
 		return sb;
 	}
 
-	private static CharSequence readQuote(Queue<Character> chars) {
+	private static CharSequence readString(Queue<Character> chars) {
 		StringBuilder sb = new StringBuilder(Character.toString(chars.poll()));
 
 		int escapeCount = 0;
