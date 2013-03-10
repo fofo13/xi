@@ -6,8 +6,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.xiscript.xi.core.XiGenerator;
 import org.xiscript.xi.datatypes.DataType;
+import org.xiscript.xi.datatypes.iterable.XiGenerator;
 import org.xiscript.xi.datatypes.numeric.XiInt;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;

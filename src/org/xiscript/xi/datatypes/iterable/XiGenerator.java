@@ -1,4 +1,4 @@
-package org.xiscript.xi.core;
+package org.xiscript.xi.datatypes.iterable;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

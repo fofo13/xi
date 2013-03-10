@@ -8,12 +8,12 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-import org.xiscript.xi.core.XiIterable;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.XiNull;
 import org.xiscript.xi.datatypes.collections.XiString;
 import org.xiscript.xi.datatypes.functional.HiddenLambda;
+import org.xiscript.xi.datatypes.iterable.XiIterable;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 

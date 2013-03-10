@@ -7,11 +7,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import org.xiscript.xi.core.VariableCache;
-import org.xiscript.xi.core.XiIterable;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.datatypes.functional.XiBlock;
 import org.xiscript.xi.datatypes.functional.XiLambda;
+import org.xiscript.xi.datatypes.iterable.XiIterable;
 import org.xiscript.xi.datatypes.numeric.XiInt;
 
 public abstract class CollectionWrapper<T extends Collection<DataType>> extends

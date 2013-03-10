@@ -1,7 +1,8 @@
-package org.xiscript.xi.core;
+package org.xiscript.xi.datatypes.iterable;
 
 import java.util.Iterator;
 
+import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.datatypes.functional.XiBlock;

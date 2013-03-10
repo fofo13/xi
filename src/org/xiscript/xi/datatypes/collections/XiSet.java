@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.xiscript.xi.core.XiGenerator;
 import org.xiscript.xi.datatypes.DataType;
+import org.xiscript.xi.datatypes.iterable.XiGenerator;
 
 public class XiSet extends CollectionWrapper<Set<DataType>> implements
 		Set<DataType> {

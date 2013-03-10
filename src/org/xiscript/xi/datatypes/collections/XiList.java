@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.xiscript.xi.core.XiGenerator;
 import org.xiscript.xi.datatypes.DataType;
+import org.xiscript.xi.datatypes.iterable.XiGenerator;
 
 public class XiList extends ListWrapper {
 

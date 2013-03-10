@@ -1,4 +1,4 @@
-package org.xiscript.xi.core;
+package org.xiscript.xi.datatypes.iterable;
 
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.numeric.XiInt;
