@@ -8,12 +8,8 @@ import java.util.regex.Pattern;
 
 import org.xiscript.xi.core.Parser;
 import org.xiscript.xi.datatypes.DataType;
-import org.xiscript.xi.datatypes.XiAttribute;
-import org.xiscript.xi.datatypes.functional.HiddenLambda;
 
 public class XiString extends ListWrapper implements CharSequence {
-
-	private static final Pattern WHITESPACE = Pattern.compile("\\s+");
 
 	private static class XiChar extends DataType {
 
@@ -58,19 +54,37 @@ public class XiString extends ListWrapper implements CharSequence {
 
 	}
 
+	private boolean raw;
+
 	public XiString(List<DataType> list) {
 		super(list);
 	}
 
-	public XiString(String exp) {
+	public XiString(String expr, boolean raw) {
 		this(new ArrayList<DataType>());
 
-		for (char c : exp.toCharArray())
+		for (char c : expr.toCharArray())
 			collection.add((new XiChar(c)).toXiString());
+
+		this.raw = raw;
+	}
+
+	public XiString(String expr) {
+		this(expr, false);
 	}
 
 	public XiList toList() {
 		return new XiList(collection);
+	}
+
+	public XiList useToSplit(XiString str) {
+		String[] result = str.toString().split(Pattern.quote(toString()));
+
+		List<DataType> list = new ArrayList<DataType>(result.length);
+		for (String s : result)
+			list.add(new XiString(s));
+
+		return new XiList(list);
 	}
 
 	public XiString cut(XiString other) {
@@ -94,43 +108,6 @@ public class XiString extends ListWrapper implements CharSequence {
 	@Override
 	public CharSequence subSequence(int beginIndex, int endIndex) {
 		return toString().substring(beginIndex, endIndex);
-	}
-
-	@Override
-	protected void refreshAttributes() {
-		final String str = toString();
-
-		attributes.put(new XiAttribute("regex"), new XiRegex(str));
-
-		String[] split = WHITESPACE.split(toString());
-		List<DataType> l = new ArrayList<DataType>(split.length);
-
-		for (String s : split)
-			l.add(new XiString(s));
-
-		attributes.put(new XiAttribute("split"), new XiList(l));
-
-		HiddenLambda splitter = new HiddenLambda(1) {
-			@Override
-			public DataType evaluate(DataType... args) {
-
-				String delim = args[0].toString();
-				if (!(args[0] instanceof XiRegex))
-					delim = Pattern.quote(delim);
-
-				String[] split = str.split(delim);
-				List<DataType> l = new ArrayList<DataType>(split.length);
-
-				for (String s : split)
-					l.add(new XiString(s));
-
-				return new XiList(l);
-			}
-		};
-
-		attributes.put(new XiAttribute("splitter"), splitter);
-
-		super.refreshAttributes();
 	}
 
 	@Override
@@ -158,7 +135,7 @@ public class XiString extends ListWrapper implements CharSequence {
 		StringBuilder sb = new StringBuilder();
 		for (DataType c : collection)
 			sb.append(c.toString());
-		return Parser.unescapeJava(sb.toString());
+		return raw ? sb.toString() : Parser.unescapeJava(sb.toString());
 	}
 
 	@Override

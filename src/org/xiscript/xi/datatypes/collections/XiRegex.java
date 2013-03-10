@@ -17,6 +17,17 @@ public class XiRegex extends XiString {
 	}
 
 	@Override
+	public XiList useToSplit(XiString str) {
+		String[] result = str.toString().split(toString());
+
+		List<DataType> list = new ArrayList<DataType>(result.length);
+		for (String s : result)
+			list.add(new XiString(s));
+
+		return new XiList(list);
+	}
+
+	@Override
 	public ListWrapper instantiate(Collection<DataType> col) {
 		return new XiRegex(new ArrayList<DataType>(col));
 	}
@@ -26,6 +37,14 @@ public class XiRegex extends XiString {
 		if (o instanceof XiString)
 			return o.toString().matches(toString());
 		return o instanceof XiRegex && toString().equals(o.toString());
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (DataType c : collection)
+			sb.append(c.toString());
+		return sb.toString();
 	}
 
 }

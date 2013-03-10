@@ -58,7 +58,7 @@ public enum IntrinsicOperation implements Operation {
 
 	FIND("find", 2), IN("in", 2), MAP("@", 2), DEEPMAP("@@", 2), RANGE(",", 1), SUM(
 			"$", 1), RAND("rnd", 1), SORT("sort", 1), CSORT("csort", 2), CUT(
-			"cut", 2), DEL("del", 1), REPLACE("replace", 3),
+			"cut", 2), DEL("del", 1), REPLACE("replace", 3), SPLIT("<>", 2),
 
 	FOR("for", 3), IF("if", 3), DO("do", 2), WHILE("while", 2), DOWHILE(
 			"dowhile", 2), LOOP("loop", 2),
@@ -350,6 +350,8 @@ public enum IntrinsicOperation implements Operation {
 		case REPLACE:
 			return ((XiString) args[0]).replace((XiString) args[1],
 					(XiString) args[2]);
+		case SPLIT:
+			return ((XiString) args[1]).useToSplit((XiString) args[0]);
 		case FOR: {
 			String id = null;
 			XiTuple t = null;
