@@ -1,8 +1,5 @@
 package org.xiscript.xi.core;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.util.ArrayDeque;
 import java.util.HashSet;
 import java.util.Queue;
@@ -57,21 +54,43 @@ public class Parser {
 	private static final Pattern NUMBER = Pattern
 			.compile("-?\\d*\\.?\\d*[LliI]?");
 
-	private static final String WORD_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	public static final String WORD_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 			+ "abcdefghijklmnopqrstuvwxyz1234567890_";
 
-	private static final String SPECIAL_CHARS = "!+~-*/%=<>&|^$@,?:";
+	public static final String SPECIAL_CHARS = "!+~-*/%=<>&|^$@,?:";
 
-	private static final String ASSIGNMENT = ":=";
-	private static final String PLUS_EQUALS = "+=";
-	private static final String MINUS_EQUALS = "-=";
-	private static final String TIMES_EQUALS = "*=";
-	private static final String DIV_EQUALS = "/=";
+	public static final char MINUS = '-';
 
-	private static final String PLUS_PLUS = "++";
-	private static final String MINUS_MINUS = "--";
+	public static final char LIST_START = '[';
+	public static final char LIST_END = ']';
 
-	private static final char COMMENT = '#';
+	public static final char TUPLE_START = '(';
+	public static final char TUPLE_END = ')';
+
+	public static final char BLOCK_START = '{';
+	public static final char BLOCK_END = '}';
+
+	public static final char DOTVAR = '.';
+	public static final char FUNCTION_CONVERTER = '`';
+
+	public static final char DQUOTE = '\"';
+	public static final char SQUOTE = '\'';
+	public static final char ESCAPE = '\\';
+
+	public static final String RE_START = "re\"";
+	public static final String RAW_START = "r\"";
+
+	public static final String ASSIGNMENT = ":=";
+	public static final String PLUS_EQUALS = "+=";
+	public static final String MINUS_EQUALS = "-=";
+	public static final String TIMES_EQUALS = "*=";
+	public static final String DIV_EQUALS = "/=";
+
+	public static final String PLUS_PLUS = "++";
+	public static final String MINUS_MINUS = "--";
+
+	public static final char COMMENT = '#';
+	public static final char NEWLINE = '\n';
 
 	static {
 		for (int i = 0; i < WORD_CHARS.length(); i++)
@@ -124,22 +143,22 @@ public class Parser {
 		else if (SPEC.contains(start))
 			return readSpec(chars);
 
-		else if (start == '.')
+		else if (start == DOTVAR)
 			return Character.toString(chars.poll());
 
-		else if (start == '\'')
+		else if (start == SQUOTE)
 			return readAttribute(chars);
 
-		else if (start == '{')
-			return readBalanced(chars, '{', '}');
+		else if (start == BLOCK_START)
+			return readBalanced(chars, BLOCK_START, BLOCK_END);
 
-		else if (start == '[')
-			return readBalanced(chars, '[', ']');
+		else if (start == LIST_START)
+			return readBalanced(chars, LIST_START, LIST_END);
 
-		else if (start == '(')
-			return readBalanced(chars, '(', ')');
+		else if (start == TUPLE_START)
+			return readBalanced(chars, TUPLE_START, TUPLE_END);
 
-		else if (start == '\"')
+		else if (start == DQUOTE)
 			return readString(chars);
 
 		else if (start == COMMENT)
@@ -152,15 +171,15 @@ public class Parser {
 	}
 
 	private static void readComment(Queue<Character> chars) {
-		while (chars.poll() != '\n')
+		while (chars.poll() != NEWLINE)
 			;
 	}
 
 	private static CharSequence readSpec(Queue<Character> chars) {
 		StringBuilder sb = new StringBuilder(chars.poll().toString());
 
-		if (sb.charAt(0) == '-' && Character.isDigit(chars.peek()))
-			return '-' + readNum(chars).toString();
+		if (sb.charAt(0) == MINUS && Character.isDigit(chars.peek()))
+			return MINUS + readNum(chars).toString();
 
 		while (SPEC.contains(chars.peek())) {
 			sb.append(chars.poll());
@@ -175,13 +194,13 @@ public class Parser {
 		while (W.contains(chars.peek())) {
 			sb.append(chars.poll());
 
-			if (!chars.isEmpty() && chars.peek() == '"') {
+			if (!chars.isEmpty() && chars.peek() == DQUOTE) {
 				sb.append(readString(chars));
 				break;
 			}
 		}
 
-		if (!chars.isEmpty() && chars.peek() == '`')
+		if (!chars.isEmpty() && chars.peek() == FUNCTION_CONVERTER)
 			sb.append(chars.poll());
 
 		return sb;
@@ -203,7 +222,7 @@ public class Parser {
 		while (true) {
 			sb.append(chars.poll());
 
-			if (chars.peek() == '\'') {
+			if (chars.peek() == SQUOTE) {
 				sb.append(chars.poll());
 				break;
 			}
@@ -219,10 +238,10 @@ public class Parser {
 		while (true) {
 			char c = chars.poll();
 
-			if (c == '\\') {
+			if (c == ESCAPE) {
 				escapeCount++;
-			} else if (c == '\"' && escapeCount % 2 == 0) {
-				sb.append('\"');
+			} else if (c == DQUOTE && escapeCount % 2 == 0) {
+				sb.append(DQUOTE);
 				break;
 			} else {
 				escapeCount = 0;
@@ -249,9 +268,9 @@ public class Parser {
 				net++;
 			else if (c == close && !inQuote)
 				net--;
-			else if (c == '\\')
+			else if (c == ESCAPE)
 				escapeCount++;
-			else if (c == '\"') {
+			else if (c == DQUOTE) {
 				if (escapeCount % 2 == 0)
 					inQuote = !inQuote;
 			} else
@@ -286,20 +305,20 @@ public class Parser {
 			return new PlusPlusNode();
 		if (exp.equals(MINUS_MINUS))
 			return new MinusMinusNode();
-		if (exp.startsWith("[") || exp.startsWith("("))
+		if (exp.charAt(0) == LIST_START || exp.charAt(0) == TUPLE_START)
 			return new CollectionNode(exp);
-		if (exp.startsWith("{"))
+		if (exp.charAt(0) == BLOCK_START)
 			return new DataNode<XiBlock>(new XiBlock(exp));
-		if (exp.startsWith("\""))
+		if (exp.charAt(0) == DQUOTE)
 			return new DataNode<XiString>(new XiString(exp.substring(1,
 					exp.length() - 1)));
-		if (exp.startsWith("'"))
+		if (exp.charAt(0) == SQUOTE)
 			return new DataNode<XiAttribute>(new XiAttribute(exp.substring(1,
 					exp.length() - 1), true));
-		if (exp.startsWith("re\""))
+		if (exp.startsWith(RE_START))
 			return new DataNode<XiRegex>(new XiRegex(exp.substring(3,
 					exp.length() - 1)));
-		if (exp.startsWith("r\""))
+		if (exp.startsWith(RAW_START))
 			return new DataNode<XiString>(new XiString(exp.substring(2,
 					exp.length() - 1), true));
 		if (IntrinsicOperation.idExists(exp))
@@ -309,7 +328,7 @@ public class Parser {
 		if (IDENTIFIER.matcher(exp).matches()) {
 			return new VarNode(exp);
 		}
-		if (exp.endsWith("`")) {
+		if (exp.charAt(0) == FUNCTION_CONVERTER) {
 			String id = exp.substring(0, exp.length() - 1);
 
 			if (IntrinsicOperation.idExists(id))
@@ -324,32 +343,20 @@ public class Parser {
 	}
 
 	public static String unescapeJava(String str) {
-		if (str == null) {
-			return null;
-		}
+		int len = str.length();
+		StringBuilder sb = new StringBuilder(len);
 
-		StringWriter writer = new StringWriter(str.length());
-		try {
-			unescapeJava(writer, str);
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		}
-		return writer.toString();
-	}
-
-	private static void unescapeJava(Writer out, String str) throws IOException {
-		int sz = str.length();
 		StringBuilder unicode = new StringBuilder(4);
 		boolean hadSlash = false;
 		boolean inUnicode = false;
-		for (int i = 0; i < sz; i++) {
-			char ch = str.charAt(i);
+		for (int i = 0; i < len; i++) {
+			char c = str.charAt(i);
 			if (inUnicode) {
-				unicode.append(ch);
+				unicode.append(c);
 				if (unicode.length() == 4) {
 					try {
 						int value = Integer.parseInt(unicode.toString(), 16);
-						out.write((char) value);
+						sb.append((char) value);
 						unicode.setLength(0);
 						inUnicode = false;
 						hadSlash = false;
@@ -361,49 +368,51 @@ public class Parser {
 			}
 			if (hadSlash) {
 				hadSlash = false;
-				switch (ch) {
+				switch (c) {
 				case '\\':
-					out.write('\\');
+					sb.append('\\');
 					break;
 				case '\'':
-					out.write('\'');
+					sb.append('\'');
 					break;
 				case '\"':
-					out.write('"');
+					sb.append('"');
 					break;
 				case 'r':
-					out.write('\r');
+					sb.append('\r');
 					break;
 				case 'f':
-					out.write('\f');
+					sb.append('\f');
 					break;
 				case 't':
-					out.write('\t');
+					sb.append('\t');
 					break;
 				case 'n':
-					out.write('\n');
+					sb.append('\n');
 					break;
 				case 'b':
-					out.write('\b');
+					sb.append('\b');
 					break;
 				case 'u': {
 					inUnicode = true;
 					break;
 				}
 				default:
-					out.write(ch);
+					sb.append(c);
 					break;
 				}
 				continue;
-			} else if (ch == '\\') {
+			} else if (c == '\\') {
 				hadSlash = true;
 				continue;
 			}
-			out.write(ch);
+			sb.append(c);
 		}
 		if (hadSlash) {
-			out.write('\\');
+			sb.append('\\');
 		}
+
+		return sb.toString();
 	}
 
 }
