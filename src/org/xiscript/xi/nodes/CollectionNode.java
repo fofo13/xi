@@ -45,7 +45,7 @@ public class CollectionNode extends DataNode<CollectionWrapper<?>> {
 			if (expr.startsWith(TUPLE_TAG))
 				return createTuple(expr.substring(TUPLE_TAG.length()), cache);
 			if (expr.startsWith(SET_TAG))
-				return createSet(expr.substring(TUPLE_TAG.length()), cache);
+				return createSet(expr.substring(SET_TAG.length()), cache);
 			if (expr.startsWith(DICT_TAG))
 				return createDict(expr.substring(DICT_TAG.length()), cache);
 			else
