@@ -185,6 +185,9 @@ public class Parser {
 			sb.append(chars.poll());
 		}
 
+		if (!chars.isEmpty() && chars.peek() == FUNCTION_CONVERTER)
+			sb.append(chars.poll());
+
 		return sb;
 	}
 
@@ -328,7 +331,7 @@ public class Parser {
 		if (IDENTIFIER.matcher(exp).matches()) {
 			return new VarNode(exp);
 		}
-		if (exp.charAt(0) == FUNCTION_CONVERTER) {
+		if (exp.charAt(exp.length() - 1) == FUNCTION_CONVERTER) {
 			String id = exp.substring(0, exp.length() - 1);
 
 			if (IntrinsicOperation.idExists(id))
