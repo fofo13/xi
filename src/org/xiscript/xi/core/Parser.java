@@ -273,10 +273,9 @@ public class Parser {
 				net--;
 			else if (c == ESCAPE)
 				escapeCount++;
-			else if (c == DQUOTE) {
-				if (escapeCount % 2 == 0)
-					inQuote = !inQuote;
-			} else
+			else if (c == DQUOTE && escapeCount % 2 == 0)
+				inQuote = !inQuote;
+			else
 				escapeCount = 0;
 
 			sb.append(c);
@@ -328,9 +327,8 @@ public class Parser {
 			return new OperationNode(IntrinsicOperation.parse(exp));
 		if (ShortCircuitOperation.idExists(exp))
 			return ShortCircuitOperation.parse(exp).getNode();
-		if (IDENTIFIER.matcher(exp).matches()) {
+		if (IDENTIFIER.matcher(exp).matches())
 			return new VarNode(exp);
-		}
 		if (exp.charAt(exp.length() - 1) == FUNCTION_CONVERTER) {
 			String id = exp.substring(0, exp.length() - 1);
 
