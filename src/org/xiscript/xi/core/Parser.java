@@ -171,7 +171,7 @@ public class Parser {
 	}
 
 	private static void readComment(Queue<Character> chars) {
-		while (chars.poll() != NEWLINE)
+		while (!chars.isEmpty() && chars.poll() != NEWLINE)
 			;
 	}
 
