@@ -29,6 +29,7 @@ import org.xiscript.xi.nodes.assignments.MinusMinusNode;
 import org.xiscript.xi.nodes.assignments.PlusPlusNode;
 import org.xiscript.xi.operations.IntrinsicOperation;
 import org.xiscript.xi.operations.ShortCircuitOperation;
+import org.xiscript.xi.util.CharacterQueue;
 
 public class Parser {
 
@@ -127,12 +128,7 @@ public class Parser {
 	}
 
 	public static Queue<Node> genNodeQueue(CharSequence source) {
-		Queue<Character> chars = new ArrayDeque<Character>(source.length());
-
-		for (int i = 0; i < source.length(); i++)
-			chars.add(source.charAt(i));
-
-		return genNodeQueue(chars);
+		return genNodeQueue(new CharacterQueue(source));
 	}
 
 	private static CharSequence generateToken(Queue<Character> chars) {
