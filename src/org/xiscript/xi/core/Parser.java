@@ -24,12 +24,9 @@ import org.xiscript.xi.nodes.Node;
 import org.xiscript.xi.nodes.OperationNode;
 import org.xiscript.xi.nodes.VarNode;
 import org.xiscript.xi.nodes.assignments.AssignmentNode;
-import org.xiscript.xi.nodes.assignments.DivEqualsNode;
-import org.xiscript.xi.nodes.assignments.MinusEqualsNode;
+import org.xiscript.xi.nodes.assignments.CompoundAssignmentNode;
 import org.xiscript.xi.nodes.assignments.MinusMinusNode;
-import org.xiscript.xi.nodes.assignments.PlusEqualsNode;
 import org.xiscript.xi.nodes.assignments.PlusPlusNode;
-import org.xiscript.xi.nodes.assignments.TimesEqualsNode;
 import org.xiscript.xi.operations.IntrinsicOperation;
 import org.xiscript.xi.operations.ShortCircuitOperation;
 
@@ -73,7 +70,7 @@ public class Parser {
 	public static final char DOTVAR = '.';
 	public static final char FUNCTION_CONVERTER = '`';
 
-	public static final char DQUOTE = '\"';
+	public static final char DQUOTE = '"';
 	public static final char SQUOTE = '\'';
 	public static final char ESCAPE = '\\';
 
@@ -85,6 +82,13 @@ public class Parser {
 	public static final String MINUS_EQUALS = "-=";
 	public static final String TIMES_EQUALS = "*=";
 	public static final String DIV_EQUALS = "/=";
+	public static final String MOD_EQUALS = "%=";
+	public static final String POW_EQUALS = "**=";
+	public static final String RSHIFT_EQUALS = ">>=";
+	public static final String LSHIFT_EQUALS = "<<=";
+	public static final String AND_EQUALS = "&=";
+	public static final String OR_EQUALS = "|=";
+	public static final String XOR_EQUALS = "^=";
 
 	public static final String PLUS_PLUS = "++";
 	public static final String MINUS_MINUS = "--";
@@ -293,20 +297,37 @@ public class Parser {
 			return new DataNode<XiFloat>(XiFloat.parse(exp));
 		if (IM.matcher(exp).matches())
 			return new DataNode<XiComplex>(XiComplex.parseIm(exp));
+
 		if (exp.equals(ASSIGNMENT))
 			return new AssignmentNode();
 		if (exp.equals(PLUS_EQUALS))
-			return new PlusEqualsNode();
+			return new CompoundAssignmentNode(IntrinsicOperation.ADD);
 		if (exp.equals(MINUS_EQUALS))
-			return new MinusEqualsNode();
+			return new CompoundAssignmentNode(IntrinsicOperation.SUBTRACT);
 		if (exp.equals(TIMES_EQUALS))
-			return new TimesEqualsNode();
+			return new CompoundAssignmentNode(IntrinsicOperation.MULTIPLY);
 		if (exp.equals(DIV_EQUALS))
-			return new DivEqualsNode();
+			return new CompoundAssignmentNode(IntrinsicOperation.DIVIDE);
+		if (exp.equals(MOD_EQUALS))
+			return new CompoundAssignmentNode(IntrinsicOperation.MODULUS);
+		if (exp.equals(POW_EQUALS))
+			return new CompoundAssignmentNode(IntrinsicOperation.POW);
+		if (exp.equals(RSHIFT_EQUALS))
+			return new CompoundAssignmentNode(IntrinsicOperation.RSHIFT);
+		if (exp.equals(LSHIFT_EQUALS))
+			return new CompoundAssignmentNode(IntrinsicOperation.LSHIFT);
+		if (exp.equals(AND_EQUALS))
+			return new CompoundAssignmentNode(IntrinsicOperation.AND);
+		if (exp.equals(OR_EQUALS))
+			return new CompoundAssignmentNode(IntrinsicOperation.OR);
+		if (exp.equals(XOR_EQUALS))
+			return new CompoundAssignmentNode(IntrinsicOperation.XOR);
+
 		if (exp.equals(PLUS_PLUS))
 			return new PlusPlusNode();
 		if (exp.equals(MINUS_MINUS))
 			return new MinusMinusNode();
+
 		if (exp.charAt(0) == LIST_START || exp.charAt(0) == TUPLE_START)
 			return new CollectionNode(exp);
 		if (exp.charAt(0) == BLOCK_START)
