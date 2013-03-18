@@ -6,14 +6,15 @@ import org.xiscript.xi.datatypes.XiType;
 
 public class XiComplex extends XiNum {
 
+	private static final XiAttribute RE = XiAttribute.valueOf("re");
+	private static final XiAttribute IM = XiAttribute.valueOf("im");
+
 	protected double re;
 	protected double im;
 
 	public XiComplex(double re, double im) {
 		this.re = re;
 		this.im = im;
-		attributes.put(new XiAttribute("re"), new XiFloat(re));
-		attributes.put(new XiAttribute("im"), new XiFloat(im));
 	}
 
 	public double re() {
@@ -153,6 +154,16 @@ public class XiComplex extends XiNum {
 		if (im < 0)
 			return re + " - " + (-im) + "i";
 		return re + " + " + im + "i";
+	}
+
+	@Override
+	public DataType getAttribute(XiAttribute a) {
+		if (a.equals(RE))
+			return new XiFloat(re);
+		if (a.equals(IM))
+			return new XiFloat(im);
+
+		return super.getAttribute(a);
 	}
 
 	@Override

@@ -1,15 +1,22 @@
 package org.xiscript.xi.datatypes;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.xiscript.xi.core.VariableCache;
 
 public class XiModule extends DataType {
+
+	private Map<XiAttribute, DataType> attributes;
 
 	private VariableCache contents;
 
 	public XiModule(VariableCache contents) {
 		this.contents = contents;
+		attributes = new HashMap<XiAttribute, DataType>();
+
 		for (XiVar var : contents)
-			attributes.put(new XiAttribute(var.id()), var.val());
+			attributes.put(XiAttribute.valueOf(var.id()), var.val());
 	}
 
 	public VariableCache contents() {
@@ -18,7 +25,14 @@ public class XiModule extends DataType {
 
 	public void addVar(String id, DataType val) {
 		contents.add(new XiVar(id, val));
-		attributes.put(new XiAttribute(id), val);
+		attributes.put(XiAttribute.valueOf(id), val);
+	}
+
+	@Override
+	public DataType getAttribute(XiAttribute a) {
+		DataType d = attributes.get(a);
+
+		return (d == null) ? super.getAttribute(a) : d;
 	}
 
 	@Override

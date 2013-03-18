@@ -40,6 +40,8 @@ public class ErrorHandler {
 
 		INVALID_ATTRIBUTE("%s has no attribute: %s"),
 
+		UNASSIGNABLE_ATTRIBUTE("%s has no assignable attribute: %s"),
+
 		INVALID_ATTRIBUTE_TUPLE(
 				"Argument-tuple must consist of only attribute identifiers: %s"),
 

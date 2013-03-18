@@ -332,8 +332,8 @@ public class Parser {
 			return new DataNode<XiString>(new XiString(exp.substring(1,
 					exp.length() - 1)));
 		if (exp.charAt(0) == SQUOTE)
-			return new DataNode<XiAttribute>(new XiAttribute(exp.substring(1,
-					exp.length() - 1), true));
+			return new DataNode<XiAttribute>(XiAttribute.valueOf(exp.substring(
+					1, exp.length() - 1)));
 		if (exp.startsWith(RE_START))
 			return new DataNode<XiRegex>(new XiRegex(exp.substring(3,
 					exp.length() - 1)));

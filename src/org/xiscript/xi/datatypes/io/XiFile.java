@@ -14,22 +14,35 @@ import org.xiscript.xi.datatypes.XiNull;
 import org.xiscript.xi.datatypes.XiType;
 import org.xiscript.xi.datatypes.collections.XiString;
 import org.xiscript.xi.datatypes.functional.HiddenLambda;
+import org.xiscript.xi.datatypes.functional.XiLambda;
 import org.xiscript.xi.datatypes.iterable.XiIterable;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public class XiFile extends XiIterable {
 
+	private static final XiAttribute W = XiAttribute.valueOf("w");
+	private static final XiAttribute LNW = XiAttribute.valueOf("lnw");
+	private static final XiAttribute R = XiAttribute.valueOf("r");
+	private static final XiAttribute LNR = XiAttribute.valueOf("lnr");
+	private static final XiAttribute RAW_W = XiAttribute.valueOf("raw_w");
+	private static final XiAttribute RAW_R = XiAttribute.valueOf("raw_r");
+
 	private final File file;
 	private final XiWriter writer;
 	private final XiReader reader;
+
+	private XiLambda w;
+	private XiLambda lnw;
+	private XiLambda r;
+	private XiLambda lnr;
 
 	public XiFile(final String file) {
 		this.file = new File(file);
 		writer = getWriter();
 		reader = getReader();
 
-		HiddenLambda wrtr = new HiddenLambda(1) {
+		w = new HiddenLambda(1) {
 			@Override
 			public DataType evaluate(DataType... args) {
 				writer.print(args[0]);
@@ -37,7 +50,7 @@ public class XiFile extends XiIterable {
 			}
 		};
 
-		HiddenLambda lnwrtr = new HiddenLambda(1) {
+		lnw = new HiddenLambda(1) {
 			@Override
 			public DataType evaluate(DataType... args) {
 				writer.println(args[0]);
@@ -45,7 +58,7 @@ public class XiFile extends XiIterable {
 			}
 		};
 
-		HiddenLambda rdr = new HiddenLambda(0) {
+		r = new HiddenLambda(0) {
 			@Override
 			public DataType evaluate(DataType... args) {
 				try {
@@ -61,7 +74,7 @@ public class XiFile extends XiIterable {
 			}
 		};
 
-		HiddenLambda lnrdr = new HiddenLambda(0) {
+		lnr = new HiddenLambda(0) {
 			@Override
 			public DataType evaluate(DataType... args) {
 				try {
@@ -76,18 +89,28 @@ public class XiFile extends XiIterable {
 				return !reader.hasNextLine();
 			}
 		};
-
-		attributes.put(new XiAttribute("w"), wrtr);
-		attributes.put(new XiAttribute("lnw"), lnwrtr);
-		attributes.put(new XiAttribute("r"), rdr);
-		attributes.put(new XiAttribute("lnr"), lnrdr);
-
-		attributes.put(new XiAttribute("raw_w"), writer);
-		attributes.put(new XiAttribute("raw_r"), reader);
 	}
 
 	public XiFile(XiString file) {
 		this(file.toString());
+	}
+
+	@Override
+	public DataType getAttribute(XiAttribute a) {
+		if (a.equals(W))
+			return w;
+		if (a.equals(LNW))
+			return lnw;
+		if (a.equals(R))
+			return r;
+		if (a.equals(LNR))
+			return lnr;
+		if (a.equals(RAW_W))
+			return writer;
+		if (a.equals(RAW_R))
+			return reader;
+
+		return super.getAttribute(a);
 	}
 
 	private XiWriter getWriter() {

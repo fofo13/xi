@@ -1,5 +1,7 @@
 package org.xiscript.xi.datatypes;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.xiscript.xi.exceptions.ErrorHandler;
@@ -9,23 +11,22 @@ public class XiAttribute extends DataType {
 
 	private static final Pattern FORM = Pattern.compile("\\w*");
 
-	private String val;
-	private boolean setable;
+	private static final Map<String, XiAttribute> cache = new HashMap<String, XiAttribute>();
 
-	public XiAttribute(String val, boolean setable) {
+	private String val;
+
+	private XiAttribute(String val) {
+		this.val = val;
+	}
+
+	public static XiAttribute valueOf(String val) {
+		if (cache.containsKey(val))
+			return cache.get(val);
+
 		if (!FORM.matcher(val).matches())
 			ErrorHandler.invokeError(ErrorType.INVALID_IDENTIFIER, val);
 
-		this.val = val;
-		this.setable = setable;
-	}
-
-	public XiAttribute(String val) {
-		this(val, false);
-	}
-
-	public boolean setable() {
-		return setable;
+		return new XiAttribute(val);
 	}
 
 	@Override

@@ -7,15 +7,17 @@ import org.xiscript.xi.datatypes.io.XiWriter;
 
 public class XiSys extends DataType {
 
-	private static final XiAttribute stdout = new XiAttribute("stdout", true);
-	private static final XiAttribute stdin = new XiAttribute("stdin", true);
-	private static final XiAttribute stderr = new XiAttribute("stderr", true);
+	private static final XiAttribute STDOUT = XiAttribute.valueOf("stdout");
+	private static final XiAttribute STDIN = XiAttribute.valueOf("stdin");
+	private static final XiAttribute STDERR = XiAttribute.valueOf("stderr");
+
+	public static XiWriter stdout = new XiWriter(System.out);
+	public static XiReader stdin = new XiReader(new Scanner(System.in));
+	public static XiWriter stderr = new XiWriter(System.err);
+
 	private static final XiSys instance = new XiSys();
 
 	private XiSys() {
-		attributes.put(stdout, new XiWriter(System.out));
-		attributes.put(stdin, new XiReader(new Scanner(System.in)));
-		attributes.put(stderr, new XiWriter(System.err));
 	}
 
 	public static XiSys instance() {
@@ -23,11 +25,35 @@ public class XiSys extends DataType {
 	}
 
 	public XiWriter stdout() {
-		return (XiWriter) attributes.get(stdout);
+		return stdout;
 	}
 
 	public XiReader stdin() {
-		return (XiReader) attributes.get(stdin);
+		return stdin;
+	}
+
+	@Override
+	public DataType getAttribute(XiAttribute a) {
+		if (a.equals(STDOUT))
+			return stdout;
+		if (a.equals(STDIN))
+			return stdin;
+		if (a.equals(STDERR))
+			return stderr;
+
+		return super.getAttribute(a);
+	}
+
+	@Override
+	public void setAttribute(XiAttribute a, DataType value) {
+		if (a.equals(STDOUT))
+			stdout = (XiWriter) value;
+		else if (a.equals(STDIN))
+			stdin = (XiReader) value;
+		else if (a.equals(STDERR))
+			stderr = (XiWriter) value;
+		else
+			super.setAttribute(a, value);
 	}
 
 	@Override
