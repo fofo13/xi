@@ -1,5 +1,5 @@
 Xi <sub>*beta*</sub>
-=======
+====================
 **a simple scripting language written in Java**
 
 The goal of Xi is to allow users to write concise code that can carry out complicated tasks. Some concepts are borrowed from Python, others from
