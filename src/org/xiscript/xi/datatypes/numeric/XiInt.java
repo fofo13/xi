@@ -1,5 +1,6 @@
 package org.xiscript.xi.datatypes.numeric;
 
+import org.xiscript.xi.datatypes.XiType;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
@@ -95,6 +96,11 @@ public class XiInt extends XiReal<Integer> {
 
 	public XiInt mod(XiInt other) {
 		return new XiInt(val % other.num().intValue());
+	}
+
+	@Override
+	public XiType type() {
+		return XiType.valueOf(XiType.Type.INT);
 	}
 
 }

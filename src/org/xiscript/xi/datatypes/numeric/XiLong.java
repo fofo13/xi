@@ -2,6 +2,7 @@ package org.xiscript.xi.datatypes.numeric;
 
 import java.math.BigInteger;
 
+import org.xiscript.xi.datatypes.XiType;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
@@ -84,6 +85,11 @@ public class XiLong extends XiReal<BigInteger> {
 
 	public XiLong mod(XiReal<?> other) {
 		return new XiLong(val.mod(other.asLong().val));
+	}
+
+	@Override
+	public XiType type() {
+		return XiType.valueOf(XiType.Type.LONG);
 	}
 
 }

@@ -68,4 +68,9 @@ public class XiVar extends DataType {
 		return id.hashCode();
 	}
 
+	@Override
+	public XiType type() {
+		return XiType.valueOf(XiType.Type.VAR);
+	}
+
 }

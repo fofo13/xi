@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.xiscript.xi.datatypes.DataType;
+import org.xiscript.xi.datatypes.XiType;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
@@ -55,6 +56,11 @@ public abstract class XiGenerator extends XiIterable {
 	@Override
 	public Iterator<DataType> getJavaAnalog() {
 		return iterator();
+	}
+
+	@Override
+	public XiType type() {
+		return XiType.valueOf(XiType.Type.GENERATOR);
 	}
 
 }

@@ -135,4 +135,9 @@ public class XiDictionary extends DataType implements Map<DataType, DataType> {
 		return map.toString();
 	}
 
+	@Override
+	public XiType type() {
+		return XiType.valueOf(XiType.Type.DICT);
+	}
+
 }

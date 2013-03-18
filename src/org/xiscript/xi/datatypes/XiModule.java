@@ -44,4 +44,9 @@ public class XiModule extends DataType {
 		return attributes.isEmpty();
 	}
 
+	@Override
+	public XiType type() {
+		return XiType.valueOf(XiType.Type.MODULE);
+	}
+
 }

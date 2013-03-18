@@ -45,4 +45,9 @@ public class XiSys extends DataType {
 		return false;
 	}
 
+	@Override
+	public XiType type() {
+		return XiType.valueOf(XiType.Type.SYS);
+	}
+
 }

@@ -8,6 +8,7 @@ import org.xiscript.xi.core.SyntaxTree;
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiNull;
+import org.xiscript.xi.datatypes.XiType;
 import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.exceptions.ControlFlowException;
 import org.xiscript.xi.nodes.Node;
@@ -76,6 +77,11 @@ public class XiBlock extends DataType {
 			throw cfe;
 		}
 		return last;
+	}
+
+	@Override
+	public XiType type() {
+		return XiType.valueOf(XiType.Type.BLOCK);
 	}
 
 }

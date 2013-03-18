@@ -11,6 +11,7 @@ import java.util.Scanner;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.XiNull;
+import org.xiscript.xi.datatypes.XiType;
 import org.xiscript.xi.datatypes.collections.XiString;
 import org.xiscript.xi.datatypes.functional.HiddenLambda;
 import org.xiscript.xi.datatypes.iterable.XiIterable;
@@ -173,6 +174,11 @@ public class XiFile extends XiIterable {
 	@Override
 	public int hashCode() {
 		return file.hashCode();
+	}
+
+	@Override
+	public XiType type() {
+		return XiType.valueOf(XiType.Type.FILE);
 	}
 
 }

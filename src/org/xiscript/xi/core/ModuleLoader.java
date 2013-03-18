@@ -10,6 +10,8 @@ import java.util.Map;
 
 import org.xiscript.xi.datatypes.XiModule;
 import org.xiscript.xi.datatypes.XiSys;
+import org.xiscript.xi.datatypes.XiType;
+import org.xiscript.xi.datatypes.XiType.Type;
 import org.xiscript.xi.datatypes.numeric.XiMath;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
@@ -85,6 +87,11 @@ public class ModuleLoader {
 		math.addVar("log10", XiMath.log10);
 		math.addVar("floor", XiMath.floor);
 		math.addVar("ceil", XiMath.ceil);
-	}
 
+		XiModule std = stdlib.get("stdlib");
+		for (Type type : XiType.Type.values()) {
+			std.addVar(String.format("type_%s", type.toString().toLowerCase()),
+					XiType.valueOf(type));
+		}
+	}
 }

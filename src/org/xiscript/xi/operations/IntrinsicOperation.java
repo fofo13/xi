@@ -568,7 +568,7 @@ public enum IntrinsicOperation implements Operation {
 				ErrorHandler.invokeError(ErrorType.ASSERT_ERROR);
 			return XiNull.instance();
 		case TYPE:
-			return new XiString(args[0].type());
+			return args[0].type();
 		case IMPORT:
 			return ModuleLoader.load(args[0].toString());
 		case LOAD:

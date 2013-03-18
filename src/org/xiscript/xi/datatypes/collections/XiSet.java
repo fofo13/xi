@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.xiscript.xi.datatypes.DataType;
+import org.xiscript.xi.datatypes.XiType;
 import org.xiscript.xi.datatypes.iterable.XiGenerator;
 
 public class XiSet extends CollectionWrapper<Set<DataType>> implements
@@ -70,6 +71,11 @@ public class XiSet extends CollectionWrapper<Set<DataType>> implements
 	@Override
 	public XiSet instantiate(Collection<DataType> col) {
 		return new XiSet(new HashSet<DataType>(col));
+	}
+
+	@Override
+	public XiType type() {
+		return XiType.valueOf(XiType.Type.SET);
 	}
 
 }

@@ -3,7 +3,6 @@ package org.xiscript.xi.datatypes;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.xiscript.xi.datatypes.collections.XiString;
 import org.xiscript.xi.datatypes.numeric.XiInt;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
@@ -18,17 +17,10 @@ public abstract class DataType implements Comparable<DataType> {
 		return toString().length();
 	}
 
-	public String type() {
-		String[] split = getClass().toString().split("\\.");
-		// type names should be of the form "Xi.*"
-		return split[split.length - 1].substring(2).toLowerCase();
-	}
-
 	public abstract Object getJavaAnalog();
 
 	protected void refreshAttributes() {
 		attributes.put(new XiAttribute("hash"), new XiInt(hashCode()));
-		attributes.put(new XiAttribute("type"), new XiString(type()));
 	}
 
 	public DataType getAttribute(XiAttribute attribute) {
@@ -47,10 +39,6 @@ public abstract class DataType implements Comparable<DataType> {
 	public void delete() {
 	}
 
-	@Override
-	public String toString() {
-		String string = super.toString();
-		return string.substring(string.lastIndexOf('.') + 1);
-	}
+	public abstract XiType type();
 
 }

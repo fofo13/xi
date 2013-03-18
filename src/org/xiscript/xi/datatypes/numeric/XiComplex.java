@@ -2,6 +2,7 @@ package org.xiscript.xi.datatypes.numeric;
 
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
+import org.xiscript.xi.datatypes.XiType;
 
 public class XiComplex extends XiNum {
 
@@ -152,6 +153,11 @@ public class XiComplex extends XiNum {
 		if (im < 0)
 			return re + " - " + (-im) + "i";
 		return re + " + " + im + "i";
+	}
+
+	@Override
+	public XiType type() {
+		return XiType.valueOf(XiType.Type.COMPLEX);
 	}
 
 }

@@ -8,6 +8,9 @@ import java.util.regex.Pattern;
 
 import org.xiscript.xi.core.Parser;
 import org.xiscript.xi.datatypes.DataType;
+import org.xiscript.xi.datatypes.XiType;
+import org.xiscript.xi.exceptions.ErrorHandler;
+import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public class XiString extends ListWrapper implements CharSequence {
 
@@ -50,6 +53,12 @@ public class XiString extends ListWrapper implements CharSequence {
 		@Override
 		public String toString() {
 			return String.valueOf(val);
+		}
+
+		@Override
+		public XiType type() {
+			ErrorHandler.invokeError(ErrorType.INTERNAL);
+			return null;
 		}
 
 	}
@@ -169,6 +178,11 @@ public class XiString extends ListWrapper implements CharSequence {
 		if (o instanceof XiRegex)
 			return toString().matches(o.toString());
 		return o instanceof XiString && toString().equals(o.toString());
+	}
+
+	@Override
+	public XiType type() {
+		return XiType.valueOf(XiType.Type.SET);
 	}
 
 }

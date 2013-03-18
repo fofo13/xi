@@ -58,4 +58,9 @@ public class XiAttribute extends DataType {
 		return val;
 	}
 
+	@Override
+	public XiType type() {
+		return XiType.valueOf(XiType.Type.ATTRIBUTE);
+	}
+
 }

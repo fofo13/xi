@@ -15,7 +15,7 @@ public final class XiNull extends DataType {
 	public Object getJavaAnalog() {
 		return null;
 	}
-	
+
 	@Override
 	public boolean isEmpty() {
 		return true;
@@ -44,6 +44,11 @@ public final class XiNull extends DataType {
 	@Override
 	public int hashCode() {
 		return Boolean.FALSE.hashCode();
+	}
+
+	@Override
+	public XiType type() {
+		return XiType.valueOf(XiType.Type.NULL);
 	}
 
 }
