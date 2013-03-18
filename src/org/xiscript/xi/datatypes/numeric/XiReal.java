@@ -1,5 +1,7 @@
 package org.xiscript.xi.datatypes.numeric;
 
+import java.math.BigInteger;
+
 import org.xiscript.xi.datatypes.DataType;
 
 public abstract class XiReal<T extends Number> extends XiNum {
@@ -16,6 +18,10 @@ public abstract class XiReal<T extends Number> extends XiNum {
 
 	public XiInt intdiv(XiReal<?> other) {
 		return new XiInt((int) (val.doubleValue() / other.num().doubleValue()));
+	}
+
+	public XiLong asLong() {
+		return new XiLong(BigInteger.valueOf(val.longValue()));
 	}
 
 	@Override

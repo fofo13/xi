@@ -16,7 +16,8 @@ public class XiLong extends XiReal<BigInteger> {
 	}
 
 	public static XiLong parse(String exp) {
-		if (exp.endsWith("l") || exp.endsWith("L"))
+		char last = exp.charAt(exp.length() - 1);
+		if (last == 'l' || last == 'L')
 			exp = exp.substring(0, exp.length() - 1);
 		try {
 			return new XiLong(new BigInteger(exp));
@@ -24,6 +25,11 @@ public class XiLong extends XiReal<BigInteger> {
 			ErrorHandler.invokeError(ErrorType.NUMBER_FORMAT, exp);
 			return null;
 		}
+	}
+
+	@Override
+	public XiLong asLong() {
+		return this;
 	}
 
 	@Override
@@ -53,26 +59,22 @@ public class XiLong extends XiReal<BigInteger> {
 
 	@Override
 	public XiLong add(XiNum other) {
-		return new XiLong(val.add(BigInteger.valueOf(((XiReal<?>) other).num()
-				.longValue())));
+		return new XiLong(val.add(((XiReal<?>) other).asLong().val));
 	}
 
 	@Override
 	public XiLong sub(XiNum other) {
-		return new XiLong(val.subtract(BigInteger.valueOf(((XiReal<?>) other)
-				.num().longValue())));
+		return new XiLong(val.subtract(((XiReal<?>) other).asLong().val));
 	}
 
 	@Override
 	public XiLong mul(XiNum other) {
-		return new XiLong(val.multiply(BigInteger.valueOf(((XiReal<?>) other)
-				.num().longValue())));
+		return new XiLong(val.multiply(((XiReal<?>) other).asLong().val));
 	}
 
 	@Override
 	public XiLong div(XiNum other) {
-		return new XiLong(val.divide(BigInteger.valueOf(((XiReal<?>) other)
-				.num().longValue())));
+		return new XiLong(val.divide(((XiReal<?>) other).asLong().val));
 	}
 
 	@Override
@@ -81,7 +83,7 @@ public class XiLong extends XiReal<BigInteger> {
 	}
 
 	public XiLong mod(XiReal<?> other) {
-		return new XiLong(val.mod(BigInteger.valueOf(other.val.longValue())));
+		return new XiLong(val.mod(other.asLong().val));
 	}
 
 }
