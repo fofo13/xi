@@ -27,7 +27,7 @@ import org.xiscript.xi.nodes.assignments.AssignmentNode;
 import org.xiscript.xi.nodes.assignments.CompoundAssignmentNode;
 import org.xiscript.xi.nodes.assignments.MinusMinusNode;
 import org.xiscript.xi.nodes.assignments.PlusPlusNode;
-import org.xiscript.xi.operations.IntrinsicOperation;
+import org.xiscript.xi.operations.BuiltInOperation;
 import org.xiscript.xi.operations.ShortCircuitOperation;
 import org.xiscript.xi.util.CharacterQueue;
 
@@ -297,27 +297,27 @@ public class Parser {
 		if (exp.equals(ASSIGNMENT))
 			return new AssignmentNode();
 		if (exp.equals(PLUS_EQUALS))
-			return new CompoundAssignmentNode(IntrinsicOperation.ADD);
+			return new CompoundAssignmentNode(BuiltInOperation.ADD);
 		if (exp.equals(MINUS_EQUALS))
-			return new CompoundAssignmentNode(IntrinsicOperation.SUBTRACT);
+			return new CompoundAssignmentNode(BuiltInOperation.SUBTRACT);
 		if (exp.equals(TIMES_EQUALS))
-			return new CompoundAssignmentNode(IntrinsicOperation.MULTIPLY);
+			return new CompoundAssignmentNode(BuiltInOperation.MULTIPLY);
 		if (exp.equals(DIV_EQUALS))
-			return new CompoundAssignmentNode(IntrinsicOperation.DIVIDE);
+			return new CompoundAssignmentNode(BuiltInOperation.DIVIDE);
 		if (exp.equals(MOD_EQUALS))
-			return new CompoundAssignmentNode(IntrinsicOperation.MODULUS);
+			return new CompoundAssignmentNode(BuiltInOperation.MODULUS);
 		if (exp.equals(POW_EQUALS))
-			return new CompoundAssignmentNode(IntrinsicOperation.POW);
+			return new CompoundAssignmentNode(BuiltInOperation.POW);
 		if (exp.equals(RSHIFT_EQUALS))
-			return new CompoundAssignmentNode(IntrinsicOperation.RSHIFT);
+			return new CompoundAssignmentNode(BuiltInOperation.RSHIFT);
 		if (exp.equals(LSHIFT_EQUALS))
-			return new CompoundAssignmentNode(IntrinsicOperation.LSHIFT);
+			return new CompoundAssignmentNode(BuiltInOperation.LSHIFT);
 		if (exp.equals(AND_EQUALS))
-			return new CompoundAssignmentNode(IntrinsicOperation.AND);
+			return new CompoundAssignmentNode(BuiltInOperation.AND);
 		if (exp.equals(OR_EQUALS))
-			return new CompoundAssignmentNode(IntrinsicOperation.OR);
+			return new CompoundAssignmentNode(BuiltInOperation.OR);
 		if (exp.equals(XOR_EQUALS))
-			return new CompoundAssignmentNode(IntrinsicOperation.XOR);
+			return new CompoundAssignmentNode(BuiltInOperation.XOR);
 
 		if (exp.equals(PLUS_PLUS))
 			return new PlusPlusNode();
@@ -340,8 +340,8 @@ public class Parser {
 		if (exp.startsWith(RAW_START))
 			return new DataNode<XiString>(new XiString(exp.substring(2,
 					exp.length() - 1), true));
-		if (IntrinsicOperation.idExists(exp))
-			return new OperationNode(IntrinsicOperation.parse(exp));
+		if (BuiltInOperation.idExists(exp))
+			return new OperationNode(BuiltInOperation.parse(exp));
 		if (ShortCircuitOperation.idExists(exp))
 			return ShortCircuitOperation.parse(exp).getNode();
 		if (IDENTIFIER.matcher(exp).matches())
@@ -349,8 +349,8 @@ public class Parser {
 		if (exp.charAt(exp.length() - 1) == FUNCTION_CONVERTER) {
 			String id = exp.substring(0, exp.length() - 1);
 
-			if (IntrinsicOperation.idExists(id))
-				return new DataNode<XiLambda>(IntrinsicOperation.parse(id)
+			if (BuiltInOperation.idExists(id))
+				return new DataNode<XiLambda>(BuiltInOperation.parse(id)
 						.asLambda());
 
 			return new FunctionConverterNode(id);

@@ -8,7 +8,7 @@ import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.datatypes.functional.XiBlock;
 import org.xiscript.xi.datatypes.functional.XiLambda;
 import org.xiscript.xi.datatypes.numeric.XiInt;
-import org.xiscript.xi.operations.IntrinsicOperation;
+import org.xiscript.xi.operations.BuiltInOperation;
 
 public abstract class XiIterable extends DataType implements Iterable<DataType> {
 
@@ -85,7 +85,7 @@ public abstract class XiIterable extends DataType implements Iterable<DataType> 
 	public DataType sum() {
 		DataType result = null;
 		for (DataType data : this)
-			result = (result == null) ? data : IntrinsicOperation.ADD.evaluate(
+			result = (result == null) ? data : BuiltInOperation.ADD.evaluate(
 					result, data);
 		return (result == null) ? new XiInt(0) : result;
 	}

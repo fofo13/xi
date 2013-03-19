@@ -46,7 +46,7 @@ import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 import org.xiscript.xi.exceptions.ReturnException;
 import org.xiscript.xi.util.TimerManager;
 
-public enum IntrinsicOperation implements Operation {
+public enum BuiltInOperation implements Operation {
 
 	NULL("null", 0),
 
@@ -89,7 +89,7 @@ public enum IntrinsicOperation implements Operation {
 
 	TIC("tic", 1), TOC("toc", 1);
 
-	private static final Map<String, IntrinsicOperation> ids = new HashMap<String, IntrinsicOperation>(
+	private static final Map<String, BuiltInOperation> ids = new HashMap<String, BuiltInOperation>(
 			values().length);
 
 	private static final Random RND = new Random();
@@ -97,7 +97,7 @@ public enum IntrinsicOperation implements Operation {
 	private static final VariableCache EMPTY_CACHE = new VariableCache();
 
 	static {
-		for (IntrinsicOperation op : values())
+		for (BuiltInOperation op : values())
 			ids.put(op.id, op);
 	}
 
@@ -105,7 +105,7 @@ public enum IntrinsicOperation implements Operation {
 	private final int numArgs;
 	private final XiLambda asLambda;
 
-	private IntrinsicOperation(String id, int numArgs) {
+	private BuiltInOperation(String id, int numArgs) {
 		this.id = id;
 		this.numArgs = numArgs;
 
@@ -622,7 +622,7 @@ public enum IntrinsicOperation implements Operation {
 	}
 
 	private XiLambda genLambda() {
-		final IntrinsicOperation op = this;
+		final BuiltInOperation op = this;
 		return new HiddenLambda(numArgs) {
 			@Override
 			public DataType evaluate(DataType... args) {
@@ -640,7 +640,7 @@ public enum IntrinsicOperation implements Operation {
 		return ids.containsKey(id);
 	}
 
-	public static IntrinsicOperation parse(String id) {
+	public static BuiltInOperation parse(String id) {
 		if (!ids.containsKey(id))
 			ErrorHandler.invokeError(ErrorType.IDNETIFIER_NOT_FOUND, id);
 		return ids.get(id);

@@ -4,13 +4,13 @@ import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.nodes.VarNode;
-import org.xiscript.xi.operations.IntrinsicOperation;
+import org.xiscript.xi.operations.BuiltInOperation;
 
 public class CompoundAssignmentNode extends AssignmentNode {
 
-	private IntrinsicOperation op;
+	private BuiltInOperation op;
 
-	public CompoundAssignmentNode(IntrinsicOperation op) {
+	public CompoundAssignmentNode(BuiltInOperation op) {
 		this.op = op;
 	}
 

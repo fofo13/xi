@@ -11,7 +11,7 @@ import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.numeric.XiInt;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
-import org.xiscript.xi.operations.IntrinsicOperation;
+import org.xiscript.xi.operations.BuiltInOperation;
 import org.xiscript.xi.util.Range;
 
 public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
@@ -126,7 +126,7 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 	public CollectionWrapper<List<DataType>> cut(XiTuple params) {
 		if (params.length() != 2 && params.length() != 3)
 			ErrorHandler
-					.invokeError(ErrorType.ARGUMENT, IntrinsicOperation.CUT);
+					.invokeError(ErrorType.ARGUMENT, BuiltInOperation.CUT);
 
 		int m = ((XiInt) params.get(0)).val();
 		int n = ((XiInt) params.get(1)).val();
@@ -139,7 +139,7 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 
 		if (step == 0)
 			ErrorHandler
-					.invokeError(ErrorType.ARGUMENT, IntrinsicOperation.CUT);
+					.invokeError(ErrorType.ARGUMENT, BuiltInOperation.CUT);
 
 		List<DataType> newList = new ArrayList<DataType>(n);
 		for (int i = m; i < n; i += Math.abs(step))
@@ -164,7 +164,7 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 	private CollectionWrapper<List<DataType>> delete(XiTuple params) {
 		if (params.length() != 2 && params.length() != 3)
 			ErrorHandler
-					.invokeError(ErrorType.ARGUMENT, IntrinsicOperation.DEL);
+					.invokeError(ErrorType.ARGUMENT, BuiltInOperation.DEL);
 
 		int m = ((XiInt) params.get(0)).val();
 		int n = ((XiInt) params.get(1)).val();
@@ -177,7 +177,7 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 
 		if (step == 0)
 			ErrorHandler
-					.invokeError(ErrorType.ARGUMENT, IntrinsicOperation.DEL);
+					.invokeError(ErrorType.ARGUMENT, BuiltInOperation.DEL);
 
 		List<Integer> indexes = new ArrayList<Integer>();
 		for (int i = m; i < n; i += step)
@@ -209,7 +209,7 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 	public static XiList range(XiTuple params) {
 		if (params.length() != 2 && params.length() != 3)
 			ErrorHandler.invokeError(ErrorType.ARGUMENT,
-					IntrinsicOperation.RANGE);
+					BuiltInOperation.RANGE);
 
 		int m = ((XiInt) params.get(0)).val();
 		int n = ((XiInt) params.get(1)).val();
@@ -224,7 +224,7 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 	private static XiList range(int m, int n, int step) {
 		if (step == 0)
 			ErrorHandler.invokeError(ErrorType.ARGUMENT,
-					IntrinsicOperation.RANGE);
+					BuiltInOperation.RANGE);
 
 		int r = Math.abs(step);
 		List<DataType> list = new ArrayList<DataType>();

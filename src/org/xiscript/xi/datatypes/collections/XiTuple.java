@@ -11,7 +11,7 @@ import org.xiscript.xi.datatypes.iterable.XiGenerator;
 import org.xiscript.xi.datatypes.numeric.XiInt;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
-import org.xiscript.xi.operations.IntrinsicOperation;
+import org.xiscript.xi.operations.BuiltInOperation;
 
 public class XiTuple extends XiList {
 
@@ -41,14 +41,14 @@ public class XiTuple extends XiList {
 	@Override
 	public CollectionWrapper<List<DataType>> delete(DataType params) {
 		ErrorHandler.invokeError(ErrorType.ARGUMENT,
-				IntrinsicOperation.SUBTRACT);
+				BuiltInOperation.SUBTRACT);
 		return null;
 	}
 
 	@Override
 	public void put(XiInt index, DataType data) {
 		ErrorHandler
-				.invokeError(ErrorType.ARGUMENT, IntrinsicOperation.SETATTR);
+				.invokeError(ErrorType.ARGUMENT, BuiltInOperation.SETATTR);
 	}
 
 	@Override

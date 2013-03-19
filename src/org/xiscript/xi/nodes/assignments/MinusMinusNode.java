@@ -5,7 +5,7 @@ import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.datatypes.numeric.XiInt;
 import org.xiscript.xi.nodes.VarNode;
-import org.xiscript.xi.operations.IntrinsicOperation;
+import org.xiscript.xi.operations.BuiltInOperation;
 
 public class MinusMinusNode extends AssignmentNode {
 
@@ -17,7 +17,7 @@ public class MinusMinusNode extends AssignmentNode {
 	@Override
 	public DataType evaluate(VariableCache cache) {
 		String id = ((VarNode) children.get(0)).id();
-		DataType rhs = IntrinsicOperation.SUBTRACT.evaluate(cache.get(id),
+		DataType rhs = BuiltInOperation.SUBTRACT.evaluate(cache.get(id),
 				new XiInt(1));
 		XiVar var = new XiVar(id, rhs);
 		cache.add(var);
