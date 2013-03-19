@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Random;
 
 import org.xiscript.xi.core.ModuleLoader;
+import org.xiscript.xi.core.Parser;
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
@@ -155,14 +156,18 @@ public enum BuiltInOperation implements Operation {
 				return ((XiList) args[0]).abs();
 			return ((XiNum) args[0]).abs();
 		case ADD:
-			if (args[0] instanceof CollectionWrapper)
-				return ((CollectionWrapper<?>) args[0]).plus(args[1]);
+			if (args[0] instanceof CollectionWrapper) {
+				((CollectionWrapper<?>) args[0]).add(args[1]);
+				return args[0];
+			}
 			if (args[0] instanceof XiString || args[1] instanceof XiString)
 				return new XiString(args[0].toString() + args[1].toString());
 			return ((XiNum) args[0]).add((XiNum) args[1]);
 		case SUBTRACT:
-			if (args[0] instanceof ListWrapper)
-				return ((ListWrapper) args[0]).delete(args[1]);
+			if (args[0] instanceof ListWrapper) {
+				((ListWrapper) args[0]).remove(args[1]);
+				return args[0];
+			}
 			if (args[0] instanceof XiSet && args[1] instanceof XiSet)
 				return ((XiSet) args[0]).difference((XiSet) args[1], false);
 			return ((XiNum) args[0]).sub((XiNum) args[1]);
@@ -304,10 +309,13 @@ public enum BuiltInOperation implements Operation {
 				return new XiFloat(RND.nextDouble() * ((XiFloat) args[0]).num());
 			return new XiInt(RND.nextInt(((XiInt) args[0]).val()));
 		case SORT:
-			return ((ListWrapper) args[0]).sort();
+			((ListWrapper) args[0]).sort();
+			return args[0];
 		case CSORT: {
 			final XiLambda key = (args[0] instanceof XiLambda) ? (XiLambda) args[0]
-					: new XiLambda(new String[] { "." }, (XiBlock) args[0]);
+					: new XiLambda(
+							new String[] { Character.toString(Parser.DOTVAR) },
+							(XiBlock) args[0]);
 
 			Comparator<DataType> cmp = new Comparator<DataType>() {
 				@Override
@@ -329,7 +337,8 @@ public enum BuiltInOperation implements Operation {
 				}
 			};
 
-			return ((ListWrapper) args[1]).sort(cmp);
+			((ListWrapper) args[1]).sort(cmp);
+			return args[1];
 		}
 		case CUT:
 			if (args[1] instanceof XiInt)

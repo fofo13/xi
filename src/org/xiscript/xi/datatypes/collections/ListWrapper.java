@@ -87,16 +87,12 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 		return instantiate(newList);
 	}
 
-	public CollectionWrapper<List<DataType>> sort() {
-		List<DataType> newList = new ArrayList<DataType>(collection);
-		Collections.sort(newList);
-		return instantiate(newList);
+	public void sort() {
+		Collections.sort(collection);
 	}
 
-	public CollectionWrapper<List<DataType>> sort(Comparator<DataType> cmp) {
-		List<DataType> newList = new ArrayList<DataType>(collection);
-		Collections.sort(newList, cmp);
-		return instantiate(newList);
+	public void sort(Comparator<DataType> cmp) {
+		Collections.sort(collection, cmp);
 	}
 
 	public CollectionWrapper<List<DataType>> lshift(XiInt n) {
@@ -125,8 +121,7 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 
 	public CollectionWrapper<List<DataType>> cut(XiTuple params) {
 		if (params.length() != 2 && params.length() != 3)
-			ErrorHandler
-					.invokeError(ErrorType.ARGUMENT, BuiltInOperation.CUT);
+			ErrorHandler.invokeError(ErrorType.ARGUMENT, BuiltInOperation.CUT);
 
 		int m = ((XiInt) params.get(0)).val();
 		int n = ((XiInt) params.get(1)).val();
@@ -138,8 +133,7 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 			step = ((XiInt) params.get(2)).val();
 
 		if (step == 0)
-			ErrorHandler
-					.invokeError(ErrorType.ARGUMENT, BuiltInOperation.CUT);
+			ErrorHandler.invokeError(ErrorType.ARGUMENT, BuiltInOperation.CUT);
 
 		List<DataType> newList = new ArrayList<DataType>(n);
 		for (int i = m; i < n; i += Math.abs(step))
@@ -163,8 +157,7 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 
 	private CollectionWrapper<List<DataType>> delete(XiTuple params) {
 		if (params.length() != 2 && params.length() != 3)
-			ErrorHandler
-					.invokeError(ErrorType.ARGUMENT, BuiltInOperation.DEL);
+			ErrorHandler.invokeError(ErrorType.ARGUMENT, BuiltInOperation.DEL);
 
 		int m = ((XiInt) params.get(0)).val();
 		int n = ((XiInt) params.get(1)).val();
@@ -176,8 +169,7 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 			step = ((XiInt) params.get(2)).val();
 
 		if (step == 0)
-			ErrorHandler
-					.invokeError(ErrorType.ARGUMENT, BuiltInOperation.DEL);
+			ErrorHandler.invokeError(ErrorType.ARGUMENT, BuiltInOperation.DEL);
 
 		List<Integer> indexes = new ArrayList<Integer>();
 		for (int i = m; i < n; i += step)
@@ -208,8 +200,8 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 
 	public static XiList range(XiTuple params) {
 		if (params.length() != 2 && params.length() != 3)
-			ErrorHandler.invokeError(ErrorType.ARGUMENT,
-					BuiltInOperation.RANGE);
+			ErrorHandler
+					.invokeError(ErrorType.ARGUMENT, BuiltInOperation.RANGE);
 
 		int m = ((XiInt) params.get(0)).val();
 		int n = ((XiInt) params.get(1)).val();
@@ -223,8 +215,8 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 
 	private static XiList range(int m, int n, int step) {
 		if (step == 0)
-			ErrorHandler.invokeError(ErrorType.ARGUMENT,
-					BuiltInOperation.RANGE);
+			ErrorHandler
+					.invokeError(ErrorType.ARGUMENT, BuiltInOperation.RANGE);
 
 		int r = Math.abs(step);
 		List<DataType> list = new ArrayList<DataType>();

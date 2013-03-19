@@ -122,14 +122,15 @@ public class XiString extends ListWrapper implements CharSequence {
 	@Override
 	public DataType find(DataType data) {
 		if (data instanceof XiRegex) {
+			List<DataType> matches = new ArrayList<DataType>();
+
 			Pattern p = Pattern.compile(((XiRegex) data).toString());
 			Matcher m = p.matcher(toString());
 
-			XiList matches = new XiList();
 			while (m.find())
-				matches = (XiList) matches.plus(new XiString(m.group()));
+				matches.add(new XiString(m.group()));
 
-			return matches;
+			return new XiList(matches);
 		}
 		return super.find(data);
 	}

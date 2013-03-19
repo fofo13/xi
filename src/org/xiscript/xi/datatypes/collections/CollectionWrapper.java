@@ -90,14 +90,6 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 		return instantiate(col);
 	}
 
-	public CollectionWrapper<T> plus(DataType data) {
-		Collection<DataType> col = new ArrayList<DataType>(
-				collection.size() + 1);
-		col.addAll(collection);
-		col.add(data);
-		return instantiate(col);
-	}
-
 	public XiList asList() {
 		return new XiList(new ArrayList<DataType>(collection));
 	}
