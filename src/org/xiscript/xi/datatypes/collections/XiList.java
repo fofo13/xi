@@ -24,17 +24,6 @@ public class XiList extends ListWrapper {
 			add(d);
 	}
 
-	public XiList abs() {
-		List<DataType> newList = new ArrayList<DataType>();
-		for (DataType data : collection)
-			if (data instanceof XiList)
-				newList.addAll(((XiList) data).abs().list());
-			else
-				newList.add(data);
-
-		return new XiList(newList);
-	}
-
 	@Override
 	public CollectionWrapper<List<DataType>> instantiate(
 			Collection<DataType> col) {

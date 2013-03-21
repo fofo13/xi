@@ -87,7 +87,8 @@ public enum BuiltInOperation implements Operation {
 
 	GETATTR("=>", 2), SETATTR("<=", 3),
 
-	RETURN("return", 1), CONTINUE("continue", 0), BREAK("break", 0),
+	RETURN("return", 1), CONTINUE("continue", 0), BREAK("break", 0), EXIT(
+			"exit", 1),
 
 	TIC("tic", 1), TOC("toc", 1);
 
@@ -153,16 +154,16 @@ public enum BuiltInOperation implements Operation {
 			}
 			return new XiInt(~((XiInt) args[0]).val());
 		case ABS:
-			if (args[0] instanceof XiList)
-				return ((XiList) args[0]).abs();
+			if (args[0] instanceof ListWrapper)
+				return ((ListWrapper) args[0]).abs();
 			return ((XiNum) args[0]).abs();
 		case ADD:
+			if (args[0] instanceof XiString)
+				return new XiString(args[0].toString() + args[1].toString());
 			if (args[0] instanceof CollectionWrapper) {
 				((CollectionWrapper<?>) args[0]).add(args[1]);
 				return args[0];
 			}
-			if (args[0] instanceof XiString || args[1] instanceof XiString)
-				return new XiString(args[0].toString() + args[1].toString());
 			return ((XiNum) args[0]).add((XiNum) args[1]);
 		case SUBTRACT:
 			if (args[0] instanceof ListWrapper) {
@@ -619,6 +620,8 @@ public enum BuiltInOperation implements Operation {
 			throw new ContinueException();
 		case BREAK:
 			throw new BreakException();
+		case EXIT:
+			System.exit(((XiInt) args[0]).val());
 		case TIC:
 			TimerManager.addTimer(((XiInt) args[0]).val());
 			return XiNull.instance();

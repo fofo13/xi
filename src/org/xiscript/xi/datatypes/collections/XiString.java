@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import org.xiscript.xi.core.Parser;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiType;
+import org.xiscript.xi.datatypes.numeric.XiInt;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
@@ -66,7 +67,17 @@ public class XiString extends ListWrapper implements CharSequence {
 	private boolean raw;
 
 	public XiString(List<DataType> list) {
-		super(list);
+		super(new ArrayList<DataType>(list.size()));
+
+		for (DataType d : list) {
+			if (d instanceof XiChar)
+				collection.add(d);
+			else if (d instanceof XiString)
+				for (char c : d.toString().toCharArray())
+					collection.add(new XiChar(c));
+			else
+				ErrorHandler.invokeError(ErrorType.INTERNAL);
+		}
 	}
 
 	public XiString(String expr, boolean raw) {
@@ -82,8 +93,9 @@ public class XiString extends ListWrapper implements CharSequence {
 		this(expr, false);
 	}
 
-	public XiList toList() {
-		return new XiList(collection);
+	@Override
+	public DataType get(int index) {
+		return new XiString(super.get(index).toString());
 	}
 
 	public XiList useToSplit(XiString str) {
@@ -124,7 +136,7 @@ public class XiString extends ListWrapper implements CharSequence {
 		if (data instanceof XiRegex) {
 			List<DataType> matches = new ArrayList<DataType>();
 
-			Pattern p = Pattern.compile(((XiRegex) data).toString());
+			Pattern p = Pattern.compile(data.toString());
 			Matcher m = p.matcher(toString());
 
 			while (m.find())
@@ -132,6 +144,11 @@ public class XiString extends ListWrapper implements CharSequence {
 
 			return new XiList(matches);
 		}
+
+		if (data instanceof XiString) {
+			return new XiInt(toString().indexOf(data.toString()));
+		}
+
 		return super.find(data);
 	}
 
@@ -183,7 +200,7 @@ public class XiString extends ListWrapper implements CharSequence {
 
 	@Override
 	public XiType type() {
-		return XiType.valueOf(XiType.Type.SET);
+		return XiType.valueOf(XiType.Type.STRING);
 	}
 
 }

@@ -267,6 +267,17 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 		return new XiList(newList);
 	}
 
+	public CollectionWrapper<?> abs() {
+		List<DataType> newList = new ArrayList<DataType>();
+		for (DataType data : collection)
+			if (data instanceof ListWrapper)
+				newList.addAll(((ListWrapper) data).abs().collection);
+			else
+				newList.add(data);
+
+		return instantiate(newList);
+	}
+
 	@Override
 	public void add(int index, DataType data) {
 		collection.add(index, data);
