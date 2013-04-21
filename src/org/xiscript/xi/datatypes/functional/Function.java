@@ -37,7 +37,7 @@ public abstract class Function extends DataType {
 	public DataType evaluate(DataType[] args, VariableCache globals) {
 		body.addVars(globals);
 		for (int i = 0; i < args.length; i++) {
-			body.updateLocal(new XiVar(identifiers[i], true), args[i]);
+			body.updateLocal(new XiVar(identifiers[i]), args[i]);
 		}
 		try {
 			return body.evaluate();
