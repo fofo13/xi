@@ -2,6 +2,9 @@ package org.xiscript.xi.datatypes;
 
 public class XiVar extends DataType {
 
+	public static final XiVar D = new XiVar(".", true);
+	public static final XiVar U = new XiVar("_", true);
+
 	private String id;
 	private boolean temporary;
 

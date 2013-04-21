@@ -476,8 +476,8 @@ public enum BuiltInOperation implements Operation {
 			body.addVars(globals);
 			int index = 0;
 			for (DataType data : col) {
-				body.updateLocal(new XiVar(".", true), data);
-				body.updateLocal(new XiVar("_", true), new XiInt(index));
+				body.updateLocal(XiVar.D, data);
+				body.updateLocal(XiVar.U, new XiInt(index));
 				try {
 					body.evaluate();
 				} catch (BreakException be) {
