@@ -1,46 +1,66 @@
 package org.xiscript.xi.core;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.xiscript.xi.datatypes.DataType;
-import org.xiscript.xi.datatypes.XiNull;
 import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
-public class VariableCache implements Set<XiVar> {
+public class VariableCache implements Map<XiVar, DataType>, Cloneable {
 
-	private Set<XiVar> cache;
+	private Map<XiVar, DataType> cache;
 
-	public VariableCache(Set<XiVar> cache) {
+	private VariableCache(Map<XiVar, DataType> cache) {
 		this.cache = cache;
 	}
 
 	public VariableCache() {
-		this(new HashSet<XiVar>());
+		this(new HashMap<XiVar, DataType>());
 	}
 
-	public DataType get(String id) {
-		for (XiVar v : cache)
-			if (v.id().equals(id))
-				return v.val();
+	@Override
+	public DataType put(XiVar id, DataType data) {
+		return cache.put(id, data);
+	}
 
-		ErrorHandler.invokeError(ErrorType.IDNETIFIER_NOT_FOUND, id);
-		return XiNull.instance();
+	public void put(String id, DataType data) {
+		put(new XiVar(id), data);
+	}
+
+	@Override
+	public void putAll(Map<? extends XiVar, ? extends DataType> m) {
+		for (Entry<? extends XiVar, ? extends DataType> entry : m.entrySet())
+			if (!entry.getKey().temporary())
+				cache.put(entry.getKey(), entry.getValue());
+	}
+
+	public void putAll(Map<? extends XiVar, ? extends DataType> m,
+			boolean addTemps) {
+		if (!addTemps) {
+			putAll(m);
+			return;
+		}
+
+		for (Entry<? extends XiVar, ? extends DataType> entry : m.entrySet())
+			cache.put(entry.getKey(), entry.getValue());
+	}
+
+	@Override
+	public boolean containsKey(Object key) {
+		return cache.containsKey(key);
+	}
+
+	@Override
+	public boolean containsValue(Object value) {
+		return cache.containsValue(value);
 	}
 
 	public boolean containsId(String id) {
-		for (XiVar v : cache)
-			if (v.id().equals(id))
-				return true;
-		return false;
-	}
-
-	public void removeId(String id) {
-		cache.remove(new XiVar(id, null));
+		return cache.containsKey(new XiVar(id));
 	}
 
 	@Override
@@ -49,60 +69,38 @@ public class VariableCache implements Set<XiVar> {
 	}
 
 	@Override
-	public boolean addAll(Collection<? extends XiVar> c) {
-		for (XiVar v : new HashSet<XiVar>(c))
-			if (!v.temporary())
-				add(v);
-		return true;
-	}
-
-	@Override
-	public boolean retainAll(Collection<?> c) {
-		return cache.retainAll(c);
-	}
-
-	@Override
-	public boolean add(XiVar v) {
-		if (!cache.add(v)) {
-			cache.remove(v);
-			cache.add(v);
-		}
-		return true;
-	}
-
-	@Override
 	public void clear() {
+		for (DataType data : values())
+			data.delete();
 		cache.clear();
 	}
 
 	@Override
-	public boolean removeAll(Collection<?> c) {
-		return cache.retainAll(c);
+	public Set<Entry<XiVar, DataType>> entrySet() {
+		return cache.entrySet();
 	}
 
 	@Override
-	public <T> T[] toArray(T[] a) {
-		return cache.toArray(a);
+	public DataType get(Object key) {
+		DataType value = cache.get(key);
+
+		if (value == null)
+			ErrorHandler.invokeError(ErrorType.IDNETIFIER_NOT_FOUND, key);
+
+		return value;
+	}
+
+	public DataType get(String id) {
+		return get(new XiVar(id));
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> c) {
-		return cache.containsAll(c);
+	public DataType remove(Object key) {
+		return cache.remove(key);
 	}
 
-	@Override
-	public Object[] toArray() {
-		return cache.toArray();
-	}
-
-	@Override
-	public boolean remove(Object o) {
-		return cache.remove(o);
-	}
-
-	@Override
-	public boolean contains(Object o) {
-		return cache.contains(o);
+	public DataType remove(String id) {
+		return cache.remove(new XiVar(id));
 	}
 
 	@Override
@@ -111,18 +109,23 @@ public class VariableCache implements Set<XiVar> {
 	}
 
 	@Override
-	public Iterator<XiVar> iterator() {
-		return cache.iterator();
+	public Collection<DataType> values() {
+		return cache.values();
+	}
+
+	@Override
+	public Set<XiVar> keySet() {
+		return cache.keySet();
 	}
 
 	@Override
 	public String toString() {
-		if (isEmpty())
-			return "[]";
-		String s = "";
-		for (XiVar var : cache)
-			s += ", " + var.id() + " := " + var.val();
-		return "[" + s.substring(2) + "]";
+		return cache.toString();
+	}
+
+	@Override
+	public VariableCache clone() {
+		return new VariableCache(new HashMap<XiVar, DataType>(cache));
 	}
 
 }

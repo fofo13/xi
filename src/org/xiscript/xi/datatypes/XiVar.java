@@ -3,33 +3,23 @@ package org.xiscript.xi.datatypes;
 public class XiVar extends DataType {
 
 	private String id;
-	private DataType data;
 	private boolean temporary;
 
-	public XiVar(String id, DataType val, boolean temporary) {
+	public XiVar(String id, boolean temporary) {
 		this.id = id;
-		this.data = val;
 		this.temporary = temporary;
 	}
 
-	public XiVar(String id, DataType val) {
-		this(id, val, false);
+	public XiVar(String id) {
+		this(id, false);
 	}
 
 	public String id() {
 		return id;
 	}
 
-	public DataType val() {
-		return data;
-	}
-
 	public boolean temporary() {
 		return temporary;
-	}
-
-	public void set(DataType data) {
-		this.data = data;
 	}
 
 	@Override
@@ -39,7 +29,7 @@ public class XiVar extends DataType {
 
 	@Override
 	public boolean isEmpty() {
-		return data.isEmpty();
+		return false;
 	}
 
 	@Override
@@ -49,7 +39,7 @@ public class XiVar extends DataType {
 
 	@Override
 	public void delete() {
-		data.delete();
+
 	}
 
 	@Override
@@ -59,8 +49,7 @@ public class XiVar extends DataType {
 
 	@Override
 	public boolean equals(Object o) {
-		XiVar v = (XiVar) o;
-		return id.equals(v.id());
+		return (o instanceof XiVar) && id.equals(((XiVar) o).id);
 	}
 
 	@Override

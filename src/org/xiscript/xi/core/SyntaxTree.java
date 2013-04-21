@@ -28,12 +28,14 @@ public class SyntaxTree {
 		for (Node node : nodes) {
 			if (node instanceof VarNode) {
 				VarNode vnode = (VarNode) node;
+
 				if (globals.containsId(vnode.id())
-						&& globals.get(vnode.id()) instanceof XiFunc)
+						&& globals.get(vnode.id()) instanceof XiFunc) {
 					nodesList.add(new OperationNode((XiFunc) globals.get(vnode
 							.id())));
-				else
+				} else {
 					nodesList.add(node);
+				}
 			} else
 				nodesList.add(node);
 		}

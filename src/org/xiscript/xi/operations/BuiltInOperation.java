@@ -149,7 +149,7 @@ public enum BuiltInOperation implements Operation {
 				try {
 					return block.evaluate();
 				} finally {
-					globals.addAll(block.locals());
+					globals.putAll(block.locals());
 				}
 			}
 			return new XiInt(~((XiInt) args[0]).val());
@@ -354,7 +354,7 @@ public enum BuiltInOperation implements Operation {
 				ErrorHandler.invokeError(ErrorType.IDNETIFIER_NOT_FOUND, id);
 
 			globals.get(id).delete();
-			globals.removeId(id);
+			globals.remove(id);
 
 			return XiNull.instance();
 		}
@@ -389,10 +389,10 @@ public enum BuiltInOperation implements Operation {
 
 					for (int i = 0; i < t.length(); i++) {
 						String subid = ((XiAttribute) t.get(i)).toString();
-						body.updateLocal(new XiVar(subid, lw.get(i), true));
+						body.updateLocal(new XiVar(subid, true), lw.get(i));
 					}
 				} else {
-					body.updateLocal(new XiVar(id, data, true));
+					body.updateLocal(new XiVar(id, true), data);
 				}
 
 				try {
@@ -403,14 +403,19 @@ public enum BuiltInOperation implements Operation {
 					continue;
 				}
 			}
-			globals.addAll(body.locals());
+			globals.putAll(body.locals());
 			return XiNull.instance();
 		}
 		case IF: {
+			// DataType n = globals.get("n");
 			XiBlock body = (XiBlock) (args[0].isEmpty() ? args[2] : args[1]);
 			body.addVars(globals);
+			// VariableCache old = globals.clone();
+			// System.out.println("0: " + globals);
 			body.evaluate();
-			globals.addAll(body.locals());
+			// System.out.println("1: " + globals);
+			globals.putAll(body.locals());
+			// globals.putAll(old);
 			return XiNull.instance();
 		}
 		case DO: {
@@ -426,7 +431,7 @@ public enum BuiltInOperation implements Operation {
 					continue;
 				}
 			}
-			globals.addAll(body.locals());
+			globals.putAll(body.locals());
 			return XiNull.instance();
 		}
 		case WHILE: {
@@ -444,7 +449,7 @@ public enum BuiltInOperation implements Operation {
 				}
 				cond.addVars(body.locals());
 			}
-			globals.addAll(body.locals());
+			globals.putAll(body.locals());
 			return XiNull.instance();
 		}
 		case DOWHILE: {
@@ -462,7 +467,7 @@ public enum BuiltInOperation implements Operation {
 				}
 				cond.addVars(body.locals());
 			} while (!cond.evaluate().isEmpty());
-			globals.addAll(body.locals());
+			globals.putAll(body.locals());
 			return XiNull.instance();
 		}
 		case LOOP: {
@@ -471,8 +476,8 @@ public enum BuiltInOperation implements Operation {
 			body.addVars(globals);
 			int index = 0;
 			for (DataType data : col) {
-				body.updateLocal(new XiVar(".", data, true));
-				body.updateLocal(new XiVar("_", new XiInt(index), true));
+				body.updateLocal(new XiVar(".", true), data);
+				body.updateLocal(new XiVar("_", true), new XiInt(index));
 				try {
 					body.evaluate();
 				} catch (BreakException be) {
@@ -482,7 +487,7 @@ public enum BuiltInOperation implements Operation {
 				}
 				index++;
 			}
-			globals.addAll(body.locals());
+			globals.putAll(body.locals());
 			return XiNull.instance();
 		}
 		case EVAL: {
@@ -495,7 +500,7 @@ public enum BuiltInOperation implements Operation {
 			try {
 				return block.evaluate();
 			} finally {
-				globals.addAll(block.locals());
+				globals.putAll(block.locals());
 			}
 		}
 		case EXEC: {
@@ -586,7 +591,7 @@ public enum BuiltInOperation implements Operation {
 		case IMPORT:
 			return ModuleLoader.load(args[0].toString());
 		case LOAD:
-			globals.addAll(ModuleLoader.load(args[0].toString()).contents());
+			globals.putAll(ModuleLoader.load(args[0].toString()).contents());
 			return XiNull.instance();
 		case GETATTR: {
 			if (!(args[1] instanceof XiAttribute)) {

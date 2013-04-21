@@ -10,7 +10,6 @@ import java.util.Queue;
 
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiNull;
-import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.exceptions.ControlFlowException;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
@@ -25,7 +24,7 @@ public class XiEnvironment {
 		globals = new VariableCache();
 
 		if (primary) {
-			globals.addAll(ModuleLoader.stdlib.get("stdlib").contents());
+			globals.putAll(ModuleLoader.stdlib.get("stdlib").contents());
 		}
 
 		source = compile(file);
@@ -72,8 +71,7 @@ public class XiEnvironment {
 	}
 
 	public void delete() {
-		for (XiVar v : globals)
-			v.delete();
+		globals.clear();
 	}
 
 }

@@ -2,7 +2,6 @@ package org.xiscript.xi.nodes.assignments;
 
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
-import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.nodes.VarNode;
 import org.xiscript.xi.operations.BuiltInOperation;
 
@@ -19,8 +18,7 @@ public class CompoundAssignmentNode extends AssignmentNode {
 		String id = ((VarNode) children.get(0)).id();
 		DataType rhs = op.evaluate(cache.get(id),
 				children.get(1).evaluate(cache));
-		XiVar var = new XiVar(id, rhs);
-		cache.add(var);
+		cache.put(id, rhs);
 		return rhs;
 	}
 

@@ -2,6 +2,7 @@ package org.xiscript.xi.datatypes;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.xiscript.xi.core.VariableCache;
 
@@ -15,8 +16,9 @@ public class XiModule extends DataType {
 		this.contents = contents;
 		attributes = new HashMap<XiAttribute, DataType>();
 
-		for (XiVar var : contents)
-			attributes.put(XiAttribute.valueOf(var.id()), var.val());
+		for (Entry<XiVar, DataType> entry : contents.entrySet())
+			attributes.put(XiAttribute.valueOf(entry.getKey().id()),
+					entry.getValue());
 	}
 
 	public VariableCache contents() {
@@ -24,7 +26,7 @@ public class XiModule extends DataType {
 	}
 
 	public void addVar(String id, DataType val) {
-		contents.add(new XiVar(id, val));
+		contents.put(id, val);
 		attributes.put(XiAttribute.valueOf(id), val);
 	}
 

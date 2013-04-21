@@ -45,12 +45,13 @@ public class OperationNode implements Node {
 	@Override
 	public DataType evaluate(VariableCache cache) {
 		DataType[] arr = new DataType[children.size()];
-		for (int i = 0; i < arr.length; i++)
+		for (int i = 0; i < arr.length; i++) {
 			try {
 				arr[i] = children.get(i).evaluate(cache);
 			} catch (ClassCastException cce) {
 				ErrorHandler.invokeError(ErrorType.ARGUMENT, children.get(i));
 			}
+		}
 		try {
 			return op.evaluate(arr, cache);
 		} catch (ClassCastException cce) {

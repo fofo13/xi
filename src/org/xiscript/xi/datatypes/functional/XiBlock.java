@@ -27,13 +27,12 @@ public class XiBlock extends DataType {
 		this(exp, new VariableCache());
 	}
 
-	public void updateLocal(XiVar v) {
-		locals.add(v);
+	public void updateLocal(XiVar id, DataType val) {
+		locals.put(id, val);
 	}
 
 	public void addVars(VariableCache cache) {
-		for (XiVar var : cache)
-			locals.add(var);
+		locals.putAll(cache, true);
 	}
 
 	public VariableCache locals() {
@@ -60,6 +59,7 @@ public class XiBlock extends DataType {
 	}
 
 	public DataType evaluate() {
+		VariableCache clone = locals.clone();
 		DataType last = XiNull.instance();
 
 		for (Node node : this.nodes)
@@ -69,13 +69,15 @@ public class XiBlock extends DataType {
 
 		try {
 			while (!nodes.isEmpty()) {
-				SyntaxTree tree = new SyntaxTree(nodes, locals);
+				SyntaxTree tree = new SyntaxTree(nodes, clone);
 				last = tree.evaluate();
 				nodes = tree.nodes();
 			}
 		} catch (ControlFlowException cfe) {
 			throw cfe;
 		}
+
+		locals.putAll(clone);
 		return last;
 	}
 
