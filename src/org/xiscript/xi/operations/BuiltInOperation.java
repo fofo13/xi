@@ -407,15 +407,10 @@ public enum BuiltInOperation implements Operation {
 			return XiNull.instance();
 		}
 		case IF: {
-			// DataType n = globals.get("n");
 			XiBlock body = (XiBlock) (args[0].isEmpty() ? args[2] : args[1]);
 			body.addVars(globals);
-			// VariableCache old = globals.clone();
-			// System.out.println("0: " + globals);
 			body.evaluate();
-			// System.out.println("1: " + globals);
 			globals.putAll(body.locals());
-			// globals.putAll(old);
 			return XiNull.instance();
 		}
 		case DO: {
