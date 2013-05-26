@@ -88,7 +88,7 @@ public enum BuiltInOperation implements Operation {
 
 	GETATTR("=>", 2), SETATTR("<=", 3),
 
-	RETURN("return", 1), CONTINUE("continue", 0), BREAK("break", 0), EXIT(
+	RETURN("return", 1), CONTINUE("continue", 1), BREAK("break", 1), EXIT(
 			"exit", 1),
 
 	TIC("tic", 1), TOC("toc", 1);
@@ -453,8 +453,14 @@ public enum BuiltInOperation implements Operation {
 				try {
 					body.evaluate();
 				} catch (BreakException be) {
+					be.decrement();
+					if (be.n() > 0)
+						throw be;
 					break;
 				} catch (ContinueException ce) {
+					ce.decrement();
+					if (ce.n() > 0)
+						throw ce;
 					continue;
 				}
 			}
@@ -489,8 +495,14 @@ public enum BuiltInOperation implements Operation {
 				try {
 					body.evaluate();
 				} catch (BreakException be) {
+					be.decrement();
+					if (be.n() > 0)
+						throw be;
 					break;
 				} catch (ContinueException ce) {
+					ce.decrement();
+					if (ce.n() > 0)
+						throw ce;
 					continue;
 				}
 			}
@@ -506,8 +518,14 @@ public enum BuiltInOperation implements Operation {
 				try {
 					body.evaluate();
 				} catch (BreakException be) {
+					be.decrement();
+					if (be.n() > 0)
+						throw be;
 					break;
 				} catch (ContinueException ce) {
+					ce.decrement();
+					if (ce.n() > 0)
+						throw ce;
 					continue;
 				}
 				cond.addVars(body.locals());
@@ -524,8 +542,14 @@ public enum BuiltInOperation implements Operation {
 				try {
 					body.evaluate();
 				} catch (BreakException be) {
+					be.decrement();
+					if (be.n() > 0)
+						throw be;
 					break;
 				} catch (ContinueException ce) {
+					ce.decrement();
+					if (ce.n() > 0)
+						throw ce;
 					continue;
 				}
 				cond.addVars(body.locals());
@@ -534,18 +558,24 @@ public enum BuiltInOperation implements Operation {
 			return XiNull.instance();
 		}
 		case LOOP: {
-			XiIterable col = (XiIterable) args[0];
+			XiIterable iter = (XiIterable) args[0];
 			XiBlock body = (XiBlock) args[1];
 			body.addVars(globals);
 			int index = 0;
-			for (DataType data : col) {
+			for (DataType data : iter) {
 				body.updateLocal(XiVar.SPEC_VAR, data);
 				body.updateLocal(XiVar.INDEX_VAR, new XiInt(index));
 				try {
 					body.evaluate();
 				} catch (BreakException be) {
+					be.decrement();
+					if (be.n() > 0)
+						throw be;
 					break;
 				} catch (ContinueException ce) {
+					ce.decrement();
+					if (ce.n() > 0)
+						throw ce;
 					continue;
 				}
 				index++;
@@ -683,11 +713,14 @@ public enum BuiltInOperation implements Operation {
 			return XiNull.instance();
 		}
 		case RETURN:
-			throw new ReturnException(args[0]);
+			throw new ReturnException(args.length == 1 ? args[0]
+					: XiNull.instance());
 		case CONTINUE:
-			throw new ContinueException();
+			throw new ContinueException(
+					args.length == 1 ? ((XiInt) args[0]).val() : 1);
 		case BREAK:
-			throw new BreakException();
+			throw new BreakException(args.length == 1 ? ((XiInt) args[0]).val()
+					: 1);
 		case EXIT:
 			System.exit(((XiInt) args[0]).val());
 		case TIC:

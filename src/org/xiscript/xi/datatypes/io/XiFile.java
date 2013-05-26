@@ -13,9 +13,12 @@ import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.XiNull;
 import org.xiscript.xi.datatypes.XiType;
 import org.xiscript.xi.datatypes.collections.XiString;
+import org.xiscript.xi.datatypes.functional.HiddenFunc;
 import org.xiscript.xi.datatypes.functional.HiddenLambda;
+import org.xiscript.xi.datatypes.functional.XiFunc;
 import org.xiscript.xi.datatypes.functional.XiLambda;
 import org.xiscript.xi.datatypes.iterable.XiIterable;
+import org.xiscript.xi.datatypes.numeric.XiInt;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
@@ -28,6 +31,9 @@ public class XiFile extends XiIterable {
 	private static final XiAttribute RAW_W = XiAttribute.valueOf("raw_w");
 	private static final XiAttribute RAW_R = XiAttribute.valueOf("raw_r");
 
+	private static final XiAttribute NAME = XiAttribute.valueOf("name");
+	private static final XiAttribute RENAME = XiAttribute.valueOf("rename");
+
 	private final File file;
 	private final XiWriter writer;
 	private final XiReader reader;
@@ -37,8 +43,10 @@ public class XiFile extends XiIterable {
 	private XiLambda r;
 	private XiLambda lnr;
 
-	public XiFile(final String file) {
-		this.file = new File(file);
+	private XiFunc rename;
+
+	public XiFile(final String str) {
+		this.file = new File(str);
 		writer = getWriter();
 		reader = getReader();
 
@@ -89,6 +97,14 @@ public class XiFile extends XiIterable {
 				return !reader.hasNextLine();
 			}
 		};
+
+		rename = new HiddenFunc(1) {
+			@Override
+			public DataType evaluate(DataType... args) {
+				return new XiInt(file.renameTo(new File(((XiString) args[0])
+						.toString())));
+			}
+		};
 	}
 
 	public XiFile(XiString file) {
@@ -109,6 +125,10 @@ public class XiFile extends XiIterable {
 			return writer;
 		if (a.equals(RAW_R))
 			return reader;
+		if (a.equals(NAME))
+			return new XiString(file.getAbsolutePath());
+		if (a.equals(RENAME))
+			return rename;
 
 		return super.getAttribute(a);
 	}
