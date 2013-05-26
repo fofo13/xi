@@ -2,6 +2,7 @@ package org.xiscript.xi.nodes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.xiscript.xi.core.VariableCache;
@@ -16,8 +17,8 @@ public class OperationNode implements Node {
 	protected List<Node> children;
 
 	public OperationNode(List<Node> children, Operation op) {
-		this.op = op;
 		this.children = children;
+		this.op = op;
 	}
 
 	public OperationNode(Node[] children, Operation op) {
@@ -25,11 +26,16 @@ public class OperationNode implements Node {
 	}
 
 	public OperationNode(Operation op) {
-		this(new ArrayList<Node>((op == null) ? 10 : op.numArgs()), op);
+		this((op != null && op.numArgs() < 0) ? new LinkedList<Node>()
+				: new ArrayList<Node>((op == null) ? 10 : op.numArgs()), op);
 	}
 
 	public List<Node> children() {
 		return children;
+	}
+
+	public Operation op() {
+		return op;
 	}
 
 	@Override

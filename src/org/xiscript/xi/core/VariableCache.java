@@ -128,4 +128,15 @@ public class VariableCache implements Map<XiVar, DataType>, Cloneable {
 		return new VariableCache(new HashMap<XiVar, DataType>(cache));
 	}
 
+	public VariableCache getPersistents() {
+		Map<XiVar, DataType> m = new HashMap<XiVar, DataType>();
+
+		for (Entry<? extends XiVar, ? extends DataType> entry : entrySet()) {
+			if (entry.getKey().persistent())
+				m.put(entry.getKey(), entry.getValue());
+		}
+
+		return new VariableCache(m);
+	}
+
 }

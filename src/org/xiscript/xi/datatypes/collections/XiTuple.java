@@ -40,15 +40,13 @@ public class XiTuple extends XiList {
 
 	@Override
 	public CollectionWrapper<List<DataType>> delete(DataType params) {
-		ErrorHandler.invokeError(ErrorType.ARGUMENT,
-				BuiltInOperation.SUBTRACT);
+		ErrorHandler.invokeError(ErrorType.ARGUMENT, BuiltInOperation.SUBTRACT);
 		return null;
 	}
 
 	@Override
 	public void put(XiInt index, DataType data) {
-		ErrorHandler
-				.invokeError(ErrorType.ARGUMENT, BuiltInOperation.SETATTR);
+		ErrorHandler.invokeError(ErrorType.ARGUMENT, BuiltInOperation.SETATTR);
 	}
 
 	@Override

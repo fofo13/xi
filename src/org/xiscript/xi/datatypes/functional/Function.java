@@ -37,7 +37,7 @@ public abstract class Function extends DataType {
 	public DataType evaluate(DataType[] args, VariableCache globals) {
 		body.addVars(globals);
 		for (int i = 0; i < args.length; i++) {
-			body.updateLocal(new XiVar(identifiers[i]), args[i]);
+			body.updateLocal(new XiVar(identifiers[i], false, true), args[i]);
 		}
 		try {
 			return body.evaluate();
@@ -57,7 +57,7 @@ public abstract class Function extends DataType {
 
 	@Override
 	public int length() {
-		return identifiers.length;
+		return identifiers == null ? 0 : identifiers.length;
 	}
 
 	@Override

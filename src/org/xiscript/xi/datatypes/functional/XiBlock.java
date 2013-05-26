@@ -1,11 +1,13 @@
 package org.xiscript.xi.datatypes.functional;
 
-import java.util.ArrayDeque;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import org.xiscript.xi.core.Parser;
 import org.xiscript.xi.core.SyntaxTree;
 import org.xiscript.xi.core.VariableCache;
+import org.xiscript.xi.core.XiEnvironment;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiNull;
 import org.xiscript.xi.datatypes.XiType;
@@ -16,15 +18,33 @@ import org.xiscript.xi.nodes.Node;
 public class XiBlock extends DataType {
 
 	private VariableCache locals;
-	private Queue<Node> nodes;
+	private List<SyntaxTree> statements;
+	private String exp;
 
 	public XiBlock(String exp, VariableCache locals) {
 		this.locals = locals;
-		nodes = Parser.genNodeQueue(exp.substring(1, exp.length() - 1));
+		this.exp = exp;
 	}
 
 	public XiBlock(String exp) {
 		this(exp, new VariableCache());
+	}
+
+	private void init() {
+		if (statements == null) {
+			locals.putAll(XiEnvironment.globals);
+
+			Queue<Node> nodes = Parser.genNodeQueue(exp.substring(1,
+					exp.length() - 1));
+
+			statements = new LinkedList<SyntaxTree>();
+
+			while (!nodes.isEmpty()) {
+				SyntaxTree tree = new SyntaxTree(nodes, locals);
+				statements.add(tree);
+				nodes = tree.nodes();
+			}
+		}
 	}
 
 	public void updateLocal(XiVar id, DataType val) {
@@ -55,29 +75,25 @@ public class XiBlock extends DataType {
 
 	@Override
 	public boolean isEmpty() {
-		return nodes.isEmpty();
+		return statements.isEmpty();
 	}
 
 	public DataType evaluate() {
-		VariableCache clone = locals.clone();
+		init();
 		DataType last = XiNull.instance();
-
-		for (Node node : this.nodes)
-			node.clear();
-
-		Queue<Node> nodes = new ArrayDeque<Node>(this.nodes);
+		VariableCache old = locals.getPersistents();
 
 		try {
-			while (!nodes.isEmpty()) {
-				SyntaxTree tree = new SyntaxTree(nodes, clone);
-				last = tree.evaluate();
-				nodes = tree.nodes();
+			for (SyntaxTree st : statements) {
+				last = st.evaluate();
+				locals.putAll(st.globals());
 			}
 		} catch (ControlFlowException cfe) {
 			throw cfe;
 		}
 
-		locals.putAll(clone);
+		locals.putAll(old);
+
 		return last;
 	}
 

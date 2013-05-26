@@ -47,7 +47,7 @@ public class DataNode<T extends DataType> implements Node {
 
 	@Override
 	public String toString() {
-		return data.toString();
+		return data == null ? "null" : data.toString();
 	}
 
 }

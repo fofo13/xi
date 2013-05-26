@@ -27,4 +27,10 @@ public class AssignmentNode extends OperationNode {
 		cache.put(((VarNode) children.get(0)).id(), rhs);
 		return rhs;
 	}
+
+	@Override
+	public String toString() {
+		return ":=";
+	}
+
 }

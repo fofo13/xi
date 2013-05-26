@@ -7,10 +7,16 @@ public class XiVar extends DataType {
 
 	private String id;
 	private boolean temporary;
+	private boolean persistent;
 
-	public XiVar(String id, boolean temporary) {
+	public XiVar(String id, boolean temporary, boolean persistent) {
 		this.id = id;
 		this.temporary = temporary;
+		this.persistent = persistent;
+	}
+
+	public XiVar(String id, boolean temporary) {
+		this(id, temporary, false);
 	}
 
 	public XiVar(String id) {
@@ -23,6 +29,10 @@ public class XiVar extends DataType {
 
 	public boolean temporary() {
 		return temporary;
+	}
+
+	public boolean persistent() {
+		return persistent;
 	}
 
 	@Override

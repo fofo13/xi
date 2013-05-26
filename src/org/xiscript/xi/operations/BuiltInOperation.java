@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.IllegalFormatException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -51,11 +52,11 @@ public enum BuiltInOperation implements Operation {
 
 	NULL("null", 0),
 
-	NOT("!", 1), BITNOT("~", 1), ABS("abs", 1), ADD("+", 2), SUBTRACT("-", 2), MULTIPLY(
-			"*", 2), DIVIDE("/", 2), INTDIV("//", 2), MODULUS("%", 2), EQ("=",
-			2), NEQ("!=", 2), GREATER(">", 2), LESS("<", 2), GREATER_EQ(">=", 2), LESS_EQ(
-			"<=", 2), AND("&", 2), OR("|", 2), XOR("^", 2), RSHIFT(">>", 2), LSHIFT(
-			"<<", 2), POW("**", 2),
+	NOT("!", 1), BITNOT("~", 1), ABS("abs", 1), ADD("+", 2), ADDALL("+:", -1), SUBTRACT(
+			"-", 2), MULTIPLY("*", 2), MULTALL("*:", -1), DIVIDE("/", 2), INTDIV(
+			"//", 2), MODULUS("%", 2), EQ("=", 2), NEQ("!=", 2), GREATER(">", 2), LESS(
+			"<", 2), GREATER_EQ(">=", 2), LESS_EQ("<=", 2), AND("&", 2), OR(
+			"|", 2), XOR("^", 2), RSHIFT(">>", 2), LSHIFT("<<", 2), POW("**", 2),
 
 	FIND("find", 2), IN("in", 2), MAP("@", 2), DEEPMAP("@@", 2), RANGE(",", 1), SUM(
 			"$", 1), RAND("rnd", 1), SORT("sort", 1), CSORT("csort", 2), CUT(
@@ -165,6 +166,16 @@ public enum BuiltInOperation implements Operation {
 				return args[0];
 			}
 			return ((XiNum) args[0]).add((XiNum) args[1]);
+		case ADDALL: {
+			DataType d = args[0];
+
+			if (args.length == 1)
+				return ((XiIterable) d).sum();
+
+			for (int i = 0; i < args.length; i++)
+				d = ADD.evaluate(d, args[i]);
+			return d;
+		}
 		case SUBTRACT:
 			if (args[0] instanceof ListWrapper) {
 				((ListWrapper) args[0]).remove(args[1]);
@@ -177,6 +188,23 @@ public enum BuiltInOperation implements Operation {
 			if (args[0] instanceof ListWrapper)
 				return ((ListWrapper) args[0]).mul((XiInt) args[1]);
 			return ((XiNum) args[0]).mul((XiNum) args[1]);
+		case MULTALL: {
+			DataType d = args[0];
+
+			if (args.length == 1) {
+				Iterator<DataType> iter = ((XiIterable) d).iterator();
+
+				DataType mul = iter.next();
+				while (iter.hasNext())
+					mul = MULTIPLY.evaluate(mul, iter.next());
+
+				return mul;
+			}
+
+			for (int i = 0; i < args.length; i++)
+				d = MULTIPLY.evaluate(d, args[i]);
+			return d;
+		}
 		case DIVIDE:
 			if (args[0] instanceof XiBlock)
 				return ((XiIterable) args[1]).filter((XiBlock) args[0]);

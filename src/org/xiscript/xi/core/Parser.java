@@ -22,6 +22,7 @@ import org.xiscript.xi.nodes.DataNode;
 import org.xiscript.xi.nodes.FunctionConverterNode;
 import org.xiscript.xi.nodes.Node;
 import org.xiscript.xi.nodes.OperationNode;
+import org.xiscript.xi.nodes.StopNode;
 import org.xiscript.xi.nodes.VarNode;
 import org.xiscript.xi.nodes.assignments.AssignmentNode;
 import org.xiscript.xi.nodes.assignments.CompoundAssignmentNode;
@@ -94,6 +95,7 @@ public class Parser {
 	public static final String PLUS_PLUS = "++";
 	public static final String MINUS_MINUS = "--";
 
+	public static final char STOP = ';';
 	public static final char COMMENT = '#';
 	public static final char NEWLINE = '\n';
 
@@ -163,6 +165,9 @@ public class Parser {
 
 		else if (start == COMMENT)
 			readComment(chars);
+
+		else if (start == STOP)
+			return Character.toString(chars.poll());
 
 		else
 			chars.poll();
@@ -355,6 +360,9 @@ public class Parser {
 
 			return new FunctionConverterNode(id);
 		}
+
+		if (exp.charAt(0) == STOP)
+			return StopNode.instance;
 
 		ErrorHandler.invokeError(ErrorType.PARSE_ERROR, exp);
 		return null;
