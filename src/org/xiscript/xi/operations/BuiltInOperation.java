@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 import org.xiscript.xi.core.ModuleLoader;
 import org.xiscript.xi.core.VariableCache;
@@ -60,7 +61,7 @@ public enum BuiltInOperation implements Operation {
 	FIND("find", 2), IN("in", 2), MAP("@", 2), DEEPMAP("@@", 2), RANGE(",", 1), SUM(
 			"$", 1), RAND("rnd", 1), SORT("sort", 1), CSORT("csort", 2), CUT(
 			"cut", 2), DEL("del", 1), REPLACE("replace", 3), REMOVE("remove", 2), SPLIT(
-			"<>", 2),
+			"<>", 2), JOIN("><", 2),
 
 	FOR("for", 3), IF("if", 3), DO("do", 2), WHILE("while", 2), DOWHILE(
 			"dowhile", 2), LOOP("loop", 2),
@@ -98,6 +99,8 @@ public enum BuiltInOperation implements Operation {
 	private static final Random RND = new Random();
 
 	private static final VariableCache EMPTY_CACHE = new VariableCache();
+
+	private static final Pattern SPLUS = Pattern.compile("\\s+");
 
 	static {
 		for (BuiltInOperation op : values())
@@ -393,7 +396,31 @@ public enum BuiltInOperation implements Operation {
 			((ListWrapper) args[0]).remove(((XiInt) args[1]).val());
 			return args[0];
 		case SPLIT:
-			return ((XiString) args[1]).useToSplit((XiString) args[0]);
+			if (args.length == 2) {
+				return ((XiString) args[1]).useToSplit((XiString) args[0]);
+			} else {
+				String[] split = SPLUS.split(((XiString) args[0]).toString());
+				List<DataType> list = new ArrayList<DataType>(split.length);
+				for (String s : split)
+					list.add(new XiString(s));
+
+				return new XiList(list);
+			}
+		case JOIN: {
+			StringBuilder sb = new StringBuilder();
+			XiIterable iter = (XiIterable) args[0];
+			String delim = ((XiString) args[1]).toString();
+
+			boolean first = true;
+			for (DataType d : iter) {
+				if (!first)
+					sb.append(delim);
+				sb.append(d.toString());
+				first = false;
+			}
+
+			return new XiString(sb.toString());
+		}
 		case FOR: {
 			String id = null;
 			XiTuple t = null;
