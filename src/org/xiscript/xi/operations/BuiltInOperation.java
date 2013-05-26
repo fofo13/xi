@@ -433,10 +433,23 @@ public enum BuiltInOperation implements Operation {
 			return XiNull.instance();
 		}
 		case IF: {
-			XiBlock body = (XiBlock) (args[0].isEmpty() ? args[2] : args[1]);
-			body.addVars(globals);
-			body.evaluate();
-			globals.putAll(body.locals());
+			boolean cond = !args[0].isEmpty();
+			int nargs = args.length;
+
+			XiBlock body = null;
+
+			if (cond) {
+				body = (XiBlock) args[1];
+			} else if (nargs == 3) {
+				body = (XiBlock) args[2];
+			}
+
+			if (body != null) {
+				body.addVars(globals);
+				body.evaluate();
+				globals.putAll(body.locals());
+			}
+
 			return XiNull.instance();
 		}
 		case DO: {
@@ -580,7 +593,7 @@ public enum BuiltInOperation implements Operation {
 			XiSys.instance().stdout().print(args[0]);
 			return XiNull.instance();
 		case PRINTLN:
-			XiSys.instance().stdout().println(args[0]);
+			XiSys.instance().stdout().println(args.length == 1 ? args[0] : "");
 			return XiNull.instance();
 		case PRINTF: {
 			XiTuple tup = ((XiTuple) args[1]);

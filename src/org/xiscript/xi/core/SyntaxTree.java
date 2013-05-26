@@ -64,7 +64,10 @@ public class SyntaxTree {
 
 		if (node.numChildren() > -1) {
 			for (int i = 0; i < node.numChildren(); i++) {
-				node.addChild(create(nodes));
+				Node next = create(nodes);
+				if (next instanceof StopNode)
+					break;
+				node.addChild(next);
 			}
 		} else {
 			Node child = null;
