@@ -1,11 +1,11 @@
-dotprod := func ('v1' 'v2') {
-	$ @ ~ [v1 v2] {* at . 0 at . 1}
+dotprod = func ('v1' 'v2') {
+	$ @ ~ [v1 v2] {* => _ 0 => _ 1}
 }
 
-vecadd := func ('v1' 'v2') {
-	@ ~ [v1 v2] {$ .}
+vecadd = func ('v1' 'v2') {
+	@ ~ [v1 v2] {$_}
 }
 
-veclen := func ('v1') {
-	** $ @ v1 {** . 2} 0.5
+veclen = func ('v1') {
+	** $ @ v1 {** _ 2} 0.5
 }

@@ -1,16 +1,16 @@
-true	:= 1
-false 	:= 0
+true	= 1
+false 	= 0
 
-bin := func ('n') {
-	s := ""
+bin = func ('n') {
+	s = ""
 	while {!= n 0} {
-		s := + & n 1 s
-		n := >> n 1
+		s = + & n 1 s
+		n = >> n 1
 	}
 	? s s "0"
 }
 
-all := func ('l') {
+all = func ('l') {
 	for 'i' l {
 		if ! i {
 			return 0
@@ -19,7 +19,7 @@ all := func ('l') {
 	1
 }
 
-any := func ('l') {
+any = func ('l') {
 	for 'i' l {
 		if i {
 			return 1

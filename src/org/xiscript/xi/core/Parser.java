@@ -78,7 +78,7 @@ public class Parser {
 	public static final String RE_START = "re\"";
 	public static final String RAW_START = "r\"";
 
-	public static final String ASSIGNMENT = ":=";
+	public static final String ASSIGNMENT = "=";
 	public static final String PLUS_EQUALS = "+=";
 	public static final String MINUS_EQUALS = "-=";
 	public static final String TIMES_EQUALS = "*=";
