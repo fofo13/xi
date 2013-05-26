@@ -2,6 +2,7 @@ package org.xiscript.xi.nodes;
 
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
+import org.xiscript.xi.datatypes.XiAttribute;
 
 public class VarNode implements Node {
 
@@ -27,7 +28,14 @@ public class VarNode implements Node {
 
 	@Override
 	public DataType evaluate(VariableCache cache) {
-		return cache.get(id);
+		String[] split = id.split("\\.");
+
+		DataType value = cache.get(split[0]);
+
+		for (int i = 1; i < split.length; i++)
+			value = value.getAttribute(XiAttribute.valueOf(split[i]));
+
+		return value;
 	}
 
 	@Override

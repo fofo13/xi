@@ -81,7 +81,7 @@ public class XiBlock extends DataType {
 	public DataType evaluate() {
 		init();
 		DataType last = XiNull.instance();
-		VariableCache old = locals.getPersistents();
+		VariableCache pers = locals.getPersistents();
 
 		try {
 			for (SyntaxTree st : statements) {
@@ -92,8 +92,7 @@ public class XiBlock extends DataType {
 			throw cfe;
 		}
 
-		locals.putAll(old);
-
+		locals.putAll(pers);
 		return last;
 	}
 

@@ -44,7 +44,7 @@ public class Parser {
 	private static final Pattern IM = Pattern.compile("-?\\d+(\\.\\d+)*[iI]");
 
 	public static final Pattern IDENTIFIER = Pattern
-			.compile("[\\.\\p{Alpha}_]\\w*");
+			.compile("[\\p{Alpha}_][\\w.]*");
 
 	private static final Set<Character> W = new HashSet<Character>(63);
 
@@ -69,7 +69,6 @@ public class Parser {
 	public static final char BLOCK_START = '{';
 	public static final char BLOCK_END = '}';
 
-	public static final char DOTVAR = '.';
 	public static final char FUNCTION_CONVERTER = '`';
 
 	public static final char DQUOTE = '"';
@@ -145,9 +144,6 @@ public class Parser {
 		else if (SPEC.contains(start))
 			return readSpec(chars);
 
-		else if (start == DOTVAR)
-			return Character.toString(chars.poll());
-
 		else if (start == SQUOTE)
 			return readAttribute(chars);
 
@@ -199,7 +195,8 @@ public class Parser {
 	private static CharSequence readWord(Queue<Character> chars) {
 		StringBuilder sb = new StringBuilder();
 
-		while (W.contains(chars.peek())) {
+		while (chars.peek() != null
+				&& (W.contains(chars.peek()) || chars.peek() == '.')) {
 			sb.append(chars.poll());
 
 			if (!chars.isEmpty() && chars.peek() == DQUOTE) {
