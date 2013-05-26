@@ -53,8 +53,8 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 		Collection<DataType> col = new ArrayList<DataType>(collection.size());
 		int index = 0;
 		for (DataType a : collection) {
-			block.updateLocal(XiVar.D, a);
-			block.updateLocal(XiVar.U, new XiInt(index));
+			block.updateLocal(XiVar.SPEC_VAR, a);
+			block.updateLocal(XiVar.INDEX_VAR, new XiInt(index));
 			col.add((deep && (a instanceof CollectionWrapper<?>)) ? ((CollectionWrapper<?>) a)
 					.map(block, true) : block.evaluate());
 			index++;
@@ -77,8 +77,8 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 		Collection<DataType> col = new ArrayList<DataType>(collection.size());
 		int index = 0;
 		for (DataType data : collection) {
-			block.updateLocal(XiVar.D, data);
-			block.updateLocal(XiVar.U, new XiInt(index));
+			block.updateLocal(XiVar.SPEC_VAR, data);
+			block.updateLocal(XiVar.INDEX_VAR, new XiInt(index));
 
 			if (deep && (data instanceof CollectionWrapper<?>))
 				col.add(((CollectionWrapper<?>) data).filter(block, deep));

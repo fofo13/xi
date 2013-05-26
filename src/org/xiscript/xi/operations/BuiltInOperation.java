@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Random;
 
 import org.xiscript.xi.core.ModuleLoader;
-import org.xiscript.xi.core.Parser;
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
@@ -343,8 +342,7 @@ public enum BuiltInOperation implements Operation {
 			return args[0];
 		case CSORT: {
 			final XiLambda key = (args[0] instanceof XiLambda) ? (XiLambda) args[0]
-					: new XiLambda(
-							new String[] { Character.toString(Parser.DOTVAR) },
+					: new XiLambda(new String[] { XiVar.SPEC_VAR.id() },
 							(XiBlock) args[0]);
 
 			Comparator<DataType> cmp = new Comparator<DataType>() {
@@ -499,8 +497,8 @@ public enum BuiltInOperation implements Operation {
 			body.addVars(globals);
 			int index = 0;
 			for (DataType data : col) {
-				body.updateLocal(XiVar.D, data);
-				body.updateLocal(XiVar.U, new XiInt(index));
+				body.updateLocal(XiVar.SPEC_VAR, data);
+				body.updateLocal(XiVar.INDEX_VAR, new XiInt(index));
 				try {
 					body.evaluate();
 				} catch (BreakException be) {
