@@ -6,9 +6,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.xiscript.xi.datatypes.DataType;
+import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
+import org.xiscript.xi.nodes.VarNode;
 
 public class VariableCache implements Map<XiVar, DataType>, Cloneable {
 
@@ -60,7 +62,7 @@ public class VariableCache implements Map<XiVar, DataType>, Cloneable {
 	}
 
 	public boolean containsId(String id) {
-		return cache.containsKey(new XiVar(id));
+		return cache.containsKey(new XiVar(VarNode.DOT.split(id, 2)[0]));
 	}
 
 	@Override
@@ -91,7 +93,17 @@ public class VariableCache implements Map<XiVar, DataType>, Cloneable {
 	}
 
 	public DataType get(String id) {
-		return get(new XiVar(id));
+		String[] split = VarNode.DOT.split(id);
+
+		DataType value = cache.get(new XiVar(split[0]));
+
+		if (value == null)
+			ErrorHandler.invokeError(ErrorType.IDNETIFIER_NOT_FOUND, id);
+
+		for (int i = 1; i < split.length; i++)
+			value = value.getAttribute(XiAttribute.valueOf(split[i]));
+
+		return value;
 	}
 
 	@Override

@@ -1,10 +1,14 @@
 package org.xiscript.xi.nodes;
 
+import java.util.regex.Pattern;
+
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
 
 public class VarNode implements Node {
+
+	public static final Pattern DOT = Pattern.compile("\\.");
 
 	private String id;
 
@@ -28,7 +32,7 @@ public class VarNode implements Node {
 
 	@Override
 	public DataType evaluate(VariableCache cache) {
-		String[] split = id.split("\\.");
+		String[] split = DOT.split(id);
 
 		DataType value = cache.get(split[0]);
 
@@ -40,7 +44,6 @@ public class VarNode implements Node {
 
 	@Override
 	public void clear() {
-
 	}
 
 	@Override

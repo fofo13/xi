@@ -20,7 +20,6 @@ public class SyntaxTree {
 
 	public SyntaxTree(Queue<Node> nodes, VariableCache globals) {
 		this.globals = globals;
-
 		Queue<Node> newNodes = new ArrayDeque<Node>(nodes.size());
 
 		for (Node node : nodes) {
