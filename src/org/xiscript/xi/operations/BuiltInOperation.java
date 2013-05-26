@@ -53,8 +53,8 @@ public enum BuiltInOperation implements Operation {
 
 	NOT("!", 1), BITNOT("~", 1), ABS("abs", 1), ADD("+", 2), ADDALL("+:", -1), SUBTRACT(
 			"-", 2), MULTIPLY("*", 2), MULTALL("*:", -1), DIVIDE("/", 2), INTDIV(
-			"//", 2), MODULUS("%", 2), EQ("=", 2), NEQ("!=", 2), GREATER(">", 2), LESS(
-			"<", 2), GREATER_EQ(">=", 2), LESS_EQ("<=", 2), AND("&", 2), OR(
+			"//", 2), MODULUS("%", 2), EQ("==", 2), NEQ("!=", 2), GREATER(">",
+			2), LESS("<", 2), GREATER_EQ(">=", 2), LESS_EQ("<=", 2), AND("&", 2), OR(
 			"|", 2), XOR("^", 2), RSHIFT(">>", 2), LSHIFT("<<", 2), POW("**", 2),
 
 	FIND("find", 2), IN("in", 2), MAP("@", 2), DEEPMAP("@@", 2), RANGE(",", 1), SUM(
@@ -164,6 +164,8 @@ public enum BuiltInOperation implements Operation {
 				((CollectionWrapper<?>) args[0]).add(args[1]);
 				return args[0];
 			}
+			if (args[1] instanceof XiString)
+				return new XiString(args[0].toString() + args[1].toString());
 			return ((XiNum) args[0]).add((XiNum) args[1]);
 		case ADDALL: {
 			DataType d = args[0];
@@ -171,7 +173,7 @@ public enum BuiltInOperation implements Operation {
 			if (args.length == 1)
 				return ((XiIterable) d).sum();
 
-			for (int i = 0; i < args.length; i++)
+			for (int i = 1; i < args.length; i++)
 				d = ADD.evaluate(d, args[i]);
 			return d;
 		}
