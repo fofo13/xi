@@ -34,8 +34,7 @@ public class XiBlock extends DataType {
 		if (statements == null) {
 			locals.putAll(XiEnvironment.globals);
 
-			Queue<Node> nodes = Parser.genNodeQueue(exp.substring(1,
-					exp.length() - 1));
+			Queue<Node> nodes = Parser.genNodeQueue(exp);
 
 			statements = new LinkedList<SyntaxTree>();
 

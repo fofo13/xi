@@ -329,7 +329,8 @@ public class Parser {
 		if (exp.charAt(0) == LIST_START || exp.charAt(0) == TUPLE_START)
 			return new CollectionNode(exp);
 		if (exp.charAt(0) == BLOCK_START)
-			return new DataNode<XiBlock>(new XiBlock(exp));
+			return new DataNode<XiBlock>(new XiBlock(exp.substring(1,
+					exp.length() - 1)));
 		if (exp.charAt(0) == DQUOTE)
 			return new DataNode<XiString>(new XiString(exp.substring(1,
 					exp.length() - 1)));
