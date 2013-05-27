@@ -181,6 +181,8 @@ public enum BuiltInOperation implements Operation {
 			return d;
 		}
 		case SUBTRACT:
+			if (args.length == 1)
+				return ((XiNum) args[0]).neg();
 			if (args[0] instanceof ListWrapper) {
 				((ListWrapper) args[0]).remove(args[1]);
 				return args[0];
@@ -409,7 +411,8 @@ public enum BuiltInOperation implements Operation {
 		case JOIN: {
 			StringBuilder sb = new StringBuilder();
 			XiIterable iter = (XiIterable) args[0];
-			String delim = ((XiString) args[1]).toString();
+			String delim = args.length == 2 ? ((XiString) args[1]).toString()
+					: "";
 
 			boolean first = true;
 			for (DataType d : iter) {
@@ -585,8 +588,8 @@ public enum BuiltInOperation implements Operation {
 		}
 		case EVAL: {
 			if (args[0] instanceof XiString)
-				return evaluate(new DataType[] { new XiBlock("{"
-						+ ((XiString) args[0]).toString() + "}") }, globals);
+				return evaluate(new DataType[] { new XiBlock(
+						((XiString) args[0]).toString()) }, globals);
 
 			XiBlock block = (XiBlock) args[0];
 			block.addVars(globals);

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.xiscript.xi.datatypes.DataType;
+import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.numeric.XiInt;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
@@ -16,6 +17,10 @@ import org.xiscript.xi.util.Range;
 
 public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 		implements List<DataType> {
+
+	private static XiAttribute REV = XiAttribute.valueOf("rev");
+
+	private CollectionWrapper<?> rev;
 
 	public ListWrapper(List<DataType> list) {
 		super(list);
@@ -318,4 +323,19 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 		return collection.subList(fromIndex, toIndex);
 	}
 
+	@Override
+	public DataType getAttribute(XiAttribute a) {
+		if (a.equals(REV)) {
+			if (rev != null)
+				return rev;
+
+			List<DataType> rev = new ArrayList<DataType>(size());
+			for (int i = size() - 1; i >= 0; i--)
+				rev.add(collection.get(i));
+
+			return this.rev = instantiate(rev);
+		}
+
+		return super.getAttribute(a);
+	}
 }
