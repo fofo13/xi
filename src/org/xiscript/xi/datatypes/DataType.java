@@ -7,6 +7,7 @@ import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 public abstract class DataType implements Comparable<DataType> {
 
 	private static final XiAttribute HASH = XiAttribute.valueOf("hash");
+	private static final XiAttribute TYPE = XiAttribute.valueOf("type");
 
 	public abstract boolean isEmpty();
 
@@ -17,6 +18,8 @@ public abstract class DataType implements Comparable<DataType> {
 	public DataType getAttribute(XiAttribute a) {
 		if (a.equals(HASH))
 			return new XiInt(hashCode());
+		if (a.equals(TYPE))
+			return type();
 
 		ErrorHandler.invokeError(ErrorType.INVALID_ATTRIBUTE, type(), a);
 		return null;

@@ -82,8 +82,6 @@ public enum BuiltInOperation implements Operation {
 
 	ASSERT("assert", 1),
 
-	TYPE("type", 1),
-
 	IMPORT("import", 1), LOAD("load", 1),
 
 	GETATTR("=>", 2), SETATTR("<=", 3),
@@ -684,8 +682,6 @@ public enum BuiltInOperation implements Operation {
 			if (args[0].isEmpty())
 				ErrorHandler.invokeError(ErrorType.ASSERT_ERROR);
 			return XiNull.instance();
-		case TYPE:
-			return args[0].type();
 		case IMPORT:
 			return ModuleLoader.load(args[0].toString());
 		case LOAD:
