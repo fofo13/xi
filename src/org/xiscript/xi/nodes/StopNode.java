@@ -2,6 +2,7 @@ package org.xiscript.xi.nodes;
 
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
+import org.xiscript.xi.datatypes.XiNull;
 
 public class StopNode implements Node {
 
@@ -16,7 +17,7 @@ public class StopNode implements Node {
 
 	@Override
 	public DataType evaluate(VariableCache cache) {
-		throw new UnsupportedOperationException();
+		return XiNull.instance();
 	}
 
 	@Override
