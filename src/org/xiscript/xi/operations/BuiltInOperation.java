@@ -70,7 +70,7 @@ public enum BuiltInOperation implements Operation {
 
 	STR("str", 1), INT("int", 1), FLOAT("float", 1), LONG("long", 1), LIST(
 			"list", 1), SET("set", 1), TUPLE("tuple", 1), DICT("dict", 1), CMPLX(
-			"cmplx", 2), FUNC("func", 2), LAMBDA("lambda", 2), FILE("file", 1),
+			"cmplx", 2), FUNC("func", 2), LAMBDA("lambda", 2), FILE("file", 2),
 
 	PRINT("print", 1), PRINTLN("println", 1), PRINTF("printf", 2),
 
@@ -650,7 +650,9 @@ public enum BuiltInOperation implements Operation {
 		case LAMBDA:
 			return new XiLambda((XiTuple) args[0], (XiBlock) args[1]);
 		case FILE:
-			return new XiFile((XiString) args[0]);
+			return new XiFile(((XiString) args[0]).toString(),
+					args.length == 1 ? XiFile.DEFAULT
+							: ((XiString) args[1]).toString());
 		case PRINT:
 			XiSys.instance().stdout().print(args[0]);
 			return XiNull.instance();
