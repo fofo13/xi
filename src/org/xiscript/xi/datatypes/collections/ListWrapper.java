@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.regex.Pattern;
 
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
@@ -17,6 +18,8 @@ import org.xiscript.xi.util.Range;
 
 public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 		implements List<DataType> {
+
+	private static Pattern DPLUS = Pattern.compile("\\d+");
 
 	private static XiAttribute REV = XiAttribute.valueOf("rev");
 
@@ -334,6 +337,11 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 				rev.add(collection.get(i));
 
 			return this.rev = instantiate(rev);
+		}
+
+		String s = a.toString();
+		if (DPLUS.matcher(s).matches()) {
+			return collection.get(Integer.parseInt(s));
 		}
 
 		return super.getAttribute(a);
