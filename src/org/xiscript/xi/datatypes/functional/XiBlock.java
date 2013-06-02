@@ -7,7 +7,6 @@ import java.util.Queue;
 import org.xiscript.xi.core.Parser;
 import org.xiscript.xi.core.SyntaxTree;
 import org.xiscript.xi.core.VariableCache;
-import org.xiscript.xi.core.XiEnvironment;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiNull;
 import org.xiscript.xi.datatypes.XiType;
@@ -17,45 +16,40 @@ import org.xiscript.xi.nodes.Node;
 
 public class XiBlock extends DataType {
 
-	private VariableCache locals;
-	private List<SyntaxTree> statements;
-	private String exp;
+	private VariableCache scope;
+	private List<Node> statements;
+	private CharSequence expr;
 
-	public XiBlock(String exp, VariableCache locals) {
-		this.locals = locals;
-		this.exp = exp;
-	}
-
-	public XiBlock(String exp) {
-		this(exp, new VariableCache());
+	public XiBlock(CharSequence expr) {
+		this.expr = expr;
 	}
 
 	private void init() {
 		if (statements == null) {
-			locals.putAll(XiEnvironment.globals);
+			Queue<Node> nodes = Parser.genNodeQueue(expr);
 
-			Queue<Node> nodes = Parser.genNodeQueue(exp);
-
-			statements = new LinkedList<SyntaxTree>();
+			statements = new LinkedList<Node>();
 
 			while (!nodes.isEmpty()) {
-				SyntaxTree tree = new SyntaxTree(nodes, locals);
-				statements.add(tree);
+				SyntaxTree tree = new SyntaxTree(nodes, scope);
+				statements.add(tree.head());
 				nodes = tree.nodes();
 			}
 		}
 	}
 
 	public void updateLocal(XiVar id, DataType val) {
-		locals.put(id, val);
+		scope.put(id, val);
 	}
 
-	public void addVars(VariableCache cache) {
-		locals.putAll(cache, true);
+	public void setOuterScope(VariableCache cache) {
+		if (scope != null)
+			scope.clear();
+		scope = new VariableCache(cache);
 	}
 
 	public VariableCache locals() {
-		return locals;
+		return scope;
 	}
 
 	@Override
@@ -80,18 +74,15 @@ public class XiBlock extends DataType {
 	public DataType evaluate() {
 		init();
 		DataType last = XiNull.instance();
-		VariableCache pers = locals.getPersistents();
 
 		try {
-			for (SyntaxTree st : statements) {
-				last = st.evaluate();
-				locals.putAll(st.globals());
+			for (Node node : statements) {
+				last = node.evaluate(scope);
 			}
 		} catch (ControlFlowException cfe) {
 			throw cfe;
 		}
 
-		locals.putAll(pers);
 		return last;
 	}
 

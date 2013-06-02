@@ -106,12 +106,12 @@ public enum BuiltInOperation implements Operation {
 	}
 
 	private final String id;
-	private final int numArgs;
+	private final int nargs;
 	private final XiLambda asLambda;
 
 	private BuiltInOperation(String id, int numArgs) {
 		this.id = id;
-		this.numArgs = numArgs;
+		this.nargs = numArgs;
 
 		asLambda = genLambda();
 	}
@@ -122,7 +122,7 @@ public enum BuiltInOperation implements Operation {
 
 	@Override
 	public int numArgs() {
-		return numArgs;
+		return nargs;
 	}
 
 	@Override
@@ -146,12 +146,8 @@ public enum BuiltInOperation implements Operation {
 			}
 			if (args[0] instanceof XiBlock) {
 				XiBlock block = (XiBlock) args[0];
-				block.addVars(globals);
-				try {
-					return block.evaluate();
-				} finally {
-					globals.putAll(block.locals());
-				}
+				block.setOuterScope(globals);
+				return block.evaluate();
 			}
 			return new XiInt(~((XiInt) args[0]).val());
 		case ABS:
@@ -305,7 +301,7 @@ public enum BuiltInOperation implements Operation {
 				return ((XiIterable) args[1]).map((XiLambda) args[0], globals);
 
 			XiBlock body = (XiBlock) args[0];
-			body.addVars(globals);
+			body.setOuterScope(globals);
 			return ((XiIterable) args[1]).map(body);
 		}
 		case DEEPMAP: {
@@ -314,7 +310,7 @@ public enum BuiltInOperation implements Operation {
 						true, globals);
 
 			XiBlock body = (XiBlock) args[0];
-			body.addVars(globals);
+			body.setOuterScope(globals);
 			return ((CollectionWrapper<?>) args[1]).map(body, true);
 		}
 		case RANGE:
@@ -434,7 +430,7 @@ public enum BuiltInOperation implements Operation {
 
 			XiIterable col = (XiIterable) args[1];
 			XiBlock body = (XiBlock) args[2];
-			body.addVars(globals);
+			body.setOuterScope(globals);
 			for (DataType data : col) {
 				if (packed) {
 					ListWrapper lw = (ListWrapper) data;
@@ -465,7 +461,6 @@ public enum BuiltInOperation implements Operation {
 					continue;
 				}
 			}
-			globals.putAll(body.locals());
 			return XiNull.instance();
 		}
 		case IF: {
@@ -481,9 +476,8 @@ public enum BuiltInOperation implements Operation {
 			}
 
 			if (body != null) {
-				body.addVars(globals);
+				body.setOuterScope(globals);
 				body.evaluate();
-				globals.putAll(body.locals());
 			}
 
 			return XiNull.instance();
@@ -491,7 +485,7 @@ public enum BuiltInOperation implements Operation {
 		case DO: {
 			int n = ((XiInt) args[0]).val();
 			XiBlock body = (XiBlock) args[1];
-			body.addVars(globals);
+			body.setOuterScope(globals);
 			for (int i = 0; i < n; i++) {
 				try {
 					body.evaluate();
@@ -507,14 +501,13 @@ public enum BuiltInOperation implements Operation {
 					continue;
 				}
 			}
-			globals.putAll(body.locals());
 			return XiNull.instance();
 		}
 		case WHILE: {
 			XiBlock cond = (XiBlock) args[0];
 			XiBlock body = (XiBlock) args[1];
-			cond.addVars(globals);
-			body.addVars(globals);
+			cond.setOuterScope(globals);
+			body.setOuterScope(globals);
 			while (!cond.evaluate().isEmpty()) {
 				try {
 					body.evaluate();
@@ -529,16 +522,14 @@ public enum BuiltInOperation implements Operation {
 						throw ce;
 					continue;
 				}
-				cond.addVars(body.locals());
 			}
-			globals.putAll(body.locals());
 			return XiNull.instance();
 		}
 		case DOWHILE: {
 			XiBlock cond = (XiBlock) args[1];
 			XiBlock body = (XiBlock) args[0];
-			cond.addVars(globals);
-			body.addVars(globals);
+			cond.setOuterScope(globals);
+			body.setOuterScope(globals);
 			do {
 				try {
 					body.evaluate();
@@ -553,15 +544,13 @@ public enum BuiltInOperation implements Operation {
 						throw ce;
 					continue;
 				}
-				cond.addVars(body.locals());
 			} while (!cond.evaluate().isEmpty());
-			globals.putAll(body.locals());
 			return XiNull.instance();
 		}
 		case LOOP: {
 			XiIterable iter = (XiIterable) args[0];
 			XiBlock body = (XiBlock) args[1];
-			body.addVars(globals);
+			body.setOuterScope(globals);
 			int index = 0;
 			for (DataType data : iter) {
 				body.updateLocal(XiVar.SPEC_VAR, data);
@@ -581,7 +570,6 @@ public enum BuiltInOperation implements Operation {
 				}
 				index++;
 			}
-			globals.putAll(body.locals());
 			return XiNull.instance();
 		}
 		case EVAL: {
@@ -590,12 +578,8 @@ public enum BuiltInOperation implements Operation {
 						((XiString) args[0]).toString()) }, globals);
 
 			XiBlock block = (XiBlock) args[0];
-			block.addVars(globals);
-			try {
-				return block.evaluate();
-			} finally {
-				globals.putAll(block.locals());
-			}
+			block.setOuterScope(globals);
+			return block.evaluate();
 		}
 		case EXEC: {
 			try {
@@ -741,10 +725,10 @@ public enum BuiltInOperation implements Operation {
 
 	private XiLambda genLambda() {
 		final BuiltInOperation op = this;
-		return new HiddenLambda(numArgs) {
+		return new HiddenLambda(nargs) {
 			@Override
 			public DataType evaluate(DataType... args) {
-				return op.evaluate(args, new VariableCache());
+				return op.evaluate(args, null);
 			}
 		};
 	}

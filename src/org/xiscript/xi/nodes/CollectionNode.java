@@ -59,7 +59,7 @@ public class CollectionNode extends DataNode<CollectionWrapper<?>> {
 
 		while (!nodes.isEmpty()) {
 			SyntaxTree tree = new SyntaxTree(nodes, cache);
-			col.add(tree.evaluate());
+			col.add(tree.evaluate(cache));
 			nodes = tree.nodes();
 		}
 	}
@@ -88,11 +88,11 @@ public class CollectionNode extends DataNode<CollectionWrapper<?>> {
 
 		while (!nodes.isEmpty()) {
 			SyntaxTree tree = new SyntaxTree(nodes, cache);
-			DataType key = tree.evaluate();
+			DataType key = tree.evaluate(cache);
 			nodes = tree.nodes();
 
 			tree = new SyntaxTree(nodes, cache);
-			DataType value = tree.evaluate();
+			DataType value = tree.evaluate(cache);
 			nodes = tree.nodes();
 
 			result.put(key, value);

@@ -10,13 +10,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
 
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.XiNull;
 import org.xiscript.xi.datatypes.XiType;
+import org.xiscript.xi.datatypes.collections.XiList;
 import org.xiscript.xi.datatypes.collections.XiString;
 import org.xiscript.xi.datatypes.functional.HiddenFunc;
 import org.xiscript.xi.datatypes.functional.XiFunc;
@@ -29,7 +32,9 @@ public class XiFile extends XiIterable {
 
 	public static final String R = "r";
 	public static final String W = "w";
-	public static final String DEFAULT = "rw";
+	public static final String DEFAULT = "";
+
+	private static final XiAttribute ISDIR = XiAttribute.valueOf("isdir");
 
 	private static final XiAttribute WRITER = XiAttribute.valueOf("writer");
 	private static final XiAttribute READER = XiAttribute.valueOf("reader");
@@ -47,6 +52,7 @@ public class XiFile extends XiIterable {
 	private static final XiAttribute WRITE = XiAttribute.valueOf("write");
 	private static final XiAttribute WRITELN = XiAttribute.valueOf("writeln");
 
+	private static final XiAttribute LIST = XiAttribute.valueOf("list");
 	private static final XiAttribute EXISTS = XiAttribute.valueOf("exists");
 	private static final XiAttribute CREATE = XiAttribute.valueOf("create");
 	private static final XiAttribute CLEAR = XiAttribute.valueOf("clear");
@@ -69,6 +75,8 @@ public class XiFile extends XiIterable {
 	private XiFunc write;
 	private XiFunc writeln;
 
+	private XiFunc isdir;
+	private XiFunc list;
 	private XiFunc exists;
 	private XiFunc create;
 	private XiFunc clear;
@@ -80,8 +88,8 @@ public class XiFile extends XiIterable {
 
 	private BufferedWriter in;
 
-	public XiFile(String name, String options) {
-		this.file = new File(name);
+	public XiFile(File f, String options) {
+		file = f;
 
 		if (options.contains(W)) {
 			create();
@@ -166,6 +174,13 @@ public class XiFile extends XiIterable {
 			};
 		}
 
+		isdir = new HiddenFunc(0) {
+			@Override
+			public DataType evaluate(DataType... args) {
+				return new XiInt(file.isDirectory());
+			}
+		};
+
 		clear = new HiddenFunc(0) {
 			@Override
 			public DataType evaluate(DataType... args) {
@@ -177,6 +192,23 @@ public class XiFile extends XiIterable {
 				} catch (FileNotFoundException ioe) {
 					return new XiInt(0);
 				}
+			}
+		};
+
+		list = new HiddenFunc(0) {
+			@Override
+			public DataType evaluate(DataType... args) {
+				File[] files = file.listFiles();
+
+				if (files == null)
+					return XiNull.instance();
+
+				List<DataType> list = new ArrayList<DataType>(files.length);
+
+				for (File file : files)
+					list.add(new XiFile(file.toString(), ""));
+
+				return new XiList(list);
 			}
 		};
 
@@ -218,6 +250,10 @@ public class XiFile extends XiIterable {
 		};
 	}
 
+	public XiFile(String name, String options) {
+		this(new File(name), options);
+	}
+
 	private boolean create() {
 		File parent = file.getParentFile();
 		if (parent != null)
@@ -231,6 +267,8 @@ public class XiFile extends XiIterable {
 
 	@Override
 	public DataType getAttribute(XiAttribute a) {
+		if (a.equals(ISDIR))
+			return isdir;
 		if (a.equals(WRITER))
 			return writer == null ? writer = getWriter() : writer;
 		if (a.equals(READER))
@@ -256,6 +294,8 @@ public class XiFile extends XiIterable {
 			return write;
 		if (a.equals(WRITELN))
 			return writeln;
+		if (a.equals(LIST))
+			return list;
 		if (a.equals(EXISTS))
 			return exists;
 		if (a.equals(CREATE))

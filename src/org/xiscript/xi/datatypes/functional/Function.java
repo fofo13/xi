@@ -14,16 +14,19 @@ public abstract class Function extends DataType {
 	protected String[] identifiers;
 	protected XiBlock body;
 
+	private VariableCache scope = new VariableCache();
+
 	public Function(String[] identifiers, XiBlock body) {
 		this.identifiers = identifiers;
 		this.body = body;
+
+		if (body != null)
+			body.setOuterScope(scope);
 	}
 
 	public Function(XiTuple list, XiBlock body) {
-		if (list == null)
-			return;
+		this(new String[list == null ? 0 : list.length()], body);
 
-		identifiers = new String[list.length()];
 		for (int i = 0; i < identifiers.length; i++) {
 			if (!(list.get(i) instanceof XiAttribute))
 				ErrorHandler.invokeError(ErrorType.INVALID_ATTRIBUTE_TUPLE,
@@ -31,18 +34,23 @@ public abstract class Function extends DataType {
 
 			identifiers[i] = ((XiAttribute) list.get(i)).toString();
 		}
-		this.body = body;
 	}
 
 	public DataType evaluate(DataType[] args, VariableCache globals) {
-		body.addVars(globals);
+		scope.setTo(globals);
+
 		for (int i = 0; i < args.length; i++) {
-			body.updateLocal(new XiVar(identifiers[i], false, true), args[i]);
+			scope.put(new XiVar(identifiers[i], false, true), args[i]);
 		}
+
+		// body.setOuterScope(scope);
+
 		try {
 			return body.evaluate();
 		} catch (ReturnException re) {
 			return re.data();
+		} finally {
+			scope.clear();
 		}
 	}
 

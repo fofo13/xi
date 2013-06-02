@@ -76,7 +76,7 @@ public class XiEnvironment {
 		while (!refreshed.isEmpty()) {
 			SyntaxTree tree = new SyntaxTree(refreshed,
 					locals == null ? globals : locals);
-			last = tree.evaluate();
+			last = tree.evaluate(globals);
 			refreshed = tree.nodes();
 		}
 

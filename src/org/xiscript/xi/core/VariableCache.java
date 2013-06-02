@@ -15,17 +15,27 @@ import org.xiscript.xi.nodes.VarNode;
 public class VariableCache implements Map<XiVar, DataType>, Cloneable {
 
 	private Map<XiVar, DataType> cache;
+	public VariableCache parent;
 
-	private VariableCache(Map<XiVar, DataType> cache) {
+	private VariableCache(Map<XiVar, DataType> cache, VariableCache parent) {
 		this.cache = cache;
+		this.parent = parent;
+	}
+
+	public VariableCache(VariableCache parent) {
+		this(new HashMap<XiVar, DataType>(), parent);
 	}
 
 	public VariableCache() {
-		this(new HashMap<XiVar, DataType>());
+		this(null);
 	}
 
 	@Override
 	public DataType put(XiVar id, DataType data) {
+		if ((!id.temporary()) && (!id.persistent())
+				&& (parent != null && parent.containsKey(id)))
+			return parent.put(id, data);
+
 		return cache.put(id, data);
 	}
 
@@ -37,7 +47,7 @@ public class VariableCache implements Map<XiVar, DataType>, Cloneable {
 	public void putAll(Map<? extends XiVar, ? extends DataType> m) {
 		for (Entry<? extends XiVar, ? extends DataType> entry : m.entrySet())
 			if (!entry.getKey().temporary())
-				cache.put(entry.getKey(), entry.getValue());
+				put(entry.getKey(), entry.getValue());
 	}
 
 	public void putAll(Map<? extends XiVar, ? extends DataType> m,
@@ -48,21 +58,25 @@ public class VariableCache implements Map<XiVar, DataType>, Cloneable {
 		}
 
 		for (Entry<? extends XiVar, ? extends DataType> entry : m.entrySet())
-			cache.put(entry.getKey(), entry.getValue());
+			put(entry.getKey(), entry.getValue());
 	}
 
 	@Override
 	public boolean containsKey(Object key) {
-		return cache.containsKey(key);
+		return cache.containsKey(key)
+				|| (parent != null && parent.containsKey(key));
 	}
 
 	@Override
 	public boolean containsValue(Object value) {
-		return cache.containsValue(value);
+		return cache.containsValue(value)
+				|| (parent != null && parent.containsValue(value));
 	}
 
 	public boolean containsId(String id) {
-		return cache.containsKey(new XiVar(VarNode.DOT.split(id, 2)[0]));
+		XiVar var = new XiVar(VarNode.DOT.split(id, 2)[0]);
+		return cache.containsKey(var)
+				|| (parent != null && parent.containsId(id));
 	}
 
 	@Override
@@ -86,8 +100,12 @@ public class VariableCache implements Map<XiVar, DataType>, Cloneable {
 	public DataType get(Object key) {
 		DataType value = cache.get(key);
 
-		if (value == null)
-			ErrorHandler.invokeError(ErrorType.IDNETIFIER_NOT_FOUND, key);
+		if (value == null) {
+			if (parent == null)
+				ErrorHandler.invokeError(ErrorType.IDNETIFIER_NOT_FOUND, key);
+
+			return parent.get(key);
+		}
 
 		return value;
 	}
@@ -95,10 +113,19 @@ public class VariableCache implements Map<XiVar, DataType>, Cloneable {
 	public DataType get(String id) {
 		String[] split = VarNode.DOT.split(id);
 
-		DataType value = cache.get(new XiVar(split[0]));
+		XiVar v = new XiVar(split[0]);
+		DataType value = cache.get(v);
 
-		if (value == null)
-			ErrorHandler.invokeError(ErrorType.IDNETIFIER_NOT_FOUND, id);
+		if (value == null) {
+			if (parent == null) {
+				if (XiEnvironment.globals.containsKey(v))
+					return XiEnvironment.globals.get(split[0]);
+
+				ErrorHandler.invokeError(ErrorType.IDNETIFIER_NOT_FOUND, id);
+			}
+
+			return parent.get(id);
+		}
 
 		for (int i = 1; i < split.length; i++)
 			value = value.getAttribute(XiAttribute.valueOf(split[i]));
@@ -137,18 +164,12 @@ public class VariableCache implements Map<XiVar, DataType>, Cloneable {
 
 	@Override
 	public VariableCache clone() {
-		return new VariableCache(new HashMap<XiVar, DataType>(cache));
+		return new VariableCache(new HashMap<XiVar, DataType>(cache),
+				parent == null ? null : parent.clone());
 	}
 
-	public VariableCache getPersistents() {
-		Map<XiVar, DataType> m = new HashMap<XiVar, DataType>();
-
-		for (Entry<? extends XiVar, ? extends DataType> entry : entrySet()) {
-			if (entry.getKey().persistent())
-				m.put(entry.getKey(), entry.getValue());
-		}
-
-		return new VariableCache(m);
+	public void setTo(VariableCache other) {
+		cache = new HashMap<XiVar, DataType>(other.cache);
 	}
 
 }

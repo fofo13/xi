@@ -4,22 +4,21 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 
 import org.xiscript.xi.datatypes.DataType;
+import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.datatypes.functional.XiFunc;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
+import org.xiscript.xi.nodes.FunctionNode;
 import org.xiscript.xi.nodes.Node;
-import org.xiscript.xi.nodes.OperationNode;
 import org.xiscript.xi.nodes.StopNode;
 import org.xiscript.xi.nodes.VarNode;
 
 public class SyntaxTree {
 
 	private Queue<Node> nodes;
-	private VariableCache globals;
 	private Node head;
 
 	public SyntaxTree(Queue<Node> nodes, VariableCache globals) {
-		this.globals = globals;
 		Queue<Node> newNodes = new ArrayDeque<Node>(nodes.size());
 
 		for (Node node : nodes) {
@@ -28,8 +27,10 @@ public class SyntaxTree {
 
 				if (globals.containsId(vnode.id())
 						&& globals.get(vnode.id()) instanceof XiFunc) {
-					newNodes.add(new OperationNode((XiFunc) globals.get(vnode
-							.id())));
+
+					newNodes.add(new FunctionNode(new XiVar(vnode.id()),
+							((XiFunc) globals.get(vnode.id())).numArgs()));
+
 				} else {
 					newNodes.add(node);
 				}
@@ -42,15 +43,15 @@ public class SyntaxTree {
 		head = create(this.nodes);
 	}
 
+	public Node head() {
+		return head;
+	}
+
 	public Queue<Node> nodes() {
 		return nodes;
 	}
 
-	public VariableCache globals() {
-		return globals;
-	}
-
-	public DataType evaluate() {
+	public DataType evaluate(VariableCache globals) {
 		return head.evaluate(globals);
 	}
 
