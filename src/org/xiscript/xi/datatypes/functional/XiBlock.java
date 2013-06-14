@@ -27,7 +27,6 @@ public class XiBlock extends DataType {
 	private void init() {
 		if (statements == null) {
 			Queue<Node> nodes = Parser.genNodeQueue(expr);
-
 			statements = new LinkedList<Node>();
 
 			while (!nodes.isEmpty()) {
@@ -46,10 +45,6 @@ public class XiBlock extends DataType {
 		if (scope != null)
 			scope.clear();
 		scope = new VariableCache(cache);
-	}
-
-	public VariableCache locals() {
-		return scope;
 	}
 
 	@Override

@@ -14,14 +14,9 @@ public abstract class Function extends DataType {
 	protected String[] identifiers;
 	protected XiBlock body;
 
-	private VariableCache scope = new VariableCache();
-
 	public Function(String[] identifiers, XiBlock body) {
 		this.identifiers = identifiers;
 		this.body = body;
-
-		if (body != null)
-			body.setOuterScope(scope);
 	}
 
 	public Function(XiTuple list, XiBlock body) {
@@ -37,13 +32,19 @@ public abstract class Function extends DataType {
 	}
 
 	public DataType evaluate(DataType[] args, VariableCache globals) {
-		scope.setTo(globals);
+		VariableCache scope = new VariableCache(globals); // TODO: This can
+															// create extremely
+															// long cache chains
+															// with recursive
+															// functions, and
+															// can result in a
+															// StackOverflowError
 
 		for (int i = 0; i < args.length; i++) {
 			scope.put(new XiVar(identifiers[i], false, true), args[i]);
 		}
 
-		// body.setOuterScope(scope);
+		body.setOuterScope(scope);
 
 		try {
 			return body.evaluate();

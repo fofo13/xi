@@ -53,4 +53,9 @@ public enum ShortCircuitOperation {
 		return op;
 	}
 
+	@Override
+	public String toString() {
+		return id;
+	}
+
 }

@@ -159,17 +159,22 @@ public class VariableCache implements Map<XiVar, DataType>, Cloneable {
 
 	@Override
 	public String toString() {
-		return cache.toString();
+		return cache.toString() + " "
+				+ ((parent == null) ? "" : parent.toString());
 	}
 
+	// shallow copy:
 	@Override
 	public VariableCache clone() {
-		return new VariableCache(new HashMap<XiVar, DataType>(cache),
-				parent == null ? null : parent.clone());
+		return new VariableCache(new HashMap<XiVar, DataType>(cache), null);
 	}
 
 	public void setTo(VariableCache other) {
 		cache = new HashMap<XiVar, DataType>(other.cache);
+	}
+
+	public int length() {
+		return parent == null ? 1 : 1 + parent.length();
 	}
 
 }
