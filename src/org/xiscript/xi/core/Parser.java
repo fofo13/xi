@@ -176,6 +176,11 @@ public class Parser {
 			;
 	}
 
+	private static boolean isValidSpec(CharSequence s) {
+		return BuiltInOperation.idExists(s.toString())
+				|| ShortCircuitOperation.idExists(s.toString());
+	}
+
 	private static CharSequence readSpec(Queue<Character> chars) {
 		StringBuilder sb = new StringBuilder(chars.poll().toString());
 
@@ -183,6 +188,9 @@ public class Parser {
 			return MINUS + readNum(chars).toString();
 
 		while (SPEC.contains(chars.peek())) {
+			if (isValidSpec(sb) && !isValidSpec(sb.toString() + chars.peek()))
+				break;
+
 			sb.append(chars.poll());
 		}
 
