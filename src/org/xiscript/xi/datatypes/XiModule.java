@@ -9,7 +9,6 @@ import org.xiscript.xi.core.VariableCache;
 public class XiModule extends DataType {
 
 	private Map<XiAttribute, DataType> attributes;
-
 	private VariableCache contents;
 
 	public XiModule(VariableCache contents) {
@@ -19,6 +18,11 @@ public class XiModule extends DataType {
 		for (Entry<XiVar, DataType> entry : contents.entrySet())
 			attributes.put(XiAttribute.valueOf(entry.getKey().id()),
 					entry.getValue());
+	}
+
+	public XiModule(int size) {
+		contents = new VariableCache();
+		attributes = new HashMap<XiAttribute, DataType>(size);
 	}
 
 	public VariableCache contents() {

@@ -18,15 +18,14 @@ public class XiBlock extends DataType {
 
 	private VariableCache scope;
 	private List<Node> statements;
-	private CharSequence expr;
+	private Queue<Node> nodes;
 
 	public XiBlock(CharSequence expr) {
-		this.expr = expr;
+		nodes = Parser.genNodeQueue(expr);
 	}
 
 	private void init() {
 		if (statements == null) {
-			Queue<Node> nodes = Parser.genNodeQueue(expr);
 			statements = new LinkedList<Node>();
 
 			while (!nodes.isEmpty()) {

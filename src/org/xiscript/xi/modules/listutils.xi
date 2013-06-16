@@ -19,7 +19,9 @@ join = func ('delim' 'l') {
 reduce = func ('f' 'l') {
 	x = => l 0
 	loop cut l 1 {
-		x := => f (x _)
+		x = => f (x _)
 	}
 	x
 }
+
+println "hello"

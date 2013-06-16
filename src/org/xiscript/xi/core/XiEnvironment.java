@@ -26,7 +26,7 @@ public class XiEnvironment {
 
 	protected XiEnvironment(InputStream file, boolean primary) {
 		if (primary) {
-			globals.putAll(ModuleLoader.stdlib.get("stdlib").contents());
+			globals.putAll(ModuleLoader.get("stdlib").contents());
 		} else {
 			locals = new VariableCache();
 		}

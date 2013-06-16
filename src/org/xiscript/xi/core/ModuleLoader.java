@@ -2,23 +2,21 @@ package org.xiscript.xi.core;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.xiscript.xi.datatypes.XiModule;
 import org.xiscript.xi.datatypes.XiSys;
 import org.xiscript.xi.datatypes.XiType;
 import org.xiscript.xi.datatypes.XiType.Type;
+import org.xiscript.xi.datatypes.numeric.XiFloat;
 import org.xiscript.xi.datatypes.numeric.XiMath;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public class ModuleLoader {
 
-	protected static final Map<String, XiModule> stdlib = new HashMap<String, XiModule>();
+	private static final Map<String, XiModule> stdlib = new HashMap<String, XiModule>();
 
 	private static final String PATH = "/org/xiscript/xi/modules/";
 
@@ -28,23 +26,28 @@ public class ModuleLoader {
 	private static final String EXT = ".xi";
 
 	static {
-		List<InputStream> dir = new ArrayList<InputStream>(files.length);
-
-		for (String file : files)
-			dir.add(XiEnvironment.class.getResourceAsStream(PATH + file + EXT));
-
-		for (int i = 0; i < files.length; i++) {
-			XiEnvironment sub = new XiEnvironment(dir.get(i), false);
-			sub.run();
-			stdlib.put(files[i], new XiModule(sub.cache()));
+		for (String file : files) {
+			stdlib.put(file, null);
 		}
 
 		addSpecialVars();
 	}
 
+	public static XiModule get(String name) {
+		if (stdlib.get(name) == null) {
+			XiEnvironment env = new XiEnvironment(
+					XiEnvironment.class.getResourceAsStream(PATH + name + EXT),
+					false);
+			env.run();
+			stdlib.put(name, new XiModule(env.cache()));
+		}
+
+		return stdlib.get(name);
+	}
+
 	public static XiModule load(String name) {
 		if (stdlib.containsKey(name)) {
-			return stdlib.get(name);
+			return get(name);
 		}
 
 		XiEnvironment env = null;
@@ -61,9 +64,11 @@ public class ModuleLoader {
 	}
 
 	private static void addSpecialVars() {
-		stdlib.get("sys").addVar("sys", XiSys.instance());
+		XiModule sys = new XiModule(1);
+		sys.addVar("sys", XiSys.instance());
+		stdlib.put("sys", sys);
 
-		XiModule math = stdlib.get("math");
+		XiModule math = new XiModule(24);
 		math.addVar("sin", XiMath.sin);
 		math.addVar("cos", XiMath.cos);
 		math.addVar("tan", XiMath.tan);
@@ -86,8 +91,11 @@ public class ModuleLoader {
 		math.addVar("log10", XiMath.log10);
 		math.addVar("floor", XiMath.floor);
 		math.addVar("ceil", XiMath.ceil);
+		math.addVar("PI", new XiFloat(Math.PI));
+		math.addVar("E", new XiFloat(Math.E));
+		stdlib.put("math", math);
 
-		XiModule std = stdlib.get("stdlib");
+		XiModule std = get("stdlib");
 		for (Type type : XiType.Type.values()) {
 			std.addVar(String.format("type_%s", type.toString().toLowerCase()),
 					XiType.valueOf(type));
