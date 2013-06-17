@@ -58,8 +58,8 @@ public abstract class XiIterable extends DataType implements Iterable<DataType> 
 					return null;
 
 				DataType next = iter.next();
-				block.updateLocal(new XiVar(".", true), next);
-				block.updateLocal(new XiVar("_", true), new XiInt(index));
+				block.updateLocal(XiVar.SPEC_VAR, next);
+				block.updateLocal(XiVar.INDEX_VAR, new XiInt(index));
 				index++;
 
 				return block.evaluate().isEmpty() ? next() : next;

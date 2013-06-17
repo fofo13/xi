@@ -68,9 +68,10 @@ public enum BuiltInOperation implements Operation {
 
 	EVAL("eval", 1), EXEC("exec", 1),
 
-	STR("str", 1), INT("int", 1), FLOAT("float", 1), LONG("long", 1), LIST(
-			"list", 1), SET("set", 1), TUPLE("tuple", 1), DICT("dict", 1), CMPLX(
-			"cmplx", 2), FUNC("func", 2), LAMBDA("lambda", 2), FILE("file", 2),
+	STR("str", 1), CHR("chr", 1), INT("int", 1), FLOAT("float", 1), LONG(
+			"long", 1), LIST("list", 1), SET("set", 1), TUPLE("tuple", 1), DICT(
+			"dict", 1), CMPLX("cmplx", 2), FUNC("func", 2), LAMBDA("lambda", 2), FILE(
+			"file", 2),
 
 	PRINT("print", 1), PRINTLN("println", 1), PRINTF("printf", 2),
 
@@ -206,8 +207,11 @@ public enum BuiltInOperation implements Operation {
 			return d;
 		}
 		case DIVIDE:
-			if (args[0] instanceof XiBlock)
-				return ((XiIterable) args[1]).filter((XiBlock) args[0]);
+			if (args[0] instanceof XiBlock) {
+				XiBlock block = (XiBlock) args[0];
+				block.setOuterScope(globals);
+				return ((XiIterable) args[1]).filter(block);
+			}
 			if (args[0] instanceof XiLambda)
 				return ((XiIterable) args[1]).filter((XiLambda) args[0],
 						globals);
@@ -554,7 +558,7 @@ public enum BuiltInOperation implements Operation {
 			int index = 0;
 			for (DataType data : iter) {
 				body.updateLocal(XiVar.SPEC_VAR, data);
-				body.updateLocal(XiVar.INDEX_VAR, new XiInt(index));
+				body.updateLocal(XiVar.INDEX_VAR, new XiInt(index++));
 				try {
 					body.evaluate();
 				} catch (BreakException be) {
@@ -568,8 +572,9 @@ public enum BuiltInOperation implements Operation {
 						throw ce;
 					continue;
 				}
-				index++;
 			}
+			if (iter instanceof XiGenerator)
+				((XiGenerator) iter).reset();
 			return XiNull.instance();
 		}
 		case EVAL: {
@@ -601,6 +606,9 @@ public enum BuiltInOperation implements Operation {
 		}
 		case STR:
 			return new XiString(args[0].toString());
+		case CHR:
+			return new XiString(Character.toString((char) ((XiInt) args[0])
+					.val()));
 		case INT:
 			return XiInt.parse(args[0].toString());
 		case FLOAT:
