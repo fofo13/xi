@@ -23,8 +23,6 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 
 	private static XiAttribute REV = XiAttribute.valueOf("rev");
 
-	private CollectionWrapper<?> rev;
-
 	public ListWrapper(List<DataType> list) {
 		super(list);
 	}
@@ -329,14 +327,11 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 	@Override
 	public DataType getAttribute(XiAttribute a) {
 		if (a.equals(REV)) {
-			if (rev != null)
-				return rev;
-
 			List<DataType> rev = new ArrayList<DataType>(size());
 			for (int i = size() - 1; i >= 0; i--)
 				rev.add(collection.get(i));
 
-			return this.rev = instantiate(rev);
+			return instantiate(rev);
 		}
 
 		String s = a.toString();
