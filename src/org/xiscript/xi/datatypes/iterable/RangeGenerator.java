@@ -29,4 +29,9 @@ public class RangeGenerator extends XiGenerator {
 		return null;
 	}
 
+	@Override
+	public void reset() {
+		range.reset();
+	}
+
 }

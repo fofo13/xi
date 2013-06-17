@@ -12,6 +12,9 @@ public abstract class XiGenerator extends XiIterable {
 
 	public abstract DataType next();
 
+	public void reset() {
+	}
+
 	@Override
 	public Iterator<DataType> iterator() {
 		final XiGenerator gen = this;
