@@ -21,12 +21,6 @@
                 <exclude name="**/*.java"/>
             </fileset>
         </copy>
-        <copy includeemptydirs="false" todir="bin">
-            <fileset dir="test">
-                <exclude name="**/*.launch"/>
-                <exclude name="**/*.java"/>
-            </fileset>
-        </copy>
     </target>
     <target name="clean">
         <delete dir="bin"/>
