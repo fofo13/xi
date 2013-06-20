@@ -36,4 +36,10 @@ public abstract class DataType implements Comparable<DataType> {
 
 	public abstract XiType type();
 
+	@Override
+	public String toString() {
+		return "<" + type().toString().toLowerCase() + " at "
+				+ Integer.toHexString(hashCode()) + ">";
+	}
+
 }
