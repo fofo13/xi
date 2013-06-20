@@ -2,6 +2,8 @@ Xi <sub>*beta*</sub>
 ====================
 **a simple scripting language written in Java**
 
+[![Build Status](https://travis-ci.org/arshajii/xi.png)](https://travis-ci.org/arshajii/xi)
+
 The goal of Xi is to allow users to write concise code that can carry out complicated tasks. Some concepts are borrowed from Python, others from
 Java, but most are original. Be sure to check out the [wiki](https://github.com/arshajii/Xi/wiki) to learn more.
 
