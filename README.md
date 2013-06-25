@@ -7,6 +7,8 @@ Xi <sub>*beta*</sub>
 The goal of Xi is to allow users to write concise code that can carry out complicated tasks. Some concepts are borrowed from Python, others from
 Java, but most are original. Be sure to check out the [wiki](https://github.com/arshajii/Xi/wiki) to learn more.
 
+Currently, Xi is an interpreted language. The long term goal of this project is to create a mechanism through which Xi code can be compiled to Java bytecode.
+
 Installing and Running
 ----------------------
 
