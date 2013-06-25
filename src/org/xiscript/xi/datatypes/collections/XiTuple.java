@@ -20,7 +20,7 @@ public class XiTuple extends XiList {
 	}
 
 	public XiTuple(DataType... elements) {
-		super(Arrays.asList(elements));
+		this(Arrays.asList(elements));
 	}
 
 	public XiTuple() {

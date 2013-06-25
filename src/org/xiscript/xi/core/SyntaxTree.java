@@ -55,7 +55,7 @@ public class SyntaxTree {
 		return head.evaluate(globals);
 	}
 
-	public static Node create(Queue<Node> nodes) {
+	private static Node create(Queue<Node> nodes) {
 		if (nodes.isEmpty()) {
 			ErrorHandler.invokeError(ErrorType.INCOMPLETE_EXPRESSION);
 		}

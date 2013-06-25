@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.regex.Pattern;
@@ -53,7 +54,7 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 		List<DataType> newList = new ArrayList<DataType>(
 				(int) Math.ceil((double) Math.abs(max - min) / Math.abs(step)));
 
-		Range range = new Range(min, max, step);
+		Iterator<Integer> range = new Range(min, max, step);
 		while (range.hasNext())
 			newList.add(get(range.next()));
 
