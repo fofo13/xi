@@ -30,7 +30,7 @@ public class XiModule extends DataType {
 	}
 
 	public void addVar(String id, DataType val) {
-		contents.put(id, val);
+		contents.put(new XiVar(id), val);
 		attributes.put(XiAttribute.valueOf(id), val);
 	}
 

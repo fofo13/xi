@@ -32,15 +32,22 @@ public class VariableCache implements Map<XiVar, DataType>, Cloneable {
 
 	@Override
 	public DataType put(XiVar id, DataType data) {
-		if ((!id.isTemporary()) && (!id.isPersistent())
-				&& (parent != null && parent.containsKey(id)))
-			return parent.put(id, data);
+		String[] split = VarNode.DOT.split(id.id());
 
-		return cache.put(id, data);
-	}
+		if (split.length == 1) {
+			if ((!id.isTemporary()) && (!id.isPersistent())
+					&& (parent != null && parent.containsKey(id)))
+				return parent.put(id, data);
 
-	public void put(String id, DataType data) {
-		put(new XiVar(id), data);
+			return cache.put(id, data);
+		}
+
+		DataType d = get(new XiVar(split[0]));
+		for (int i = 1; i < split.length - 1; i++)
+			d = d.getAttribute(XiAttribute.valueOf(split[i]));
+		d.setAttribute(XiAttribute.valueOf(split[split.length - 1]), data);
+
+		return null;
 	}
 
 	@Override

@@ -11,6 +11,7 @@ import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 import org.xiscript.xi.nodes.Node;
 import org.xiscript.xi.nodes.OperationNode;
+import org.xiscript.xi.nodes.assignments.AssignmentNode;
 import org.xiscript.xi.nodes.singletons.StopNode;
 import org.xiscript.xi.operations.BuiltInOperation;
 
@@ -23,7 +24,10 @@ public class SyntaxTree {
 
 		while (iter.hasNext()) {
 			Node node = iter.next();
-			if (node instanceof OperationNode) {
+
+			if (node instanceof AssignmentNode) {
+				iter.next().literalize();
+			} else if (node instanceof OperationNode) {
 				OperationNode opnode = (OperationNode) node;
 				if (opnode.op() == BuiltInOperation.DEF) {
 					iter.next().literalize();
