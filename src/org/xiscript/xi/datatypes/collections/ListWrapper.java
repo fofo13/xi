@@ -38,27 +38,35 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 		return collection.get(index < 0 ? collection.size() + index : index);
 	}
 
+	public DataType get(int start, int end, int step) {
+		if (start > end && step > 0)
+			end += length();
+
+		List<DataType> newList = new ArrayList<DataType>(
+				(int) Math.ceil((double) Math.abs(end - start) / Math.abs(step)));
+
+		Iterator<Integer> range = new Range(start, end, step);
+		while (range.hasNext())
+			newList.add(get(range.next()));
+
+		return instantiate(newList);
+	}
+
+	public DataType get(int start, int end) {
+		return get(start, end, 1);
+	}
+
 	public DataType get(XiTuple t) {
 		int len = t.length();
 
 		if (len == 1)
 			return get(((XiInt) t.get(0)).val());
 
-		int min = ((XiInt) t.get(0)).val();
-		int max = ((XiInt) t.get(1)).val();
+		int start = ((XiInt) t.get(0)).val();
+		int end = ((XiInt) t.get(1)).val();
 		int step = (len > 2) ? ((XiInt) t.get(2)).val() : 1;
 
-		if (min > max && step > 0)
-			max += length();
-
-		List<DataType> newList = new ArrayList<DataType>(
-				(int) Math.ceil((double) Math.abs(max - min) / Math.abs(step)));
-
-		Iterator<Integer> range = new Range(min, max, step);
-		while (range.hasNext())
-			newList.add(get(range.next()));
-
-		return instantiate(newList);
+		return get(start, end, step);
 	}
 
 	public DataType get(XiList l) {

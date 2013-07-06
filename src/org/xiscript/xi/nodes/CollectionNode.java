@@ -6,99 +6,150 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 
-import org.xiscript.xi.core.Parser;
-import org.xiscript.xi.core.SyntaxTree;
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
-import org.xiscript.xi.datatypes.XiDictionary;
+import org.xiscript.xi.datatypes.XiDict;
+import org.xiscript.xi.datatypes.XiVar;
+import org.xiscript.xi.datatypes.collections.ArgumentList;
 import org.xiscript.xi.datatypes.collections.CollectionWrapper;
 import org.xiscript.xi.datatypes.collections.XiList;
 import org.xiscript.xi.datatypes.collections.XiSet;
 import org.xiscript.xi.datatypes.collections.XiTuple;
+import org.xiscript.xi.exceptions.ErrorHandler;
+import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
+import org.xiscript.xi.nodes.singletons.SepNode;
+import org.xiscript.xi.nodes.singletons.ToNode;
 
 public class CollectionNode extends DataNode<CollectionWrapper<?>> {
 
-	private static final String LIST_TAG = ":list:";
-	private static final String TUPLE_TAG = ":tuple:";
-	private static final String SET_TAG = ":set:";
-	private static final String DICT_TAG = ":dict:";
+	public static final int TYPE_LIST = 0;
+	public static final int TYPE_TUPLE = 1;
+	public static final int TYPE_SET = 2;
+	public static final int TYPE_DICT = 3;
 
-	private String expr;
-	private char start;
+	private Node[] elements;
+	private int type;
+	private boolean literal;
 
-	public CollectionNode(String expr) {
+	public CollectionNode(Node[] elements, int type) {
 		super(null);
-		this.expr = expr.substring(1, expr.length() - 1).trim();
-		start = expr.charAt(0);
+		this.elements = elements;
+		this.type = type;
+		literal = false;
+	}
+
+	@Override
+	public void literalize() {
+		literal = true;
+	}
+
+	private int getSize() {
+		int i = 1;
+		for (Node node : elements)
+			if (node == SepNode.instance())
+				i++;
+		return i;
 	}
 
 	@Override
 	public DataType evaluate(VariableCache cache) {
-		if (start == Parser.TUPLE_START) {
-			return createTuple(expr, cache);
-		} else {
-			if (expr.startsWith(LIST_TAG))
-				return createList(expr.substring(LIST_TAG.length()), cache);
-			if (expr.startsWith(TUPLE_TAG))
-				return createTuple(expr.substring(TUPLE_TAG.length()), cache);
-			if (expr.startsWith(SET_TAG))
-				return createSet(expr.substring(SET_TAG.length()), cache);
-			if (expr.startsWith(DICT_TAG))
-				return createDict(expr.substring(DICT_TAG.length()), cache);
-			else
-				return createList(expr, cache);
+		if (literal) {
+			if (elements.length > 1) {
+				for (int i = 0; i < elements.length - 1; i += 2)
+					if (special(elements[i])
+							|| elements[i + 1] != SepNode.instance())
+						ErrorHandler
+								.invokeError(ErrorType.MALFORMED_ARGUMENT_LIST);
+			}
+
+			if (special(elements[elements.length - 1]))
+				ErrorHandler.invokeError(ErrorType.MALFORMED_ARGUMENT_LIST);
+
+			XiVar[] array = new XiVar[(elements.length + 1) / 2];
+
+			int i = 0;
+			for (Node node : elements) {
+				if (node == SepNode.instance())
+					continue;
+				VarNode vnode = (VarNode) node;
+				vnode.literalize();
+				array[i] = (XiVar) vnode.evaluate(cache);
+				array[i].setPersistent(true);
+				i++;
+			}
+
+			return new ArgumentList(array);
 		}
+
+		switch (type) {
+		case TYPE_LIST:
+			return createList(cache);
+		case TYPE_TUPLE:
+			return createTuple(cache);
+		case TYPE_SET:
+			return createSet(cache);
+		case TYPE_DICT:
+			return createDict(cache);
+		}
+
+		return null;
 	}
 
-	private static void parseAndAdd(String expr, Collection<DataType> col,
-			VariableCache cache) {
-		Queue<Node> nodes = Parser.genNodeQueue(expr);
-
-		while (!nodes.isEmpty()) {
-			SyntaxTree tree = new SyntaxTree(nodes, cache);
-			col.add(tree.evaluate(cache));
-			nodes = tree.nodes();
-		}
+	private void addElementsTo(Collection<DataType> col, VariableCache scope) {
+		for (Node node : elements)
+			if (node != SepNode.instance())
+				col.add(node.evaluate(scope));
 	}
 
-	private static XiList createList(String expr, VariableCache cache) {
-		List<DataType> result = new ArrayList<DataType>();
-		parseAndAdd(expr, result, cache);
+	private XiList createList(VariableCache scope) {
+		List<DataType> result = new ArrayList<DataType>(getSize());
+		addElementsTo(result, scope);
 		return new XiList(result);
 	}
 
-	private static XiTuple createTuple(String expr, VariableCache cache) {
-		List<DataType> result = new ArrayList<DataType>();
-		parseAndAdd(expr, result, cache);
+	private XiTuple createTuple(VariableCache scope) {
+		List<DataType> result = new ArrayList<DataType>(getSize());
+		addElementsTo(result, scope);
 		return new XiTuple(result);
 	}
 
-	private static XiSet createSet(String expr, VariableCache cache) {
-		Set<DataType> result = new HashSet<DataType>();
-		parseAndAdd(expr, result, cache);
+	private XiSet createSet(VariableCache scope) {
+		Set<DataType> result = new HashSet<DataType>(getSize());
+		addElementsTo(result, scope);
 		return new XiSet(result);
 	}
 
-	private static XiDictionary createDict(String expr, VariableCache cache) {
-		Queue<Node> nodes = Parser.genNodeQueue(expr);
-		Map<DataType, DataType> result = new HashMap<DataType, DataType>();
-
-		while (!nodes.isEmpty()) {
-			SyntaxTree tree = new SyntaxTree(nodes, cache);
-			DataType key = tree.evaluate(cache);
-			nodes = tree.nodes();
-
-			tree = new SyntaxTree(nodes, cache);
-			DataType value = tree.evaluate(cache);
-			nodes = tree.nodes();
-
-			result.put(key, value);
-		}
-
-		return new XiDictionary(result);
+	private static boolean special(Node node) {
+		return node == SepNode.instance() || node == ToNode.instance();
 	}
 
+	private XiDict createDict(VariableCache cache) {
+		Map<DataType, DataType> result = new HashMap<DataType, DataType>(
+				getSize());
+
+		int i = 0;
+		while (i < elements.length) {
+			if (elements[i] == SepNode.instance()) {
+				i++;
+				continue;
+			}
+
+			Node key = elements[i], to = elements[i + 1], value = elements[i + 2];
+
+			if (special(key)
+					|| special(value)
+					|| to != ToNode.instance()
+					|| (i + 3 < elements.length && elements[i + 3] != SepNode
+							.instance())) {
+				ErrorHandler.invokeError(ErrorType.MALFORMED_DICT);
+			}
+
+			result.put(key.evaluate(cache), value.evaluate(cache));
+			i += 4;
+		}
+
+		return new XiDict(result);
+	}
 }

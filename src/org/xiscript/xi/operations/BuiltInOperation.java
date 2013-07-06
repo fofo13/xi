@@ -17,10 +17,11 @@ import org.xiscript.xi.core.ModuleLoader;
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
-import org.xiscript.xi.datatypes.XiDictionary;
+import org.xiscript.xi.datatypes.XiDict;
 import org.xiscript.xi.datatypes.XiNull;
 import org.xiscript.xi.datatypes.XiSys;
 import org.xiscript.xi.datatypes.XiVar;
+import org.xiscript.xi.datatypes.collections.ArgumentList;
 import org.xiscript.xi.datatypes.collections.CollectionWrapper;
 import org.xiscript.xi.datatypes.collections.ListWrapper;
 import org.xiscript.xi.datatypes.collections.XiList;
@@ -58,7 +59,9 @@ public enum BuiltInOperation implements Operation {
 			2), LESS("<", 2), GREATER_EQ(">=", 2), LESS_EQ("<=", 2), AND("&", 2), OR(
 			"|", 2), XOR("^", 2), RSHIFT(">>", 2), LSHIFT("<<", 2), POW("**", 2),
 
-	FIND("find", 2), IN("in", 2), MAP("@", 2), DEEPMAP("@@", 2), RANGE(",", 1), SUM(
+	DEF("def", 3),
+
+	FIND("find", 2), IN("in", 2), MAP("@", 2), DEEPMAP("@@", 2), RANGE("\\", 3), SUM(
 			"$", 1), RAND("rnd", 1), SORT("sort", 1), CSORT("csort", 2), CUT(
 			"cut", 2), DEL("del", 1), REPLACE("replace", 3), REMOVE("remove", 2), SPLIT(
 			"<>", 2), JOIN("><", 2),
@@ -294,11 +297,15 @@ public enum BuiltInOperation implements Operation {
 			return new XiInt(((XiInt) args[0]).val() << ((XiInt) args[1]).val());
 		case POW:
 			return ((XiNum) args[0]).pow((XiNum) args[1]);
+		case DEF:
+			globals.put((XiVar) args[0], new XiFunc((ArgumentList) args[1],
+					(XiBlock) args[2]));
+			return XiNull.instance();
 		case FIND:
 			return ((ListWrapper) args[0]).find(args[1]);
 		case IN:
-			if (args[1] instanceof XiDictionary)
-				return new XiInt(((XiDictionary) args[1]).containsKey(args[0]));
+			if (args[1] instanceof XiDict)
+				return new XiInt(((XiDict) args[1]).containsKey(args[0]));
 			return new XiInt(((CollectionWrapper<?>) args[1]).contains(args[0]));
 		case MAP: {
 			if (args[0] instanceof XiLambda)
@@ -318,22 +325,18 @@ public enum BuiltInOperation implements Operation {
 			return ((CollectionWrapper<?>) args[1]).map(body, true);
 		}
 		case RANGE:
-			if (args[0] instanceof XiTuple) {
-				XiTuple t = (XiTuple) args[0];
-				switch (t.length()) {
-				case 1:
-					return new RangeGenerator(((XiInt) t.get(0)).val());
-				case 2:
-					return new RangeGenerator(((XiInt) t.get(0)).val(),
-							((XiInt) t.get(1)).val());
-				case 3:
-					return new RangeGenerator(((XiInt) t.get(0)).val(),
-							((XiInt) t.get(1)).val(), ((XiInt) t.get(2)).val());
-				default:
-					ErrorHandler.invokeError(ErrorType.ARGUMENT, this);
-				}
+			switch (args.length) {
+			case 1:
+				return new RangeGenerator(((XiInt) args[0]).val());
+			case 2:
+				return new RangeGenerator(((XiInt) args[0]).val(),
+						((XiInt) args[1]).val());
+			case 3:
+				return new RangeGenerator(((XiInt) args[0]).val(),
+						((XiInt) args[1]).val(), ((XiInt) args[2]).val());
+			default:
+				ErrorHandler.invokeError(ErrorType.ARGUMENT, this);
 			}
-			return new RangeGenerator(((XiInt) args[0]).val());
 		case SUM:
 			return ((XiIterable) args[0]).sum();
 		case RAND:
@@ -347,7 +350,7 @@ public enum BuiltInOperation implements Operation {
 			return args[0];
 		case CSORT: {
 			final XiLambda key = (args[0] instanceof XiLambda) ? (XiLambda) args[0]
-					: new XiLambda(new String[] { XiVar.SPEC_VAR.id() },
+					: new XiLambda(new XiVar[] { XiVar.SPEC_VAR },
 							(XiBlock) args[0]);
 
 			Comparator<DataType> cmp = new Comparator<DataType>() {
@@ -423,32 +426,32 @@ public enum BuiltInOperation implements Operation {
 			return new XiString(sb.toString());
 		}
 		case FOR: {
-			String id = null;
-			XiTuple t = null;
+			XiVar[] vars = null;
 
-			boolean packed = args[0] instanceof XiTuple;
-			if (packed)
-				t = (XiTuple) args[0];
-			else
-				id = ((XiAttribute) args[0]).toString();
+			boolean packed = (args[0] instanceof ArgumentList);
 
-			XiIterable col = (XiIterable) args[1];
+			vars = packed ? ((ArgumentList) args[0]).getJavaAnalog()
+					: new XiVar[] { (XiVar) args[0] };
+
+			for (XiVar var : vars)
+				var.setTemporary(true);
+
+			XiIterable iter = (XiIterable) args[1];
 			XiBlock body = (XiBlock) args[2];
 			body.setOuterScope(globals);
-			for (DataType data : col) {
+
+			for (DataType data : iter) {
 				if (packed) {
 					ListWrapper lw = (ListWrapper) data;
 
-					if (lw.length() != t.length())
+					if (lw.length() != vars.length)
 						ErrorHandler.invokeError(ErrorType.UNPACKING_ERROR,
 								lw.toString());
 
-					for (int i = 0; i < t.length(); i++) {
-						String subid = ((XiAttribute) t.get(i)).toString();
-						body.updateLocal(new XiVar(subid, true), lw.get(i));
-					}
+					for (int i = 0; i < vars.length; i++)
+						body.updateLocal(vars[i], lw.get(i));
 				} else {
-					body.updateLocal(new XiVar(id, true), data);
+					body.updateLocal(vars[0], data);
 				}
 
 				try {
@@ -578,13 +581,8 @@ public enum BuiltInOperation implements Operation {
 			return XiNull.instance();
 		}
 		case EVAL: {
-			if (args[0] instanceof XiString)
-				return evaluate(new DataType[] { new XiBlock(
-						((XiString) args[0]).toString()) }, globals);
-
-			XiBlock block = (XiBlock) args[0];
-			block.setOuterScope(globals);
-			return block.evaluate();
+			// TODO
+			return null;
 		}
 		case EXEC: {
 			try {
@@ -620,8 +618,8 @@ public enum BuiltInOperation implements Operation {
 				return new XiList((XiGenerator) args[0]);
 			return ((CollectionWrapper<?>) args[0]).asList();
 		case SET:
-			if (args[0] instanceof XiDictionary)
-				return ((XiDictionary) args[0]).itemSet();
+			if (args[0] instanceof XiDict)
+				return ((XiDict) args[0]).itemSet();
 			if (args[0] instanceof XiGenerator)
 				return new XiSet((XiGenerator) args[0]);
 			return ((CollectionWrapper<?>) args[0]).asSet();
@@ -630,15 +628,13 @@ public enum BuiltInOperation implements Operation {
 				return new XiTuple((XiGenerator) args[0]);
 			return ((CollectionWrapper<?>) args[0]).asTuple();
 		case DICT:
-			return new XiDictionary((CollectionWrapper<?>) args[0]);
+			return new XiDict((CollectionWrapper<?>) args[0]);
 		case CMPLX:
 			double re = ((XiReal<?>) args[0]).num().doubleValue();
 			double im = ((XiReal<?>) args[1]).num().doubleValue();
 			return new XiComplex(re, im);
-		case FUNC:
-			return new XiFunc((XiTuple) args[0], (XiBlock) args[1]);
 		case LAMBDA:
-			return new XiLambda((XiTuple) args[0], (XiBlock) args[1]);
+			return new XiLambda((ArgumentList) args[0], (XiBlock) args[1]);
 		case FILE:
 			return new XiFile(((XiString) args[0]).toString(),
 					args.length == 1 ? XiFile.DEFAULT
@@ -681,11 +677,12 @@ public enum BuiltInOperation implements Operation {
 			return XiNull.instance();
 		case GETATTR: {
 			if (!(args[1] instanceof XiAttribute)) {
-				if (args[0] instanceof XiLambda)
+				if (args[0] instanceof XiLambda) {
 					return ((XiLambda) args[0]).evaluate((XiTuple) args[1],
 							globals);
-				if (args[0] instanceof XiDictionary)
-					return ((XiDictionary) args[0]).get(args[1]);
+				}
+				if (args[0] instanceof XiDict)
+					return ((XiDict) args[0]).get(args[1]);
 				if (args[1] instanceof XiInt)
 					return ((ListWrapper) args[0]).get((XiInt) args[1]);
 				if (args[1] instanceof XiTuple)
@@ -700,7 +697,7 @@ public enum BuiltInOperation implements Operation {
 				if (args[0] instanceof ListWrapper)
 					((ListWrapper) args[0]).put((XiInt) args[1], args[2]);
 				else
-					((XiDictionary) args[0]).put(args[1], args[2]);
+					((XiDict) args[0]).put(args[1], args[2]);
 			} else
 				args[0].setAttribute((XiAttribute) args[1], args[2]);
 			return XiNull.instance();

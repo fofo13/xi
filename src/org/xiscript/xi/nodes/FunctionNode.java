@@ -1,58 +1,57 @@
 package org.xiscript.xi.nodes;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
-import org.xiscript.xi.datatypes.XiVar;
+import org.xiscript.xi.datatypes.XiDict;
+import org.xiscript.xi.datatypes.collections.ListWrapper;
 import org.xiscript.xi.datatypes.functional.Function;
+import org.xiscript.xi.datatypes.numeric.XiInt;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
-public class FunctionNode implements Node {
+public class FunctionNode extends OperationNode {
 
-	private XiVar id;
-	private int nargs;
+	private String id;
 
-	private List<Node> children;
-
-	public FunctionNode(XiVar id, int nargs) {
+	public FunctionNode(String id) {
+		super(null);
 		this.id = id;
-		this.nargs = nargs;
-
-		children = new ArrayList<Node>(nargs);
-	}
-
-	@Override
-	public void addChild(Node node) {
-		children.add(node);
 	}
 
 	@Override
 	public int numChildren() {
-		return nargs;
+		return -1;
 	}
 
 	@Override
 	public DataType evaluate(VariableCache cache) {
-		Function f = (Function) cache.get(id.id());
+		DataType d = cache.get(id);
+		DataType[] args = processChildren(cache);
 
-		DataType[] arr = new DataType[children.size()];
-		for (int i = 0; i < arr.length; i++) {
-			try {
-				arr[i] = children.get(i).evaluate(cache);
-			} catch (ClassCastException cce) {
-				ErrorHandler.invokeError(ErrorType.ARGUMENT, children.get(i));
+		if (d instanceof Function)
+			return ((Function) d).evaluate(args, cache);
+
+		if (d instanceof ListWrapper) {
+			ListWrapper list = (ListWrapper) d;
+
+			switch (args.length) {
+			case 1:
+				return list.get(((XiInt) args[0]).val());
+			case 2:
+				return list.get(((XiInt) args[0]).val(),
+						((XiInt) args[1]).val());
+			case 3:
+				return list.get(((XiInt) args[0]).val(),
+						((XiInt) args[1]).val(), ((XiInt) args[2]).val());
 			}
+
+			ErrorHandler.invokeError(ErrorType.ARGUMENT, id);
 		}
 
-		return f.evaluate(arr, cache);
-	}
+		if (d instanceof XiDict)
+			return ((XiDict) d).get(args[0]);
 
-	@Override
-	public void clear() {
-		children.clear();
+		ErrorHandler.invokeError(ErrorType.NOT_CALLABLE, id, d.type());
+		return null;
 	}
-
 }

@@ -2,6 +2,7 @@ package org.xiscript.xi.datatypes.functional;
 
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
+import org.xiscript.xi.datatypes.collections.ArgumentList;
 import org.xiscript.xi.datatypes.collections.XiTuple;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
@@ -11,7 +12,7 @@ public abstract class HiddenLambda extends XiLambda {
 	private int numArgs;
 
 	public HiddenLambda(int numArgs) {
-		super(new String[0], null);
+		super(ArgumentList.EMPTY, null);
 		this.numArgs = numArgs;
 	}
 

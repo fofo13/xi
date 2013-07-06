@@ -2,33 +2,17 @@ package org.xiscript.xi.datatypes.functional;
 
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
-import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.XiVar;
-import org.xiscript.xi.datatypes.collections.XiTuple;
-import org.xiscript.xi.exceptions.ErrorHandler;
-import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 import org.xiscript.xi.exceptions.ReturnException;
 
 public abstract class Function extends DataType {
 
-	protected String[] identifiers;
+	protected XiVar[] identifiers;
 	protected XiBlock body;
 
-	public Function(String[] identifiers, XiBlock body) {
+	public Function(XiVar[] identifiers, XiBlock body) {
 		this.identifiers = identifiers;
 		this.body = body;
-	}
-
-	public Function(XiTuple list, XiBlock body) {
-		this(new String[list == null ? 0 : list.length()], body);
-
-		for (int i = 0; i < identifiers.length; i++) {
-			if (!(list.get(i) instanceof XiAttribute))
-				ErrorHandler.invokeError(ErrorType.INVALID_ATTRIBUTE_TUPLE,
-						list);
-
-			identifiers[i] = ((XiAttribute) list.get(i)).toString();
-		}
 	}
 
 	public DataType evaluate(DataType[] args, VariableCache globals) {
@@ -41,7 +25,7 @@ public abstract class Function extends DataType {
 															// StackOverflowError
 
 		for (int i = 0; i < args.length; i++) {
-			scope.put(new XiVar(identifiers[i], false, true), args[i]);
+			scope.put(identifiers[i], args[i]);
 		}
 
 		body.setOuterScope(scope);

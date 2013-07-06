@@ -29,6 +29,10 @@ public class FunctionConverterNode implements Node {
 
 	@Override
 	public void clear() {
-
 	}
+
+	@Override
+	public void literalize() {
+	}
+
 }

@@ -48,8 +48,7 @@ public class OperationNode implements Node {
 		return op.numArgs();
 	}
 
-	@Override
-	public DataType evaluate(VariableCache cache) {
+	protected DataType[] processChildren(VariableCache cache) {
 		DataType[] arr = new DataType[children.size()];
 		for (int i = 0; i < arr.length; i++) {
 			try {
@@ -58,8 +57,13 @@ public class OperationNode implements Node {
 				ErrorHandler.invokeError(ErrorType.ARGUMENT, children.get(i));
 			}
 		}
+		return arr;
+	}
+
+	@Override
+	public DataType evaluate(VariableCache cache) {
 		try {
-			return op.evaluate(arr, cache);
+			return op.evaluate(processChildren(cache), cache);
 		} catch (ClassCastException cce) {
 			ErrorHandler.invokeError(ErrorType.ARGUMENT, op);
 			return null;
@@ -69,6 +73,10 @@ public class OperationNode implements Node {
 	@Override
 	public void clear() {
 		children.clear();
+	}
+
+	@Override
+	public void literalize() {
 	}
 
 	@Override

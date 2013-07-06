@@ -45,9 +45,13 @@ public class ErrorHandler {
 		INVALID_ATTRIBUTE_TUPLE(
 				"Argument-tuple must consist of only attribute identifiers: %s"),
 
-		FUNCTION_REASSIGN("Functions cannot be reassigned."),
+		NOT_CALLABLE("%s of type %s is not callable"),
 
 		PARSE_ERROR("Could not parse expression: %s"),
+
+		MALFORMED_DICT("Malformed dictionary literal detected."),
+
+		MALFORMED_ARGUMENT_LIST("Malformed argument list."),
 
 		UNICODE_ERROR("Unable to parse unicode value: %s"),
 

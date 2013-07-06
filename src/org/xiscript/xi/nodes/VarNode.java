@@ -4,19 +4,31 @@ import java.util.regex.Pattern;
 
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
+import org.xiscript.xi.datatypes.XiVar;
 
 public class VarNode implements Node {
 
 	public static final Pattern DOT = Pattern.compile("\\.");
 
-	private String id;
+	private boolean literal;
+	private XiVar id;
+
+	public VarNode(XiVar id) {
+		this.id = id;
+		literal = false;
+	}
 
 	public VarNode(String id) {
-		this.id = id;
+		this(new XiVar(id));
 	}
 
 	public String id() {
-		return id;
+		return id.id();
+	}
+
+	@Override
+	public void literalize() {
+		literal = true;
 	}
 
 	@Override
@@ -31,7 +43,7 @@ public class VarNode implements Node {
 
 	@Override
 	public DataType evaluate(VariableCache cache) {
-		return cache.get(id);
+		return literal ? id : cache.get(id.id());
 	}
 
 	@Override
@@ -40,7 +52,7 @@ public class VarNode implements Node {
 
 	@Override
 	public boolean equals(Object o) {
-		return (o instanceof VarNode) && id.equals(((VarNode) o).id);
+		return id.equals(o);
 	}
 
 	@Override
@@ -50,7 +62,7 @@ public class VarNode implements Node {
 
 	@Override
 	public String toString() {
-		return id;
+		return id.toString();
 	}
 
 }
