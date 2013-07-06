@@ -10,15 +10,15 @@ import org.xiscript.xi.datatypes.collections.CollectionWrapper;
 import org.xiscript.xi.datatypes.collections.XiSet;
 import org.xiscript.xi.datatypes.collections.XiTuple;
 
-public class XiDictionary extends DataType implements Map<DataType, DataType> {
+public class XiDict extends DataType implements Map<DataType, DataType> {
 
 	private Map<DataType, DataType> map;
 
-	public XiDictionary(Map<DataType, DataType> map) {
+	public XiDict(Map<DataType, DataType> map) {
 		this.map = map;
 	}
 
-	public XiDictionary(CollectionWrapper<?> col) {
+	public XiDict(CollectionWrapper<?> col) {
 		this();
 		for (DataType data : col) {
 			XiTuple l = (XiTuple) data;
@@ -26,7 +26,7 @@ public class XiDictionary extends DataType implements Map<DataType, DataType> {
 		}
 	}
 
-	public XiDictionary() {
+	public XiDict() {
 		this(new HashMap<DataType, DataType>());
 	}
 
@@ -114,15 +114,15 @@ public class XiDictionary extends DataType implements Map<DataType, DataType> {
 
 	@Override
 	public int compareTo(DataType other) {
-		if (!(other instanceof XiDictionary))
+		if (!(other instanceof XiDict))
 			return 0;
 		return Integer.valueOf(length()).compareTo(other.length());
 	}
 
 	@Override
 	public boolean equals(Object o) {
-		return o instanceof XiDictionary
-				&& map.equals(((XiDictionary) o).map());
+		return o instanceof XiDict
+				&& map.equals(((XiDict) o).map());
 	}
 
 	@Override
