@@ -1,58 +1,57 @@
 package org.xiscript.xi.core;
 
-import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Queue;
 
 import org.xiscript.xi.datatypes.DataType;
-import org.xiscript.xi.datatypes.XiVar;
-import org.xiscript.xi.datatypes.functional.XiFunc;
+import org.xiscript.xi.datatypes.XiNull;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
-import org.xiscript.xi.nodes.FunctionNode;
 import org.xiscript.xi.nodes.Node;
-import org.xiscript.xi.nodes.StopNode;
-import org.xiscript.xi.nodes.VarNode;
+import org.xiscript.xi.nodes.OperationNode;
+import org.xiscript.xi.nodes.singletons.StopNode;
+import org.xiscript.xi.operations.BuiltInOperation;
 
 public class SyntaxTree {
 
-	private Queue<Node> nodes;
-	private Node head;
+	private Node[] statements;
 
-	public SyntaxTree(Queue<Node> nodes, VariableCache globals) {
-		Queue<Node> newNodes = new ArrayDeque<Node>(nodes.size());
+	public SyntaxTree(Queue<Node> nodes) {
+		Iterator<Node> iter = nodes.iterator();
 
-		for (Node node : nodes) {
-			if (node instanceof VarNode) {
-				VarNode vnode = (VarNode) node;
-
-				if (globals.containsId(vnode.id())
-						&& globals.get(vnode.id()) instanceof XiFunc) {
-
-					newNodes.add(new FunctionNode(new XiVar(vnode.id()),
-							((XiFunc) globals.get(vnode.id())).numArgs()));
-
-				} else {
-					newNodes.add(node);
+		while (iter.hasNext()) {
+			Node node = iter.next();
+			if (node instanceof OperationNode) {
+				OperationNode opnode = (OperationNode) node;
+				if (opnode.op() == BuiltInOperation.DEF) {
+					iter.next().literalize();
+					iter.next().literalize();
+				} else if (opnode.op() == BuiltInOperation.LAMBDA) {
+					iter.next().literalize();
+				} else if (opnode.op() == BuiltInOperation.FOR) {
+					iter.next().literalize();
 				}
-			} else {
-				newNodes.add(node);
 			}
 		}
 
-		this.nodes = newNodes;
-		head = create(this.nodes);
+		List<Node> statements = new ArrayList<Node>();
+		while (!nodes.isEmpty())
+			statements.add(create(nodes));
+
+		this.statements = statements.toArray(new Node[statements.size()]);
 	}
 
-	public Node head() {
-		return head;
+	public Node[] statements() {
+		return statements;
 	}
 
-	public Queue<Node> nodes() {
-		return nodes;
-	}
-
-	public DataType evaluate(VariableCache globals) {
-		return head.evaluate(globals);
+	public DataType evaluate(VariableCache scope) {
+		DataType last = XiNull.instance();
+		for (Node node : statements)
+			last = node.evaluate(scope);
+		return last;
 	}
 
 	private static Node create(Queue<Node> nodes) {
@@ -65,18 +64,17 @@ public class SyntaxTree {
 		if (node.numChildren() > -1) {
 			for (int i = 0; i < node.numChildren(); i++) {
 				Node next = create(nodes);
-				if (next instanceof StopNode)
+				if (next == StopNode.instance())
 					break;
 				node.addChild(next);
 			}
 		} else {
 			Node child = null;
-			while (!(child = create(nodes)).equals(StopNode.instance)) {
+			while ((child = create(nodes)) != StopNode.instance()) {
 				node.addChild(child);
 			}
 		}
 
 		return node;
 	}
-
 }
