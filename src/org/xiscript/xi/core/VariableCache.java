@@ -32,7 +32,7 @@ public class VariableCache implements Map<XiVar, DataType>, Cloneable {
 
 	@Override
 	public DataType put(XiVar id, DataType data) {
-		if ((!id.temporary()) && (!id.persistent())
+		if ((!id.isTemporary()) && (!id.isPersistent())
 				&& (parent != null && parent.containsKey(id)))
 			return parent.put(id, data);
 
@@ -46,7 +46,7 @@ public class VariableCache implements Map<XiVar, DataType>, Cloneable {
 	@Override
 	public void putAll(Map<? extends XiVar, ? extends DataType> m) {
 		for (Entry<? extends XiVar, ? extends DataType> entry : m.entrySet())
-			if (!entry.getKey().temporary())
+			if (!entry.getKey().isTemporary())
 				put(entry.getKey(), entry.getValue());
 	}
 
