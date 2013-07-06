@@ -4,7 +4,6 @@ import java.util.ArrayDeque;
 import java.util.HashSet;
 import java.util.Queue;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.collections.XiRegex;
@@ -20,43 +19,31 @@ import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 import org.xiscript.xi.nodes.CollectionNode;
 import org.xiscript.xi.nodes.DataNode;
 import org.xiscript.xi.nodes.FunctionConverterNode;
+import org.xiscript.xi.nodes.FunctionNode;
 import org.xiscript.xi.nodes.Node;
 import org.xiscript.xi.nodes.OperationNode;
-import org.xiscript.xi.nodes.StopNode;
 import org.xiscript.xi.nodes.VarNode;
 import org.xiscript.xi.nodes.assignments.AssignmentNode;
 import org.xiscript.xi.nodes.assignments.CompoundAssignmentNode;
 import org.xiscript.xi.nodes.assignments.MinusMinusNode;
 import org.xiscript.xi.nodes.assignments.PlusPlusNode;
+import org.xiscript.xi.nodes.singletons.SepNode;
+import org.xiscript.xi.nodes.singletons.StopNode;
+import org.xiscript.xi.nodes.singletons.ToNode;
 import org.xiscript.xi.operations.BuiltInOperation;
 import org.xiscript.xi.operations.ShortCircuitOperation;
 import org.xiscript.xi.util.CharacterQueue;
 
 public class Parser {
 
-	private static final Pattern INT = Pattern.compile("-?\\d+");
-
-	private static final Pattern LONG = Pattern.compile("-?\\d+[lL]");
-
-	private static final Pattern FLOAT = Pattern
-			.compile("-?\\d*\\.?\\d+([eE][-+]?\\d+)?");
-
-	private static final Pattern IM = Pattern.compile("-?\\d+(\\.\\d+)*[iI]");
-
-	public static final Pattern IDENTIFIER = Pattern
-			.compile("[\\p{Alpha}_][\\w.]*");
-
 	private static final Set<Character> W = new HashSet<Character>(63);
 
 	private static final Set<Character> SPEC = new HashSet<Character>(63);
 
-	private static final Pattern NUMBER = Pattern
-			.compile("-?\\d*\\.?\\d*[LliI]?");
-
 	public static final String WORD_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 			+ "abcdefghijklmnopqrstuvwxyz1234567890_";
 
-	public static final String SPECIAL_CHARS = "!+~-*/%=<>&|^$@,?:";
+	public static final String SPECIAL_CHARS = "\\!+~-*/%=<>&|^$@,?:";
 
 	public static final char MINUS = '-';
 
@@ -75,8 +62,8 @@ public class Parser {
 	public static final char SQUOTE = '\'';
 	public static final char ESCAPE = '\\';
 
-	public static final String RE_START = "re\"";
-	public static final String RAW_START = "r\"";
+	public static final String RE_START = "re";
+	public static final String RAW_START = "r";
 
 	public static final String ASSIGNMENT = "=";
 	public static final String PLUS_EQUALS = "+=";
@@ -94,7 +81,10 @@ public class Parser {
 	public static final String PLUS_PLUS = "++";
 	public static final String MINUS_MINUS = "--";
 
+	public static final char CALL = ':';
+	public static final char TO = ':';
 	public static final char STOP = ';';
+	public static final char SEP = ',';
 	public static final char COMMENT = '#';
 	public static final char NEWLINE = '\n';
 
@@ -110,18 +100,17 @@ public class Parser {
 		ArrayDeque<Node> nodes = new ArrayDeque<Node>();
 
 		while (!source.isEmpty()) {
-			CharSequence token = generateToken(source);
+			Node node = generateNode(source);
 
-			if (token == null)
+			if (node == null)
 				continue;
 
-			nodes.add(parseNode(token.toString()));
-
-			if (!nodes.isEmpty() && nodes.getLast() instanceof AssignmentNode) {
-				Node last1 = nodes.pollLast();
-				Node last2 = nodes.pollLast();
-				nodes.addLast(last1);
-				nodes.addLast(last2);
+			if (node instanceof AssignmentNode) {
+				Node last = nodes.pollLast();
+				nodes.add(node);
+				nodes.add(last);
+			} else {
+				nodes.add(node);
 			}
 		}
 
@@ -132,7 +121,10 @@ public class Parser {
 		return genNodeQueue(new CharacterQueue(source));
 	}
 
-	private static CharSequence generateToken(Queue<Character> chars) {
+	private static Node generateNode(Queue<Character> chars) {
+		if (chars.isEmpty())
+			return null;
+
 		char start = chars.peek();
 
 		if (Character.isDigit(start))
@@ -162,13 +154,15 @@ public class Parser {
 		else if (start == COMMENT)
 			readComment(chars);
 
-		else if (start == STOP)
-			return Character.toString(chars.poll());
+		else if (start == STOP) {
+			chars.poll();
+			return StopNode.instance();
+		}
 
 		else
 			chars.poll();
 
-		return null;
+		return generateNode(chars);
 	}
 
 	private static void readComment(Queue<Character> chars) {
@@ -176,19 +170,25 @@ public class Parser {
 			;
 	}
 
-	private static boolean isValidSpec(CharSequence s) {
+	private static boolean isBuiltIn(CharSequence s) {
 		return BuiltInOperation.idExists(s.toString())
 				|| ShortCircuitOperation.idExists(s.toString());
 	}
 
-	private static CharSequence readSpec(Queue<Character> chars) {
+	private static Node readSpec(Queue<Character> chars) {
 		StringBuilder sb = new StringBuilder(chars.poll().toString());
 
 		if (sb.charAt(0) == MINUS && Character.isDigit(chars.peek()))
-			return MINUS + readNum(chars).toString();
+			return readNum(chars, false);
+
+		if (sb.charAt(0) == SEP)
+			return SepNode.instance();
+
+		if (sb.charAt(0) == TO)
+			return ToNode.instance();
 
 		while (SPEC.contains(chars.peek())) {
-			if (isValidSpec(sb) && !isValidSpec(sb.toString() + chars.peek()))
+			if (isBuiltIn(sb) && !isBuiltIn(sb.toString() + chars.peek()))
 				break;
 
 			sb.append(chars.poll());
@@ -197,168 +197,60 @@ public class Parser {
 		if (!chars.isEmpty() && chars.peek() == FUNCTION_CONVERTER)
 			sb.append(chars.poll());
 
-		return sb;
+		if (ASSIGNMENT.contentEquals(sb))
+			return new AssignmentNode();
+		if (PLUS_EQUALS.contentEquals(sb))
+			return new CompoundAssignmentNode(BuiltInOperation.ADD);
+		if (MINUS_EQUALS.contentEquals(sb))
+			return new CompoundAssignmentNode(BuiltInOperation.SUBTRACT);
+		if (TIMES_EQUALS.contentEquals(sb))
+			return new CompoundAssignmentNode(BuiltInOperation.MULTIPLY);
+		if (DIV_EQUALS.contentEquals(sb))
+			return new CompoundAssignmentNode(BuiltInOperation.DIVIDE);
+		if (MOD_EQUALS.contentEquals(sb))
+			return new CompoundAssignmentNode(BuiltInOperation.MODULUS);
+		if (POW_EQUALS.contentEquals(sb))
+			return new CompoundAssignmentNode(BuiltInOperation.POW);
+		if (RSHIFT_EQUALS.contentEquals(sb))
+			return new CompoundAssignmentNode(BuiltInOperation.RSHIFT);
+		if (LSHIFT_EQUALS.contentEquals(sb))
+			return new CompoundAssignmentNode(BuiltInOperation.LSHIFT);
+		if (AND_EQUALS.contentEquals(sb))
+			return new CompoundAssignmentNode(BuiltInOperation.AND);
+		if (OR_EQUALS.contentEquals(sb))
+			return new CompoundAssignmentNode(BuiltInOperation.OR);
+		if (OR_EQUALS.contentEquals(sb))
+			return new CompoundAssignmentNode(BuiltInOperation.XOR);
+
+		if (PLUS_PLUS.contentEquals(sb))
+			return new PlusPlusNode();
+		if (MINUS_MINUS.contentEquals(sb))
+			return new MinusMinusNode();
+
+		if (BuiltInOperation.idExists(sb.toString()))
+			return new OperationNode(BuiltInOperation.parse(sb.toString()));
+		if (ShortCircuitOperation.idExists(sb.toString()))
+			return ShortCircuitOperation.parse(sb.toString()).getNode();
+
+		ErrorHandler.invokeError(ErrorType.PARSE_ERROR, sb);
+		return null;
 	}
 
-	private static CharSequence readWord(Queue<Character> chars) {
+	private static Node readWord(Queue<Character> chars) {
 		StringBuilder sb = new StringBuilder();
 
-		while (chars.peek() != null
+		while ((!chars.isEmpty())
 				&& (W.contains(chars.peek()) || chars.peek() == '.')) {
 			sb.append(chars.poll());
 
 			if (!chars.isEmpty() && chars.peek() == DQUOTE) {
-				sb.append(readString(chars));
-				break;
+				return readString(chars, sb);
 			}
 		}
 
-		if (!chars.isEmpty() && chars.peek() == FUNCTION_CONVERTER)
-			sb.append(chars.poll());
-
-		return sb;
-	}
-
-	private static CharSequence readNum(Queue<Character> chars) {
-		StringBuilder sb = new StringBuilder(chars.poll().toString());
-
-		while (NUMBER.matcher(sb.toString() + chars.peek()).matches()) {
-			sb.append(chars.poll());
-		}
-
-		return sb;
-	}
-
-	private static CharSequence readAttribute(Queue<Character> chars) {
-		StringBuilder sb = new StringBuilder(chars.poll().toString());
-
-		while (true) {
-			sb.append(chars.poll());
-
-			if (chars.peek() == SQUOTE) {
-				sb.append(chars.poll());
-				break;
-			}
-		}
-
-		return sb;
-	}
-
-	private static CharSequence readString(Queue<Character> chars) {
-		StringBuilder sb = new StringBuilder(chars.poll().toString());
-
-		int escapeCount = 0;
-		while (true) {
-			char c = chars.poll();
-
-			if (c == ESCAPE) {
-				escapeCount++;
-			} else if (c == DQUOTE && escapeCount % 2 == 0) {
-				sb.append(DQUOTE);
-				break;
-			} else {
-				escapeCount = 0;
-			}
-
-			sb.append(c);
-		}
-
-		return sb;
-	}
-
-	private static CharSequence readBalanced(Queue<Character> chars,
-			final char open, final char close) {
-		StringBuilder sb = new StringBuilder(chars.poll().toString());
-
-		int net = 1;
-		boolean inQuote = false;
-		int escapeCount = 0;
-
-		while (net != 0) {
-			char c = chars.poll();
-
-			if (c == open && !inQuote)
-				net++;
-			else if (c == close && !inQuote)
-				net--;
-			else if (c == ESCAPE)
-				escapeCount++;
-			else if (c == DQUOTE && escapeCount % 2 == 0)
-				inQuote = !inQuote;
-			else
-				escapeCount = 0;
-
-			sb.append(c);
-		}
-
-		return sb;
-	}
-
-	public static Node parseNode(String exp) {
-		if (INT.matcher(exp).matches())
-			return new DataNode<XiInt>(XiInt.parse(exp));
-		if (LONG.matcher(exp).matches())
-			return new DataNode<XiLong>(XiLong.parse(exp));
-		if (FLOAT.matcher(exp).matches())
-			return new DataNode<XiFloat>(XiFloat.parse(exp));
-		if (IM.matcher(exp).matches())
-			return new DataNode<XiComplex>(XiComplex.parseIm(exp));
-
-		if (exp.equals(ASSIGNMENT))
-			return new AssignmentNode();
-		if (exp.equals(PLUS_EQUALS))
-			return new CompoundAssignmentNode(BuiltInOperation.ADD);
-		if (exp.equals(MINUS_EQUALS))
-			return new CompoundAssignmentNode(BuiltInOperation.SUBTRACT);
-		if (exp.equals(TIMES_EQUALS))
-			return new CompoundAssignmentNode(BuiltInOperation.MULTIPLY);
-		if (exp.equals(DIV_EQUALS))
-			return new CompoundAssignmentNode(BuiltInOperation.DIVIDE);
-		if (exp.equals(MOD_EQUALS))
-			return new CompoundAssignmentNode(BuiltInOperation.MODULUS);
-		if (exp.equals(POW_EQUALS))
-			return new CompoundAssignmentNode(BuiltInOperation.POW);
-		if (exp.equals(RSHIFT_EQUALS))
-			return new CompoundAssignmentNode(BuiltInOperation.RSHIFT);
-		if (exp.equals(LSHIFT_EQUALS))
-			return new CompoundAssignmentNode(BuiltInOperation.LSHIFT);
-		if (exp.equals(AND_EQUALS))
-			return new CompoundAssignmentNode(BuiltInOperation.AND);
-		if (exp.equals(OR_EQUALS))
-			return new CompoundAssignmentNode(BuiltInOperation.OR);
-		if (exp.equals(XOR_EQUALS))
-			return new CompoundAssignmentNode(BuiltInOperation.XOR);
-
-		if (exp.equals(PLUS_PLUS))
-			return new PlusPlusNode();
-		if (exp.equals(MINUS_MINUS))
-			return new MinusMinusNode();
-
-		if (exp.charAt(0) == LIST_START || exp.charAt(0) == TUPLE_START)
-			return new CollectionNode(exp);
-		if (exp.charAt(0) == BLOCK_START)
-			return new DataNode<XiBlock>(new XiBlock(exp.substring(1,
-					exp.length() - 1)));
-		if (exp.charAt(0) == DQUOTE)
-			return new DataNode<XiString>(new XiString(exp.substring(1,
-					exp.length() - 1)));
-		if (exp.charAt(0) == SQUOTE)
-			return new DataNode<XiAttribute>(XiAttribute.valueOf(exp.substring(
-					1, exp.length() - 1)));
-		if (exp.startsWith(RE_START))
-			return new DataNode<XiRegex>(new XiRegex(exp.substring(3,
-					exp.length() - 1)));
-		if (exp.startsWith(RAW_START))
-			return new DataNode<XiString>(new XiString(exp.substring(2,
-					exp.length() - 1), true));
-		if (BuiltInOperation.idExists(exp))
-			return new OperationNode(BuiltInOperation.parse(exp));
-		if (ShortCircuitOperation.idExists(exp))
-			return ShortCircuitOperation.parse(exp).getNode();
-		if (IDENTIFIER.matcher(exp).matches())
-			return new VarNode(exp);
-		if (exp.charAt(exp.length() - 1) == FUNCTION_CONVERTER) {
-			String id = exp.substring(0, exp.length() - 1);
+		if (!chars.isEmpty() && chars.peek() == FUNCTION_CONVERTER) {
+			chars.poll();
+			String id = sb.toString();
 
 			if (BuiltInOperation.idExists(id))
 				return new DataNode<XiLambda>(BuiltInOperation.parse(id)
@@ -367,10 +259,164 @@ public class Parser {
 			return new FunctionConverterNode(id);
 		}
 
-		if (exp.charAt(0) == STOP)
-			return StopNode.instance;
+		if (!chars.isEmpty() && chars.peek() == CALL) {
+			chars.poll();
+			String id = sb.toString();
 
-		ErrorHandler.invokeError(ErrorType.PARSE_ERROR, exp);
+			return new FunctionNode(id);
+		}
+
+		if (BuiltInOperation.idExists(sb.toString()))
+			return new OperationNode(BuiltInOperation.parse(sb.toString()));
+		if (ShortCircuitOperation.idExists(sb.toString()))
+			return ShortCircuitOperation.parse(sb.toString()).getNode();
+
+		return new VarNode(sb.toString());
+	}
+
+	private static Node readNum(Queue<Character> chars, boolean positive) {
+		StringBuilder sb = new StringBuilder((positive ? ""
+				: Character.toString(MINUS))
+				+ chars.poll());
+
+		boolean dotFound = false;
+
+		while (!chars.isEmpty()) {
+			char peek = chars.peek();
+
+			if (Character.isDigit(peek)) {
+				sb.append(chars.poll());
+			}
+
+			else if (peek == '.') {
+				if (dotFound)
+					break;
+
+				dotFound = true;
+				sb.append(chars.poll());
+			}
+
+			else
+				break;
+		}
+
+		char modifier = chars.isEmpty() ? 0 : chars.peek();
+
+		if (modifier == 'i' || modifier == 'I') {
+			chars.poll();
+			return new DataNode<XiComplex>(XiComplex.parseIm(sb.toString()));
+		}
+		if (modifier == 'l' || modifier == 'L') {
+			chars.poll();
+			return new DataNode<XiLong>(XiLong.parse(sb.toString()));
+		}
+		if (dotFound)
+			return new DataNode<XiFloat>(XiFloat.parse(sb.toString()));
+		return new DataNode<XiInt>(XiInt.parse(sb.toString()));
+	}
+
+	private static Node readNum(Queue<Character> chars) {
+		return readNum(chars, true);
+	}
+
+	private static Node readAttribute(Queue<Character> chars) {
+		chars.poll();
+		StringBuilder sb = new StringBuilder();
+
+		while (chars.peek() != SQUOTE) {
+			sb.append(chars.poll());
+		}
+		chars.poll();
+
+		return new DataNode<XiAttribute>(XiAttribute.valueOf(sb.toString()));
+	}
+
+	private static Node readString(Queue<Character> chars, CharSequence type) {
+		chars.poll();
+		StringBuilder sb = new StringBuilder();
+
+		int escapeCount = 0;
+		while (true) {
+			char c = chars.poll();
+
+			if (c == ESCAPE) {
+				escapeCount++;
+			} else if (c == DQUOTE && escapeCount % 2 == 0) {
+				break;
+			} else {
+				escapeCount = 0;
+			}
+
+			sb.append(c);
+		}
+
+		if (type != null) {
+			if (RE_START.contentEquals(type))
+				return new DataNode<XiRegex>(new XiRegex(sb.toString()));
+			if (RAW_START.contentEquals(type))
+				return new DataNode<XiString>(new XiString(sb.toString(), true));
+		}
+
+		return new DataNode<XiString>(new XiString(sb.toString()));
+	}
+
+	private static Node readString(Queue<Character> chars) {
+		return readString(chars, null);
+	}
+
+	private static Node readBalanced(Queue<Character> chars, final char open,
+			final char close) {
+		chars.poll();
+		StringBuilder sb = new StringBuilder();
+
+		int net = 1;
+		boolean inQuote = false;
+		int escapeCount = 0;
+
+		if (!chars.isEmpty()) {
+			while (net != 0) {
+				char c = chars.poll();
+
+				if (c == open && !inQuote)
+					net++;
+				else if (c == close && !inQuote)
+					net--;
+				else if (c == ESCAPE)
+					escapeCount++;
+				else if (c == DQUOTE && escapeCount % 2 == 0)
+					inQuote = !inQuote;
+				else
+					escapeCount = 0;
+
+				if (net != 0)
+					sb.append(c);
+			}
+		}
+
+		Node[] nodes = new SyntaxTree(Parser.genNodeQueue(sb)).statements();
+
+		if (open == LIST_START)
+			return new CollectionNode(nodes, CollectionNode.TYPE_LIST);
+
+		if (open == TUPLE_START)
+			return new CollectionNode(nodes, CollectionNode.TYPE_TUPLE);
+
+		if (open == BLOCK_START) {
+			boolean sepFound = false;
+
+			for (Node node : nodes) {
+				if (node == SepNode.instance())
+					sepFound = true;
+				else if (node == ToNode.instance())
+					return new CollectionNode(nodes, CollectionNode.TYPE_DICT);
+			}
+
+			if (sepFound)
+				return new CollectionNode(nodes, CollectionNode.TYPE_DICT);
+			return new DataNode<XiBlock>(new XiBlock(nodes));
+		}
+
+		ErrorHandler.invokeError(ErrorType.INTERNAL);
 		return null;
 	}
 
