@@ -1,5 +1,6 @@
 package org.xiscript.xi.nodes.assignments;
 
+import org.xiscript.xi.core.Parser;
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.nodes.OperationNode;
@@ -25,7 +26,7 @@ public class AssignmentNode extends OperationNode {
 
 	@Override
 	public String toString() {
-		return ":=";
+		return Parser.ASSIGNMENT;
 	}
 
 }

@@ -40,6 +40,8 @@ public class Parser {
 
 	private static final Set<Character> SPEC = new HashSet<Character>(63);
 
+	private static final Set<String> ASSIGNMENTS = new HashSet<String>(12);
+
 	public static final String WORD_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 			+ "abcdefghijklmnopqrstuvwxyz1234567890_";
 
@@ -94,6 +96,21 @@ public class Parser {
 
 		for (int i = 0; i < SPECIAL_CHARS.length(); i++)
 			SPEC.add(SPECIAL_CHARS.charAt(i));
+
+		ASSIGNMENTS.add(ASSIGNMENT);
+		ASSIGNMENTS.add(PLUS_EQUALS);
+		ASSIGNMENTS.add(MINUS_EQUALS);
+		ASSIGNMENTS.add(TIMES_EQUALS);
+		ASSIGNMENTS.add(DIV_EQUALS);
+		ASSIGNMENTS.add(MOD_EQUALS);
+		ASSIGNMENTS.add(POW_EQUALS);
+		ASSIGNMENTS.add(RSHIFT_EQUALS);
+		ASSIGNMENTS.add(LSHIFT_EQUALS);
+		ASSIGNMENTS.add(AND_EQUALS);
+		ASSIGNMENTS.add(OR_EQUALS);
+		ASSIGNMENTS.add(XOR_EQUALS);
+		ASSIGNMENTS.add(PLUS_PLUS);
+		ASSIGNMENTS.add(MINUS_MINUS);
 	}
 
 	public static Queue<Node> genNodeQueue(Queue<Character> source) {
@@ -170,9 +187,10 @@ public class Parser {
 			;
 	}
 
-	private static boolean isBuiltIn(CharSequence s) {
+	private static boolean isValidSpec(CharSequence s) {
 		return BuiltInOperation.idExists(s.toString())
-				|| ShortCircuitOperation.idExists(s.toString());
+				|| ShortCircuitOperation.idExists(s.toString())
+				|| ASSIGNMENTS.contains(s);
 	}
 
 	private static Node readSpec(Queue<Character> chars) {
@@ -188,7 +206,7 @@ public class Parser {
 			return ToNode.instance();
 
 		while (SPEC.contains(chars.peek())) {
-			if (isBuiltIn(sb) && !isBuiltIn(sb.toString() + chars.peek()))
+			if (isValidSpec(sb) && !isValidSpec(sb.toString() + chars.peek()))
 				break;
 
 			sb.append(chars.poll());
