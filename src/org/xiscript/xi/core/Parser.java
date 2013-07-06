@@ -430,7 +430,7 @@ public class Parser {
 			}
 
 			if (sepFound)
-				return new CollectionNode(nodes, CollectionNode.TYPE_DICT);
+				return new CollectionNode(nodes, CollectionNode.TYPE_SET);
 			return new DataNode<XiBlock>(new XiBlock(nodes));
 		}
 
