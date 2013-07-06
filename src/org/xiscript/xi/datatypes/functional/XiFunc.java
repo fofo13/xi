@@ -21,7 +21,7 @@ public class XiFunc extends Function implements Operation {
 
 	@Override
 	public XiType type() {
-		return XiType.valueOf(XiType.Type.LAMBDA);
+		return XiType.valueOf(XiType.Type.FUNCTION);
 	}
 
 }

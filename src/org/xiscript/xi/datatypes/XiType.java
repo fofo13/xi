@@ -21,7 +21,7 @@ public class XiType extends DataType {
 
 		READER(), WRITER(), STREAM(READER, WRITER),
 
-		BLOCK(), LAMBDA();
+		FUNCTION(), BLOCK(), LAMBDA();
 
 		private Type[] subtypes;
 
