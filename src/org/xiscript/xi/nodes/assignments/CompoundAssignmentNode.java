@@ -18,7 +18,7 @@ public class CompoundAssignmentNode extends AssignmentNode {
 		String id = ((VarNode) children.get(0)).id();
 		DataType rhs = op.evaluate(cache.get(id),
 				children.get(1).evaluate(cache));
-		cache.put(id, rhs);
+		assign(rhs, cache);
 		return rhs;
 	}
 
