@@ -662,6 +662,8 @@ public enum BuiltInOperation implements Operation {
 				ErrorHandler.invokeError(ErrorType.INTERRUPTION);
 			}
 			return XiNull.instance();
+		case HASH:
+			return new XiInt(args[0].hashCode());
 		case LEN:
 			return new XiInt(args[0].length());
 		case ASSERT:
