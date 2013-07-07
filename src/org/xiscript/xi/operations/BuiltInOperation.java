@@ -89,7 +89,7 @@ public enum BuiltInOperation implements Operation {
 
 	IMPORT("import", 1), LOAD("load", 1),
 
-	GETATTR("=>", 2), SETATTR("<=", 3),
+	GETATTR("->", 2), SETATTR("<-", 3),
 
 	RETURN("return", 1), CONTINUE("continue", 1), BREAK("break", 1), EXIT(
 			"exit", 1),
