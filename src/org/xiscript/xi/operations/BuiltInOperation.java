@@ -28,6 +28,7 @@ import org.xiscript.xi.datatypes.collections.XiList;
 import org.xiscript.xi.datatypes.collections.XiSet;
 import org.xiscript.xi.datatypes.collections.XiString;
 import org.xiscript.xi.datatypes.collections.XiTuple;
+import org.xiscript.xi.datatypes.functional.Function;
 import org.xiscript.xi.datatypes.functional.HiddenLambda;
 import org.xiscript.xi.datatypes.functional.XiBlock;
 import org.xiscript.xi.datatypes.functional.XiFunc;
@@ -215,8 +216,8 @@ public enum BuiltInOperation implements Operation {
 				block.setOuterScope(globals);
 				return ((XiIterable) args[1]).filter(block);
 			}
-			if (args[0] instanceof XiLambda)
-				return ((XiIterable) args[1]).filter((XiLambda) args[0],
+			if (args[0] instanceof Function)
+				return ((XiIterable) args[1]).filter((Function) args[0],
 						globals);
 			return ((XiNum) args[0]).div((XiNum) args[1]);
 		case INTDIV:
@@ -308,16 +309,16 @@ public enum BuiltInOperation implements Operation {
 				return new XiInt(((XiDict) args[1]).containsKey(args[0]));
 			return new XiInt(((CollectionWrapper<?>) args[1]).contains(args[0]));
 		case MAP: {
-			if (args[0] instanceof XiLambda)
-				return ((XiIterable) args[1]).map((XiLambda) args[0], globals);
+			if (args[0] instanceof Function)
+				return ((XiIterable) args[1]).map((Function) args[0], globals);
 
 			XiBlock body = (XiBlock) args[0];
 			body.setOuterScope(globals);
 			return ((XiIterable) args[1]).map(body);
 		}
 		case DEEPMAP: {
-			if (args[0] instanceof XiLambda)
-				return ((CollectionWrapper<?>) args[1]).map((XiLambda) args[0],
+			if (args[0] instanceof Function)
+				return ((CollectionWrapper<?>) args[1]).map((Function) args[0],
 						true, globals);
 
 			XiBlock body = (XiBlock) args[0];
@@ -349,7 +350,7 @@ public enum BuiltInOperation implements Operation {
 			((ListWrapper) args[0]).sort();
 			return args[0];
 		case CSORT: {
-			final XiLambda key = (args[0] instanceof XiLambda) ? (XiLambda) args[0]
+			final Function key = (args[0] instanceof Function) ? (Function) args[0]
 					: new XiLambda(new XiVar[] { XiVar.SPEC_VAR },
 							(XiBlock) args[0]);
 

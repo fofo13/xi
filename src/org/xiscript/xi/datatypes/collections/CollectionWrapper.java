@@ -1,7 +1,6 @@
 package org.xiscript.xi.datatypes.collections;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -9,8 +8,8 @@ import java.util.Iterator;
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiVar;
+import org.xiscript.xi.datatypes.functional.Function;
 import org.xiscript.xi.datatypes.functional.XiBlock;
-import org.xiscript.xi.datatypes.functional.XiLambda;
 import org.xiscript.xi.datatypes.iterable.XiIterable;
 import org.xiscript.xi.datatypes.numeric.XiInt;
 
@@ -35,8 +34,8 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 	}
 
 	@Override
-	public CollectionWrapper<T> map(XiLambda block, VariableCache globals) {
-		return map(block, false, globals);
+	public CollectionWrapper<T> map(Function f, VariableCache globals) {
+		return map(f, false, globals);
 	}
 
 	@Override
@@ -45,8 +44,8 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 	}
 
 	@Override
-	public CollectionWrapper<T> filter(XiLambda block, VariableCache globals) {
-		return map(block, false, globals);
+	public CollectionWrapper<T> filter(Function f, VariableCache globals) {
+		return map(f, false, globals);
 	}
 
 	public CollectionWrapper<T> map(XiBlock block, boolean deep) {
@@ -62,13 +61,12 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 		return instantiate(col);
 	}
 
-	public CollectionWrapper<T> map(XiLambda block, boolean deep,
+	public CollectionWrapper<T> map(Function f, boolean deep,
 			VariableCache globals) {
 		Collection<DataType> col = new ArrayList<DataType>(collection.size());
 		for (DataType a : collection) {
 			col.add((deep && (a instanceof CollectionWrapper<?>)) ? ((CollectionWrapper<?>) a)
-					.map(block, true, globals) : block.evaluate(new XiTuple(
-					Arrays.asList(a)), globals));
+					.map(f, true, globals) : f.evaluate(globals, a));
 		}
 		return instantiate(col);
 	}

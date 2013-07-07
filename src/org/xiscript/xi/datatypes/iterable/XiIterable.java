@@ -5,8 +5,8 @@ import java.util.Iterator;
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiVar;
+import org.xiscript.xi.datatypes.functional.Function;
 import org.xiscript.xi.datatypes.functional.XiBlock;
-import org.xiscript.xi.datatypes.functional.XiLambda;
 import org.xiscript.xi.datatypes.numeric.XiInt;
 import org.xiscript.xi.operations.BuiltInOperation;
 
@@ -32,7 +32,7 @@ public abstract class XiIterable extends DataType implements Iterable<DataType> 
 		};
 	}
 
-	public XiIterable map(final XiLambda lambda, final VariableCache globals) {
+	public XiIterable map(final Function f, final VariableCache globals) {
 		final Iterator<DataType> iter = iterator();
 
 		return new XiGenerator() {
@@ -41,7 +41,7 @@ public abstract class XiIterable extends DataType implements Iterable<DataType> 
 				if (!iter.hasNext())
 					return null;
 
-				return lambda.evaluate(globals, iter.next());
+				return f.evaluate(globals, iter.next());
 			}
 		};
 	}
@@ -67,7 +67,7 @@ public abstract class XiIterable extends DataType implements Iterable<DataType> 
 		};
 	}
 
-	public XiIterable filter(final XiLambda lambda, final VariableCache globals) {
+	public XiIterable filter(final Function f, final VariableCache globals) {
 		final Iterator<DataType> iter = iterator();
 
 		return new XiGenerator() {
@@ -77,7 +77,7 @@ public abstract class XiIterable extends DataType implements Iterable<DataType> 
 					return null;
 
 				DataType next = iter.next();
-				return lambda.evaluate(globals, next).isEmpty() ? next() : next;
+				return f.evaluate(globals, next).isEmpty() ? next() : next;
 			}
 		};
 	}
