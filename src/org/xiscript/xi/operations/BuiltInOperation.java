@@ -62,10 +62,9 @@ public enum BuiltInOperation implements Operation {
 
 	DEF("def", 3),
 
-	FIND("find", 2), IN("in", 2), MAP("@", 2), DEEPMAP("@@", 2), RANGE("\\", 3), SUM(
-			"$", 1), RAND("rnd", 1), SORT("sort", 1), CSORT("csort", 2), CUT(
-			"cut", 2), DEL("del", 1), REPLACE("replace", 3), REMOVE("remove", 2), SPLIT(
-			"<>", 2), JOIN("><", 2),
+	FIND("find", 2), IN("in", 2), MAP("@", 2), DEEPMAP("@@", 2), RANGE("\\", 3), RAND(
+			"rnd", 1), SORT("$", 2), CUT("cut", 2), DEL("del", 1), REPLACE(
+			"replace", 3), REMOVE("remove", 2), SPLIT("<>", 2), JOIN("><", 2),
 
 	FOR("for", 3), IF("if", 3), DO("do", 2), WHILE("while", 2), DOWHILE(
 			"dowhile", 2), LOOP("loop", 2),
@@ -338,44 +337,42 @@ public enum BuiltInOperation implements Operation {
 			default:
 				ErrorHandler.invokeError(ErrorType.ARGUMENT, this);
 			}
-		case SUM:
-			return ((XiIterable) args[0]).sum();
 		case RAND:
 			if (args[0] instanceof ListWrapper)
 				return ((ListWrapper) args[0]).rnd();
 			if (args[0] instanceof XiFloat)
 				return new XiFloat(RND.nextDouble() * ((XiFloat) args[0]).num());
 			return new XiInt(RND.nextInt(((XiInt) args[0]).val()));
-		case SORT:
-			((ListWrapper) args[0]).sort();
-			return args[0];
-		case CSORT: {
-			final Function key = (args[0] instanceof Function) ? (Function) args[0]
+		case SORT: {
+			if (args.length == 1) {
+				((ListWrapper) args[0]).sort();
+				return args[0];
+			}
+
+			final Function key = (args[1] instanceof Function) ? (Function) args[1]
 					: new XiLambda(new XiVar[] { XiVar.SPEC_VAR },
-							(XiBlock) args[0]);
+							(XiBlock) args[1]);
+
+			final int len = key.length();
 
 			Comparator<DataType> cmp = new Comparator<DataType>() {
 				@Override
 				public int compare(DataType d1, DataType d2) {
-					switch (key.length()) {
+					switch (len) {
 					case 1:
-						return key.evaluate(new DataType[] { d1 }, globals)
-								.compareTo(
-										key.evaluate(new DataType[] { d2 },
-												globals));
+						return key.evaluate(globals, d1).compareTo(
+								key.evaluate(globals, d2));
 					case 2:
-						return ((XiInt) key.evaluate(new DataType[] { d1, d2 },
-								globals)).val();
+						return ((XiInt) key.evaluate(globals, d1, d2)).val();
 					default:
-						ErrorHandler
-								.invokeError(ErrorType.ARGUMENT, CSORT.id());
+						ErrorHandler.invokeError(ErrorType.ARGUMENT, SORT.id());
+						return 0;
 					}
-					return 0;
 				}
 			};
 
-			((ListWrapper) args[1]).sort(cmp);
-			return args[1];
+			((ListWrapper) args[0]).sort(cmp);
+			return args[0];
 		}
 		case CUT:
 			if (args[1] instanceof XiInt)
