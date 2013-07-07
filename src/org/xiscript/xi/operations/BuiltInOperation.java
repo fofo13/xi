@@ -74,7 +74,7 @@ public enum BuiltInOperation implements Operation {
 
 	STR("str", 1), CHR("chr", 1), INT("int", 1), FLOAT("float", 1), LONG(
 			"long", 1), LIST("list", 1), SET("set", 1), TUPLE("tuple", 1), DICT(
-			"dict", 1), CMPLX("cmplx", 2), FUNC("func", 2), LAMBDA("lambda", 2), FILE(
+			"dict", 1), CMPLX("cmplx", 2), FUNC("func", 2), LAMBDA("=>", 2), FILE(
 			"file", 2),
 
 	PRINT("print", 1), PRINTLN("println", 1), PRINTF("printf", 2),

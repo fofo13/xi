@@ -122,7 +122,9 @@ public class Parser {
 			if (node == null)
 				continue;
 
-			if (node instanceof AssignmentNode) {
+			if (node instanceof AssignmentNode
+					|| (node instanceof OperationNode && ((OperationNode) node)
+							.op() == BuiltInOperation.LAMBDA)) {
 				Node last = nodes.pollLast();
 				nodes.add(node);
 				nodes.add(last);
