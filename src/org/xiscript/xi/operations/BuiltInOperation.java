@@ -636,7 +636,7 @@ public enum BuiltInOperation implements Operation {
 		case FILE:
 			return new XiFile(((XiString) args[0]).toString(),
 					args.length == 1 ? XiFile.DEFAULT
-							: ((XiString) args[1]).toString());
+							: ((XiAttribute) args[1]).toString());
 		case PRINT:
 			XiSys.instance().stdout().print(args[0]);
 			return XiNull.instance();
