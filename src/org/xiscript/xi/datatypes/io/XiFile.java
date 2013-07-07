@@ -23,6 +23,7 @@ import org.xiscript.xi.datatypes.collections.XiList;
 import org.xiscript.xi.datatypes.collections.XiString;
 import org.xiscript.xi.datatypes.functional.HiddenFunc;
 import org.xiscript.xi.datatypes.functional.XiFunc;
+import org.xiscript.xi.datatypes.iterable.XiGenerator;
 import org.xiscript.xi.datatypes.iterable.XiIterable;
 import org.xiscript.xi.datatypes.numeric.XiInt;
 import org.xiscript.xi.exceptions.ErrorHandler;
@@ -61,6 +62,9 @@ public class XiFile extends XiIterable {
 	private static final XiAttribute CLOSE = XiAttribute.valueOf("close");
 	private static final XiAttribute DELETE = XiAttribute.valueOf("delete");
 
+	private static final XiAttribute WORDS = XiAttribute.valueOf("words");
+	private static final XiAttribute CHARS = XiAttribute.valueOf("chars");
+
 	private final File file;
 	private XiWriter writer;
 	private XiReader reader;
@@ -77,9 +81,7 @@ public class XiFile extends XiIterable {
 	private XiFunc write;
 	private XiFunc writeln;
 
-	private XiFunc isdir;
 	private XiFunc list;
-	private XiFunc exists;
 	private XiFunc create;
 	private XiFunc clear;
 	private XiFunc close;
@@ -171,7 +173,7 @@ public class XiFile extends XiIterable {
 					} catch (IOException ioe) {
 						return XiNull.instance();
 					}
-					return c == 0 ? XiNull.instance() : new XiString(
+					return c == -1 ? XiNull.instance() : new XiString(
 							Character.toString((char) c));
 				}
 			};
@@ -187,15 +189,6 @@ public class XiFile extends XiIterable {
 				}
 			};
 		}
-
-		isdir = new HiddenFunc(0) {
-			private static final long serialVersionUID = 0L;
-
-			@Override
-			public DataType evaluate(DataType... args) {
-				return new XiInt(file.isDirectory());
-			}
-		};
 
 		clear = new HiddenFunc(0) {
 			private static final long serialVersionUID = 0L;
@@ -229,15 +222,6 @@ public class XiFile extends XiIterable {
 					list.add(new XiFile(file.toString(), ""));
 
 				return new XiList(list);
-			}
-		};
-
-		exists = new HiddenFunc(0) {
-			private static final long serialVersionUID = 0L;
-
-			@Override
-			public DataType evaluate(DataType... args) {
-				return new XiInt(file.exists());
 			}
 		};
 
@@ -298,7 +282,7 @@ public class XiFile extends XiIterable {
 	@Override
 	public DataType getAttribute(XiAttribute a) {
 		if (a.equals(ISDIR))
-			return isdir;
+			return new XiInt(file.isDirectory());
 		if (a.equals(WRITER))
 			return writer == null ? writer = getWriter() : writer;
 		if (a.equals(READER))
@@ -327,7 +311,7 @@ public class XiFile extends XiIterable {
 		if (a.equals(LIST))
 			return list;
 		if (a.equals(EXISTS))
-			return exists;
+			new XiInt(file.exists());
 		if (a.equals(CREATE))
 			return create;
 		if (a.equals(CLEAR))
@@ -336,6 +320,59 @@ public class XiFile extends XiIterable {
 			return close;
 		if (a.equals(DELETE))
 			return delete;
+
+		if (a.equals(WORDS)) {
+			return new XiGenerator() {
+				private static final long serialVersionUID = 0L;
+
+				private Scanner scan;
+				{
+					try {
+						scan = new Scanner(file);
+					} catch (FileNotFoundException fnfe) {
+						ErrorHandler
+								.invokeError(ErrorType.FILE_NOT_FOUND, file);
+					}
+				}
+
+				@Override
+				public DataType next() {
+					if (scan.hasNext())
+						return new XiString(scan.next());
+
+					return null;
+				}
+			};
+		}
+
+		if (a.equals(CHARS)) {
+			return new XiGenerator() {
+				private static final long serialVersionUID = 0L;
+
+				private BufferedReader br;
+
+				{
+					try {
+						br = new BufferedReader(new FileReader(file));
+					} catch (FileNotFoundException fnfe) {
+						ErrorHandler
+								.invokeError(ErrorType.FILE_NOT_FOUND, file);
+					}
+				}
+
+				@Override
+				public DataType next() {
+					try {
+						int c = br.read();
+						return (c == -1) ? null : new XiString(
+								Character.toString((char) c));
+					} catch (IOException ioe) {
+						ErrorHandler.invokeError(ErrorType.IO);
+					}
+					return null;
+				}
+			};
+		}
 
 		return super.getAttribute(a);
 	}

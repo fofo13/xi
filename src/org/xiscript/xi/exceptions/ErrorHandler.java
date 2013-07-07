@@ -12,6 +12,8 @@ public class ErrorHandler {
 
 		ARGUMENT("Invalid arguments for operator: %s"),
 
+		IO("An I/O exception occured."),
+
 		INVALID_IDENTIFIER("Invalid variable identifier: %s"),
 
 		IDNETIFIER_NOT_FOUND("Variable identifier not found: %s"),

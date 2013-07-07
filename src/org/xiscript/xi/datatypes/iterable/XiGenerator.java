@@ -5,8 +5,6 @@ import java.util.NoSuchElementException;
 
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiType;
-import org.xiscript.xi.exceptions.ErrorHandler;
-import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public abstract class XiGenerator extends XiIterable {
 
@@ -45,17 +43,6 @@ public abstract class XiGenerator extends XiIterable {
 				throw new UnsupportedOperationException();
 			}
 		};
-	}
-
-	@Override
-	public boolean isEmpty() {
-		return false;
-	}
-
-	@Override
-	public int compareTo(DataType other) {
-		ErrorHandler.invokeError(ErrorType.UNCOMPARABLE, type());
-		return 0;
 	}
 
 	@Override
