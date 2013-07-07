@@ -350,4 +350,16 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 
 		return super.getAttribute(a);
 	}
+
+	@Override
+	public void setAttribute(XiAttribute a, DataType value) {
+		String s = a.toString();
+		if (DPLUS.matcher(s).matches()) {
+			collection.set(Integer.parseInt(s), value);
+			return;
+		}
+
+		super.setAttribute(a, value);
+	}
+
 }
