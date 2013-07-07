@@ -18,14 +18,11 @@ public class XiLong extends XiReal<BigInteger> {
 		this(BigInteger.valueOf(val));
 	}
 
-	public static XiLong parse(String exp) {
-		char last = exp.charAt(exp.length() - 1);
-		if (last == 'l' || last == 'L')
-			exp = exp.substring(0, exp.length() - 1);
+	public static XiLong parse(String expr) {
 		try {
-			return new XiLong(new BigInteger(exp));
+			return new XiLong(new BigInteger(expr));
 		} catch (NumberFormatException nfe) {
-			ErrorHandler.invokeError(ErrorType.NUMBER_FORMAT, exp);
+			ErrorHandler.invokeError(ErrorType.NUMBER_FORMAT, expr);
 			return null;
 		}
 	}
