@@ -35,8 +35,8 @@ public class ModuleLoader {
 
 	public static XiModule get(String name) {
 		if (stdlib.get(name) == null) {
-			XiEnvironment env = new XiEnvironment(
-					XiEnvironment.class.getResourceAsStream(PATH + name + EXT),
+			XiProgram env = new XiProgram(
+					XiProgram.class.getResourceAsStream(PATH + name + EXT),
 					false);
 			env.run();
 			stdlib.put(name, new XiModule(env.scope()));
@@ -50,11 +50,11 @@ public class ModuleLoader {
 			return get(name);
 		}
 
-		XiEnvironment env = null;
+		XiProgram env = null;
 		try {
 			name = name.replace(".", "/") + EXT;
 			File file = new File(name);
-			env = new XiEnvironment(file);
+			env = new XiProgram(file);
 			env.run();
 			return new XiModule(env.scope());
 		} catch (FileNotFoundException fnfe) {

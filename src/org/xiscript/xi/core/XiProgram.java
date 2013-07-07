@@ -12,22 +12,22 @@ import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
-public class XiEnvironment {
+public class XiProgram {
 
-	private Queue<Character> source;
+	private SyntaxTree program;
 	private VariableCache scope;
 
-	protected XiEnvironment(InputStream file, boolean primary) {
+	protected XiProgram(InputStream stream, boolean primary) {
 		scope = new VariableCache();
 
 		if (primary) {
 			scope.putAll(ModuleLoader.get("stdlib").contents());
 		}
 
-		source = compile(file);
+		program = compile(stream);
 	}
 
-	public XiEnvironment(File file) throws FileNotFoundException {
+	public XiProgram(File file) throws FileNotFoundException {
 		this(new FileInputStream(file), true);
 	}
 
@@ -36,10 +36,10 @@ public class XiEnvironment {
 	}
 
 	public DataType run() {
-		return new SyntaxTree(Parser.genNodeQueue(source)).evaluate(scope);
+		return program.evaluate(scope);
 	}
 
-	private static Queue<Character> compile(InputStream file) {
+	private static SyntaxTree compile(InputStream file) {
 		Queue<Character> source = new LinkedList<Character>();
 
 		int next = -1;
@@ -53,7 +53,7 @@ public class XiEnvironment {
 			ErrorHandler.invokeError(ErrorType.INTERNAL);
 		}
 
-		return source;
+		return new SyntaxTree(Parser.genNodeQueue(source));
 	}
 
 }

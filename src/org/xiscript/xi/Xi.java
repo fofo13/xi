@@ -3,7 +3,7 @@ package org.xiscript.xi;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import org.xiscript.xi.core.XiEnvironment;
+import org.xiscript.xi.core.XiProgram;
 
 public class Xi {
 
@@ -13,7 +13,7 @@ public class Xi {
 
 	public static void runFromFile(String file) {
 		try {
-			XiEnvironment env = new XiEnvironment(new File(file));
+			XiProgram env = new XiProgram(new File(file));
 			env.run();
 		} catch (FileNotFoundException fnfe) {
 			System.err.printf("File %s was not found.%n", file);
