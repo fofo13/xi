@@ -124,12 +124,8 @@ public class VariableCache implements Map<XiVar, DataType>, Cloneable {
 		DataType value = cache.get(v);
 
 		if (value == null) {
-			if (parent == null) {
-				if (XiEnvironment.globals.containsKey(v))
-					return XiEnvironment.globals.get(split[0]);
-
+			if (parent == null)
 				ErrorHandler.invokeError(ErrorType.IDNETIFIER_NOT_FOUND, id);
-			}
 
 			return parent.get(id);
 		}

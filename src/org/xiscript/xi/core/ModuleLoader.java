@@ -39,7 +39,7 @@ public class ModuleLoader {
 					XiEnvironment.class.getResourceAsStream(PATH + name + EXT),
 					false);
 			env.run();
-			stdlib.put(name, new XiModule(env.cache()));
+			stdlib.put(name, new XiModule(env.scope()));
 		}
 
 		return stdlib.get(name);
@@ -56,7 +56,7 @@ public class ModuleLoader {
 			File file = new File(name);
 			env = new XiEnvironment(file);
 			env.run();
-			return new XiModule(XiEnvironment.globals);
+			return new XiModule(env.scope());
 		} catch (FileNotFoundException fnfe) {
 			ErrorHandler.invokeError(ErrorType.FILE_NOT_FOUND, name);
 			return null;

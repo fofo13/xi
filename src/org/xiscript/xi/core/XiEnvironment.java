@@ -11,20 +11,17 @@ import java.util.Queue;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
-import org.xiscript.xi.nodes.Node;
 
 public class XiEnvironment {
 
 	private Queue<Character> source;
-
-	public static final VariableCache globals = new VariableCache();
-	private VariableCache locals;
+	private VariableCache scope;
 
 	protected XiEnvironment(InputStream file, boolean primary) {
+		scope = new VariableCache();
+
 		if (primary) {
-			globals.putAll(ModuleLoader.get("stdlib").contents());
-		} else {
-			locals = new VariableCache();
+			scope.putAll(ModuleLoader.get("stdlib").contents());
 		}
 
 		source = compile(file);
@@ -34,14 +31,12 @@ public class XiEnvironment {
 		this(new FileInputStream(file), true);
 	}
 
-	public VariableCache cache() {
-		return locals == null ? globals : locals;
+	public VariableCache scope() {
+		return scope;
 	}
 
 	public DataType run() {
-		Queue<Node> nodes = Parser.genNodeQueue(source);
-
-		return new SyntaxTree(nodes).evaluate(cache());
+		return new SyntaxTree(Parser.genNodeQueue(source)).evaluate(scope);
 	}
 
 	private static Queue<Character> compile(InputStream file) {
@@ -59,10 +54,6 @@ public class XiEnvironment {
 		}
 
 		return source;
-	}
-
-	public void delete() {
-		(locals == null ? globals : locals).clear();
 	}
 
 }
