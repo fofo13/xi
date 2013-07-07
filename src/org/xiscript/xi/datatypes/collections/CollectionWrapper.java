@@ -16,6 +16,8 @@ import org.xiscript.xi.datatypes.numeric.XiInt;
 public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 		XiIterable implements Collection<DataType> {
 
+	private static final long serialVersionUID = 0L;
+
 	protected T collection;
 
 	protected abstract CollectionWrapper<T> instantiate(Collection<DataType> col);

@@ -9,6 +9,8 @@ import org.xiscript.xi.nodes.Node;
 
 public class XiBlock extends DataType {
 
+	private static final long serialVersionUID = 0L;
+
 	private Node[] statements;
 	private VariableCache scope;
 

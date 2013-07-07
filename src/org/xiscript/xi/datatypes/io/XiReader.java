@@ -8,6 +8,8 @@ import org.xiscript.xi.datatypes.collections.XiString;
 
 public class XiReader extends XiStream implements Closeable {
 
+	private static final long serialVersionUID = 0L;
+
 	private Scanner in;
 
 	public XiReader(Scanner in) {

@@ -11,6 +11,8 @@ import org.xiscript.xi.datatypes.iterable.XiGenerator;
 public class XiSet extends CollectionWrapper<Set<DataType>> implements
 		Set<DataType> {
 
+	private static final long serialVersionUID = 0L;
+
 	public XiSet(Set<DataType> set) {
 		super(set);
 	}

@@ -6,6 +6,8 @@ import org.xiscript.xi.util.Range;
 
 public class RangeGenerator extends XiGenerator {
 
+	private static final long serialVersionUID = 0L;
+
 	private Range range;
 
 	public RangeGenerator(int min, int max, int step) {

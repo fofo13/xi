@@ -6,6 +6,8 @@ import org.xiscript.xi.datatypes.DataType;
 
 public abstract class XiReal<T extends Number> extends XiNum {
 
+	private static final long serialVersionUID = 0L;
+
 	protected T val;
 
 	public XiReal(T val) {

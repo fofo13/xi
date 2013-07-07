@@ -7,6 +7,8 @@ import org.xiscript.xi.datatypes.XiType;
 
 public class XiWriter extends XiStream implements Closeable {
 
+	private static final long serialVersionUID = 0L;
+
 	private PrintStream out;
 
 	public XiWriter(PrintStream out) {

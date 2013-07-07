@@ -8,6 +8,8 @@ import org.xiscript.xi.core.VariableCache;
 
 public class XiModule extends DataType {
 
+	private static final long serialVersionUID = 0L;
+
 	private Map<XiAttribute, DataType> attributes;
 	private VariableCache contents;
 

@@ -6,6 +6,8 @@ import org.xiscript.xi.datatypes.XiVar;
 
 public final class ArgumentList extends DataType {
 
+	private static final long serialVersionUID = 0L;
+
 	public static final ArgumentList EMPTY = new ArgumentList(new XiVar[0]);
 
 	private final XiVar[] array;

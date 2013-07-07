@@ -6,6 +6,8 @@ import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public class XiFloat extends XiReal<Double> {
 
+	private static final long serialVersionUID = 0L;
+
 	public XiFloat(double val) {
 		super(val);
 	}

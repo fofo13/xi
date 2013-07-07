@@ -1,10 +1,14 @@
 package org.xiscript.xi.datatypes;
 
+import java.io.Serializable;
+
 import org.xiscript.xi.datatypes.numeric.XiInt;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
-public abstract class DataType implements Comparable<DataType> {
+public abstract class DataType implements Comparable<DataType>, Serializable {
+
+	private static final long serialVersionUID = 0L;
 
 	private static final XiAttribute HASH = XiAttribute.valueOf("hash");
 	private static final XiAttribute TYPE = XiAttribute.valueOf("type");

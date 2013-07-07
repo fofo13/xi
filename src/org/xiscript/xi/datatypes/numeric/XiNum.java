@@ -4,6 +4,8 @@ import org.xiscript.xi.datatypes.DataType;
 
 public abstract class XiNum extends DataType {
 
+	private static final long serialVersionUID = 0L;
+
 	public abstract XiNum neg();
 
 	public abstract XiNum inv();

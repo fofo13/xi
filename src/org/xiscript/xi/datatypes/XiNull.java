@@ -2,6 +2,8 @@ package org.xiscript.xi.datatypes;
 
 public final class XiNull extends DataType {
 
+	private static final long serialVersionUID = 0L;
+
 	private static final XiNull instance = new XiNull();
 
 	private XiNull() {

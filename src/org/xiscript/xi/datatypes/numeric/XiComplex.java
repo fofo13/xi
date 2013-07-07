@@ -6,6 +6,8 @@ import org.xiscript.xi.datatypes.XiType;
 
 public class XiComplex extends XiNum {
 
+	private static final long serialVersionUID = 0L;
+
 	private static final XiAttribute RE = XiAttribute.valueOf("re");
 	private static final XiAttribute IM = XiAttribute.valueOf("im");
 

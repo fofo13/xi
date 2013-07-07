@@ -10,6 +10,8 @@ import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public abstract class XiGenerator extends XiIterable {
 
+	private static final long serialVersionUID = 0L;
+
 	public abstract DataType next();
 
 	public void reset() {

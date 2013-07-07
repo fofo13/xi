@@ -12,6 +12,8 @@ import org.xiscript.xi.datatypes.collections.XiTuple;
 
 public class XiDict extends DataType implements Map<DataType, DataType> {
 
+	private static final long serialVersionUID = 0L;
+
 	private Map<DataType, DataType> map;
 
 	public XiDict(Map<DataType, DataType> map) {
@@ -121,8 +123,7 @@ public class XiDict extends DataType implements Map<DataType, DataType> {
 
 	@Override
 	public boolean equals(Object o) {
-		return o instanceof XiDict
-				&& map.equals(((XiDict) o).map());
+		return o instanceof XiDict && map.equals(((XiDict) o).map());
 	}
 
 	@Override

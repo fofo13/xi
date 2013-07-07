@@ -8,6 +8,8 @@ import org.xiscript.xi.datatypes.DataType;
 
 public class XiRegex extends XiString {
 
+	private static final long serialVersionUID = 0L;
+
 	public XiRegex(List<DataType> list) {
 		super(list);
 	}

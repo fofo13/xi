@@ -2,6 +2,8 @@ package org.xiscript.xi.datatypes;
 
 public class XiVar extends DataType {
 
+	private static final long serialVersionUID = 0L;
+
 	public static final XiVar SPEC_VAR = new XiVar("_", true);
 	public static final XiVar INDEX_VAR = new XiVar("__", true);
 

@@ -9,6 +9,8 @@ import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public class XiAttribute extends DataType {
 
+	private static final long serialVersionUID = 0L;
+
 	private static final Pattern FORM = Pattern.compile("\\w*");
 
 	private static final Map<String, XiAttribute> cache = new HashMap<String, XiAttribute>();

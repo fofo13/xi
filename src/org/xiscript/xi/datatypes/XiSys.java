@@ -7,6 +7,8 @@ import org.xiscript.xi.datatypes.io.XiWriter;
 
 public class XiSys extends DataType {
 
+	private static final long serialVersionUID = 0L;
+
 	private static final XiAttribute STDOUT = XiAttribute.valueOf("stdout");
 	private static final XiAttribute STDIN = XiAttribute.valueOf("stdin");
 	private static final XiAttribute STDERR = XiAttribute.valueOf("stderr");

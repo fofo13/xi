@@ -731,6 +731,8 @@ public enum BuiltInOperation implements Operation {
 	private XiLambda genLambda() {
 		final BuiltInOperation op = this;
 		return new HiddenLambda(nargs) {
+			private static final long serialVersionUID = 0L;
+
 			@Override
 			public DataType evaluate(DataType... args) {
 				return op.evaluate(args, null);

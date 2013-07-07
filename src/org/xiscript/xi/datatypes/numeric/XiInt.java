@@ -6,6 +6,8 @@ import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public class XiInt extends XiReal<Integer> {
 
+	private static final long serialVersionUID = 0L;
+
 	public XiInt(int val) {
 		super(val);
 	}

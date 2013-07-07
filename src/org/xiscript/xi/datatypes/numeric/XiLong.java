@@ -8,6 +8,8 @@ import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public class XiLong extends XiReal<BigInteger> {
 
+	private static final long serialVersionUID = 0L;
+
 	public XiLong(BigInteger val) {
 		super(val);
 	}

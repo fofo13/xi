@@ -10,6 +10,8 @@ import org.xiscript.xi.datatypes.iterable.XiGenerator;
 
 public class XiList extends ListWrapper {
 
+	private static final long serialVersionUID = 0L;
+
 	public XiList(List<DataType> list) {
 		super(list);
 	}

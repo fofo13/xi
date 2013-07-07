@@ -7,6 +7,8 @@ import org.xiscript.xi.exceptions.ReturnException;
 
 public abstract class Function extends DataType {
 
+	private static final long serialVersionUID = 0L;
+
 	protected XiVar[] identifiers;
 	protected XiBlock body;
 

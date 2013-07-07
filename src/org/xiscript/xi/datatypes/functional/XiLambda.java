@@ -9,6 +9,8 @@ import org.xiscript.xi.datatypes.collections.XiTuple;
 
 public class XiLambda extends Function {
 
+	private static final long serialVersionUID = 0L;
+
 	public XiLambda(ArgumentList list, XiBlock body) {
 		super(list.getJavaAnalog(), body);
 	}

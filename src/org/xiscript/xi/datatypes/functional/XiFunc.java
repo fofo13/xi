@@ -6,6 +6,8 @@ import org.xiscript.xi.operations.Operation;
 
 public class XiFunc extends Function implements Operation {
 
+	private static final long serialVersionUID = 0L;
+
 	public XiFunc(ArgumentList list, XiBlock body) {
 		super(list.getJavaAnalog(), body);
 	}

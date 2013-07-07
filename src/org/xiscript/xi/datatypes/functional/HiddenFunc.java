@@ -8,6 +8,8 @@ import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public abstract class HiddenFunc extends XiFunc {
 
+	private static final long serialVersionUID = 0L;
+
 	private int numArgs;
 
 	public HiddenFunc(int numArgs) {
@@ -26,6 +28,8 @@ public abstract class HiddenFunc extends XiFunc {
 	public XiLambda asLambda() {
 		final HiddenFunc function = this;
 		return new HiddenLambda(numArgs) {
+			private static final long serialVersionUID = 0L;
+
 			@Override
 			public DataType evaluate(DataType... args) {
 				return function.evaluate(args);

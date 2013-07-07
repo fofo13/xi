@@ -15,7 +15,11 @@ import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public class XiString extends ListWrapper implements CharSequence {
 
+	private static final long serialVersionUID = 0L;
+
 	private static class XiChar extends DataType {
+
+		private static final long serialVersionUID = 0L;
 
 		private char val;
 

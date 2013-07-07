@@ -12,10 +12,14 @@ import org.xiscript.xi.operations.BuiltInOperation;
 
 public abstract class XiIterable extends DataType implements Iterable<DataType> {
 
+	private static final long serialVersionUID = 0L;
+
 	public XiIterable map(final XiBlock block) {
 		final Iterator<DataType> iter = iterator();
 
 		return new XiGenerator() {
+			private static final long serialVersionUID = 0L;
+
 			int index = 0;
 
 			@Override
@@ -36,6 +40,8 @@ public abstract class XiIterable extends DataType implements Iterable<DataType> 
 		final Iterator<DataType> iter = iterator();
 
 		return new XiGenerator() {
+			private static final long serialVersionUID = 0L;
+
 			@Override
 			public DataType next() {
 				if (!iter.hasNext())
@@ -50,6 +56,8 @@ public abstract class XiIterable extends DataType implements Iterable<DataType> 
 		final Iterator<DataType> iter = iterator();
 
 		return new XiGenerator() {
+			private static final long serialVersionUID = 0L;
+
 			int index = 0;
 
 			@Override
@@ -71,6 +79,8 @@ public abstract class XiIterable extends DataType implements Iterable<DataType> 
 		final Iterator<DataType> iter = iterator();
 
 		return new XiGenerator() {
+			private static final long serialVersionUID = 0L;
+
 			@Override
 			public DataType next() {
 				if (!iter.hasNext())

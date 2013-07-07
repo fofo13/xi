@@ -5,6 +5,8 @@ import java.util.Map;
 
 public class XiType extends DataType {
 
+	private static final long serialVersionUID = 0L;
+
 	public static enum Type {
 
 		TYPE(), MODULE(), NULL(), SYS(), ATTRIBUTE(), VAR(),

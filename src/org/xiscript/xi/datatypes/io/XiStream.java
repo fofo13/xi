@@ -9,6 +9,8 @@ import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public abstract class XiStream extends DataType implements Closeable {
 
+	private static final long serialVersionUID = 0L;
+
 	@Override
 	public void delete() {
 		try {

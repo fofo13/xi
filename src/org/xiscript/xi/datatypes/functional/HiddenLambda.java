@@ -9,6 +9,8 @@ import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public abstract class HiddenLambda extends XiLambda {
 
+	private static final long serialVersionUID = 0L;
+
 	private int numArgs;
 
 	public HiddenLambda(int numArgs) {

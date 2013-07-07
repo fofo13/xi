@@ -20,6 +20,8 @@ import org.xiscript.xi.util.Range;
 public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 		implements List<DataType> {
 
+	private static final long serialVersionUID = 0L;
+
 	private static Pattern DPLUS = Pattern.compile("\\d+");
 
 	private static XiAttribute REV = XiAttribute.valueOf("rev");

@@ -15,6 +15,8 @@ import org.xiscript.xi.operations.BuiltInOperation;
 
 public class XiTuple extends XiList {
 
+	private static final long serialVersionUID = 0L;
+
 	public XiTuple(List<DataType> list) {
 		super(Collections.unmodifiableList(list));
 	}

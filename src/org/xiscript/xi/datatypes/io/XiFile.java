@@ -30,6 +30,8 @@ import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public class XiFile extends XiIterable {
 
+	private static final long serialVersionUID = 0L;
+
 	public static final String R = "r";
 	public static final String W = "w";
 	public static final String DEFAULT = "";
@@ -101,6 +103,8 @@ public class XiFile extends XiIterable {
 			}
 
 			write = new HiddenFunc(1) {
+				private static final long serialVersionUID = 0L;
+
 				@Override
 				public DataType evaluate(DataType... args) {
 					try {
@@ -113,6 +117,8 @@ public class XiFile extends XiIterable {
 			};
 
 			writeln = new HiddenFunc(1) {
+				private static final long serialVersionUID = 0L;
+
 				@Override
 				public DataType evaluate(DataType... args) {
 					try {
@@ -135,6 +141,8 @@ public class XiFile extends XiIterable {
 			}
 
 			read = new HiddenFunc(0) {
+				private static final long serialVersionUID = 0L;
+
 				@Override
 				public DataType evaluate(DataType... args) {
 					return out.hasNext() ? new XiString(out.next()) : XiNull
@@ -143,6 +151,8 @@ public class XiFile extends XiIterable {
 			};
 
 			readln = new HiddenFunc(0) {
+				private static final long serialVersionUID = 0L;
+
 				@Override
 				public DataType evaluate(DataType... args) {
 					return out.hasNextLine() ? new XiString(out.nextLine())
@@ -151,6 +161,8 @@ public class XiFile extends XiIterable {
 			};
 
 			readc = new HiddenFunc(0) {
+				private static final long serialVersionUID = 0L;
+
 				@Override
 				public DataType evaluate(DataType... args) {
 					int c = 0;
@@ -165,6 +177,8 @@ public class XiFile extends XiIterable {
 			};
 
 			next = new HiddenFunc(1) {
+				private static final long serialVersionUID = 0L;
+
 				@Override
 				public DataType evaluate(DataType... args) {
 					String s = args[0].toString();
@@ -175,6 +189,8 @@ public class XiFile extends XiIterable {
 		}
 
 		isdir = new HiddenFunc(0) {
+			private static final long serialVersionUID = 0L;
+
 			@Override
 			public DataType evaluate(DataType... args) {
 				return new XiInt(file.isDirectory());
@@ -182,6 +198,8 @@ public class XiFile extends XiIterable {
 		};
 
 		clear = new HiddenFunc(0) {
+			private static final long serialVersionUID = 0L;
+
 			@Override
 			public DataType evaluate(DataType... args) {
 				try {
@@ -196,6 +214,8 @@ public class XiFile extends XiIterable {
 		};
 
 		list = new HiddenFunc(0) {
+			private static final long serialVersionUID = 0L;
+
 			@Override
 			public DataType evaluate(DataType... args) {
 				File[] files = file.listFiles();
@@ -213,6 +233,8 @@ public class XiFile extends XiIterable {
 		};
 
 		exists = new HiddenFunc(0) {
+			private static final long serialVersionUID = 0L;
+
 			@Override
 			public DataType evaluate(DataType... args) {
 				return new XiInt(file.exists());
@@ -220,6 +242,8 @@ public class XiFile extends XiIterable {
 		};
 
 		create = new HiddenFunc(0) {
+			private static final long serialVersionUID = 0L;
+
 			@Override
 			public DataType evaluate(DataType... args) {
 				return new XiInt(create());
@@ -227,6 +251,8 @@ public class XiFile extends XiIterable {
 		};
 
 		rename = new HiddenFunc(1) {
+			private static final long serialVersionUID = 0L;
+
 			@Override
 			public DataType evaluate(DataType... args) {
 				return new XiInt(file.renameTo(new File(((XiString) args[0])
@@ -235,6 +261,8 @@ public class XiFile extends XiIterable {
 		};
 
 		close = new HiddenFunc(0) {
+			private static final long serialVersionUID = 0L;
+
 			@Override
 			public DataType evaluate(DataType... args) {
 				delete();
@@ -243,6 +271,8 @@ public class XiFile extends XiIterable {
 		};
 
 		delete = new HiddenFunc(0) {
+			private static final long serialVersionUID = 0L;
+
 			@Override
 			public DataType evaluate(DataType... args) {
 				return new XiInt(file.delete());
