@@ -8,6 +8,8 @@ import org.xiscript.xi.datatypes.XiVar;
 
 public class VarNode implements Node {
 
+	private static final long serialVersionUID = 0L;
+
 	public static final Pattern DOT = Pattern.compile("\\.");
 
 	private boolean literal;

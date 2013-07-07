@@ -13,6 +13,8 @@ import org.xiscript.xi.operations.Operation;
 
 public class OperationNode implements Node {
 
+	private static final long serialVersionUID = 0L;
+
 	protected Operation op;
 	protected List<Node> children;
 

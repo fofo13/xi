@@ -9,6 +9,8 @@ import org.xiscript.xi.operations.BuiltInOperation;
 
 public class MinusMinusNode extends AssignmentNode {
 
+	private static final long serialVersionUID = 0L;
+
 	@Override
 	public int numChildren() {
 		return 1;

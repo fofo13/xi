@@ -11,6 +11,8 @@ import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public class FunctionNode extends OperationNode {
 
+	private static final long serialVersionUID = 0L;
+
 	private String id;
 
 	public FunctionNode(String id) {

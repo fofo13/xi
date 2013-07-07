@@ -7,6 +7,8 @@ import org.xiscript.xi.nodes.Node;
 
 public class ToNode implements Node {
 
+	private static final long serialVersionUID = 0L;
+
 	private static final ToNode instance = new ToNode();
 
 	private ToNode() {

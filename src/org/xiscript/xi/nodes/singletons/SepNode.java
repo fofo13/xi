@@ -7,6 +7,8 @@ import org.xiscript.xi.nodes.Node;
 
 public class SepNode implements Node {
 
+	private static final long serialVersionUID = 0L;
+
 	private static final SepNode instance = new SepNode();
 
 	private SepNode() {

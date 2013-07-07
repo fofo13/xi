@@ -24,6 +24,8 @@ import org.xiscript.xi.nodes.singletons.ToNode;
 
 public class CollectionNode extends DataNode<CollectionWrapper<?>> {
 
+	private static final long serialVersionUID = 0L;
+
 	public static final int TYPE_LIST = 0;
 	public static final int TYPE_TUPLE = 1;
 	public static final int TYPE_SET = 2;

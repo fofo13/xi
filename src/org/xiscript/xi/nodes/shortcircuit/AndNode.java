@@ -8,6 +8,8 @@ import org.xiscript.xi.operations.ShortCircuitOperation;
 
 public class AndNode extends OperationNode {
 
+	private static final long serialVersionUID = 0L;
+
 	public AndNode() {
 		super(null);
 	}

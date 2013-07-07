@@ -5,6 +5,8 @@ import org.xiscript.xi.datatypes.DataType;
 
 public class DataNode<T extends DataType> implements Node {
 
+	private static final long serialVersionUID = 0L;
+
 	protected T data;
 
 	public DataNode(T data) {

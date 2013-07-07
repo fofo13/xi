@@ -7,6 +7,8 @@ import org.xiscript.xi.nodes.Node;
 
 public class StopNode implements Node {
 
+	private static final long serialVersionUID = 0L;
+
 	private static final StopNode instance = new StopNode();
 
 	private StopNode() {

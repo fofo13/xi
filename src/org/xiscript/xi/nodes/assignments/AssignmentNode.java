@@ -12,6 +12,8 @@ import org.xiscript.xi.nodes.VarNode;
 
 public class AssignmentNode extends OperationNode {
 
+	private static final long serialVersionUID = 0L;
+
 	public AssignmentNode() {
 		super(null);
 	}

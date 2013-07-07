@@ -7,6 +7,8 @@ import org.xiscript.xi.operations.BuiltInOperation;
 
 public class CompoundAssignmentNode extends AssignmentNode {
 
+	private static final long serialVersionUID = 0L;
+
 	private BuiltInOperation op;
 
 	public CompoundAssignmentNode(BuiltInOperation op) {
