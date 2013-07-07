@@ -17,14 +17,16 @@ public class XiProgram {
 	private SyntaxTree program;
 	private VariableCache scope;
 
-	protected XiProgram(InputStream stream, boolean primary) {
+	private XiProgram(SyntaxTree program) {
+		this.program = program;
 		scope = new VariableCache();
+	}
 
-		if (primary) {
+	protected XiProgram(InputStream stream, boolean primary) {
+		this(compile(stream));
+
+		if (primary)
 			scope.putAll(ModuleLoader.get("stdlib").contents());
-		}
-
-		program = compile(stream);
 	}
 
 	public XiProgram(File file) throws FileNotFoundException {
@@ -54,6 +56,14 @@ public class XiProgram {
 		}
 
 		return new SyntaxTree(Parser.genNodeQueue(source));
+	}
+
+	public void writeTo(File f) {
+		program.writeTo(f);
+	}
+
+	public static XiProgram readFrom(File f) {
+		return new XiProgram(SyntaxTree.readFrom(f));
 	}
 
 }

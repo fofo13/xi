@@ -1,5 +1,11 @@
 package org.xiscript.xi.core;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -18,6 +24,10 @@ import org.xiscript.xi.operations.BuiltInOperation;
 public class SyntaxTree {
 
 	private Node[] statements;
+
+	public SyntaxTree(Node[] statements) {
+		this.statements = statements;
+	}
 
 	public SyntaxTree(Queue<Node> nodes) {
 		Iterator<Node> iter = nodes.iterator();
@@ -81,4 +91,34 @@ public class SyntaxTree {
 
 		return node;
 	}
+
+	protected void writeTo(File file) {
+		try {
+			FileOutputStream fos = new FileOutputStream(file);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(statements);
+			oos.close();
+			fos.close();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+	}
+
+	protected static SyntaxTree readFrom(File file) {
+		try {
+			FileInputStream fis = new FileInputStream(file);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			SyntaxTree st = new SyntaxTree((Node[]) ois.readObject());
+			ois.close();
+			fis.close();
+			return st;
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		} catch (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+		}
+
+		return null;
+	}
+
 }
