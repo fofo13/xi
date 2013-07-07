@@ -12,7 +12,7 @@ public class XiBlock extends DataType {
 	private static final long serialVersionUID = 0L;
 
 	private Node[] statements;
-	private VariableCache scope;
+	private transient VariableCache scope;
 
 	public XiBlock(Node[] statements) {
 		this.statements = statements;
