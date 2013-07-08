@@ -64,10 +64,10 @@ public class CollectionNode extends DataNode<CollectionWrapper<?>> {
 							|| elements[i + 1] != SepNode.instance())
 						ErrorHandler
 								.invokeError(ErrorType.MALFORMED_ARGUMENT_LIST);
-			}
 
-			if (special(elements[elements.length - 1]))
-				ErrorHandler.invokeError(ErrorType.MALFORMED_ARGUMENT_LIST);
+				if (special(elements[elements.length - 1]))
+					ErrorHandler.invokeError(ErrorType.MALFORMED_ARGUMENT_LIST);
+			}
 
 			XiVar[] array = new XiVar[(elements.length + 1) / 2];
 

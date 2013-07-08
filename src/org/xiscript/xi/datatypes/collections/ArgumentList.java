@@ -12,7 +12,7 @@ public final class ArgumentList extends DataType {
 
 	private final XiVar[] array;
 
-	public ArgumentList(XiVar[] array) {
+	public ArgumentList(XiVar... array) {
 		this.array = array;
 	}
 
@@ -35,4 +35,5 @@ public final class ArgumentList extends DataType {
 	public XiVar[] getJavaAnalog() {
 		return array;
 	}
+
 }

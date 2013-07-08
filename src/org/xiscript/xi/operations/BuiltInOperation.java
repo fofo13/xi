@@ -632,7 +632,10 @@ public enum BuiltInOperation implements Operation {
 			double im = ((XiReal<?>) args[1]).num().doubleValue();
 			return new XiComplex(re, im);
 		case LAMBDA:
-			return new XiLambda((ArgumentList) args[0], (XiBlock) args[1]);
+			return new XiLambda(
+					(args[0] instanceof ArgumentList) ? (ArgumentList) args[0]
+							: new ArgumentList((XiVar) args[0]),
+					(XiBlock) args[1]);
 		case FILE:
 			return new XiFile(((XiString) args[0]).toString(),
 					args.length == 1 ? XiFile.DEFAULT

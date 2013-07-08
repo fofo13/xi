@@ -26,7 +26,7 @@ public abstract class Function extends DataType {
 															// can result in a
 															// StackOverflowError
 
-		for (int i = 0; i < args.length; i++) {
+		for (int i = 0; i < identifiers.length; i++) {
 			scope.put(identifiers[i], args[i]);
 		}
 
