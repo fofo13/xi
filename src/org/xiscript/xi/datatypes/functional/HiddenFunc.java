@@ -26,13 +26,12 @@ public abstract class HiddenFunc extends XiFunc {
 
 	@Override
 	public XiLambda asLambda() {
-		final HiddenFunc function = this;
 		return new HiddenLambda(numArgs) {
 			private static final long serialVersionUID = 0L;
 
 			@Override
 			public DataType evaluate(DataType... args) {
-				return function.evaluate(args);
+				return HiddenFunc.this.evaluate(args);
 			}
 		};
 	}

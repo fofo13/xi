@@ -17,10 +17,8 @@ public abstract class XiGenerator extends XiIterable {
 
 	@Override
 	public Iterator<DataType> iterator() {
-		final XiGenerator gen = this;
-
 		return new Iterator<DataType>() {
-			private DataType val = gen.next();
+			private DataType val = XiGenerator.this.next();
 
 			@Override
 			public boolean hasNext() {
@@ -34,7 +32,7 @@ public abstract class XiGenerator extends XiIterable {
 						throw new NoSuchElementException();
 					return val;
 				} finally {
-					val = gen.next();
+					val = XiGenerator.this.next();
 				}
 			}
 
