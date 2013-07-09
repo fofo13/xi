@@ -73,11 +73,6 @@ public class OperationNode implements Node {
 	}
 
 	@Override
-	public void clear() {
-		children.clear();
-	}
-
-	@Override
 	public void literalize() {
 	}
 

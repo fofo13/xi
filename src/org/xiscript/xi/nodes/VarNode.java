@@ -49,10 +49,6 @@ public class VarNode implements Node {
 	}
 
 	@Override
-	public void clear() {
-	}
-
-	@Override
 	public boolean equals(Object o) {
 		return id.equals(o);
 	}

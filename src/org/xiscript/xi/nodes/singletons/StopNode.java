@@ -19,10 +19,6 @@ public class StopNode implements Node {
 	}
 
 	@Override
-	public void clear() {
-	}
-
-	@Override
 	public void literalize() {
 	}
 

@@ -13,8 +13,6 @@ public interface Node extends Serializable {
 
 	void addChild(Node node);
 
-	void clear();
-
 	void literalize();
 
 }
