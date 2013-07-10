@@ -3,6 +3,7 @@ package org.xiscript.xi.datatypes.functional;
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiVar;
+import org.xiscript.xi.datatypes.collections.XiTuple;
 import org.xiscript.xi.exceptions.ReturnException;
 
 public abstract class Function extends DataType {
@@ -39,6 +40,28 @@ public abstract class Function extends DataType {
 		} finally {
 			scope.clear();
 		}
+	}
+
+	public DataType evaluate(DataType... args) {
+		return evaluate(VariableCache.EMPTY_CACHE, args);
+	}
+
+	public Function compose(final Function other) {
+		return new HiddenFunc(other.length()) {
+			private static final long serialVersionUID = 0L;
+
+			@Override
+			public DataType evaluate(DataType... args) {
+				DataType d = other.evaluate(args);
+
+				if (d instanceof XiTuple) {
+					return Function.this.evaluate(((XiTuple) d)
+							.toArray(new DataType[d.length()]));
+				}
+
+				return Function.this.evaluate(d);
+			}
+		};
 	}
 
 	@Override

@@ -17,7 +17,8 @@ public abstract class HiddenFunc extends XiFunc {
 		this.numArgs = numArgs;
 	}
 
-	public abstract DataType evaluate(DataType... dataTypes);
+	@Override
+	public abstract DataType evaluate(DataType... args);
 
 	@Override
 	public DataType evaluate(VariableCache globals, DataType... args) {

@@ -99,8 +99,6 @@ public enum BuiltInOperation implements Operation {
 
 	private static final Random RND = new Random();
 
-	private static final VariableCache EMPTY_CACHE = new VariableCache();
-
 	private static final Pattern SPLUS = Pattern.compile("\\s+");
 
 	static {
@@ -159,6 +157,8 @@ public enum BuiltInOperation implements Operation {
 				return ((ListWrapper) args[0]).abs();
 			return ((XiNum) args[0]).abs();
 		case ADD:
+			if (args[0] instanceof Function)
+				return ((Function) args[0]).compose((Function) args[1]);
 			if (args[0] instanceof XiString)
 				return new XiString(args[0].toString() + args[1].toString());
 			if (args[0] instanceof CollectionWrapper) {
@@ -727,8 +727,8 @@ public enum BuiltInOperation implements Operation {
 		}
 	}
 
-	public DataType evaluate(DataType... dataTypes) {
-		return evaluate(EMPTY_CACHE, dataTypes);
+	public DataType evaluate(DataType... args) {
+		return evaluate(VariableCache.EMPTY_CACHE, args);
 	}
 
 	private XiLambda genLambda() {

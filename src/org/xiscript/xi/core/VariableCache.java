@@ -1,6 +1,7 @@
 package org.xiscript.xi.core;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -13,6 +14,9 @@ import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 import org.xiscript.xi.nodes.VarNode;
 
 public class VariableCache implements Map<XiVar, DataType>, Cloneable {
+
+	public static final VariableCache EMPTY_CACHE = new VariableCache(
+			Collections.unmodifiableMap(new HashMap<XiVar, DataType>()), null);
 
 	private Map<XiVar, DataType> cache;
 	public VariableCache parent;

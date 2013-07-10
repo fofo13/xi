@@ -18,11 +18,12 @@ public abstract class HiddenLambda extends XiLambda {
 		this.numArgs = numArgs;
 	}
 
+	@Override
 	public abstract DataType evaluate(DataType... dataTypes);
 
 	@Override
 	public DataType evaluate(XiTuple args, VariableCache globals) {
-		return evaluate(args.collection().toArray(new DataType[args.length()]));
+		return evaluate(args.toArray(new DataType[args.length()]));
 	}
 
 	@Override
