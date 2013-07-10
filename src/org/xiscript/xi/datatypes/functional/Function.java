@@ -17,7 +17,7 @@ public abstract class Function extends DataType {
 		this.body = body;
 	}
 
-	public DataType evaluate(DataType[] args, VariableCache globals) {
+	public DataType evaluate(VariableCache globals, DataType... args) {
 		VariableCache scope = new VariableCache(globals); // TODO: This can
 															// create extremely
 															// long cache chains
@@ -39,10 +39,6 @@ public abstract class Function extends DataType {
 		} finally {
 			scope.clear();
 		}
-	}
-
-	public DataType evaluate(VariableCache globals, DataType... args) {
-		return evaluate(args, globals);
 	}
 
 	@Override

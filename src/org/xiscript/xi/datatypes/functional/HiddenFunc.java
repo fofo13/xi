@@ -20,7 +20,7 @@ public abstract class HiddenFunc extends XiFunc {
 	public abstract DataType evaluate(DataType... dataTypes);
 
 	@Override
-	public DataType evaluate(DataType[] args, VariableCache globals) {
+	public DataType evaluate(VariableCache globals, DataType... args) {
 		return evaluate(args);
 	}
 

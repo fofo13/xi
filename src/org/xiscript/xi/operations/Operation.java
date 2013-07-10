@@ -6,7 +6,7 @@ import org.xiscript.xi.datatypes.functional.XiLambda;
 
 public interface Operation {
 
-	DataType evaluate(DataType[] args, VariableCache globals);
+	DataType evaluate(VariableCache globals, DataType... args);
 
 	int numArgs();
 

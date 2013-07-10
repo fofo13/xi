@@ -109,12 +109,12 @@ public enum BuiltInOperation implements Operation {
 	}
 
 	private final String id;
-	private final int nargs;
+	private final int numArgs;
 	private final XiLambda asLambda;
 
 	private BuiltInOperation(String id, int numArgs) {
 		this.id = id;
-		this.nargs = numArgs;
+		this.numArgs = numArgs;
 
 		asLambda = genLambda();
 	}
@@ -125,11 +125,12 @@ public enum BuiltInOperation implements Operation {
 
 	@Override
 	public int numArgs() {
-		return nargs;
+		return numArgs;
 	}
 
 	@Override
-	public DataType evaluate(final DataType[] args, final VariableCache globals) {
+	public DataType evaluate(final VariableCache globals,
+			final DataType... args) {
 		switch (this) {
 		case NULL:
 			return XiNull.instance();
@@ -145,7 +146,7 @@ public enum BuiltInOperation implements Operation {
 			if (args[0] instanceof XiLambda) {
 				XiLambda lambda = (XiLambda) args[0];
 				if (lambda.length() == 0)
-					return lambda.evaluate(new DataType[0], globals);
+					return lambda.evaluate(globals);
 			}
 			if (args[0] instanceof XiBlock) {
 				XiBlock block = (XiBlock) args[0];
@@ -727,16 +728,16 @@ public enum BuiltInOperation implements Operation {
 	}
 
 	public DataType evaluate(DataType... dataTypes) {
-		return evaluate(dataTypes, EMPTY_CACHE);
+		return evaluate(EMPTY_CACHE, dataTypes);
 	}
 
 	private XiLambda genLambda() {
-		return new HiddenLambda(nargs) {
+		return new HiddenLambda(numArgs) {
 			private static final long serialVersionUID = 0L;
 
 			@Override
 			public DataType evaluate(DataType... args) {
-				return BuiltInOperation.this.evaluate(args, null);
+				return BuiltInOperation.this.evaluate(args);
 			}
 		};
 	}

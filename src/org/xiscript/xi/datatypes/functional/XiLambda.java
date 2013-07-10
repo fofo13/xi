@@ -20,7 +20,7 @@ public class XiLambda extends Function {
 	}
 
 	public DataType evaluate(XiTuple args, VariableCache globals) {
-		return evaluate(args.toArray(new DataType[args.length()]), globals);
+		return evaluate(globals, args.toArray(new DataType[args.length()]));
 	}
 
 	@Override

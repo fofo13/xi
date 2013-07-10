@@ -65,7 +65,7 @@ public class OperationNode implements Node {
 	@Override
 	public DataType evaluate(VariableCache cache) {
 		try {
-			return op.evaluate(processChildren(cache), cache);
+			return op.evaluate(cache, processChildren(cache));
 		} catch (ClassCastException cce) {
 			ErrorHandler.invokeError(ErrorType.ARGUMENT, op);
 			return null;

@@ -31,7 +31,7 @@ public class FunctionNode extends OperationNode {
 		DataType[] args = processChildren(cache);
 
 		if (d instanceof Function)
-			return ((Function) d).evaluate(args, cache);
+			return ((Function) d).evaluate(cache, args);
 
 		if (d instanceof ListWrapper) {
 			ListWrapper list = (ListWrapper) d;

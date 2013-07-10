@@ -214,8 +214,12 @@ public class Parser {
 			sb.append(chars.poll());
 		}
 
-		if (!chars.isEmpty() && chars.peek() == FUNCTION_CONVERTER)
-			sb.append(chars.poll());
+		String id = sb.toString();
+		if (!chars.isEmpty() && chars.peek() == FUNCTION_CONVERTER
+				&& BuiltInOperation.idExists(id)) {
+			chars.poll();
+			return new DataNode<XiLambda>(BuiltInOperation.parse(id).asLambda());
+		}
 
 		if (ASSIGNMENT.contentEquals(sb))
 			return new AssignmentNode();
