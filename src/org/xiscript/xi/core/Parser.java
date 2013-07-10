@@ -222,13 +222,13 @@ public class Parser {
 		if (PLUS_EQUALS.contentEquals(sb))
 			return new CompoundAssignmentNode(BuiltInOperation.ADD);
 		if (MINUS_EQUALS.contentEquals(sb))
-			return new CompoundAssignmentNode(BuiltInOperation.SUBTRACT);
+			return new CompoundAssignmentNode(BuiltInOperation.SUB);
 		if (TIMES_EQUALS.contentEquals(sb))
-			return new CompoundAssignmentNode(BuiltInOperation.MULTIPLY);
+			return new CompoundAssignmentNode(BuiltInOperation.MUL);
 		if (DIV_EQUALS.contentEquals(sb))
 			return new CompoundAssignmentNode(BuiltInOperation.DIVIDE);
 		if (MOD_EQUALS.contentEquals(sb))
-			return new CompoundAssignmentNode(BuiltInOperation.MODULUS);
+			return new CompoundAssignmentNode(BuiltInOperation.MOD);
 		if (POW_EQUALS.contentEquals(sb))
 			return new CompoundAssignmentNode(BuiltInOperation.POW);
 		if (RSHIFT_EQUALS.contentEquals(sb))

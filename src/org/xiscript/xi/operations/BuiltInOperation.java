@@ -54,11 +54,11 @@ public enum BuiltInOperation implements Operation {
 
 	NULL("null", 0),
 
-	NOT("!", 1), BITNOT("~", 1), ABS("abs", 1), ADD("+", 2), ADDALL("+:", -1), SUBTRACT(
-			"-", 2), MULTIPLY("*", 2), MULTALL("*:", -1), DIVIDE("/", 2), INTDIV(
-			"//", 2), MODULUS("%", 2), EQ("==", 2), NEQ("!=", 2), GREATER(">",
-			2), LESS("<", 2), GREATER_EQ(">=", 2), LESS_EQ("<=", 2), AND("&", 2), OR(
-			"|", 2), XOR("^", 2), RSHIFT(">>", 2), LSHIFT("<<", 2), POW("**", 2),
+	NOT("!", 1), BITNOT("~", 1), ABS("abs", 1), ADD("+", 2), ADDALL("+:", -1), SUB(
+			"-", 2), MUL("*", 2), MULTALL("*:", -1), DIVIDE("/", 2), INTDIV(
+			"//", 2), MOD("%", 2), EQ("==", 2), NEQ("!=", 2), GT(">", 2), LT(
+			"<", 2), GE(">=", 2), LE("<=", 2), AND("&", 2), OR("|", 2), XOR(
+			"^", 2), RSHIFT(">>", 2), LSHIFT("<<", 2), POW("**", 2),
 
 	DEF("def", 3),
 
@@ -73,8 +73,7 @@ public enum BuiltInOperation implements Operation {
 
 	STR("str", 1), CHR("chr", 1), INT("int", 1), FLOAT("float", 1), LONG(
 			"long", 1), LIST("list", 1), SET("set", 1), TUPLE("tuple", 1), DICT(
-			"dict", 1), CMPLX("cmplx", 2), FUNC("func", 2), LAMBDA("=>", 2), FILE(
-			"file", 2),
+			"dict", 1), CMPLX("cmplx", 2), LAMBDA("=>", 2), FILE("file", 2),
 
 	PRINT("print", 1), PRINTLN("println", 1), PRINTF("printf", 2),
 
@@ -178,7 +177,7 @@ public enum BuiltInOperation implements Operation {
 				d = ADD.evaluate(d, args[i]);
 			return d;
 		}
-		case SUBTRACT:
+		case SUB:
 			if (args.length == 1)
 				return ((XiNum) args[0]).neg();
 			if (args[0] instanceof ListWrapper) {
@@ -188,7 +187,7 @@ public enum BuiltInOperation implements Operation {
 			if (args[0] instanceof XiSet && args[1] instanceof XiSet)
 				return ((XiSet) args[0]).difference((XiSet) args[1], false);
 			return ((XiNum) args[0]).sub((XiNum) args[1]);
-		case MULTIPLY:
+		case MUL:
 			if (args[0] instanceof ListWrapper)
 				return ((ListWrapper) args[0]).mul((XiInt) args[1]);
 			return ((XiNum) args[0]).mul((XiNum) args[1]);
@@ -200,13 +199,13 @@ public enum BuiltInOperation implements Operation {
 
 				DataType mul = iter.next();
 				while (iter.hasNext())
-					mul = MULTIPLY.evaluate(mul, iter.next());
+					mul = MUL.evaluate(mul, iter.next());
 
 				return mul;
 			}
 
 			for (int i = 0; i < args.length; i++)
-				d = MULTIPLY.evaluate(d, args[i]);
+				d = MUL.evaluate(d, args[i]);
 			return d;
 		}
 		case DIVIDE:
@@ -225,7 +224,7 @@ public enum BuiltInOperation implements Operation {
 						(XiBlock) args[0], true);
 
 			return ((XiReal<?>) args[0]).intdiv((XiReal<?>) args[1]);
-		case MODULUS:
+		case MOD:
 			if (args[0] instanceof XiString) {
 				XiTuple tup = ((XiTuple) args[1]);
 				Object[] objs = new Object[tup.length()];
@@ -247,22 +246,22 @@ public enum BuiltInOperation implements Operation {
 			return new XiInt(args[0].equals(args[1]));
 		case NEQ:
 			return new XiInt(!args[0].equals(args[1]));
-		case GREATER:
+		case GT:
 			if (args[0] instanceof XiSet && args[1] instanceof XiSet)
 				return new XiInt((!args[0].equals(args[1]))
 						&& ((XiSet) args[0]).isSupersetOf((XiSet) args[1]));
 			return new XiInt(args[0].compareTo(args[1]) > 0);
-		case LESS:
+		case LT:
 			if (args[0] instanceof XiSet && args[1] instanceof XiSet)
 				return new XiInt((!args[0].equals(args[1]))
 						&& ((XiSet) args[0]).isSubsetOf((XiSet) args[1]));
 			return new XiInt(args[0].compareTo(args[1]) < 0);
-		case GREATER_EQ:
+		case GE:
 			if (args[0] instanceof XiSet && args[1] instanceof XiSet)
 				return new XiInt(
 						((XiSet) args[0]).isSupersetOf((XiSet) args[1]));
 			return new XiInt(args[0].compareTo(args[1]) >= 0);
-		case LESS_EQ:
+		case LE:
 			if (args[0] instanceof XiSet && args[1] instanceof XiSet)
 				return new XiInt(((XiSet) args[0]).isSubsetOf((XiSet) args[1]));
 			return new XiInt(args[0].compareTo(args[1]) <= 0);

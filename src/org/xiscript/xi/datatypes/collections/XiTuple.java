@@ -42,7 +42,7 @@ public class XiTuple extends XiList {
 
 	@Override
 	public CollectionWrapper<List<DataType>> delete(DataType params) {
-		ErrorHandler.invokeError(ErrorType.ARGUMENT, BuiltInOperation.SUBTRACT);
+		ErrorHandler.invokeError(ErrorType.ARGUMENT, BuiltInOperation.SUB);
 		return null;
 	}
 
