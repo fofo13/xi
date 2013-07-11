@@ -193,6 +193,8 @@ public enum BuiltInOperation implements Operation {
 		case MUL:
 			if (args[0] instanceof ListWrapper)
 				return ((ListWrapper) args[0]).mul((XiInt) args[1]);
+			if (args[1] instanceof ListWrapper)
+				return ((ListWrapper) args[1]).mul((XiInt) args[0]);
 			return ((XiNum) args[0]).mul((XiNum) args[1]);
 		case MULTALL: {
 			DataType d = args[0];
