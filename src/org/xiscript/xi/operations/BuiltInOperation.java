@@ -14,6 +14,8 @@ import java.util.Random;
 import java.util.regex.Pattern;
 
 import org.xiscript.xi.core.ModuleLoader;
+import org.xiscript.xi.core.Parser;
+import org.xiscript.xi.core.SyntaxTree;
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
@@ -579,8 +581,8 @@ public enum BuiltInOperation implements Operation {
 			return XiNull.instance();
 		}
 		case EVAL: {
-			// TODO
-			return null;
+			return (new SyntaxTree(Parser.genNodeQueue(((XiString) args[0])
+					.toString()))).evaluate(globals);
 		}
 		case EXEC: {
 			try {
