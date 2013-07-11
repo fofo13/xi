@@ -617,16 +617,22 @@ public enum BuiltInOperation implements Operation {
 		case LONG:
 			return XiLong.parse(args[0].toString());
 		case LIST:
+			if (args.length == 0)
+				return new XiList();
 			if (args[0] instanceof XiGenerator)
 				return new XiList((XiGenerator) args[0]);
 			return ((CollectionWrapper<?>) args[0]).asList();
 		case SET:
+			if (args.length == 0)
+				return new XiSet();
 			if (args[0] instanceof XiDict)
 				return ((XiDict) args[0]).itemSet();
 			if (args[0] instanceof XiGenerator)
 				return new XiSet((XiGenerator) args[0]);
 			return ((CollectionWrapper<?>) args[0]).asSet();
 		case TUPLE:
+			if (args.length == 0)
+				return new XiTuple();
 			if (args[0] instanceof XiGenerator)
 				return new XiTuple((XiGenerator) args[0]);
 			return ((CollectionWrapper<?>) args[0]).asTuple();
