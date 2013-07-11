@@ -475,6 +475,7 @@ public enum BuiltInOperation implements Operation {
 			int nargs = args.length;
 
 			XiBlock body = null;
+			DataType last = XiNull.instance();
 
 			if (cond) {
 				body = (XiBlock) args[1];
@@ -484,10 +485,10 @@ public enum BuiltInOperation implements Operation {
 
 			if (body != null) {
 				body.setOuterScope(globals);
-				body.evaluate();
+				last = body.evaluate();
 			}
 
-			return XiNull.instance();
+			return last;
 		}
 		case DO: {
 			int n = ((XiInt) args[0]).val();
