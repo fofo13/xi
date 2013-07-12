@@ -47,7 +47,7 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 
 	@Override
 	public CollectionWrapper<T> filter(Function f, VariableCache globals) {
-		return map(f, false, globals);
+		return filter(f, false, globals);
 	}
 
 	public CollectionWrapper<T> map(XiBlock block, boolean deep) {
@@ -66,9 +66,13 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 	public CollectionWrapper<T> map(Function f, boolean deep,
 			VariableCache globals) {
 		Collection<DataType> col = new ArrayList<DataType>(collection.size());
+		final boolean multiArg = f.length() > 1;
 		for (DataType a : collection) {
-			col.add((deep && (a instanceof CollectionWrapper<?>)) ? ((CollectionWrapper<?>) a)
-					.map(f, true, globals) : f.evaluate(globals, a));
+			if (deep && (a instanceof CollectionWrapper<?>))
+				col.add(((CollectionWrapper<?>) a).map(f, true, globals));
+
+			col.add(multiArg ? f.evaluate(globals, (ListWrapper) a) : f
+					.evaluate(globals, a));
 		}
 		return instantiate(col);
 	}
@@ -87,6 +91,25 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 
 			index++;
 		}
+		return instantiate(col);
+	}
+
+	public CollectionWrapper<T> filter(Function f, boolean deep,
+			VariableCache globals) {
+
+		Collection<DataType> col = new ArrayList<DataType>(collection.size());
+		final boolean multiArg = f.length() > 1;
+
+		for (DataType data : collection) {
+
+			if (deep && (data instanceof CollectionWrapper<?>))
+				col.add(((CollectionWrapper<?>) data).filter(f, deep, globals));
+
+			else if (!(multiArg ? f.evaluate(globals, (ListWrapper) data) : f
+					.evaluate(globals, data)).isEmpty())
+				col.add(data);
+		}
+
 		return instantiate(col);
 	}
 

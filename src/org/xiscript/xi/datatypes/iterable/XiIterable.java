@@ -6,6 +6,7 @@ import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiType;
 import org.xiscript.xi.datatypes.XiVar;
+import org.xiscript.xi.datatypes.collections.ListWrapper;
 import org.xiscript.xi.datatypes.functional.Function;
 import org.xiscript.xi.datatypes.functional.XiBlock;
 import org.xiscript.xi.datatypes.numeric.XiInt;
@@ -41,6 +42,7 @@ public abstract class XiIterable extends DataType implements Iterable<DataType> 
 
 	public XiIterable map(final Function f, final VariableCache globals) {
 		final Iterator<DataType> iter = iterator();
+		final boolean multiArg = (f.length() > 1);
 
 		return new XiGenerator() {
 			private static final long serialVersionUID = 0L;
@@ -50,7 +52,9 @@ public abstract class XiIterable extends DataType implements Iterable<DataType> 
 				if (!iter.hasNext())
 					return null;
 
-				return f.evaluate(globals, iter.next());
+				return multiArg ? f
+						.evaluate(globals, (ListWrapper) iter.next()) : f
+						.evaluate(globals, iter.next());
 			}
 		};
 	}
@@ -80,6 +84,7 @@ public abstract class XiIterable extends DataType implements Iterable<DataType> 
 
 	public XiIterable filter(final Function f, final VariableCache globals) {
 		final Iterator<DataType> iter = iterator();
+		final boolean multiArg = (f.length() > 1);
 
 		return new XiGenerator() {
 			private static final long serialVersionUID = 0L;
@@ -90,7 +95,9 @@ public abstract class XiIterable extends DataType implements Iterable<DataType> 
 					return null;
 
 				DataType next = iter.next();
-				return f.evaluate(globals, next).isEmpty() ? next() : next;
+				return (multiArg ? f.evaluate(globals,
+						(ListWrapper) iter.next()) : f.evaluate(globals,
+						iter.next())).isEmpty() ? next() : next;
 			}
 		};
 	}

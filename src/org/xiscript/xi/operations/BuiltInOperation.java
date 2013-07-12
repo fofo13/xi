@@ -64,7 +64,7 @@ public enum BuiltInOperation implements Operation {
 
 	DEF("def", 3),
 
-	FIND("find", 2), IN("in", 2), MAP("@", 2), DEEPMAP("@@", 2), RANGE("\\", 3), RAND(
+	FIND("find", 2), IN("in", 2), MAP("@", 2), DEEPMAP("@@", 2), RANGE("\\", 3), RND(
 			"rnd", 1), SORT("$", 2), CUT("cut", 2), DEL("del", 1), REPLACE(
 			"replace", 3), REMOVE("remove", 2), SPLIT("<>", 2), JOIN("><", 2),
 
@@ -99,7 +99,7 @@ public enum BuiltInOperation implements Operation {
 	private static final Map<String, BuiltInOperation> ids = new HashMap<String, BuiltInOperation>(
 			values().length);
 
-	private static final Random RND = new Random();
+	private static final Random RANDOM_SOURCE = new Random();
 
 	private static final Pattern SPLUS = Pattern.compile("\\s+");
 
@@ -341,12 +341,15 @@ public enum BuiltInOperation implements Operation {
 			default:
 				ErrorHandler.invokeError(ErrorType.ARGUMENT, this);
 			}
-		case RAND:
+		case RND:
+			if (args.length == 0)
+				return new XiFloat(RANDOM_SOURCE.nextDouble());
 			if (args[0] instanceof ListWrapper)
 				return ((ListWrapper) args[0]).rnd();
 			if (args[0] instanceof XiFloat)
-				return new XiFloat(RND.nextDouble() * ((XiFloat) args[0]).num());
-			return new XiInt(RND.nextInt(((XiInt) args[0]).val()));
+				return new XiFloat(RANDOM_SOURCE.nextDouble()
+						* ((XiFloat) args[0]).num());
+			return new XiInt(RANDOM_SOURCE.nextInt(((XiInt) args[0]).val()));
 		case SORT: {
 			if (args.length == 1) {
 				((ListWrapper) args[0]).sort();
@@ -692,8 +695,8 @@ public enum BuiltInOperation implements Operation {
 		case GETATTR: {
 			if (!(args[1] instanceof XiAttribute)) {
 				if (args[0] instanceof XiLambda) {
-					return ((XiLambda) args[0]).evaluate((XiTuple) args[1],
-							globals);
+					return ((XiLambda) args[0]).evaluate(globals,
+							(XiTuple) args[1]);
 				}
 				if (args[0] instanceof XiDict)
 					return ((XiDict) args[0]).get(args[1]);

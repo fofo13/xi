@@ -3,7 +3,7 @@ package org.xiscript.xi.datatypes.functional;
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.collections.ArgumentList;
-import org.xiscript.xi.datatypes.collections.XiTuple;
+import org.xiscript.xi.datatypes.collections.ListWrapper;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
@@ -22,7 +22,7 @@ public abstract class HiddenLambda extends XiLambda {
 	public abstract DataType evaluate(DataType... dataTypes);
 
 	@Override
-	public DataType evaluate(XiTuple args, VariableCache globals) {
+	public DataType evaluate(VariableCache globals, ListWrapper args) {
 		return evaluate(args.toArray(new DataType[args.length()]));
 	}
 

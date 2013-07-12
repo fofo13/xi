@@ -3,6 +3,7 @@ package org.xiscript.xi.datatypes.functional;
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiVar;
+import org.xiscript.xi.datatypes.collections.ListWrapper;
 import org.xiscript.xi.datatypes.collections.XiTuple;
 import org.xiscript.xi.exceptions.ReturnException;
 
@@ -40,6 +41,10 @@ public abstract class Function extends DataType {
 		} finally {
 			scope.clear();
 		}
+	}
+
+	public DataType evaluate(VariableCache globals, ListWrapper args) {
+		return evaluate(globals, args.toArray(new DataType[args.length()]));
 	}
 
 	public DataType evaluate(DataType... args) {
