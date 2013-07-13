@@ -7,8 +7,10 @@ import java.util.Iterator;
 
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
+import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.datatypes.functional.Function;
+import org.xiscript.xi.datatypes.functional.HiddenFunc;
 import org.xiscript.xi.datatypes.functional.XiBlock;
 import org.xiscript.xi.datatypes.iterable.XiIterable;
 import org.xiscript.xi.datatypes.numeric.XiInt;
@@ -18,12 +20,27 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 
 	private static final long serialVersionUID = 0L;
 
+	protected static final XiAttribute ADD = XiAttribute.valueOf("add");
+
 	protected T collection;
+
+	private Function adder;
 
 	protected abstract CollectionWrapper<T> instantiate(Collection<DataType> col);
 
 	public CollectionWrapper(T collection) {
 		this.collection = collection;
+	}
+
+	private void initAdder() {
+		adder = new HiddenFunc(1) {
+			private static final long serialVersionUID = 0L;
+
+			@Override
+			public DataType evaluate(DataType... args) {
+				return new XiInt(collection.add(args[0]));
+			}
+		};
 	}
 
 	public T collection() {
@@ -123,6 +140,18 @@ public abstract class CollectionWrapper<T extends Collection<DataType>> extends
 
 	public XiTuple asTuple() {
 		return new XiTuple(new ArrayList<DataType>(collection));
+	}
+
+	@Override
+	public DataType getAttribute(XiAttribute a) {
+		if (a.equals(ADD)) {
+			if (adder == null)
+				initAdder();
+
+			return adder;
+		}
+
+		return super.getAttribute(a);
 	}
 
 	@Override

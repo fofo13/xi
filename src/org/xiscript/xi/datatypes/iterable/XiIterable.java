@@ -102,6 +102,30 @@ public abstract class XiIterable extends DataType implements Iterable<DataType> 
 		};
 	}
 
+	public XiIterable add(final XiIterable other) {
+		final Iterator<DataType> iter1 = iterator();
+		final Iterator<DataType> iter2 = other.iterator();
+
+		return new XiGenerator() {
+			private static final long serialVersionUID = 0L;
+
+			private boolean firstOut = false;
+
+			@Override
+			public DataType next() {
+				if (firstOut)
+					return iter2.hasNext() ? iter2.next() : null;
+				else {
+					if (iter1.hasNext())
+						return iter1.next();
+
+					firstOut = true;
+					return next();
+				}
+			}
+		};
+	}
+
 	public DataType sum() {
 		DataType result = null;
 		for (DataType data : this)

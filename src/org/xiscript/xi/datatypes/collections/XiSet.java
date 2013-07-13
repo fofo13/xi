@@ -7,6 +7,7 @@ import java.util.Set;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiType;
 import org.xiscript.xi.datatypes.iterable.XiGenerator;
+import org.xiscript.xi.datatypes.iterable.XiIterable;
 
 public class XiSet extends CollectionWrapper<Set<DataType>> implements
 		Set<DataType> {
@@ -62,6 +63,16 @@ public class XiSet extends CollectionWrapper<Set<DataType>> implements
 
 	public boolean isSubsetOf(XiSet other) {
 		return other.collection().containsAll(collection);
+	}
+
+	@Override
+	public CollectionWrapper<Set<DataType>> add(XiIterable other) {
+		Set<DataType> newSet = new HashSet<DataType>(length() + other.length());
+		newSet.addAll(collection);
+		for (DataType d : other)
+			newSet.add(d);
+
+		return instantiate(newSet);
 	}
 
 	@Override

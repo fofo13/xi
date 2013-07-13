@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import org.xiscript.xi.core.Parser;
 import org.xiscript.xi.datatypes.DataType;
+import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.XiType;
 import org.xiscript.xi.datatypes.numeric.XiInt;
 import org.xiscript.xi.exceptions.ErrorHandler;
@@ -123,6 +124,15 @@ public class XiString extends ListWrapper implements CharSequence {
 			return new XiString(toString().replaceAll(sub.toString(),
 					rep.toString()));
 		return new XiString(toString().replace(sub.toString(), rep.toString()));
+	}
+
+	@Override
+	public DataType getAttribute(XiAttribute a) {
+		if (a.equals(ADD)) {
+			ErrorHandler.invokeError(ErrorType.INVALID_ATTRIBUTE, type(), ADD);
+		}
+
+		return super.getAttribute(a);
 	}
 
 	@Override

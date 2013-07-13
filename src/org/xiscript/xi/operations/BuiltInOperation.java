@@ -163,10 +163,8 @@ public enum BuiltInOperation implements Operation {
 				return ((Function) args[0]).compose((Function) args[1]);
 			if (args[0] instanceof XiString)
 				return new XiString(args[0].toString() + args[1].toString());
-			if (args[0] instanceof CollectionWrapper) {
-				((CollectionWrapper<?>) args[0]).add(args[1]);
-				return args[0];
-			}
+			if (args[0] instanceof XiIterable)
+				return ((XiIterable) args[0]).add((XiIterable) args[1]);
 			if (args[1] instanceof XiString)
 				return new XiString(args[0].toString() + args[1].toString());
 			return ((XiNum) args[0]).add((XiNum) args[1]);

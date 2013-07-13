@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
+import org.xiscript.xi.datatypes.iterable.XiIterable;
 import org.xiscript.xi.datatypes.numeric.XiInt;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
@@ -257,6 +258,17 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 
 	public DataType find(DataType data) {
 		return new XiInt(indexOf(data));
+	}
+
+	@Override
+	public CollectionWrapper<List<DataType>> add(XiIterable other) {
+		List<DataType> newList = new ArrayList<DataType>(length()
+				+ other.length());
+		newList.addAll(collection);
+		for (DataType d : other)
+			newList.add(d);
+
+		return instantiate(newList);
 	}
 
 	public ListWrapper mod(int n) {
