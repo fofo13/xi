@@ -692,9 +692,9 @@ public enum BuiltInOperation implements Operation {
 			return XiNull.instance();
 		case GETATTR: {
 			if (!(args[1] instanceof XiAttribute)) {
-				if (args[0] instanceof XiLambda) {
-					return ((XiLambda) args[0]).evaluate(globals,
-							(XiTuple) args[1]);
+				if (args[0] instanceof Function) {
+					return ((Function) args[0]).evaluate(globals,
+							(ListWrapper) args[1]);
 				}
 				if (args[0] instanceof XiDict)
 					return ((XiDict) args[0]).get(args[1]);
