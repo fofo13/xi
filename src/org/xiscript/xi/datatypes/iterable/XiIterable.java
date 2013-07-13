@@ -126,6 +126,30 @@ public abstract class XiIterable extends DataType implements Iterable<DataType> 
 		};
 	}
 
+	public XiIterable mul(final XiInt num) {
+		if (num.val() < 1)
+			ErrorHandler.invokeError(ErrorType.CUSTOM,
+					"Iterables cannot be multiplied by an int less than 1.");
+
+		return new XiGenerator() {
+			private static final long serialVersionUID = 0L;
+
+			private Iterator<DataType> iter = XiIterable.this.iterator();
+			private int n = num.val();
+
+			@Override
+			public DataType next() {
+				if (iter.hasNext())
+					return iter.next();
+				else if (--n > 0) {
+					iter = XiIterable.this.iterator();
+					return next();
+				}
+				return null;
+			}
+		};
+	}
+
 	public DataType sum() {
 		DataType result = null;
 		for (DataType data : this)

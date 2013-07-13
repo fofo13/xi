@@ -97,10 +97,11 @@ public abstract class ListWrapper extends CollectionWrapper<List<DataType>>
 		return instantiate(newList);
 	}
 
-	public CollectionWrapper<List<DataType>> mul(XiInt n) {
+	@Override
+	public CollectionWrapper<List<DataType>> mul(XiInt num) {
 		List<DataType> newList = new ArrayList<DataType>(collection.size()
-				* n.val());
-		for (int i = 0; i < n.val(); i++)
+				* num.val());
+		for (int i = 0; i < num.val(); i++)
 			newList.addAll(collection);
 		return instantiate(newList);
 	}

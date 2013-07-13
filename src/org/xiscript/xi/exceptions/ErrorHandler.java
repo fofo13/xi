@@ -57,7 +57,9 @@ public class ErrorHandler {
 
 		UNICODE_ERROR("Unable to parse unicode value: %s"),
 
-		INTERNAL("Internal error occured.");
+		INTERNAL("Internal error occured."),
+
+		CUSTOM("%s");
 
 		private String message;
 

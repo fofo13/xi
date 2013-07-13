@@ -189,10 +189,10 @@ public enum BuiltInOperation implements Operation {
 				return ((XiSet) args[0]).difference((XiSet) args[1], false);
 			return ((XiNum) args[0]).sub((XiNum) args[1]);
 		case MUL:
-			if (args[0] instanceof ListWrapper)
-				return ((ListWrapper) args[0]).mul((XiInt) args[1]);
-			if (args[1] instanceof ListWrapper)
-				return ((ListWrapper) args[1]).mul((XiInt) args[0]);
+			if (args[0] instanceof XiIterable)
+				return ((XiIterable) args[0]).mul((XiInt) args[1]);
+			if (args[1] instanceof XiIterable)
+				return ((XiIterable) args[1]).mul((XiInt) args[0]);
 			return ((XiNum) args[0]).mul((XiNum) args[1]);
 		case MULTALL: {
 			DataType d = args[0];
