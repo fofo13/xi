@@ -22,15 +22,12 @@ public class XiProgram {
 		scope = new VariableCache();
 	}
 
-	protected XiProgram(InputStream stream, boolean primary) {
+	protected XiProgram(InputStream stream) {
 		this(compile(stream));
-
-		if (primary)
-			scope.putAll(ModuleLoader.get("stdlib").contents());
 	}
 
 	public XiProgram(File file) throws FileNotFoundException {
-		this(new FileInputStream(file), true);
+		this(new FileInputStream(file));
 	}
 
 	public VariableCache scope() {

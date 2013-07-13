@@ -20,8 +20,12 @@ public class ModuleLoader {
 
 	private static final String PATH = "/org/xiscript/xi/modules/";
 
-	private static final String[] files = { "listutils", "math", "stat",
-			"stdlib", "sys", "vecmath" };
+	private static final String MATH = "math";
+	private static final String SYS = "sys";
+	private static final String TYPES = "types";
+
+	private static final String[] files = { "listutils", "stat", "vecmath",
+			MATH, SYS, TYPES };
 
 	private static final String EXT = ".xi";
 
@@ -29,15 +33,19 @@ public class ModuleLoader {
 		for (String file : files) {
 			stdlib.put(file, null);
 		}
-
-		addSpecialVars();
 	}
 
-	public static XiModule get(String name) {
+	public static XiModule getStandard(String name) {
+		if (name.equals(MATH))
+			return getStandardMath();
+		if (name.equals(SYS))
+			return getStandardSys();
+		if (name.equals(TYPES))
+			return getStandardTypes();
+
 		if (stdlib.get(name) == null) {
 			XiProgram env = new XiProgram(
-					XiProgram.class.getResourceAsStream(PATH + name + EXT),
-					false);
+					XiProgram.class.getResourceAsStream(PATH + name + EXT));
 			env.run();
 			stdlib.put(name, new XiModule(env.scope()));
 		}
@@ -47,14 +55,13 @@ public class ModuleLoader {
 
 	public static XiModule load(String name) {
 		if (stdlib.containsKey(name)) {
-			return get(name);
+			return getStandard(name);
 		}
 
-		XiProgram env = null;
 		try {
 			name = name.replace(".", "/") + EXT;
 			File file = new File(name);
-			env = new XiProgram(file);
+			XiProgram env = new XiProgram(file);
 			env.run();
 			return new XiModule(env.scope());
 		} catch (FileNotFoundException fnfe) {
@@ -63,11 +70,7 @@ public class ModuleLoader {
 		}
 	}
 
-	private static void addSpecialVars() {
-		XiModule sys = new XiModule(1);
-		sys.addVar("sys", XiSys.instance());
-		stdlib.put("sys", sys);
-
+	private static XiModule getStandardMath() {
 		XiModule math = new XiModule(24);
 		math.addVar("sin", XiMath.sin);
 		math.addVar("cos", XiMath.cos);
@@ -93,12 +96,24 @@ public class ModuleLoader {
 		math.addVar("ceil", XiMath.ceil);
 		math.addVar("PI", new XiFloat(Math.PI));
 		math.addVar("E", new XiFloat(Math.E));
-		stdlib.put("math", math);
-
-		XiModule std = get("stdlib");
-		for (Type type : XiType.Type.values()) {
-			std.addVar(String.format("type_%s", type.toString().toLowerCase()),
-					XiType.valueOf(type));
-		}
+		return math;
 	}
+
+	private static XiModule getStandardSys() {
+		XiModule sys = new XiModule(1);
+		sys.addVar("sys", XiSys.instance());
+		return sys;
+	}
+
+	private static XiModule getStandardTypes() {
+		Type[] allTypes = XiType.Type.values();
+		XiModule types = new XiModule(allTypes.length);
+
+		for (Type type : allTypes) {
+			types.addVar(type.toString().toLowerCase(), XiType.valueOf(type));
+		}
+
+		return types;
+	}
+
 }
