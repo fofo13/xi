@@ -64,8 +64,8 @@ public enum BuiltInOperation implements Operation {
 
 	DEF("def", 3),
 
-	FIND("find", 2), IN("in", 2), MAP("@", 2), DEEPMAP("@@", 2), RANGE("\\", 3), RND(
-			"rnd", 1), SORT("$", 2), CUT("cut", 2), DEL("del", 1), REPLACE(
+	BIN("bin", 1), FIND("find", 2), IN("in", 2), MAP("@", 2), DEEPMAP("@@", 2), RANGE(
+			"\\", 3), RND("rnd", 1), SORT("$", 2), CUT("cut", 2), DEL("del", 1), REPLACE(
 			"replace", 3), REMOVE("remove", 2), SPLIT("<>", 2), JOIN("><", 2),
 
 	FOR("for", 3), IF("if", 3), DO("do", 2), WHILE("while", 2), DOWHILE(
@@ -303,6 +303,8 @@ public enum BuiltInOperation implements Operation {
 			globals.put((XiVar) args[0], new XiFunc((ArgumentList) args[1],
 					(XiBlock) args[2]));
 			return XiNull.instance();
+		case BIN:
+			return new XiString(Integer.toBinaryString(((XiInt) args[0]).num()));
 		case FIND:
 			return ((ListWrapper) args[0]).find(args[1]);
 		case IN:
