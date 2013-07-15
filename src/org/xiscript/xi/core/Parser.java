@@ -378,10 +378,10 @@ public class Parser {
 			if (RE_START.contentEquals(type))
 				return new DataNode<XiRegex>(new XiRegex(sb.toString()));
 			if (RAW_START.contentEquals(type))
-				return new DataNode<XiString>(new XiString(sb.toString(), true));
+				return new DataNode<XiString>(new XiString(sb.toString()));
 		}
 
-		return new DataNode<XiString>(new XiString(sb.toString()));
+		return new DataNode<XiString>(new XiString(unescape(sb.toString())));
 	}
 
 	private static Node readString(Queue<Character> chars) {
@@ -444,7 +444,7 @@ public class Parser {
 		return null;
 	}
 
-	public static String unescapeJava(String str) {
+	private static String unescape(String str) {
 		int len = str.length();
 		StringBuilder sb = new StringBuilder(len);
 
@@ -500,7 +500,8 @@ public class Parser {
 					break;
 				}
 				default:
-					sb.append(c);
+					ErrorHandler.invokeError(ErrorType.CUSTOM,
+							"Invalid escape sequence: \\" + c);
 					break;
 				}
 				continue;

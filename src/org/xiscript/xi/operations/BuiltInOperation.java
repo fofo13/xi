@@ -405,7 +405,7 @@ public enum BuiltInOperation implements Operation {
 			if (args.length == 2) {
 				return ((XiString) args[1]).useToSplit((XiString) args[0]);
 			} else {
-				String[] split = SPLUS.split(((XiString) args[0]).toString());
+				String[] split = SPLUS.split((XiString) args[0]);
 				List<DataType> list = new ArrayList<DataType>(split.length);
 				for (String s : split)
 					list.add(new XiString(s));

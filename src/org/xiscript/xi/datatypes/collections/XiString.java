@@ -6,17 +6,16 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.xiscript.xi.core.Parser;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.XiType;
+import org.xiscript.xi.datatypes.functional.Function;
+import org.xiscript.xi.datatypes.functional.HiddenFunc;
 import org.xiscript.xi.datatypes.numeric.XiInt;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public class XiString extends ListWrapper implements CharSequence {
-
-	private static final long serialVersionUID = 0L;
 
 	private static class XiChar extends DataType {
 
@@ -30,12 +29,6 @@ public class XiString extends ListWrapper implements CharSequence {
 
 		public char val() {
 			return val;
-		}
-
-		public XiString toXiString() {
-			List<DataType> l = new ArrayList<DataType>();
-			l.add(new XiChar(val));
-			return new XiString(l);
 		}
 
 		@Override
@@ -69,7 +62,11 @@ public class XiString extends ListWrapper implements CharSequence {
 
 	}
 
-	private boolean raw;
+	private static final long serialVersionUID = 0L;
+
+	private static final XiAttribute MATCH = XiAttribute.valueOf("match");
+
+	private Function matcherMaker;
 
 	public XiString(List<DataType> list) {
 		super(new ArrayList<DataType>(list.size()));
@@ -85,17 +82,11 @@ public class XiString extends ListWrapper implements CharSequence {
 		}
 	}
 
-	public XiString(String expr, boolean raw) {
-		this(new ArrayList<DataType>());
+	public XiString(String expr) {
+		this(new ArrayList<DataType>(expr.length()));
 
 		for (char c : expr.toCharArray())
-			collection.add((new XiChar(c)).toXiString());
-
-		this.raw = raw;
-	}
-
-	public XiString(String expr) {
-		this(expr, false);
+			collection.add(new XiChar(c));
 	}
 
 	@Override
@@ -128,8 +119,20 @@ public class XiString extends ListWrapper implements CharSequence {
 
 	@Override
 	public DataType getAttribute(XiAttribute a) {
-		if (a.equals(ADD)) {
+		if (a.equals(ADD))
 			ErrorHandler.invokeError(ErrorType.INVALID_ATTRIBUTE, type(), ADD);
+
+		if (a.equals(MATCH)) {
+			if (matcherMaker != null)
+				return matcherMaker;
+			return matcherMaker = new HiddenFunc(1) {
+				private static final long serialVersionUID = 0L;
+
+				@Override
+				public DataType evaluate(DataType... args) {
+					return ((XiRegex) args[0]).match(XiString.this);
+				}
+			};
 		}
 
 		return super.getAttribute(a);
@@ -176,7 +179,7 @@ public class XiString extends ListWrapper implements CharSequence {
 		StringBuilder sb = new StringBuilder();
 		for (DataType c : collection)
 			sb.append(c.toString());
-		return raw ? sb.toString() : Parser.unescapeJava(sb.toString());
+		return sb.toString();
 	}
 
 	@Override
@@ -187,7 +190,7 @@ public class XiString extends ListWrapper implements CharSequence {
 	@Override
 	public boolean contains(Object data) {
 		if (data instanceof XiRegex)
-			return toString().matches(".*" + data + ".*");
+			return ((XiRegex) data).pattern().matcher(this).find();
 		if (data instanceof XiString)
 			return toString().contains(data.toString());
 		return false;
