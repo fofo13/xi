@@ -11,7 +11,7 @@ public class VarNode implements Node {
 	private boolean literal;
 	private XiVar var;
 
-	public VarNode(XiVar var) {
+	private VarNode(XiVar var) {
 		this.var = var;
 		literal = false;
 	}

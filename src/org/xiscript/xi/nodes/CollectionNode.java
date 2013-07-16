@@ -34,6 +34,7 @@ public class CollectionNode extends DataNode<CollectionWrapper<?>> {
 	private Node[] elements;
 	private int type;
 	private boolean literal;
+	private ArgumentList argList;
 
 	public CollectionNode(Node[] elements, int type) {
 		super(null);
@@ -58,6 +59,9 @@ public class CollectionNode extends DataNode<CollectionWrapper<?>> {
 	@Override
 	public DataType evaluate(VariableCache cache) {
 		if (literal) {
+			if (argList != null)
+				return argList;
+
 			if (elements.length > 1) {
 				for (int i = 0; i < elements.length - 1; i += 2)
 					if (special(elements[i])
@@ -82,7 +86,7 @@ public class CollectionNode extends DataNode<CollectionWrapper<?>> {
 				i++;
 			}
 
-			return new ArgumentList(array);
+			return argList = new ArgumentList(array);
 		}
 
 		switch (type) {

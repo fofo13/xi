@@ -75,11 +75,6 @@ public class XiVar extends DataType {
 	}
 
 	@Override
-	public void delete() {
-
-	}
-
-	@Override
 	public String toString() {
 		if (components.length == 1)
 			return id();
