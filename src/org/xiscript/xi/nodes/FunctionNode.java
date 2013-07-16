@@ -3,6 +3,7 @@ package org.xiscript.xi.nodes;
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiDict;
+import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.datatypes.collections.ListWrapper;
 import org.xiscript.xi.datatypes.functional.Function;
 import org.xiscript.xi.datatypes.numeric.XiInt;
@@ -13,9 +14,9 @@ public class FunctionNode extends OperationNode {
 
 	private static final long serialVersionUID = 0L;
 
-	private String id;
+	private XiVar id;
 
-	public FunctionNode(String id) {
+	public FunctionNode(XiVar id) {
 		super(null);
 		this.id = id;
 	}

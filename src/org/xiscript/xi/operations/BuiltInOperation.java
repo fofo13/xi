@@ -389,7 +389,7 @@ public enum BuiltInOperation implements Operation {
 			return ((ListWrapper) args[0]).cut((XiTuple) args[1]);
 		case DEL: {
 			String id = ((XiAttribute) args[0]).toString();
-			if (!globals.containsId(id))
+			if (!globals.containsKey(id))
 				ErrorHandler.invokeError(ErrorType.IDNETIFIER_NOT_FOUND, id);
 
 			globals.get(id).delete();

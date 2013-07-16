@@ -18,10 +18,10 @@ public class PlusPlusNode extends AssignmentNode {
 
 	@Override
 	public DataType evaluate(VariableCache cache) {
-		String id = ((VarNode) children.get(0)).id();
-		DataType rhs = BuiltInOperation.ADD.evaluate(cache.get(id),
-				new XiInt(1));
-		cache.put(new XiVar(id), rhs);
+		XiVar var = ((VarNode) children.get(0)).var();
+		DataType rhs = BuiltInOperation.ADD.evaluate(cache.get(var), new XiInt(
+				1));
+		cache.put(var, rhs);
 		return rhs;
 	}
 

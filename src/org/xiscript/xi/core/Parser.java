@@ -6,6 +6,7 @@ import java.util.Queue;
 import java.util.Set;
 
 import org.xiscript.xi.datatypes.XiAttribute;
+import org.xiscript.xi.datatypes.XiVar;
 import org.xiscript.xi.datatypes.collections.XiRegex;
 import org.xiscript.xi.datatypes.collections.XiString;
 import org.xiscript.xi.datatypes.functional.XiBlock;
@@ -280,14 +281,14 @@ public class Parser {
 				return new DataNode<XiLambda>(BuiltInOperation.parse(id)
 						.asLambda());
 
-			return new FunctionConverterNode(id);
+			return new FunctionConverterNode(new XiVar(id));
 		}
 
 		if (!chars.isEmpty() && chars.peek() == CALL) {
 			chars.poll();
 			String id = sb.toString();
 
-			return new FunctionNode(id);
+			return new FunctionNode(new XiVar(id));
 		}
 
 		if (BuiltInOperation.idExists(sb.toString()))

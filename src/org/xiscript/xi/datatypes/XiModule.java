@@ -17,8 +17,8 @@ public class XiModule extends DataType {
 		this.contents = contents;
 		attributes = new HashMap<XiAttribute, DataType>();
 
-		for (Entry<XiVar, DataType> entry : contents.entrySet())
-			attributes.put(XiAttribute.valueOf(entry.getKey().id()),
+		for (Entry<String, DataType> entry : contents.entrySet())
+			attributes.put(XiAttribute.valueOf(entry.getKey()),
 					entry.getValue());
 	}
 

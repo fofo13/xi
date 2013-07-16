@@ -24,7 +24,7 @@ public class AssignmentNode extends OperationNode {
 	}
 
 	protected void assign(DataType rhs, VariableCache cache) {
-		cache.put(new XiVar(((VarNode) children.get(0)).id()), rhs);
+		cache.put(((VarNode) children.get(0)).var(), rhs);
 	}
 
 	@Override

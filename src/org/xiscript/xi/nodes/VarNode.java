@@ -1,7 +1,5 @@
 package org.xiscript.xi.nodes;
 
-import java.util.regex.Pattern;
-
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiVar;
@@ -10,13 +8,11 @@ public class VarNode implements Node {
 
 	private static final long serialVersionUID = 0L;
 
-	public static final Pattern DOT = Pattern.compile("\\.");
-
 	private boolean literal;
-	private XiVar id;
+	private XiVar var;
 
-	public VarNode(XiVar id) {
-		this.id = id;
+	public VarNode(XiVar var) {
+		this.var = var;
 		literal = false;
 	}
 
@@ -24,8 +20,8 @@ public class VarNode implements Node {
 		this(new XiVar(id));
 	}
 
-	public String id() {
-		return id.id();
+	public XiVar var() {
+		return var;
 	}
 
 	@Override
@@ -45,22 +41,22 @@ public class VarNode implements Node {
 
 	@Override
 	public DataType evaluate(VariableCache cache) {
-		return literal ? id : cache.get(id.id());
+		return literal ? var : cache.get(var);
 	}
 
 	@Override
 	public boolean equals(Object o) {
-		return id.equals(o);
+		return var.equals(o);
 	}
 
 	@Override
 	public int hashCode() {
-		return id.hashCode();
+		return var.hashCode();
 	}
 
 	@Override
 	public String toString() {
-		return id.toString();
+		return var.toString();
 	}
 
 }

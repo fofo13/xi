@@ -1,18 +1,25 @@
 package org.xiscript.xi.datatypes;
 
+import java.util.Arrays;
+import java.util.regex.Pattern;
+
 public class XiVar extends DataType {
 
 	private static final long serialVersionUID = 0L;
 
+	private static final Pattern DOT = Pattern.compile("\\.");
+
 	public static final XiVar SPEC_VAR = new XiVar("_", true);
 	public static final XiVar INDEX_VAR = new XiVar("__", true);
 
-	private String id;
+	private String[] components;
+	private String full;
 	private boolean temporary;
 	private boolean persistent;
 
-	private XiVar(String id, boolean temporary, boolean persistent) {
-		this.id = id;
+	private XiVar(String s, boolean temporary, boolean persistent) {
+		components = DOT.split(s);
+		full = s;
 		this.temporary = temporary;
 		this.persistent = persistent;
 	}
@@ -26,7 +33,11 @@ public class XiVar extends DataType {
 	}
 
 	public String id() {
-		return id;
+		return components[0];
+	}
+
+	public String component(int i) {
+		return components[i];
 	}
 
 	public boolean isTemporary() {
@@ -46,8 +57,13 @@ public class XiVar extends DataType {
 	}
 
 	@Override
-	public String getJavaAnalog() {
-		return id;
+	public int length() {
+		return components.length;
+	}
+
+	@Override
+	public XiVar getJavaAnalog() {
+		return this;
 	}
 
 	@Override
@@ -67,17 +83,18 @@ public class XiVar extends DataType {
 
 	@Override
 	public String toString() {
-		return id;
+		return full;
 	}
 
 	@Override
 	public boolean equals(Object o) {
-		return (o instanceof XiVar) && id.equals(((XiVar) o).id);
+		return (o instanceof XiVar)
+				&& Arrays.equals(components, (((XiVar) o).components));
 	}
 
 	@Override
 	public int hashCode() {
-		return id.hashCode();
+		return components[0].hashCode();
 	}
 
 	@Override
