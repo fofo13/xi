@@ -35,7 +35,6 @@ public class XiProgram {
 	}
 
 	public DataType run() {
-		System.out.println("=== run ===");
 		return program.evaluate(scope);
 	}
 
