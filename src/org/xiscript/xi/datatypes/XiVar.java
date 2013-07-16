@@ -13,13 +13,11 @@ public class XiVar extends DataType {
 	public static final XiVar INDEX_VAR = new XiVar("__", true);
 
 	private String[] components;
-	private String full;
 	private boolean temporary;
 	private boolean persistent;
 
 	private XiVar(String s, boolean temporary, boolean persistent) {
 		components = DOT.split(s);
-		full = s;
 		this.temporary = temporary;
 		this.persistent = persistent;
 	}
@@ -83,7 +81,18 @@ public class XiVar extends DataType {
 
 	@Override
 	public String toString() {
-		return full;
+		if (components.length == 1)
+			return id();
+
+		StringBuilder sb = new StringBuilder((components[0].length() + 1)
+				* components.length);
+		for (int i = 0; i < components.length; i++) {
+			if (i > 0)
+				sb.append('.');
+			sb.append(components[i]);
+		}
+
+		return sb.toString();
 	}
 
 	@Override
