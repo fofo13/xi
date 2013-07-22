@@ -57,10 +57,10 @@ public enum BuiltInOperation implements Operation {
 	NULL("null", 0),
 
 	NOT("!", 1), BITNOT("~", 1), ABS("abs", 1), ADD("+", 2), ADDALL("+:", -1), SUB(
-			"-", 2), MUL("*", 2), MULTALL("*:", -1), DIVIDE("/", 2), INTDIV(
-			"//", 2), MOD("%", 2), EQ("==", 2), NEQ("!=", 2), GT(">", 2), LT(
-			"<", 2), GE(">=", 2), LE("<=", 2), AND("&", 2), OR("|", 2), XOR(
-			"^", 2), RSHIFT(">>", 2), LSHIFT("<<", 2), POW("**", 2),
+			"-", 2), MUL("*", 2), MULTALL("*:", -1), DIV("/", 2), INTDIV("//",
+			2), MOD("%", 2), EQ("==", 2), NEQ("!=", 2), GT(">", 2), LT("<", 2), GE(
+			">=", 2), LE("<=", 2), AND("&", 2), OR("|", 2), XOR("^", 2), RSHIFT(
+			">>", 2), LSHIFT("<<", 2), POW("**", 2),
 
 	DEF("def", 3),
 
@@ -211,7 +211,7 @@ public enum BuiltInOperation implements Operation {
 				d = MUL.evaluate(d, args[i]);
 			return d;
 		}
-		case DIVIDE:
+		case DIV:
 			if (args[0] instanceof XiBlock) {
 				XiBlock block = (XiBlock) args[0];
 				block.setOuterScope(globals);

@@ -231,7 +231,7 @@ public class Parser {
 		if (TIMES_EQUALS.contentEquals(sb))
 			return new CompoundAssignmentNode(BuiltInOperation.MUL);
 		if (DIV_EQUALS.contentEquals(sb))
-			return new CompoundAssignmentNode(BuiltInOperation.DIVIDE);
+			return new CompoundAssignmentNode(BuiltInOperation.DIV);
 		if (MOD_EQUALS.contentEquals(sb))
 			return new CompoundAssignmentNode(BuiltInOperation.MOD);
 		if (POW_EQUALS.contentEquals(sb))
