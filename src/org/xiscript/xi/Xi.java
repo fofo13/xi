@@ -7,7 +7,7 @@ import org.xiscript.xi.core.XiProgram;
 
 public class Xi {
 
-	public static void main(String[] args) {
+	public static void main(String... args) {
 		runFromFile(args[0]);
 	}
 
