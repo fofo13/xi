@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import org.objectweb.asm.MethodVisitor;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
@@ -61,6 +62,10 @@ public class XiProgram {
 
 	public static XiProgram readFrom(File f) {
 		return new XiProgram(SyntaxTree.readFrom(f));
+	}
+
+	public void emitBytecode(MethodVisitor mv) {
+		program.emitBytecode(mv);
 	}
 
 }

@@ -1,8 +1,14 @@
 package org.xiscript.xi.nodes;
 
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.xiscript.xi.compilation.Type;
+import org.xiscript.xi.compilation.VariableSuite;
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiVar;
+import org.xiscript.xi.exceptions.ErrorHandler;
+import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public class VarNode implements Node {
 
@@ -57,6 +63,30 @@ public class VarNode implements Node {
 	@Override
 	public String toString() {
 		return var.toString();
+	}
+
+	@Override
+	public void emitBytecode(MethodVisitor mv, VariableSuite vs) { // TODO
+		if (!vs.has(var))
+			ErrorHandler.invokeError(ErrorType.IDNETIFIER_NOT_FOUND, var);
+
+		Type t = vs.typeOf(var);
+
+		switch (t) {
+		case INT:
+			mv.visitVarInsn(Opcodes.ILOAD, vs.indexOf(var));
+			break;
+		default:
+			mv.visitVarInsn(Opcodes.ALOAD, vs.indexOf(var));
+		}
+	}
+
+	@Override
+	public Type inferType(VariableSuite vs) {
+		if (!vs.has(var))
+			ErrorHandler.invokeError(ErrorType.IDNETIFIER_NOT_FOUND, var);
+
+		return vs.typeOf(var);
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.xiscript.xi.compilation.Type;
 import org.xiscript.xi.core.VariableCache;
 
 public class XiModule extends DataType {
@@ -68,7 +69,7 @@ public class XiModule extends DataType {
 
 	@Override
 	public XiType type() {
-		return XiType.valueOf(XiType.Type.MODULE);
+		return XiType.valueOf(Type.MODULE);
 	}
 
 }

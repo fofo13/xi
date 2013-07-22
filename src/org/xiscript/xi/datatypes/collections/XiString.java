@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.objectweb.asm.MethodVisitor;
+import org.xiscript.xi.compilation.Type;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.XiType;
@@ -217,7 +219,12 @@ public class XiString extends ListWrapper implements CharSequence {
 
 	@Override
 	public XiType type() {
-		return XiType.valueOf(XiType.Type.STRING);
+		return XiType.valueOf(Type.STR);
+	}
+
+	@Override
+	public void emitBytecode(MethodVisitor mv) {
+		mv.visitLdcInsn(toString());
 	}
 
 }

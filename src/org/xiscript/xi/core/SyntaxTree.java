@@ -11,6 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 
+import org.objectweb.asm.MethodVisitor;
+import org.xiscript.xi.compilation.VariableSuite;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiNull;
 import org.xiscript.xi.exceptions.ErrorHandler;
@@ -119,6 +121,13 @@ public class SyntaxTree {
 		}
 
 		return null;
+	}
+
+	public void emitBytecode(MethodVisitor mv) {
+		VariableSuite vs = new VariableSuite();
+
+		for (Node node : statements)
+			node.emitBytecode(mv, vs);
 	}
 
 }

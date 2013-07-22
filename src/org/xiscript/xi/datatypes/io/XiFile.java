@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
+import org.xiscript.xi.compilation.Type;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.XiNull;
@@ -477,7 +478,7 @@ public class XiFile extends XiIterable {
 
 	@Override
 	public XiType type() {
-		return XiType.valueOf(XiType.Type.FILE);
+		return XiType.valueOf(Type.FILE);
 	}
 
 }

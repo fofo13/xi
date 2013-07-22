@@ -3,6 +3,7 @@ package org.xiscript.xi.datatypes.io;
 import java.io.Closeable;
 import java.io.PrintStream;
 
+import org.xiscript.xi.compilation.Type;
 import org.xiscript.xi.datatypes.XiType;
 
 public class XiWriter extends XiStream implements Closeable {
@@ -44,7 +45,7 @@ public class XiWriter extends XiStream implements Closeable {
 
 	@Override
 	public XiType type() {
-		return XiType.valueOf(XiType.Type.WRITER);
+		return XiType.valueOf(Type.WRITER);
 	}
 
 }

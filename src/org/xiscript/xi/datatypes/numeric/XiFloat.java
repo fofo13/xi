@@ -1,5 +1,6 @@
 package org.xiscript.xi.datatypes.numeric;
 
+import org.xiscript.xi.compilation.Type;
 import org.xiscript.xi.datatypes.XiType;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
@@ -99,7 +100,7 @@ public class XiFloat extends XiReal<Double> {
 
 	@Override
 	public XiType type() {
-		return XiType.valueOf(XiType.Type.FLOAT);
+		return XiType.valueOf(Type.FLOAT);
 	}
 
 }

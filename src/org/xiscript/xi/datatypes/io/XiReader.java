@@ -3,6 +3,7 @@ package org.xiscript.xi.datatypes.io;
 import java.io.Closeable;
 import java.util.Scanner;
 
+import org.xiscript.xi.compilation.Type;
 import org.xiscript.xi.datatypes.XiType;
 import org.xiscript.xi.datatypes.collections.XiString;
 
@@ -54,7 +55,7 @@ public class XiReader extends XiStream implements Closeable {
 
 	@Override
 	public XiType type() {
-		return XiType.valueOf(XiType.Type.READER);
+		return XiType.valueOf(Type.READER);
 	}
 
 }

@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.xiscript.xi.compilation.VariableSuite;
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiDict;
@@ -158,4 +161,25 @@ public class CollectionNode extends DataNode<CollectionWrapper<?>> {
 
 		return new XiDict(result);
 	}
+
+	@Override
+	public void emitBytecode(MethodVisitor mv, VariableSuite vs) {
+		switch (type) {
+		case TYPE_LIST:
+			mv.visitTypeInsn(Opcodes.NEW, "java/util/ArrayList");
+			mv.visitInsn(Opcodes.DUP);
+			mv.visitIntInsn(Opcodes.BIPUSH, getSize());
+			mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/util/ArrayList",
+					"<init>", "(I)V");
+
+			for (Node node : elements) {
+				if (node != SepNode.instance()) {
+					node.emitBytecode(mv, vs);
+					mv.visitMethodInsn(Opcodes.INVOKEINTERFACE,
+							"java/util/List", "add", "(Ljava/lang/Object;)Z");
+				}
+			}
+		}
+	}
+
 }

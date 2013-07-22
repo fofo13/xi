@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.xiscript.xi.compilation.Type;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiType;
 import org.xiscript.xi.datatypes.functional.HiddenFunc;
@@ -45,7 +46,7 @@ public class XiRegex extends XiString {
 
 		@Override
 		public XiType type() {
-			return XiType.valueOf(XiType.Type.MATCHER);
+			return XiType.valueOf(Type.MATCHER);
 		}
 
 		@Override

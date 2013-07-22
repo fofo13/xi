@@ -3,6 +3,8 @@ package org.xiscript.xi.datatypes;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import org.xiscript.xi.compilation.Type;
+
 public class XiVar extends DataType {
 
 	private static final long serialVersionUID = 0L;
@@ -103,7 +105,7 @@ public class XiVar extends DataType {
 
 	@Override
 	public XiType type() {
-		return XiType.valueOf(XiType.Type.VAR);
+		return XiType.valueOf(Type.VAR);
 	}
 
 }

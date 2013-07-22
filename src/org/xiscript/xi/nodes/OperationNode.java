@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.objectweb.asm.MethodVisitor;
+import org.xiscript.xi.compilation.Type;
+import org.xiscript.xi.compilation.VariableSuite;
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.exceptions.ErrorHandler;
@@ -90,6 +93,20 @@ public class OperationNode implements Node {
 	@Override
 	public String toString() {
 		return (op == null) ? "op-node" : op.toString();
+	}
+
+	@Override
+	public void emitBytecode(MethodVisitor mv, VariableSuite vs) {
+		op.emitBytecode(mv, vs, children.toArray(new Node[children.size()]));
+	}
+
+	@Override
+	public Type inferType(VariableSuite vs) {
+		Type[] argTypes = new Type[children.size()];
+		for (int i = 0; i < argTypes.length; i++)
+			argTypes[i] = children.get(i).inferType(vs);
+
+		return op.resultingType(argTypes);
 	}
 
 }

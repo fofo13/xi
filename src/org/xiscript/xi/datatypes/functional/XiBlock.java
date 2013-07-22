@@ -1,5 +1,6 @@
 package org.xiscript.xi.datatypes.functional;
 
+import org.xiscript.xi.compilation.Type;
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiNull;
@@ -58,7 +59,7 @@ public class XiBlock extends DataType {
 
 	@Override
 	public XiType type() {
-		return XiType.valueOf(XiType.Type.BLOCK);
+		return XiType.valueOf(Type.BLOCK);
 	}
 
 }

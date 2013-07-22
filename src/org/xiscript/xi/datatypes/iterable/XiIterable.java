@@ -2,6 +2,7 @@ package org.xiscript.xi.datatypes.iterable;
 
 import java.util.Iterator;
 
+import org.xiscript.xi.compilation.Type;
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiType;
@@ -166,7 +167,7 @@ public abstract class XiIterable extends DataType implements Iterable<DataType> 
 
 	@Override
 	public XiType type() {
-		return XiType.valueOf(XiType.Type.ITER);
+		return XiType.valueOf(Type.ITER);
 	}
 
 	@Override

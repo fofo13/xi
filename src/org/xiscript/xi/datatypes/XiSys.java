@@ -2,6 +2,7 @@ package org.xiscript.xi.datatypes;
 
 import java.util.Scanner;
 
+import org.xiscript.xi.compilation.Type;
 import org.xiscript.xi.datatypes.io.XiReader;
 import org.xiscript.xi.datatypes.io.XiWriter;
 
@@ -75,7 +76,7 @@ public class XiSys extends DataType {
 
 	@Override
 	public XiType type() {
-		return XiType.valueOf(XiType.Type.SYS);
+		return XiType.valueOf(Type.SYS);
 	}
 
 }

@@ -1,5 +1,7 @@
 package org.xiscript.xi.datatypes.numeric;
 
+import org.objectweb.asm.MethodVisitor;
+import org.xiscript.xi.compilation.Type;
 import org.xiscript.xi.datatypes.XiType;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
@@ -102,7 +104,12 @@ public class XiInt extends XiReal<Integer> {
 
 	@Override
 	public XiType type() {
-		return XiType.valueOf(XiType.Type.INT);
+		return XiType.valueOf(Type.INT);
+	}
+
+	@Override
+	public void emitBytecode(MethodVisitor mv) {
+		mv.visitIntInsn(BIPUSH, val.intValue());
 	}
 
 }

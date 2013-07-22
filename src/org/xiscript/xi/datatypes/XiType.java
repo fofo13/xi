@@ -3,42 +3,11 @@ package org.xiscript.xi.datatypes;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.xiscript.xi.compilation.Type;
+
 public class XiType extends DataType {
 
 	private static final long serialVersionUID = 0L;
-
-	public static enum Type {
-
-		TYPE(), MODULE(), NULL(), SYS(), ATTRIBUTE(), VAR(),
-
-		INT(), LONG(), FLOAT(), COMPLEX(), REAL(INT, LONG, FLOAT), NUM(REAL,
-				COMPLEX),
-
-		REGEX(), MATCHER(), TUPLE(), SET(), STRING(REGEX), LIST(STRING, TUPLE), COLLECTION(
-				LIST, SET),
-
-		FILE(), GENERATOR(), ITER(FILE, COLLECTION, GENERATOR),
-
-		DICT(),
-
-		READER(), WRITER(), STREAM(READER, WRITER),
-
-		FUNCTION(), BLOCK(), LAMBDA();
-
-		private Type[] subtypes;
-
-		private Type(Type... subtypes) {
-			this.subtypes = subtypes;
-		}
-
-		public boolean containsSubtype(Type type) {
-			for (Type t : subtypes)
-				if (t == type || t.containsSubtype(type))
-					return true;
-
-			return false;
-		}
-	}
 
 	private static final Map<Type, XiType> types = new HashMap<Type, XiType>(
 			Type.values().length);
@@ -48,7 +17,7 @@ public class XiType extends DataType {
 			types.put(type, new XiType(type));
 	}
 
-	private final Type type;
+	public final Type type;
 
 	private XiType(Type type) {
 		this.type = type;
@@ -79,9 +48,9 @@ public class XiType extends DataType {
 
 		Type t = ((XiType) data).type;
 
-		if (type.containsSubtype(t))
+		if (type.isParentOf(t))
 			return 1;
-		if (t.containsSubtype(type))
+		if (t.isParentOf(type))
 			return -1;
 
 		return 0;

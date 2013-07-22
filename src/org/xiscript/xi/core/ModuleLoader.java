@@ -5,10 +5,10 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.xiscript.xi.compilation.Type;
 import org.xiscript.xi.datatypes.XiModule;
 import org.xiscript.xi.datatypes.XiSys;
 import org.xiscript.xi.datatypes.XiType;
-import org.xiscript.xi.datatypes.XiType.Type;
 import org.xiscript.xi.datatypes.numeric.XiFloat;
 import org.xiscript.xi.datatypes.numeric.XiMath;
 import org.xiscript.xi.exceptions.ErrorHandler;
@@ -106,7 +106,7 @@ public class ModuleLoader {
 	}
 
 	private static XiModule getStandardTypes() {
-		Type[] allTypes = XiType.Type.values();
+		Type[] allTypes = Type.values();
 		XiModule types = new XiModule(allTypes.length);
 
 		for (Type type : allTypes) {

@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.xiscript.xi.compilation.Type;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiType;
 import org.xiscript.xi.datatypes.iterable.XiGenerator;
@@ -88,7 +89,7 @@ public class XiSet extends CollectionWrapper<Set<DataType>> implements
 
 	@Override
 	public XiType type() {
-		return XiType.valueOf(XiType.Type.SET);
+		return XiType.valueOf(Type.SET);
 	}
 
 }

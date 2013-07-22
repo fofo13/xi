@@ -1,5 +1,8 @@
 package org.xiscript.xi.nodes;
 
+import org.objectweb.asm.MethodVisitor;
+import org.xiscript.xi.compilation.Type;
+import org.xiscript.xi.compilation.VariableSuite;
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 
@@ -49,6 +52,16 @@ public class DataNode<T extends DataType> implements Node {
 	@Override
 	public String toString() {
 		return String.valueOf(data);
+	}
+
+	@Override
+	public void emitBytecode(MethodVisitor mv, VariableSuite vs) {
+		data.emitBytecode(mv);
+	}
+
+	@Override
+	public Type inferType(VariableSuite vs) {
+		return data.type().type;
 	}
 
 }

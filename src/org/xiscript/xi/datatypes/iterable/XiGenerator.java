@@ -3,6 +3,7 @@ package org.xiscript.xi.datatypes.iterable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.xiscript.xi.compilation.Type;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiType;
 
@@ -50,7 +51,7 @@ public abstract class XiGenerator extends XiIterable {
 
 	@Override
 	public XiType type() {
-		return XiType.valueOf(XiType.Type.GENERATOR);
+		return XiType.valueOf(Type.GENERATOR);
 	}
 
 }

@@ -1,5 +1,8 @@
 package org.xiscript.xi.nodes.singletons;
 
+import org.objectweb.asm.MethodVisitor;
+import org.xiscript.xi.compilation.Type;
+import org.xiscript.xi.compilation.VariableSuite;
 import org.xiscript.xi.core.VariableCache;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiNull;
@@ -45,6 +48,18 @@ public class SepNode implements Node {
 	@Override
 	public int hashCode() {
 		return Boolean.FALSE.hashCode();
+	}
+
+	@Override
+	public void emitBytecode(MethodVisitor mv, VariableSuite vs) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public Type inferType(VariableSuite vs) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

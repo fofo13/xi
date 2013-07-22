@@ -1,5 +1,6 @@
 package org.xiscript.xi.datatypes.numeric;
 
+import org.xiscript.xi.compilation.Type;
 import org.xiscript.xi.datatypes.DataType;
 import org.xiscript.xi.datatypes.XiAttribute;
 import org.xiscript.xi.datatypes.XiType;
@@ -167,7 +168,7 @@ public class XiComplex extends XiNum {
 
 	@Override
 	public XiType type() {
-		return XiType.valueOf(XiType.Type.COMPLEX);
+		return XiType.valueOf(Type.COMPLEX);
 	}
 
 }

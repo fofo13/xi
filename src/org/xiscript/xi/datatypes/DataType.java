@@ -2,11 +2,14 @@ package org.xiscript.xi.datatypes;
 
 import java.io.Serializable;
 
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 import org.xiscript.xi.datatypes.numeric.XiInt;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
-public abstract class DataType implements Comparable<DataType>, Serializable {
+public abstract class DataType implements Comparable<DataType>, Serializable,
+		Opcodes {
 
 	private static final long serialVersionUID = 0L;
 
@@ -44,6 +47,10 @@ public abstract class DataType implements Comparable<DataType>, Serializable {
 	public String toString() {
 		return "<" + type().toString().toLowerCase() + " at "
 				+ Integer.toHexString(hashCode()) + ">";
+	}
+
+	public void emitBytecode(MethodVisitor mv) {
+		throw new UnsupportedOperationException();
 	}
 
 }

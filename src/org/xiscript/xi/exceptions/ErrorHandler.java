@@ -70,6 +70,7 @@ public class ErrorHandler {
 	}
 
 	public static final void invokeError(ErrorType err, Object... args) {
+		(new Exception()).printStackTrace();
 		System.err.printf(template, String.format(err.message, args));
 		System.exit(errCode);
 	}

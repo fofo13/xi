@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.IllegalFormatException;
@@ -13,6 +14,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.regex.Pattern;
 
+import org.objectweb.asm.MethodVisitor;
+import org.xiscript.xi.compilation.Type;
+import org.xiscript.xi.compilation.VariableSuite;
 import org.xiscript.xi.core.ModuleLoader;
 import org.xiscript.xi.core.Parser;
 import org.xiscript.xi.core.SyntaxTree;
@@ -50,6 +54,7 @@ import org.xiscript.xi.exceptions.ContinueException;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 import org.xiscript.xi.exceptions.ReturnException;
+import org.xiscript.xi.nodes.Node;
 import org.xiscript.xi.util.TimerManager;
 
 public enum BuiltInOperation implements Operation {
@@ -57,10 +62,10 @@ public enum BuiltInOperation implements Operation {
 	NULL("null", 0),
 
 	NOT("!", 1), BITNOT("~", 1), ABS("abs", 1), ADD("+", 2), ADDALL("+:", -1), SUB(
-			"-", 2), MUL("*", 2), MULTALL("*:", -1), DIVIDE("/", 2), INTDIV(
-			"//", 2), MOD("%", 2), EQ("==", 2), NEQ("!=", 2), GT(">", 2), LT(
-			"<", 2), GE(">=", 2), LE("<=", 2), AND("&", 2), OR("|", 2), XOR(
-			"^", 2), RSHIFT(">>", 2), LSHIFT("<<", 2), POW("**", 2),
+			"-", 2), MUL("*", 2), MULTALL("*:", -1), DIV("/", 2), INTDIV("//",
+			2), MOD("%", 2), EQ("==", 2), NEQ("!=", 2), GT(">", 2), LT("<", 2), GE(
+			">=", 2), LE("<=", 2), AND("&", 2), OR("|", 2), XOR("^", 2), RSHIFT(
+			">>", 2), LSHIFT("<<", 2), POW("**", 2),
 
 	DEF("def", 3),
 
@@ -211,7 +216,7 @@ public enum BuiltInOperation implements Operation {
 				d = MUL.evaluate(d, args[i]);
 			return d;
 		}
-		case DIVIDE:
+		case DIV:
 			if (args[0] instanceof XiBlock) {
 				XiBlock block = (XiBlock) args[0];
 				block.setOuterScope(globals);
@@ -774,6 +779,116 @@ public enum BuiltInOperation implements Operation {
 	@Override
 	public String toString() {
 		return id;
+	}
+
+	@Override
+	public void emitBytecode(MethodVisitor mv, VariableSuite vs, Node... args) {
+		Type[] argTypes = new Type[args.length];
+		for (int i = 0; i < args.length; i++)
+			argTypes[i] = args[i].inferType(vs);
+
+		switch (this) {
+		case ADD:
+			if (check(argTypes, Type.INT, Type.INT)) {
+				args[0].emitBytecode(mv, vs);
+				args[1].emitBytecode(mv, vs);
+				mv.visitInsn(IADD);
+			} else if (argTypes[0] == Type.STR) {
+				mv.visitTypeInsn(NEW, "java/lang/StringBuilder");
+				mv.visitInsn(DUP);
+				mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder",
+						"<init>", "()V");
+				args[0].emitBytecode(mv, vs);
+				mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder",
+						"append",
+						"(Ljava/lang/String;)Ljava/lang/StringBuilder;");
+				args[1].emitBytecode(mv, vs);
+				mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder",
+						"append", "(I)Ljava/lang/StringBuilder;");
+				mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder",
+						"toString", "()Ljava/lang/String;");
+			}
+			break;
+		case SUB: // TODO
+			if (argTypes[0] == Type.INT)
+				mv.visitInsn(ISUB);
+			break;
+		case MUL:
+			if (check(argTypes, Type.INT, Type.INT)) {
+				args[0].emitBytecode(mv, vs);
+				args[1].emitBytecode(mv, vs);
+				mv.visitInsn(IMUL);
+			} else if (check(argTypes, Type.STR, Type.INT)) {
+				mv.visitTypeInsn(NEW, "java/lang/StringBuilder");
+				mv.visitInsn(DUP);
+				args[1].emitBytecode(mv, vs);
+				mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder",
+						"<init>", "(I)V");
+				for (int i = 0; i < 3; i++) {
+					args[0].emitBytecode(mv, vs);
+					mv.visitMethodInsn(INVOKEVIRTUAL,
+							"java/lang/StringBuilder", "append",
+							"(Ljava/lang/String;)Ljava/lang/StringBuilder;");
+				}
+				mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder",
+						"toString", "()Ljava/lang/String;");
+			}
+			break;
+		case DIV:
+			if (argTypes[0] == Type.INT)
+				mv.visitInsn(IDIV);
+			break;
+		case STR:
+			if (argTypes[0] == Type.INT) {
+				mv.visitMethodInsn(INVOKESTATIC, "java/lang/String", "valueOf",
+						"(I)Ljava/lang/String;");
+			}
+			break;
+		case PRINTLN:
+			mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out",
+					"Ljava/io/PrintStream;");
+			args[0].emitBytecode(mv, vs);
+			if (argTypes[0] == Type.INT) {
+				mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream",
+						"println", "(I)V");
+			} else if (argTypes[0] == Type.STR) {
+				mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream",
+						"println", "(Ljava/lang/Object;)V");
+			}
+			break;
+		default:
+			throw new UnsupportedOperationException();
+		}
+	}
+
+	@Override
+	public Type resultingType(Type... argTypes) {
+		switch (this) {
+		case ADD:
+		case MUL:
+		case SUB:
+		case DIV:
+			if (check(argTypes, Type.INT, Type.INT)) // TODO: use 'check'
+														// everywhere
+				return Type.INT;
+			if (check(argTypes, Type.INT, Type.FLOAT)
+					|| check(argTypes, Type.FLOAT, Type.INT)
+					|| check(argTypes, Type.FLOAT, Type.FLOAT))
+				return Type.FLOAT;
+			if (check(argTypes, Type.STR, Type.STR))
+				return Type.STR;
+		case STR:
+			return Type.STR;
+		case PRINTLN:
+			return Type.NULL;
+		default:
+			System.out.println(this);
+			throw new UnsupportedOperationException();
+		}
+	}
+
+	private static <T> boolean check(T[] a, T... b) {
+		return Arrays.equals(a, b);
 	}
 
 }

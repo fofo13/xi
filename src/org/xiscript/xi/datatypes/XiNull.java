@@ -1,5 +1,7 @@
 package org.xiscript.xi.datatypes;
 
+import org.xiscript.xi.compilation.Type;
+
 public final class XiNull extends DataType {
 
 	private static final long serialVersionUID = 0L;
@@ -50,7 +52,7 @@ public final class XiNull extends DataType {
 
 	@Override
 	public XiType type() {
-		return XiType.valueOf(XiType.Type.NULL);
+		return XiType.valueOf(Type.NULL);
 	}
 
 }

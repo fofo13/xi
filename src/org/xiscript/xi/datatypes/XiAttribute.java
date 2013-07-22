@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.xiscript.xi.compilation.Type;
 import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
@@ -63,7 +64,7 @@ public class XiAttribute extends DataType {
 
 	@Override
 	public XiType type() {
-		return XiType.valueOf(XiType.Type.ATTRIBUTE);
+		return XiType.valueOf(Type.ATTRIBUTE);
 	}
 
 }
