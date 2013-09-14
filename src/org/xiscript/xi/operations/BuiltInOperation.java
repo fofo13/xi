@@ -53,7 +53,7 @@ import org.xiscript.xi.exceptions.ReturnException;
 import org.xiscript.xi.util.TimerManager;
 
 public enum BuiltInOperation implements Operation {
-
+    /*every operation has  got  his  id as string and a number that is the number of arguments */
 	NULL("null", 0),
 
 	NOT("!", 1), BITNOT("~", 1), ABS("abs", 1), ADD("+", 2), ADDALL("+:", -1), SUB(
@@ -762,6 +762,9 @@ public enum BuiltInOperation implements Operation {
 	}
 
 	public static boolean idExists(String id) {
+
+		/* check if id is a word of language */
+		
 		return ids.containsKey(id);
 	}
 

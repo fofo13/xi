@@ -13,7 +13,8 @@ import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public class XiProgram {
-
+   /*a  XiProgram as got 2 private  field:Syntaxtree is the collection of instructions to execute and a VariablCache*/
+	
 	private SyntaxTree program;
 	private VariableCache scope;
 
@@ -42,7 +43,7 @@ public class XiProgram {
 		Queue<Character> source = new LinkedList<Character>();
 
 		int next = -1;
-
+		/* read input file's lines */
 		try {
 			while ((next = file.read()) != -1) {
 				source.add((char) next);

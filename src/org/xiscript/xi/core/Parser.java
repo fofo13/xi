@@ -116,7 +116,9 @@ public class Parser {
 
 	public static Queue<Node> genNodeQueue(Queue<Character> source) {
 		ArrayDeque<Node> nodes = new ArrayDeque<Node>();
-
+		
+		/*iterate the lines of file and and generate nodes of parser*/
+		
 		while (!source.isEmpty()) {
 			Node node = generateNode(source);
 
@@ -144,7 +146,8 @@ public class Parser {
 	private static Node generateNode(Queue<Character> chars) {
 		if (chars.isEmpty())
 			return null;
-
+		 /*peek method=Retrieves, but does not remove, the head of this queue, or returns null if this queue is empty.
+		 for example chars is println---> start is p.In according  to first letter later generate node.*/
 		char start = chars.peek();
 
 		if (Character.isDigit(start))
@@ -357,6 +360,7 @@ public class Parser {
 	}
 
 	private static Node readString(Queue<Character> chars, CharSequence type) {
+	/*read String from Queue of chars and  at  same time  check if  Dquote are correctly used */
 		chars.poll();
 		StringBuilder sb = new StringBuilder();
 
@@ -384,7 +388,7 @@ public class Parser {
 
 		return new DataNode<XiString>(new XiString(unescape(sb.toString())));
 	}
-
+    /*readString extract between two doubles quotes a string then later become a node of  parser.*/
 	private static Node readString(Queue<Character> chars) {
 		return readString(chars, null);
 	}

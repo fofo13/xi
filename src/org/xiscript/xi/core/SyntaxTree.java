@@ -28,7 +28,7 @@ public class SyntaxTree {
 	public SyntaxTree(Node[] statements) {
 		this.statements = statements;
 	}
-
+/*iterates a syntax tree */
 	public SyntaxTree(Queue<Node> nodes) {
 		Iterator<Node> iter = nodes.iterator();
 
@@ -37,7 +37,7 @@ public class SyntaxTree {
 
 			if (node instanceof AssignmentNode) {
 				iter.next().literalize();
-			} else if (node instanceof OperationNode) {
+			} else if (node instanceof OperationNode) {   /*check if a node is an operation and which operation regards*/
 				OperationNode opnode = (OperationNode) node;
 				if (opnode.op() == BuiltInOperation.DEF) {
 					iter.next().literalize();

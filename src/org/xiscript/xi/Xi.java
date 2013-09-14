@@ -18,6 +18,8 @@ public class Xi {
 		} catch (FileNotFoundException fnfe) {
 			System.err.printf("File %s was not found.%n", file);
 		}
+	    System.out.print("ciao");
+
 	}
 
 }

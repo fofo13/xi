@@ -4,7 +4,7 @@ import java.io.Closeable;
 import java.io.PrintStream;
 
 import org.xiscript.xi.datatypes.XiType;
-
+/*this is a xi class for output*/
 public class XiWriter extends XiStream implements Closeable {
 
 	private static final long serialVersionUID = 0L;
