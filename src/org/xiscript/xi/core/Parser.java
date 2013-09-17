@@ -155,7 +155,7 @@ public class Parser {
 
 		else if (W.contains(start))
 			return readWord(chars);
-
+/*N.B. chars is linked list */
 		else if (SPEC.contains(start))
 			return readSpec(chars);
 
@@ -302,7 +302,7 @@ public class Parser {
 		return new VarNode(sb.toString());
 	}
 
-	private static Node readNum(Queue<Character> chars, boolean positive) {
+	private static Node readNum(Queue<Character> chars, boolean positive) {/*positive is false if the number has got minus before*/
 		StringBuilder sb = new StringBuilder((positive ? ""
 				: Character.toString(MINUS))
 				+ chars.poll());
@@ -327,7 +327,7 @@ public class Parser {
 			else
 				break;
 		}
-
+			/*check if number as  got I\i or L\l as prefix (complex or long number)*/
 		char modifier = chars.isEmpty() ? 0 : chars.peek();
 
 		if (modifier == 'i' || modifier == 'I') {
@@ -340,10 +340,11 @@ public class Parser {
 		}
 		if (dotFound)
 			return new DataNode<XiFloat>(XiFloat.parse(sb.toString()));
-		return new DataNode<XiInt>(XiInt.parse(sb.toString()));
+		return new DataNode<XiInt>(XiInt.parse(sb.toString())); /*Create a  data node of XiInt type*/
 	}
 
 	private static Node readNum(Queue<Character> chars) {
+		/*generate a node number */
 		return readNum(chars, true);
 	}
 

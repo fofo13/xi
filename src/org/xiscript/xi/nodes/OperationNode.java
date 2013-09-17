@@ -31,7 +31,9 @@ public class OperationNode implements Node {
 		
 		/*Create a linked_list_node if op not is null or  his number of arguments are less then 0 or
 		 * an arraylist_node with 10 as number of  arguments if op is null else with 
-		 * right number of arguments necessary for that operation */
+		 * right number of arguments necessary for that operation 
+		 * It's necessary to build an op-node:a field children(is a List<Node>) for arguments 
+		 * of operation-node and a field op specify the operation.*/
 		
 		this((op != null && op.numArgs() < 0) ? new LinkedList<Node>()
 				: new ArrayList<Node>((op == null) ? 10 : op.numArgs()), op);
