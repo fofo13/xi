@@ -13,7 +13,8 @@ import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 
 public class XiProgram {
-   /*a  XiProgram as got 2 private  field:Syntaxtree is the collection of instructions to execute and a VariablCache*/
+   /*a  XiProgram as got 2 private  field:Syntaxtree is the collection of instructions(statements is three of 
+    * syntax with a  three structure) to execute and a VariablCache*/
 	
 	private SyntaxTree program;
 	private VariableCache scope;

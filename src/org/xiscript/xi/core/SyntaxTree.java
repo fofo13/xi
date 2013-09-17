@@ -63,7 +63,7 @@ public class SyntaxTree {
 
 	public DataType evaluate(VariableCache scope) {
 		DataType last = XiNull.instance();
-		for (Node node : statements)
+		for (Node node : statements)   /*for  each node of statements(of syntax three)*/
 			last = node.evaluate(scope);
 		return last;
 	}
@@ -80,6 +80,8 @@ public class SyntaxTree {
 				Node next = create(nodes);
 				if (next == StopNode.instance())
 					break;
+		/*if we are analyzing a node with children her we add them (for  example node is +
+		 * we add he to add_node a  number 3) */
 				node.addChild(next);
 			}
 		} else {

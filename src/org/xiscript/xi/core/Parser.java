@@ -115,6 +115,8 @@ public class Parser {
 	}
 
 	public static Queue<Node> genNodeQueue(Queue<Character> source) {
+		/*ArrayDeque =  This class is likely to be faster than Stack when used as a stack,
+		 *  and faster than LinkedList when used as a queue.*/
 		ArrayDeque<Node> nodes = new ArrayDeque<Node>();
 		
 		/*iterate the lines of file and and generate nodes of parser*/

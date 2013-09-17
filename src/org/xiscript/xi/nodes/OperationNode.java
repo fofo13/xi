@@ -11,7 +11,7 @@ import org.xiscript.xi.exceptions.ErrorHandler;
 import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 import org.xiscript.xi.operations.Operation;
 
-public class OperationNode implements Node {
+public class OperationNode implements Node { /*OperationNode implements Node(interface) that extends Serializable (interface)*/
 
 	private static final long serialVersionUID = 0L;
 
