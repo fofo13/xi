@@ -12,10 +12,10 @@ public class XiTest extends Xi{
 	public void testRunFromFile() {
 		String s=new String();
 		s="C:\\Users\\alfonso\\Desktop\\input.txt";
+	
 		
 		runFromFile(s);
 		assertNotNull(s);
-		
 		
 	}
 
