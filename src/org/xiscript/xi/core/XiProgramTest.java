@@ -20,7 +20,7 @@ public class XiProgramTest{
 		s="C:\\Users\\alfonso\\Desktop\\input.txt";
 		try {
 			XiProgram env = new XiProgram(new File(s));
-			assertNotNull("il file è nullo",env);
+			assertNotNull("il file non è nullo",env);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -47,7 +47,15 @@ public class XiProgramTest{
 
 	@Test
 	public void testReadFrom() {
-		fail("Not yet implemented");
-	}
+		String s=new String();
+		s="C:\\Users\\alfonso\\Desktop\\input.txt";
+		
+		File f= new File(s);
+		
+		XiProgram env;
+		env=XiProgram.readFrom(f);
+		assertTrue(env instanceof XiProgram);
+		assertNotNull(env);
+		}
 
 }
