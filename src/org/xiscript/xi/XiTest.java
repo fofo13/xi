@@ -22,6 +22,8 @@ public class XiTest extends Xi{
 		runFromFile(s2);
 		assertNotNull(s2);		
 		
+		
+		
 		/*in this  case instead s2 not is  a  real input file  for xi project
 		 * it's necessary to throw an exception into runFromFile method and cover
 		 * all line of  it*/
