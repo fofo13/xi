@@ -3,6 +3,7 @@ package org.xiscript.xi.core;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -16,9 +17,11 @@ import org.xiscript.xi.exceptions.ErrorHandler.ErrorType;
 public class XiProgramTest{
 
 	@Test
-	public void testXiProgramInputStream() {
-		fail("Not yet implemented");
-	}
+	public void testXiProgramInputStream() throws FileNotFoundException {
+		FileInputStream f = new FileInputStream(new File("C:\\Users\\alfonso\\Desktop\\input.txt"));
+		XiProgram env =new XiProgram(f);
+		assertNotNull(env);
+		}
 
 	@Test
 	public void testXiProgramFile() {
@@ -29,11 +32,8 @@ public class XiProgramTest{
 			assertNotNull("il file non è nullo",env);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-			
 		}
 		
-		//fail("Not yet implemented");
 	}
 
 	@Test
