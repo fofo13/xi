@@ -86,7 +86,24 @@ public class ParserTest extends Parser{
 
 	@Test
 	public void testGenNodeQueueCharSequence() {
-		fail("Not yet implemented");
+		String s=new String ("println + 3,5 4i");
+		Queue<Node> nodes = genNodeQueue(s);
+		Node node=nodes.poll();
+		assertTrue(node instanceof OperationNode);
+		node=nodes.poll();
+		assertTrue(node instanceof OperationNode);
+		node=nodes.poll();
+		assertTrue(node instanceof DataNode);
+		node=nodes.poll();
+		assertFalse(node instanceof DataNode);
+		assertNotNull(node);
+/* This  node is DataNode<XiComplex> and his correct appearance
+ 	for  this  script language is 4.0i */
+		assertNotEquals(node,"4i");
+		assertNotEquals(node,"4.0i");
+		assertNotEquals(node.toString(),"4i");
+		assertNotEquals(node.toString(),"4.0i");
+
 	}
 
 }

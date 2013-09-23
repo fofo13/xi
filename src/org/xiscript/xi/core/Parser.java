@@ -424,7 +424,7 @@ public class Parser {
 					sb.append(c);
 			}
 		}
-
+/*Start fror here to  calculate a value of block*/
 		Node[] nodes = new SyntaxTree(Parser.genNodeQueue(sb)).statements();
 
 		if (open == LIST_START)
