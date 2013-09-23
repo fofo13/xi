@@ -3,6 +3,7 @@ package org.xiscript.xi.operations;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.xiscript.xi.datatypes.functional.XiLambda;
 
 
 
@@ -11,11 +12,9 @@ public class BuiltInOperationTest {
 	@Test 
 	public void testId() {
 		String sb=new String("+");
-		//StringBuilder s=new StringBuilder();
+		//StringBuilder sb=new StringBuilder();
 		//Node node = new OperationNode(BuiltInOperation.parse(sb.toString()));
 		//assertTrue(node instanceof OperationNode);
-		//String s=new String()-
-		//String idop=new String();
 		//BuiltInOperation.idExists(sb.toString());
 		String op= new String(BuiltInOperation.ADD.id());
 		assertEquals(sb,op);
@@ -47,30 +46,37 @@ public class BuiltInOperationTest {
 		
 	}
 
-	@Test
+/*	@Test
 	public void testEvaluateVariableCacheDataTypeArray() {
 		fail("Not yet implemented");
+
 	}
 
 	@Test
 	public void testEvaluateDataTypeArray() {
 		fail("Not yet implemented");
 	}
-
+*/
 	@Test
 	public void testAsLambda() {
-		fail("Not yet implemented");
+		StringBuilder sb=new StringBuilder("printf");
+		XiLambda var=BuiltInOperation.parse(sb.toString()).asLambda();
+		assertTrue(var instanceof XiLambda);
 	}
 
 	@Test
 	public void testIdExists() {
-		fail("Not yet implemented");
+		String sb=new String("abs");
+		assertTrue(BuiltInOperation.idExists(sb));
+
 	}
 
 	@Test
 	public void testParse() {
-		fail("Not yet implemented");
-	}
+	String id=new String("len");	
+		assertNotNull(BuiltInOperation.parse(id));
+		assertTrue((BuiltInOperation.parse(id)) instanceof BuiltInOperation);
+		}
 
 	@Test
 	public void testToString() {
