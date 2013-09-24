@@ -72,6 +72,11 @@ public enum BuiltInOperation implements Operation {
 			"dowhile", 2), LOOP("loop", 2),
 
 	EVAL("eval", 1), EXEC("exec", 1),
+	
+	/*Once we have this number, we perform two operations, namely str followed by list. 
+	 * str turns the number into a string, and list turns this string into a list of 
+	 * its constituent character.
+	 *  For example, list str "1234" would result in ["1", "2", "3", "4"].*/
 
 	STR("str", 1), CHR("chr", 1), INT("int", 1), FLOAT("float", 1), LONG(
 			"long", 1), LIST("list", 1), SET("set", 1), TUPLE("tuple", 1), DICT(

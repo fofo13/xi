@@ -76,11 +76,22 @@ public class BuiltInOperationTest {
 	String id=new String("len");	
 		assertNotNull(BuiltInOperation.parse(id));
 		assertTrue((BuiltInOperation.parse(id)) instanceof BuiltInOperation);
+		id="|";
+		assertTrue((BuiltInOperation.parse(id)) instanceof BuiltInOperation);
+		assertEquals((BuiltInOperation.parse(id)).toString(),id);
+		assertEquals(BuiltInOperation.parse(id).name(),"OR");
+		
 		}
 
 	@Test
 	public void testToString() {
-		fail("Not yet implemented");
+		String id=new String("len");	
+		assertNotNull(BuiltInOperation.parse(id));
+		assertEquals((BuiltInOperation.parse(id)).toString(),id);
+		id="+";
+		assertNotEquals((BuiltInOperation.parse(id)).toString(),"ADD");
+		assertNotEquals((BuiltInOperation.parse(id)).toString(),BuiltInOperation.parse(id).name());
+		
 	}
 
 }
